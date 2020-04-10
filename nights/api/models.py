@@ -1,19 +1,38 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
+from polymorphic.models import PolymorphicModel
 
 
-class Cast(models.Model):
-    name = models.CharField(max_length=200)
+class Topic(PolymorphicModel):
+    name = models.CharField(max_length=200, blank=True)
+    released_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+    @property
+    def is_new(self):
+        return self.updated_at >= timezone.now() - timezone.timedelta(5)
 
     def __str__(self):
         return self.name
 
 
-class Title(models.Model):
-    cast = models.ManyToManyField(Cast, blank=True)
+class Genre(Topic):
+    pass
 
-    name = models.CharField(max_length=200)
+
+class Cast(Topic):
+    pass
+
+
+class Title(Topic):
+    genres = models.ManyToManyField(Genre, blank=True)
+    cast = models.ManyToManyField(Cast, blank=True)
+    users = models.ManyToManyField(User, blank=True, related_name='my_list')
+
     plot = models.TextField(null=True)
+    runtime = models.IntegerField(null=True, blank=True, help_text='In minutes')
     imdb = models.CharField(max_length=50, null=True)
     rating = models.FloatField(null=True)
     type = models.CharField(
@@ -32,43 +51,41 @@ class Title(models.Model):
         ],
         default='G'
     )
-    runtime = models.IntegerField(null=True, blank=True, help_text='In minutes')
-    released_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now_add=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
-
-    def __str__(self):
-        return self.name
 
 
-class Season(models.Model):
+class Season(Topic):
     series = models.ForeignKey(Title, limit_choices_to={'type': 's'}, on_delete=models.CASCADE)
-
-    name = models.CharField(max_length=200)
     index = models.IntegerField(blank=True, default=0, help_text='Season number')
-    released_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now_add=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
-    def __str__(self):
-        return self.name
-
-
-class Episode(models.Model):
-    series = models.ForeignKey(Title, on_delete=models.CASCADE)
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
-
-    name = models.CharField(blank=True, max_length=200)
-    index = models.IntegerField(blank=True, default=0, help_text='Episode number')
-    runtime = models.IntegerField(null=True, blank=True, help_text='In minutes')
-    plot = models.TextField(null=True)
-    released_at = models.DateTimeField(auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(auto_now_add=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True)
-
-    def clean(self):
+    def save(self, **kwargs):
         if not self.name:
-            self.name = str(self)
+            self.name = '%s S%02d' % (self.series.name, self.index)
+
+
+class Episode(Topic):
+    episode_series = models.ForeignKey(Title, blank=True, null=True, on_delete=models.CASCADE)
+    episode_season = models.ForeignKey(Season, on_delete=models.CASCADE)
+
+    plot = models.TextField(null=True)
+    runtime = models.IntegerField(null=True, blank=True, help_text='In minutes')
+    index = models.IntegerField(blank=True, default=0, help_text='Episode number')
+
+    def save(self, **kwargs):
+        if not self.episode_series:
+            self.episode_series = self.episode_season.series
+
+        if not self.name:
+            self.name = '%s S%02dE%02d' % (self.episode_series.name, self.episode_season.index, self.index)
+
+
+class ViewHit(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    playback_position = models.IntegerField(blank=True, default=0)
+    runtime = models.IntegerField(blank=True, null=True)
+    hit_message = models.CharField(blank=True, null=True, max_length=100)
 
     def __str__(self):
-        return '%s S%02dE%02d' % (self.season.series.name, self.season.index, self.index)
+        if self.user and self.topic:
+            return '(%s) -> (%s) [%d]' % (self.user.username, self.topic.name, self.playback_position)
+        return str(self.playback_position)

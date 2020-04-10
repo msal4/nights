@@ -1,18 +1,25 @@
 from rest_framework import serializers
 
-from .models import Cast, Title, Season, Episode
+from .models import Title, Season, Episode, Topic
 
 
-class CastSerializer(serializers.ModelSerializer):
+class TopicSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cast
+        model = Topic
         fields = '__all__'
 
 
 class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Title
-        fields = '__all__'
+        fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated',
+                  'type', 'is_new', 'genres', 'cast', 'released_at', 'created_at', 'updated_at')
+
+
+class TitleListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Title
+        fields = ('id', 'name', 'type', 'is_new')
 
 
 class SeasonSerializer(serializers.ModelSerializer):
