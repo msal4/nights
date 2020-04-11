@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.contrib.auth.models import User
 from django.utils import timezone
 from rest_framework.reverse import reverse
@@ -15,8 +17,8 @@ class EpisodeModelTest(APITestCase):
     def setUp(self):
         self.series = Title(name="Test Series", type='s')
         self.series.save()
-        self.season = self.series.season_set.create(index=3)
-        self.episode = self.season.episode_set.create(index=2)
+        self.season = self.series.seasons.create(index=3)
+        self.episode = self.season.episodes.create(index=2)
 
     def test_episode_name_has_default_value(self):
         self.assertIsNotNone(self.episode.name)
@@ -170,3 +172,45 @@ class MyListTests(APITestCase):
         # Should not have a title
         response = self.client.get(self.list_url)
         self.assertNotContains(response, self.title.name)
+
+
+class ViewHitTests(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='test', password='test')
+        response = self.client.post(reverse('login'), data={'username': 'test', 'password': 'test'})
+        self.client.force_authenticate(self.user, self.user.auth_token)
+
+    def test_user_can_view_his_history(self):
+        response = self.client.get(reverse('history-list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_title_is_added_to_user_history(self):
+        runtime, position = 100, 10
+
+        t = Title.objects.create()
+        response = self.client.put(reverse('history-detail', args=(t.id,)),
+                                   data={'runtime': runtime, 'playback_position': position})
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        w = self.user.watched.get(pk=t.id)
+        self.assertEqual(t.id, w.id)
+        hit = self.user.viewhit_set.get(topic_id=t.id)
+        self.assertEqual(hit.runtime, runtime)
+        self.assertEqual(hit.playback_position, position)
+
+    def test_viewhit_update_viewhit_when_watched_more_than_once(self):
+        runtime, position = 100, 10
+
+        t = Title.objects.create()
+        for i in range(2):
+            response = self.client.put(reverse('history-detail', args=(t.id,)),
+                                       data={'runtime': runtime, 'playback_position': position})
+            self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        w = self.user.watched.get(pk=t.id)
+        print(self.user.watched)
+        self.assertEqual(t.id, w.id)
+        hit = self.user.viewhit_set.get(topic_id=t.id)
+        self.assertEqual(hit.runtime, runtime)
+        self.assertEqual(hit.playback_position, position)
+

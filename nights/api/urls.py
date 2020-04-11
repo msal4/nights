@@ -17,6 +17,8 @@ urlpatterns = [
     path('auth', include('rest_framework.urls')),
     path('my_list/', views.MyListView.as_view(), name='my_list-list'),
     path('my_list/<int:pk>/', views.MyListView.as_view(), name='my_list-detail'),
+    path('history/', views.WatchHistoryView.as_view(), name='history-list'),
+    path('history/<int:pk>/', views.WatchHistoryView.as_view(), name='history-detail'),
     path('upload/<str:directory>/<str:filename>/', FileUploadView.as_view(), name='fileupload'),
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),

@@ -1,6 +1,5 @@
-from pprint import pprint
-
 from django.core.files.storage import default_storage
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, filters, mixins, generics
 from rest_framework import viewsets, views, parsers, permissions
@@ -10,20 +9,20 @@ from rest_framework.response import Response
 from django.conf import settings
 
 from .mixins import GetSerializerClassMixin
-from .models import Title, Episode, Season, Genre, Cast
+from .models import Title, Episode, Season, Genre, Cast, ViewHit
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 
 
 class CastViewSet(viewsets.ModelViewSet):
     queryset = Cast.objects.all()
-    serializer_class = serializers.TopicSerializer
+    serializer_class = serializers.CastSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
-    serializer_class = serializers.TopicSerializer
+    serializer_class = serializers.GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
@@ -85,10 +84,10 @@ class MyListView(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.my_list.all()
+        return user.my_list.order_by('-mylist__date_added')
 
     def get(self, request, *args, **kwargs):
-        return super(MyListView, self).list(request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
 
     @staticmethod
     def post(request, *args, **kwargs):
@@ -101,10 +100,8 @@ class MyListView(mixins.ListModelMixin, generics.GenericAPIView):
 
         except KeyError as e:
             key = e.args[0]
-            return Response(
-                {'detail': '`%s` is required.' % key},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({'detail': '`%s` is required.' % key},
+                            status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def delete(request, pk, *args, **kwargs):
@@ -112,3 +109,46 @@ class MyListView(mixins.ListModelMixin, generics.GenericAPIView):
         request.user.my_list.remove(title)
         return Response({'detail': '%s is removed from your list.' % title.name},
                         status=status.HTTP_200_OK)
+
+
+class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
+    serializer_class = serializers.ViewHitSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.viewhit_set.order_by('-hit_date')
+
+    def get(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @staticmethod
+    def put(request, pk, *args, **kwargs):
+        try:
+            position: int = request.data['playback_position']
+            runtime: int = request.data['runtime']
+        except KeyError as e:
+            return Response({'detail': '%s is required.' % e.args[0]})
+
+        user = request.user
+
+        title = get_object_or_404(Title, pk=pk)
+
+        # Check if hit already exists
+        try:
+            hit = user.viewhit_set.get(topic_id=title.id)
+            # Update the hit
+            if hit.runtime != runtime:
+                hit.runtime = runtime
+            if hit.playback_position != position:
+                hit.playback_position = position
+
+            # Update date for ordering titles by their watch date
+            hit.hit_date = timezone.now()
+            hit.save()
+
+        except ViewHit.DoesNotExist:
+            # Add view hit
+            user.viewhit_set.create(topic=title, playback_position=position, runtime=runtime)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
