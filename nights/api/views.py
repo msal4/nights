@@ -1,17 +1,44 @@
 from django.core.files.storage import default_storage
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
+from django.conf import settings
 from rest_framework import status, filters, mixins, generics
 from rest_framework import viewsets, views, parsers, permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from django.conf import settings
-
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit
+from .paginators import HomeViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
+
+
+class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
+    serializer_class = serializers.HomeGenreSerializer
+    pagination_class = HomeViewPagination
+    filter_backends = (
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    )
+    filterset_fields = ('type',)
+    ordering_fields = ('name', 'type', 'created_at')
+    ordering = ('-created_at',)
+
+    def get_queryset(self):
+        return Genre.objects.order_by('-name')
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            for genre in page:
+                genre.title_list = self.filter_queryset(genre.titles.all())[:10]
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CastViewSet(viewsets.ModelViewSet):
@@ -55,6 +82,20 @@ class EpisodeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EpisodeSerializer
     permission_classes = [IsAdminOrReadOnly]
 
+    def create(self, request, *args, **kwargs):
+        try:
+            season_id = request.data['episode_season']
+            # Update series date so that `is_new` returns `true`
+            season = Season.objects.get(pk=season_id)
+            season.series.updated_at = timezone.now()
+            season.series.save()
+        except Season.DoesNotExist:
+            return Response({'detail': 'Season not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except (KeyError, ValueError):
+            pass
+
+        return super().create(request, *args, **kwargs)
+
 
 class FileUploadView(views.APIView):
     parser_classes = [parsers.FileUploadParser]
@@ -65,8 +106,7 @@ class FileUploadView(views.APIView):
         file_obj = request.data['file']
 
         path = '%s/%s/%s' % (settings.MEDIA_ROOT, directory, filename)
-        # Overwrite file if it exists
-        # pragma: not covered
+        # Overwrite the file if it already exists
         if default_storage.exists(path):
             default_storage.delete(path)
         default_storage.save(path, file_obj.file)
@@ -125,8 +165,8 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
     @staticmethod
     def put(request, pk, *args, **kwargs):
         try:
-            position: int = request.data['playback_position']
-            runtime: int = request.data['runtime']
+            position = int(float(request.data['playback_position']))
+            runtime = int(float(request.data['runtime']))
         except KeyError as e:
             return Response({'detail': '%s is required.' % e.args[0]})
 
@@ -134,8 +174,8 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
 
         title = get_object_or_404(Title, pk=pk)
 
-        # Check if hit already exists
         try:
+            # Check if hit already exists
             hit = user.viewhit_set.get(topic_id=title.id)
             # Update the hit
             if hit.runtime != runtime:
@@ -143,12 +183,12 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
             if hit.playback_position != position:
                 hit.playback_position = position
 
-            # Update date for ordering titles by their watch date
+            # Update `hit_date` for ordering titles
             hit.hit_date = timezone.now()
             hit.save()
 
         except ViewHit.DoesNotExist:
-            # Add view hit
+            # Otherwise add a new hit
             user.viewhit_set.create(topic=title, playback_position=position, runtime=runtime)
 
         return Response(status=status.HTTP_204_NO_CONTENT)

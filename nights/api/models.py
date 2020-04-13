@@ -5,7 +5,8 @@ from polymorphic.models import PolymorphicModel
 
 
 class Topic(PolymorphicModel):
-    views = models.ManyToManyField(User, blank=True, related_name='watched', through='ViewHit', through_fields=('topic', 'user'))
+    views = models.ManyToManyField(User, blank=True, related_name='watched', through='ViewHit',
+                                   through_fields=('topic', 'user'))
 
     name = models.CharField(max_length=200, blank=True)
     released_at = models.DateTimeField(auto_now_add=True, blank=True)
@@ -33,9 +34,14 @@ class Cast(Topic):
     pass
 
 
+class Language(Topic):
+    pass
+
+
 class Title(Topic):
-    genres = models.ManyToManyField(Genre, blank=True)
-    cast = models.ManyToManyField(Cast, blank=True)
+    genres = models.ManyToManyField(Genre, related_name='titles', blank=True)
+    cast = models.ManyToManyField(Cast, related_name='titles', blank=True)
+    languages = models.ManyToManyField(Language, blank=True, related_name='titles')
     users = models.ManyToManyField(User, blank=True, related_name='my_list',
                                    through='MyList', through_fields=('title', 'user'))
 

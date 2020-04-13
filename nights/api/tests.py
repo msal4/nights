@@ -1,10 +1,8 @@
-from pprint import pprint
-
 from django.contrib.auth.models import User
 from django.utils import timezone
 from rest_framework.reverse import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient, APIRequestFactory
+from rest_framework.test import APITestCase, APIClient
 
 from api.models import Title
 
@@ -31,7 +29,7 @@ class EpisodeModelTest(APITestCase):
 
 
 class CommonModelTest(APITestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         self.title = Title()
         self.title.save()
 
@@ -208,9 +206,7 @@ class ViewHitTests(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         w = self.user.watched.get(pk=t.id)
-        print(self.user.watched)
         self.assertEqual(t.id, w.id)
         hit = self.user.viewhit_set.get(topic_id=t.id)
         self.assertEqual(hit.runtime, runtime)
         self.assertEqual(hit.playback_position, position)
-
