@@ -100,6 +100,7 @@ class ViewHit(models.Model):
     season = models.ForeignKey(Season, blank=True, null=True, related_name='viewhits', on_delete=models.CASCADE)
     episode = models.ForeignKey(Episode, blank=True, null=True, related_name='viewhits', on_delete=models.CASCADE)
 
+    type = models.CharField(max_length=10, blank=True, default='title')
     playback_position = models.IntegerField(blank=True, default=0)
     runtime = models.IntegerField(blank=True, null=True)
     hit_message = models.CharField(blank=True, null=True, max_length=100)

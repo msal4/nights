@@ -173,40 +173,61 @@ class MyListTests(APITestCase):
 
 
 class ViewHitTests(APITestCase):
+    runtime, position = 100, 10
+
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(username='test', password='test')
-        response = self.client.post(reverse('login'), data={'username': 'test', 'password': 'test'})
+        self.client.post(reverse('login'), data={'username': 'test', 'password': 'test'})
         self.client.force_authenticate(self.user, self.user.auth_token)
+
+    def _watch_title(self, title):
+        return self.client.put(reverse('history-detail', args=(title.id,)),
+                               data={'runtime': self.runtime, 'playback_position': self.position})
 
     def test_user_can_view_his_history(self):
         response = self.client.get(reverse('history-list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_title_is_added_to_user_history(self):
-        runtime, position = 100, 10
-
         t = Title.objects.create()
-        response = self.client.put(reverse('history-detail', args=(t.id,)),
-                                   data={'runtime': runtime, 'playback_position': position})
+        response = self._watch_title(t)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         w = self.user.watched.get(pk=t.id)
         self.assertEqual(t.id, w.id)
         hit = self.user.viewhit_set.get(topic_id=t.id)
-        self.assertEqual(hit.runtime, runtime)
-        self.assertEqual(hit.playback_position, position)
+        self.assertEqual(hit.runtime, self.runtime)
+        self.assertEqual(hit.playback_position, self.position)
 
     def test_viewhit_update_viewhit_when_watched_more_than_once(self):
-        runtime, position = 100, 10
-
         t = Title.objects.create()
         for i in range(2):
             response = self.client.put(reverse('history-detail', args=(t.id,)),
-                                       data={'runtime': runtime, 'playback_position': position})
+                                       data={'runtime': self.runtime, 'playback_position': self.position})
             self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         w = self.user.watched.get(pk=t.id)
         self.assertEqual(t.id, w.id)
         hit = self.user.viewhit_set.get(topic_id=t.id)
-        self.assertEqual(hit.runtime, runtime)
-        self.assertEqual(hit.playback_position, position)
+        self.assertEqual(hit.runtime, self.runtime)
+        self.assertEqual(hit.playback_position, self.position)
+
+
+class HomeViewTests(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def _authenticate(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.client.post(reverse('login'), data={'username': 'test', 'password': 'test'})
+        self.client.force_authenticate(self.user, self.user.auth_token)
+
+    def test_home_returns_data_for_anonymous_user(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_home_returns_data_for_authenticated_user(self):
+        self._authenticate()
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, 'rows')

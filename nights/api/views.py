@@ -1,4 +1,5 @@
 from django.core.files.storage import default_storage
+from django.db.models import Q, Count
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
@@ -21,24 +22,65 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         filters.OrderingFilter,
         DjangoFilterBackend
     )
-    filterset_fields = ('type',)
+    filterset_fields = ('type', 'rated')
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
+
+    @staticmethod
+    def _serialize(obj, serializer=None, *args, **kwargs):
+        serializer = serializer or serializers.TitleListSerializer
+        return serializer(obj, *args, **kwargs).data
+
+    @staticmethod
+    def _serialize_history(hits):
+        return serializers.HistorySerializer(hits, many=True, read_only=True).data
+
+    @staticmethod
+    def _get_history(hits):
+        return hits.filter(type='title').order_by('-hit_date')[:5]
+
+    def _get_recommended(self, hit, titles):
+        title = titles.filter(genres__in=hit.topic.genres.all())[0]
+        return self._serialize(title, read_only=True)
+
+    def _get_featured(self, titles):
+        # Featured titles
+        two_days_ago = timezone.now() - timezone.timedelta(2)
+        trending = Count('hits', filter=Q(hits__hit_date__gt=two_days_ago))
+        featured = titles.annotate(trending=trending).order_by('-trending')[:4]
+        return self._serialize(featured, many=True, read_only=True)
+
+    def _get_recently_added(self, titles):
+        recent = titles.order_by('-updated_at')[:10]
+        return self._serialize(recent, many=True, read_only=True)
 
     def get_queryset(self):
         return Genre.objects.order_by('-name')
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            for genre in page:
-                genre.title_list = self.filter_queryset(genre.titles.all())[:10]
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        titles = self.filter_queryset(Title.objects.all())
+        data = {
+            'featured': self._get_featured(titles),
+            'recently_added': self._get_recently_added(titles)
+        }
 
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        # Recently watched
+        if request.user and not request.user.is_anonymous:
+            recently_watched = self._get_history(request.user.viewhit_set)
+            if len(recently_watched):
+                data['recently_watched'] = self._serialize_history(recently_watched)
+                data['recommended'] = self._get_recommended(recently_watched[0], titles)
+
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset) or queryset
+
+        # Genre rows with titles
+        for genre in page:
+            genre.title_list = self.filter_queryset(genre.titles.all())[:10]
+
+        data['rows'] = self.get_serializer(page, many=True).data
+
+        return self.get_paginated_response(data)
 
 
 class CastViewSet(viewsets.ModelViewSet):

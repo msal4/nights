@@ -2,15 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6e42863-a63e-4e4e-924d-1f75d3f6a8c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/api/paginators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/factories.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/helpers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/../Pipfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Pipfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../Pipfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.coverage" beforeDir="false" afterPath="$PROJECT_DIR$/.coverage" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/htmlcov/api_models_py.html" beforeDir="false" afterPath="$PROJECT_DIR$/htmlcov/api_models_py.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/htmlcov/api_views_py.html" beforeDir="false" afterPath="$PROJECT_DIR$/htmlcov/api_views_py.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/htmlcov/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/htmlcov/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/htmlcov/status.json" beforeDir="false" afterPath="$PROJECT_DIR$/htmlcov/status.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +177,7 @@
       <workItem from="1586665430177" duration="10803000" />
       <workItem from="1586692902093" duration="980000" />
       <workItem from="1586699447429" duration="576000" />
-      <workItem from="1586706261532" duration="13719000" />
+      <workItem from="1586706261532" duration="28338000" />
     </task>
     <servers />
   </component>
@@ -228,10 +234,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="97" y="2" key="new project wizard/0.0.1440.900@0.0.1440.900" timestamp="1586618529094" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1586792901040">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1586858932474">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1586792901040" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1586858932474" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/41.23.1399.877@41.23.1399.877" timestamp="1586495466742" />
   </component>
 </project>
