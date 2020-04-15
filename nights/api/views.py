@@ -59,10 +59,19 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         titles = self.filter_queryset(Title.objects.all())
-        data = {
-            'featured': self._get_featured(titles),
-            'recently_added': self._get_recently_added(titles)
-        }
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset) or queryset
+        # Genre rows with titles
+        for genre in page:
+            genre.title_list = self.filter_queryset(genre.titles.all())[:10]
+
+        data = {'rows': self.get_serializer(page, many=True).data}
+
+        if 'just_rows' in request.query_params:
+            return self.get_paginated_response(data)
+
+        data['featured'] = self._get_featured(titles)
+        data['recently_added'] = self._get_recently_added(titles)
 
         # Recently watched
         if request.user and not request.user.is_anonymous:
@@ -70,15 +79,6 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
             if len(recently_watched):
                 data['recently_watched'] = self._serialize_history(recently_watched)
                 data['recommended'] = self._get_recommended(recently_watched[0], titles)
-
-        queryset = self.get_queryset()
-        page = self.paginate_queryset(queryset) or queryset
-
-        # Genre rows with titles
-        for genre in page:
-            genre.title_list = self.filter_queryset(genre.titles.all())[:10]
-
-        data['rows'] = self.get_serializer(page, many=True).data
 
         return self.get_paginated_response(data)
 

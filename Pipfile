@@ -10,6 +10,12 @@ django = "*"
 djangorestframework = "*"
 psycopg2 = "*"
 coverage = "*"
+django-polymorphic = "*"
+django-filter = "*"
+djoser = "*"
+django-rest-polymorphic = "*"
+factory-boy = "*"
+faker = "*"
 
 [requires]
 python_version = "3.7"
