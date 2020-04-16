@@ -1,9 +1,19 @@
-import * as React from 'react'
+import React, { useEffect } from "react"
 
-export const App = () => (
-    <>
-        <h2 className='text-4xl font-bold text-center'>Hallo, Welt!</h2>
-        <h2 className='text-center button hover:bg-blue-200 rounded mx-10 cursor-pointer'>Hallo, Welt!</h2>
-    </>
-);
+import './App.css'
 
+import Title from "./Title"
+
+export const AppContext = React.createContext({
+  authenticated: true,
+  lang: "en",
+  theme: "dark",
+})
+
+export const App = () => {
+  return (
+    <div className="text-white flex items-center justify-center h-screen w-screen">
+      <Title />
+    </div>
+  )
+}

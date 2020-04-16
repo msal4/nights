@@ -1,0 +1,1 @@
+{"version":3,"sources":["Title.css"],"names":[],"mappings":"AAAA;EACE,eAAe;AACjB","file":"index.css","sourceRoot":"../../src","sourcesContent":[".red-bag {\n  background: red;\n}\n"]}
