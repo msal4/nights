@@ -1,9 +1,9 @@
 {
   "name": "frontend",
   "scripts": {
-    "build-css": "postcss css/tailwind.css -o static/frontend/public/tailwind.css",
-    "dev": "parcel watch ./src/index.tsx --out-dir ./static/frontend/ --public-url /static/frontend/public",
-    "prod": "parcel build ./src/index.tsx --out-dir ./static/frontend/ --public-url /static/frontend/public",
+    "build-css": "postcss css/tailwind.css -o static/frontend/css/tailwind.css",
+    "dev": "parcel watch ./src/index.tsx --out-dir ./static/frontend/public --public-url /static/frontend/public",
+    "prod": "parcel build ./src/index.tsx --out-dir ./static/frontend/public --public-url /static/frontend/public",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -33,6 +33,7 @@
     "jest": "^25.3.0",
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^2.0.0",
+    "sass": "^1.26.3",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3"
   }

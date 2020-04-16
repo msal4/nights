@@ -1,6 +1,53 @@
-._red-bag_b0185 {
-  background: red;
+.h-gradient {
+  background: linear-gradient(transparent, black);
 }
 
+.card-container {
+  transition: all 500ms;
+}
 
-/*# sourceMappingURL=/static/frontend/index.css.map */
+.card-container .transition-500 {
+  transition: all 500ms;
+}
+
+.card-container .transition-200 {
+  transition: all 200ms;
+}
+
+.card-container .card-container-reveal {
+  transition: all 500ms;
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.card-container .card-container-slide-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.card-container:hover {
+  transform: scale(1.1);
+}
+
+.card-container:hover .card-container-reveal {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.card-container:hover .card-container-slide-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+:lang(en) {
+  font-family: "Almarai", sans-serif;
+}
+
+body {
+  background-color: black;
+}
+
+.text-xss {
+  font-size: 0.6rem;
+}
+
+/*# sourceMappingURL=/static/frontend/public/index.css.map */

@@ -11,12 +11,11 @@ router.register(r'genres', views.GenreViewSet)
 router.register(r'titles', views.TitleViewSet)
 router.register(r'seasons', views.SeasonViewSet)
 router.register(r'episodes', views.EpisodeViewSet)
+router.register(r'my_list', views.MyListViewSet, basename='MyList')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('auth', include('rest_framework.urls')),
-    path('my_list/', views.MyListView.as_view(), name='my_list-list'),
-    path('my_list/<int:pk>/', views.MyListView.as_view(), name='my_list-detail'),
     path('history/', views.WatchHistoryView.as_view(), name='history-list'),
     path('history/<int:pk>/', views.WatchHistoryView.as_view(), name='history-detail'),
     path('home/', views.HomeView.as_view(), name='home'),

@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.core.files.storage import default_storage
 from django.db.models import Q, Count
 from django.utils import timezone
@@ -77,8 +79,10 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         if request.user and not request.user.is_anonymous:
             recently_watched = self._get_history(request.user.viewhit_set)
             if len(recently_watched):
-                data['recently_watched'] = self._serialize_history(recently_watched)
-                data['recommended'] = self._get_recommended(recently_watched[0], titles)
+                data['recently_watched'] = self._serialize_history(
+                    recently_watched)
+                data['recommended'] = self._get_recommended(
+                    recently_watched[0], titles)
 
         return self.get_paginated_response(data)
 
@@ -160,16 +164,12 @@ class FileUploadView(views.APIView):
         )
 
 
-class MyListView(mixins.ListModelMixin, generics.GenericAPIView):
+class MyListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.TitleListSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        return user.my_list.order_by('-mylist__date_added')
-
-    def get(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+        return self.request.user.my_list.order_by('-mylist__date_added')
 
     @staticmethod
     def post(request, *args, **kwargs):
@@ -231,6 +231,7 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
 
         except ViewHit.DoesNotExist:
             # Otherwise add a new hit
-            user.viewhit_set.create(topic=title, playback_position=position, runtime=runtime)
+            user.viewhit_set.create(
+                topic=title, playback_position=position, runtime=runtime)
 
         return Response(status=status.HTTP_204_NO_CONTENT)

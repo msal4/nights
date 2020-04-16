@@ -1,0 +1,41 @@
+.h-gradient {
+  background: linear-gradient(transparent, black);
+}
+
+
+.card-container {
+  transition: all 500ms;
+
+  .transition-500 {
+    transition: all 500ms;
+  }
+
+  .transition-200 {
+    transition: all 200ms;
+  }
+
+  .card-container-reveal {
+    transition: all 500ms;
+    opacity: 0;
+    transform: scale(.9);
+  }
+
+  .card-container-slide-reveal {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  &:hover {
+    transform: scale(1.1);
+
+    .card-container-reveal {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .card-container-slide-reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
