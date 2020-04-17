@@ -1,9 +1,19 @@
-.h-gradient {
+:lang(en) {
+  font-family: "Almarai", sans-serif;
+}
+
+.text-xss {
+  font-size: 0.6rem;
+}
+.v-gradient {
   background: linear-gradient(transparent, black);
 }
 
 .card-container {
   transition: all 500ms;
+  min-width: 10.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .card-container .transition-500 {
@@ -38,16 +48,9 @@
   opacity: 1;
   transform: translateY(0);
 }
-:lang(en) {
-  font-family: "Almarai", sans-serif;
-}
-
-body {
-  background-color: black;
-}
-
-.text-xss {
-  font-size: 0.6rem;
+.title {
+  position: relative;
+  top: 1.8rem;
 }
 
 /*# sourceMappingURL=/static/frontend/public/index.css.map */
