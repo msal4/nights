@@ -1,45 +1,50 @@
-import i18n from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
+import i18n from "i18next"
+import LanguageDetector from "i18next-browser-languagedetector"
 
-i18n.use(LanguageDetector).init({
-  resources: {
-    en: {
-      translations: {
-        home: 'Home',
-        movies: 'Movies',
-        series: 'Series',
-        kids: 'Kids',
-        play: 'Play',
-        myList: 'My List',
-        info: 'Info',
-        continueWatching: 'Continue Watching',
+i18n
+  .use(LanguageDetector)
+  .init({
+    resources: {
+      en: {
+        translations: {
+          home: "Home",
+          movies: "Movies",
+          series: "Series",
+          kids: "Kids",
+          play: "Play",
+          myList: "My List",
+          info: "Info",
+          continueWatching: "Continue Watching",
+          signIn: "Sign in",
+        },
+      },
+      ar: {
+        translations: {
+          home: "الصفحة الرئيسية",
+          movies: "الافلام",
+          series: "المسلسلات",
+          kids: "الاطفال",
+          play: "تشغيل",
+          myList: "قائمتي",
+          info: "معلومات",
+          continueWatching: "واصل المشاهدة",
+          signIn: "تسجيل الدخول",
+        },
       },
     },
-    ar: {
-      translations: {
-        home: 'الصفحة الرئيسية',
-        movies: 'الافلام',
-        series: 'المسلسلات',
-        kids: 'الاطفال',
-        play: 'تشغيل',
-        myList: 'قائمتي',
-        info: 'معلومات',
-        continueWatching: 'واصل المشاهدة',
-      },
+    fallbackLng: "en",
+    debug: true,
+    ns: ["translations"],
+    defaultNS: "translations",
+    keySeparator: false,
+    interpolation: {
+      escapeValue: false,
+      formatSeparator: ",",
     },
-  },
-  fallbackLng: 'en',
-  debug: true,
-  ns: ['translations'],
-  defaultNS: 'translations',
-  keySeparator: false,
-  interpolation: {
-    escapeValue: false,
-    formatSeparator: ',',
-  },
-  react: {
-    wait: true,
-  },
-}).then(() => console.log('Translations loaded.'))
+    react: {
+      wait: true,
+    },
+  })
+  .then(() => console.log("Translations loaded."))
 
 export default i18n

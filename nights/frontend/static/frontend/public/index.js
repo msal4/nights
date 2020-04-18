@@ -34350,7 +34350,902 @@ exports.default = function () {
     className: "flex overflow-x-hidden py-4"
   }, comps));
 };
-},{"react":"../node_modules/react/index.js","~components/Title":"components/Title.tsx","../styles/TitleRow.css":"styles/TitleRow.css"}],"pages/HomePage.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~components/Title":"components/Title.tsx","../styles/TitleRow.css":"styles/TitleRow.css"}],"api/mock/home.json":[function(require,module,exports) {
+module.exports = {
+  "count": 27,
+  "next": "http://localhost:8000/api/home/?page=2",
+  "previous": null,
+  "results": {
+    "rows": [{
+      "id": 356972,
+      "name": "western",
+      "title_list": [{
+        "id": 372043,
+        "name": "Wynonna Earp",
+        "type": "s",
+        "is_new": true,
+        "rated": "G",
+        "rating": null,
+        "genres": [{
+          "id": 356960,
+          "name": "action"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357559,
+        "name": "The Warrant",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.0,
+        "genres": [{
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 371823,
+        "name": "Deputy",
+        "type": "s",
+        "is_new": true,
+        "rated": "G",
+        "rating": null,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356955,
+          "name": "crime"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357461,
+        "name": "Hell on the Border",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 5.8,
+        "genres": [{
+          "id": 356963,
+          "name": "adventure"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358843,
+        "name": "The Shootist",
+        "type": "m",
+        "is_new": true,
+        "rated": "PG",
+        "rating": 7.7,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356962,
+          "name": "romance"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358837,
+        "name": "River of No Return",
+        "type": "m",
+        "is_new": true,
+        "rated": "PG-13",
+        "rating": 6.6,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }, {
+          "id": 356962,
+          "name": "romance"
+        }, {
+          "id": 356963,
+          "name": "adventure"
+        }, {
+          "id": 356968,
+          "name": "musical"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358835,
+        "name": "Bacurau",
+        "type": "m",
+        "is_new": true,
+        "rated": "PG-13",
+        "rating": 7.9,
+        "genres": [{
+          "id": 356956,
+          "name": "thriller"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }, {
+          "id": 356961,
+          "name": "mystery"
+        }, {
+          "id": 356963,
+          "name": "adventure"
+        }, {
+          "id": 356969,
+          "name": "sci-fi"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358986,
+        "name": "Sonora, the Devil's Highway",
+        "type": "m",
+        "is_new": true,
+        "rated": "PG-13",
+        "rating": 6.2,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358932,
+        "name": "Eminence Hill",
+        "type": "m",
+        "is_new": true,
+        "rated": "R",
+        "rating": 4.0,
+        "genres": [{
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358918,
+        "name": "Badland",
+        "type": "m",
+        "is_new": true,
+        "rated": "PG-13",
+        "rating": 6.7,
+        "genres": [{
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }]
+    }, {
+      "id": 356965,
+      "name": "war",
+      "title_list": [{
+        "id": 357727,
+        "name": "The Platform",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 7.0,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }, {
+          "id": 356958,
+          "name": "horror"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }, {
+          "id": 356969,
+          "name": "sci-fi"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357550,
+        "name": "Shoulder Arms",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.9,
+        "genres": [{
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357630,
+        "name": "The Lost Strait",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 8.6,
+        "genres": [{
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357637,
+        "name": "The Endless Trench",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 7.2,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357953,
+        "name": "Game of Thrones: Conquest & Rebellion",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 8.1,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }, {
+          "id": 356959,
+          "name": "fantasy"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357931,
+        "name": "Panipat",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 8.3,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }, {
+          "id": 356964,
+          "name": "history"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358009,
+        "name": "Towards The River Glorious",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 0.0,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357800,
+        "name": "Waiting for Anya",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 0.0,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357802,
+        "name": "Ay, Carmela!",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.8,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357900,
+        "name": "Sisters in Arms",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 7.9,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }]
+    }, {
+      "id": 356952,
+      "name": "tv",
+      "title_list": [{
+        "id": 357695,
+        "name": "Capsized: Blood in the Water",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 2.4,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357692,
+        "name": "No Good Deed",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.0,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357762,
+        "name": "Toy Story of Terror!",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 7.2,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }, {
+          "id": 356958,
+          "name": "horror"
+        }, {
+          "id": 356959,
+          "name": "fantasy"
+        }, {
+          "id": 356963,
+          "name": "adventure"
+        }, {
+          "id": 356970,
+          "name": "family"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357771,
+        "name": "Ice Age: The Great Egg-Scapade",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.3,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }, {
+          "id": 356963,
+          "name": "adventure"
+        }, {
+          "id": 356970,
+          "name": "family"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357772,
+        "name": "Ice Age: A Mammoth Christmas",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.2,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }, {
+          "id": 356970,
+          "name": "family"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357629,
+        "name": "Killer in Suburbia",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.3,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357622,
+        "name": "Island of Shadows",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 0.0,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357953,
+        "name": "Game of Thrones: Conquest & Rebellion",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 8.1,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }, {
+          "id": 356959,
+          "name": "fantasy"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 358005,
+        "name": "Rocko's Modern Life: Static Cling",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.5,
+        "genres": [{
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }, {
+        "id": 357892,
+        "name": "Secrets in a Small Town",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.2,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356952,
+          "name": "tv"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      }]
+    }],
+    "featured": [{
+      "id": 357034,
+      "name": "Beasts Clawing at Straws",
+      "type": "m",
+      "is_new": true,
+      "rated": "G",
+      "rating": 7.0,
+      "genres": [{
+        "id": 356956,
+        "name": "thriller"
+      }, {
+        "id": 356961,
+        "name": "mystery"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 357035,
+      "name": "Doom: Annihilation",
+      "type": "m",
+      "is_new": true,
+      "rated": "G",
+      "rating": 4.5,
+      "genres": [{
+        "id": 356958,
+        "name": "horror"
+      }, {
+        "id": 356960,
+        "name": "action"
+      }, {
+        "id": 356961,
+        "name": "mystery"
+      }, {
+        "id": 356969,
+        "name": "sci-fi"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 357036,
+      "name": "State Like Sleep",
+      "type": "m",
+      "is_new": true,
+      "rated": "G",
+      "rating": 4.9,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 357033,
+      "name": "We Only Know So Much",
+      "type": "m",
+      "is_new": true,
+      "rated": "G",
+      "rating": 6.0,
+      "genres": [],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }],
+    "recently_added": [{
+      "id": 399043,
+      "name": "بث نكات",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356954,
+        "name": "comedy"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399044,
+      "name": "S'parta",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399045,
+      "name": "وتمضي الأيام",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }, {
+        "id": 356955,
+        "name": "crime"
+      }, {
+        "id": 356960,
+        "name": "action"
+      }, {
+        "id": 356962,
+        "name": "romance"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399048,
+      "name": "When Heroes Fly",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }, {
+        "id": 356960,
+        "name": "action"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399049,
+      "name": "Hymn of Death",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399050,
+      "name": "50 ألف",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399051,
+      "name": "Fluttering Warning",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356962,
+        "name": "romance"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399052,
+      "name": "A.D. The Bible Continues",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399053,
+      "name": "بره الدنيا",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 399041,
+      "name": "The Story of Us with Morgan Freeman",
+      "type": "s",
+      "is_new": true,
+      "rated": "G",
+      "rating": null,
+      "genres": [{
+        "id": 356967,
+        "name": "documentary"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }],
+    "recently_watched": [{
+      "id": 13,
+      "user": 4,
+      "topic": {
+        "id": 372183,
+        "name": "One Piece",
+        "type": "s",
+        "is_new": true,
+        "rated": "G",
+        "rating": null,
+        "genres": [{
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356957,
+          "name": "anime"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-14T12:47:27.209783+03:00"
+    }, {
+      "id": 12,
+      "user": 4,
+      "topic": {
+        "id": 357550,
+        "name": "Shoulder Arms",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 6.9,
+        "genres": [{
+          "id": 356954,
+          "name": "comedy"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-14T09:22:09.731768+03:00"
+    }, {
+      "id": 11,
+      "user": 4,
+      "topic": {
+        "id": 398474,
+        "name": "Broken Trail",
+        "type": "s",
+        "is_new": true,
+        "rated": "G",
+        "rating": null,
+        "genres": [{
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-14T09:21:27.768669+03:00"
+    }, {
+      "id": 10,
+      "user": 4,
+      "topic": {
+        "id": 357931,
+        "name": "Panipat",
+        "type": "m",
+        "is_new": true,
+        "rated": "G",
+        "rating": 8.3,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }, {
+          "id": 356964,
+          "name": "history"
+        }, {
+          "id": 356965,
+          "name": "war"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-14T09:18:03.609838+03:00"
+    }, {
+      "id": 7,
+      "user": 4,
+      "topic": {
+        "id": 371504,
+        "name": "Lonesome Dove",
+        "type": "s",
+        "is_new": true,
+        "rated": "G",
+        "rating": null,
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356963,
+          "name": "adventure"
+        }, {
+          "id": 356972,
+          "name": "western"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-14T08:43:03.567651+03:00"
+    }],
+    "recommended": {
+      "id": 357703,
+      "name": "Impractical Jokers: The Movie",
+      "type": "m",
+      "is_new": true,
+      "rated": "G",
+      "rating": 8.1,
+      "genres": [{
+        "id": 356954,
+        "name": "comedy"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }
+  }
+};
+},{}],"pages/HomePage.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -34367,10 +35262,13 @@ var react_1 = __importDefault(require("react"));
 
 var TitleRow_1 = __importDefault(require("~components/TitleRow"));
 
+var home_json_1 = __importDefault(require("~api/mock/home.json"));
+
 exports.default = function () {
+  console.log(home_json_1.default);
   return react_1.default.createElement("div", null, react_1.default.createElement(TitleRow_1.default, null), react_1.default.createElement(TitleRow_1.default, null), react_1.default.createElement(TitleRow_1.default, null), react_1.default.createElement(TitleRow_1.default, null), react_1.default.createElement(TitleRow_1.default, null));
 };
-},{"react":"../node_modules/react/index.js","~components/TitleRow":"components/TitleRow.tsx"}],"../node_modules/react-icons/io/index.esm.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~components/TitleRow":"components/TitleRow.tsx","~api/mock/home.json":"api/mock/home.json"}],"../node_modules/react-icons/io/index.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48149,18 +49047,18 @@ exports.default = function (props) {
       blurSearch = _a.blurSearch;
 
   return react_1.default.createElement("div", {
-    className: 'flex items-center rounded-full py-1 px-2 mt-2 md:mt-0 ' + (props.className || ''),
+    className: "flex items-center rounded-full py-1 px-2 mt-2 md:mt-0 " + (props.className || ""),
     style: {
-      boxShadow: !searchFocused ? '0 0 0 1px gray' : '0 0 0 1px white'
+      boxShadow: !searchFocused ? "0 0 0 1px gray" : "0 0 0 1px white"
     }
   }, react_1.default.createElement(io_1.IoIosSearch, {
     style: {
       minWidth: "1rem"
     },
     size: "1.5em",
-    color: searchFocused ? 'white' : 'gray'
+    color: searchFocused ? "white" : "gray"
   }), react_1.default.createElement("input", {
-    className: "bg-transparent text-sm w-full mx-2 font-thin",
+    className: "bg-transparent text-sm w-full mx-2 font-thin outline-none",
     type: "text",
     placeholder: "Search",
     onFocus: focusSearch,
@@ -48200,6 +49098,8 @@ require("../styles/Header.scss");
 
 var Search_1 = __importDefault(require("~components/Search"));
 
+var react_i18next_1 = require("react-i18next");
+
 var useMenuOpenedState = function useMenuOpenedState(value) {
   var _a = react_1.useState(value),
       menuOpened = _a[0],
@@ -48226,8 +49126,10 @@ exports.default = function () {
       openMenu = _a.openMenu,
       closeMenu = _a.closeMenu;
 
+  var path = react_router_dom_1.useRouteMatch().path;
+  var t = react_i18next_1.useTranslation().t;
   return react_1.default.createElement("nav", {
-    className: "py-4 md:flex md:justify-between"
+    className: "py-4 md:flex md:justify-between font-thin"
   }, react_1.default.createElement("div", {
     className: "flex items-center justify-between"
   }, react_1.default.createElement(react_router_dom_1.Link, {
@@ -48246,72 +49148,33 @@ exports.default = function () {
   })), react_1.default.createElement("div", {
     className: "mt-2 " + (menuOpened ? "block" : "hidden") + " md:block md:flex md:items-center md:mt-0 md:justify-between md:w-full"
   }, react_1.default.createElement("div", {
-    className: "flex justify-between opacity-50 md:ml-6 md:text-sm lg:text-base"
+    className: "flex justify-between text-gray-600 md:ml-6 md:text-sm lg:text-base"
   }, react_1.default.createElement(react_router_dom_1.Link, {
+    className: path === "/" && "font-bold text-white",
     to: "/"
-  }, "Home"), react_1.default.createElement(react_router_dom_1.Link, {
-    className: "md:ml-5",
+  }, t("home")), react_1.default.createElement(react_router_dom_1.Link, {
+    className: "md:ml-5 " + (path === "/movies" && "font-bold text-white"),
     to: "/movies"
-  }, "Movies"), react_1.default.createElement(react_router_dom_1.Link, {
-    className: "md:ml-5",
+  }, t("movies")), react_1.default.createElement(react_router_dom_1.Link, {
+    className: "md:ml-5 " + (path === "/series" && "font-bold text-white"),
     to: "/series"
-  }, "Series"), react_1.default.createElement(react_router_dom_1.Link, {
-    className: "md:ml-5",
+  }, t("series")), react_1.default.createElement(react_router_dom_1.Link, {
+    className: "md:ml-5 " + (path === "/series" && "font-bold text-white"),
     to: "/kids"
-  }, "Kids")), react_1.default.createElement("div", {
+  }, t("kids"))), react_1.default.createElement("div", {
     className: "md:flex"
   }, react_1.default.createElement(Search_1.default, {
-    className: "md:mx-2 w-56"
+    className: "md:mx-2 md:w-56"
   }), react_1.default.createElement("div", {
     className: "flex items-center justify-between mt-2 md:mt-0 md:ml-2"
   }, react_1.default.createElement(react_router_dom_1.Link, {
     className: "flex items-center md:mr-1 lg:mr-6 md:hidden lg:flex",
     to: "/my_list"
-  }, react_1.default.createElement(io_1.IoIosAdd, null), "My List"), react_1.default.createElement(react_router_dom_1.Link, {
+  }, react_1.default.createElement(io_1.IoIosAdd, null), t("myList")), react_1.default.createElement(react_router_dom_1.Link, {
     to: "/signin"
-  }, "Sign in")))));
+  }, t("signIn"))))));
 };
-},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Header.scss":"styles/Header.scss","~components/Search":"components/Search.tsx"}],"components/App.tsx":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var react_router_dom_1 = require("react-router-dom");
-
-var react_icons_1 = require("react-icons");
-
-require("../styles/App.scss");
-
-var TitlePage_1 = __importDefault(require("~pages/TitlePage"));
-
-var HomePage_1 = __importDefault(require("~pages/HomePage"));
-
-var Header_1 = __importDefault(require("~components/Header"));
-
-exports.App = function () {
-  return react_1.default.createElement("div", {
-    className: "mx-10 lg:mx-16"
-  }, react_1.default.createElement(react_icons_1.IconContext.Provider, {
-    value: {
-      size: "2em"
-    }
-  }, react_1.default.createElement(react_router_dom_1.BrowserRouter, null, react_1.default.createElement(Header_1.default, null), react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(react_router_dom_1.Route, {
-    path: "/title"
-  }, react_1.default.createElement(TitlePage_1.default, null)), react_1.default.createElement(react_router_dom_1.Route, {
-    path: "/"
-  }, react_1.default.createElement(HomePage_1.default, null))))));
-};
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons":"../node_modules/react-icons/lib/esm/index.js","../styles/App.scss":"styles/App.scss","~pages/TitlePage":"pages/TitlePage.tsx","~pages/HomePage":"pages/HomePage.tsx","~components/Header":"components/Header.tsx"}],"../node_modules/@babel/runtime/helpers/esm/typeof.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Header.scss":"styles/Header.scss","~components/Search":"components/Search.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"../node_modules/@babel/runtime/helpers/esm/typeof.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -51366,46 +52229,94 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
   resources: {
     en: {
       translations: {
-        home: 'Home',
-        movies: 'Movies',
-        series: 'Series',
-        kids: 'Kids',
-        play: 'Play',
-        myList: 'My List',
-        info: 'Info',
-        continueWatching: 'Continue Watching'
+        home: "Home",
+        movies: "Movies",
+        series: "Series",
+        kids: "Kids",
+        play: "Play",
+        myList: "My List",
+        info: "Info",
+        continueWatching: "Continue Watching",
+        signIn: "Sign in"
       }
     },
     ar: {
       translations: {
-        home: 'الصفحة الرئيسية',
-        movies: 'الافلام',
-        series: 'المسلسلات',
-        kids: 'الاطفال',
-        play: 'تشغيل',
-        myList: 'قائمتي',
-        info: 'معلومات',
-        continueWatching: 'واصل المشاهدة'
+        home: "الصفحة الرئيسية",
+        movies: "الافلام",
+        series: "المسلسلات",
+        kids: "الاطفال",
+        play: "تشغيل",
+        myList: "قائمتي",
+        info: "معلومات",
+        continueWatching: "واصل المشاهدة",
+        signIn: "تسجيل الدخول"
       }
     }
   },
-  fallbackLng: 'en',
+  fallbackLng: "en",
   debug: true,
-  ns: ['translations'],
-  defaultNS: 'translations',
+  ns: ["translations"],
+  defaultNS: "translations",
   keySeparator: false,
   interpolation: {
     escapeValue: false,
-    formatSeparator: ','
+    formatSeparator: ","
   },
   react: {
     wait: true
   }
 }).then(function () {
-  return console.log('Translations loaded.');
+  return console.log("Translations loaded.");
 });
 exports.default = i18next_1.default;
-},{"i18next":"../node_modules/i18next/dist/esm/i18next.js","i18next-browser-languagedetector":"../node_modules/i18next-browser-languagedetector/dist/esm/i18nextBrowserLanguageDetector.js"}],"index.tsx":[function(require,module,exports) {
+},{"i18next":"../node_modules/i18next/dist/esm/i18next.js","i18next-browser-languagedetector":"../node_modules/i18next-browser-languagedetector/dist/esm/i18nextBrowserLanguageDetector.js"}],"components/App.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var react_router_dom_1 = require("react-router-dom");
+
+var react_icons_1 = require("react-icons");
+
+require("../styles/App.scss");
+
+var TitlePage_1 = __importDefault(require("~pages/TitlePage"));
+
+var HomePage_1 = __importDefault(require("~pages/HomePage"));
+
+var Header_1 = __importDefault(require("~components/Header"));
+
+var i18n_1 = __importDefault(require("../../i18n"));
+
+var react_i18next_1 = require("react-i18next");
+
+exports.App = function () {
+  return react_1.default.createElement("div", {
+    className: "mx-10 my-5 lg:mx-16"
+  }, react_1.default.createElement(react_i18next_1.I18nextProvider, {
+    i18n: i18n_1.default
+  }, react_1.default.createElement(react_icons_1.IconContext.Provider, {
+    value: {
+      size: "2em"
+    }
+  }, react_1.default.createElement(react_router_dom_1.BrowserRouter, null, react_1.default.createElement(Header_1.default, null), react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(react_router_dom_1.Route, {
+    path: "/title"
+  }, react_1.default.createElement(TitlePage_1.default, null)), react_1.default.createElement(react_router_dom_1.Route, {
+    path: "/"
+  }, react_1.default.createElement(HomePage_1.default, null)))))));
+};
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons":"../node_modules/react-icons/lib/esm/index.js","../styles/App.scss":"styles/App.scss","~pages/TitlePage":"pages/TitlePage.tsx","~pages/HomePage":"pages/HomePage.tsx","~components/Header":"components/Header.tsx","../../i18n":"../i18n.ts","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"index.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -51430,7 +52341,7 @@ var i18n_1 = __importDefault(require("~../i18n"));
 
 react_dom_1.default.render(react_1.default.createElement(react_i18next_1.I18nextProvider, {
   i18n: i18n_1.default
-}, react_1.default.createElement(App_1.App, null)), document.getElementById('app'));
+}, react_1.default.createElement(App_1.App, null)), document.getElementById("app"));
 },{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~components/App":"components/App.tsx","~../i18n":"../i18n.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -51459,7 +52370,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50020" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54407" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

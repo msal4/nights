@@ -1,13 +1,13 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import {I18nextProvider} from 'react-i18next'
+import React from "react"
+import ReactDom from "react-dom"
+import { I18nextProvider } from "react-i18next"
 
-import {App} from '~components/App'
-import i18n from '~../i18n'
+import { App } from "~components/App"
+import i18n from "~../i18n"
 
 ReactDom.render(
   <I18nextProvider i18n={i18n}>
-    <App/>
+    <App />
   </I18nextProvider>,
-  document.getElementById('app')
+  document.getElementById("app")
 )
