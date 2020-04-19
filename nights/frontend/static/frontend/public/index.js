@@ -48637,7 +48637,12 @@ var IoMdWoman = function (props) {
 
 exports.IoMdWoman = IoMdWoman;
 IoMdWoman.displayName = "IoMdWoman";
-},{"../lib":"../node_modules/react-icons/lib/esm/index.js"}],"components/Button.tsx":[function(require,module,exports) {
+},{"../lib":"../node_modules/react-icons/lib/esm/index.js"}],"styles/Button.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Button.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -48654,34 +48659,66 @@ var react_1 = __importDefault(require("react"));
 
 var react_router_dom_1 = require("react-router-dom");
 
-var IconButton = function IconButton(_a) {
+require("../styles/Button.scss");
+
+exports.BaseButton = function (_a) {
   var to = _a.to,
       onClick = _a.onClick,
-      children = _a.children,
-      className = _a.className;
-  if (to && onClick) throw Error("Only one prop should be passed.");
-  var classes = "px-3 py-2 " + className;
+      className = _a.className,
+      children = _a.children;
+  if (to && onClick) throw Error("Only `to` or `onClick` should be passed.");
   return to ? react_1.default.createElement(react_router_dom_1.Link, {
-    className: "flex items-center px-5 text-sm font-semibold py-2 rounded-full",
-    style: {
-      boxShadow: "0 0 10px red",
-      background: "#EA1437"
-    },
+    className: className,
     to: to
   }, children) : react_1.default.createElement("button", {
-    className: classes,
+    className: className,
     onClick: onClick
   }, children);
 };
 
-exports.default = IconButton;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/Featured.tsx":[function(require,module,exports) {
+exports.InfoIconButton = function (_a) {
+  var to = _a.to,
+      onClick = _a.onClick,
+      children = _a.children,
+      icon = _a.icon,
+      className = _a.className;
+  return react_1.default.createElement(exports.BaseButton, {
+    className: "flex flex-col items-center text-xs text-gray-500 hover:text-white\n       " + className,
+    to: to,
+    onClick: onClick
+  }, icon, children);
+};
+
+var PrimaryButton = function PrimaryButton(_a) {
+  var to = _a.to,
+      onClick = _a.onClick,
+      children = _a.children,
+      className = _a.className;
+  return react_1.default.createElement(exports.BaseButton, {
+    to: to,
+    onClick: onClick,
+    className: "flex items-center px-5 text-sm font-semibold py-2 rounded-full button-container " + className
+  }, children);
+};
+
+exports.default = PrimaryButton;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Button.scss":"styles/Button.scss"}],"components/Featured.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
     "default": mod
   };
+};
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
 };
 
 Object.defineProperty(exports, "__esModule", {
@@ -48692,7 +48729,7 @@ var react_1 = __importDefault(require("react"));
 
 var io_1 = require("react-icons/io");
 
-var Button_1 = __importDefault(require("./Button"));
+var Button_1 = __importStar(require("./Button"));
 
 var react_i18next_1 = require("react-i18next");
 
@@ -48724,7 +48761,7 @@ var Featured = function Featured(_a) {
     }, react_1.default.createElement("h1", {
       className: "text-xl md:text-3xl font-bold leading-none"
     }, data[0].name), react_1.default.createElement("div", {
-      className: "text-sm text-gray-500"
+      className: "text-xs md:text-sm text-gray-500"
     }, react_1.default.createElement("p", null, data[0].genres.map(function (g) {
       return g.name.charAt(0).toUpperCase() + g.name.slice(1);
     }).join(" • ")), react_1.default.createElement("div", {
@@ -48736,15 +48773,28 @@ var Featured = function Featured(_a) {
     }, react_1.default.createElement(io_1.IoIosStar, {
       className: "text-blue-600",
       fontSize: ".55em"
-    }), data[0].rating), react_1.default.createElement("p", null, new Date(data[0].released_at).getFullYear())))), react_1.default.createElement("div", null, react_1.default.createElement(Button_1.default, {
+    }), data[0].rating), react_1.default.createElement("p", null, new Date(data[0].released_at).getFullYear())))), react_1.default.createElement("div", {
+      className: "flex items-center"
+    }, react_1.default.createElement(Button_1.default, {
+      className: "md:mr-4",
       to: "/series/play"
     }, react_1.default.createElement(io_1.IoIosPlay, {
       size: "1.5em"
-    }), t("play"))));
+    }), t("play")), react_1.default.createElement(Button_1.InfoIconButton, {
+      className: "hidden md:flex mr-4",
+      icon: react_1.default.createElement(io_1.IoIosAdd, {
+        className: "text-base"
+      })
+    }, t("myList")), react_1.default.createElement(Button_1.InfoIconButton, {
+      className: "hidden md:flex",
+      icon: react_1.default.createElement(io_1.IoIosInformationCircleOutline, {
+        className: "text-base"
+      })
+    }, t("info"))));
   };
 
   return react_1.default.createElement("div", {
-    className: "flex mt-4"
+    className: "flex mt-4 mb-5"
   }, react_1.default.createElement("div", {
     className: "relative h-64 md:h-auto flex-1 bg-cover bg-center rounded-lg md:mr-4",
     style: {
@@ -48767,7 +48817,1426 @@ var Featured = function Featured(_a) {
 };
 
 exports.default = Featured;
-},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","./Button":"components/Button.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"pages/HomePage.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","./Button":"components/Button.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"../node_modules/react-multi-carousel/lib/utils/clones.js":[function(require,module,exports) {
+"use strict";
+
+function getOriginalCounterPart(index, _a, childrenArr) {
+  var slidesToShow = _a.slidesToShow,
+      currentSlide = _a.currentSlide;
+  return childrenArr.length > 2 * slidesToShow ? index + 2 * slidesToShow : currentSlide >= childrenArr.length ? childrenArr.length + index : index;
+}
+
+function getOriginalIndexLookupTableByClones(slidesToShow, childrenArr) {
+  if (childrenArr.length > 2 * slidesToShow) {
+    for (var table = {}, firstBeginningOfClones = childrenArr.length - 2 * slidesToShow, firstEndOfClones = childrenArr.length - firstBeginningOfClones, firstCount = firstBeginningOfClones, i = 0; i < firstEndOfClones; i++) {
+      table[i] = firstCount, firstCount++;
+    }
+
+    var secondBeginningOfClones = childrenArr.length + firstEndOfClones,
+        secondEndOfClones = secondBeginningOfClones + childrenArr.slice(0, 2 * slidesToShow).length,
+        secondCount = 0;
+
+    for (i = secondBeginningOfClones; i <= secondEndOfClones; i++) {
+      table[i] = secondCount, secondCount++;
+    }
+
+    var originalEnd = secondBeginningOfClones,
+        originalCounter = 0;
+
+    for (i = firstEndOfClones; i < originalEnd; i++) {
+      table[i] = originalCounter, originalCounter++;
+    }
+
+    return table;
+  }
+
+  table = {};
+  var totalSlides = 3 * childrenArr.length,
+      count = 0;
+
+  for (i = 0; i < totalSlides; i++) {
+    table[i] = count, ++count === childrenArr.length && (count = 0);
+  }
+
+  return table;
+}
+
+function getClones(slidesToShow, childrenArr) {
+  return childrenArr.length < slidesToShow ? childrenArr : childrenArr.length > 2 * slidesToShow ? childrenArr.slice(childrenArr.length - 2 * slidesToShow, childrenArr.length).concat(childrenArr, childrenArr.slice(0, 2 * slidesToShow)) : childrenArr.concat(childrenArr, childrenArr);
+}
+
+function getInitialSlideInInfiniteMode(slidesToShow, childrenArr) {
+  return childrenArr.length > 2 * slidesToShow ? 2 * slidesToShow : childrenArr.length;
+}
+
+function checkClonesPosition(_a, childrenArr, props) {
+  var isReachingTheEnd,
+      currentSlide = _a.currentSlide,
+      slidesToShow = _a.slidesToShow,
+      itemWidth = _a.itemWidth,
+      totalItems = _a.totalItems,
+      nextSlide = 0,
+      nextPosition = 0,
+      isReachingTheStart = 0 === currentSlide,
+      originalFirstSlide = childrenArr.length - (childrenArr.length - 2 * slidesToShow);
+  return childrenArr.length < slidesToShow ? (nextPosition = nextSlide = 0, isReachingTheStart = isReachingTheEnd = !1) : childrenArr.length > 2 * slidesToShow ? ((isReachingTheEnd = currentSlide >= originalFirstSlide + childrenArr.length) && (nextPosition = -itemWidth * (nextSlide = currentSlide - childrenArr.length)), isReachingTheStart && (nextPosition = -itemWidth * (nextSlide = originalFirstSlide + (childrenArr.length - 2 * slidesToShow)))) : ((isReachingTheEnd = currentSlide >= 2 * childrenArr.length) && (nextPosition = -itemWidth * (nextSlide = currentSlide - childrenArr.length)), isReachingTheStart && (nextPosition = props.showDots ? -itemWidth * (nextSlide = childrenArr.length) : -itemWidth * (nextSlide = totalItems - 2 * slidesToShow))), {
+    isReachingTheEnd: isReachingTheEnd,
+    isReachingTheStart: isReachingTheStart,
+    nextSlide: nextSlide,
+    nextPosition: nextPosition
+  };
+}
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.getOriginalCounterPart = getOriginalCounterPart, exports.getOriginalIndexLookupTableByClones = getOriginalIndexLookupTableByClones, exports.getClones = getClones, exports.getInitialSlideInInfiniteMode = getInitialSlideInInfiniteMode, exports.checkClonesPosition = checkClonesPosition;
+},{}],"../node_modules/react-multi-carousel/lib/utils/elementWidth.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+var hasWarnAboutTypo = !1;
+
+function getPartialVisibilityGutter(responsive, partialVisible, serverSideDeviceType, clientSideDeviceType) {
+  var gutter = 0,
+      deviceType = clientSideDeviceType || serverSideDeviceType;
+  return partialVisible && deviceType && (!hasWarnAboutTypo && "production" !== "development" && responsive[deviceType].paritialVisibilityGutter && (hasWarnAboutTypo = !0, console.warn("You appear to be using paritialVisibilityGutter instead of partialVisibilityGutter which will be moved to partialVisibilityGutter in the future completely")), gutter = responsive[deviceType].partialVisibilityGutter || responsive[deviceType].paritialVisibilityGutter), gutter;
+}
+
+function getWidthFromDeviceType(deviceType, responsive) {
+  var itemWidth;
+  responsive[deviceType] && (itemWidth = (100 / responsive[deviceType].items).toFixed(1));
+  return itemWidth;
+}
+
+function getItemClientSideWidth(props, slidesToShow, containerWidth) {
+  return Math.round(containerWidth / (slidesToShow + (props.centerMode ? 1 : 0)));
+}
+
+exports.getPartialVisibilityGutter = getPartialVisibilityGutter, exports.getWidthFromDeviceType = getWidthFromDeviceType, exports.getItemClientSideWidth = getItemClientSideWidth;
+},{}],"../node_modules/react-multi-carousel/lib/utils/common.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var elementWidth_1 = require("./elementWidth");
+
+function notEnoughChildren(state) {
+  var slidesToShow = state.slidesToShow;
+  return state.totalItems < slidesToShow;
+}
+
+function getInitialState(state, props) {
+  var flexBisis,
+      domLoaded = state.domLoaded,
+      slidesToShow = state.slidesToShow,
+      containerWidth = state.containerWidth,
+      itemWidth = state.itemWidth,
+      deviceType = props.deviceType,
+      responsive = props.responsive,
+      ssr = props.ssr,
+      partialVisbile = props.partialVisbile,
+      partialVisible = props.partialVisible,
+      domFullyLoaded = Boolean(domLoaded && slidesToShow && containerWidth && itemWidth);
+  ssr && deviceType && !domFullyLoaded && (flexBisis = elementWidth_1.getWidthFromDeviceType(deviceType, responsive));
+  var shouldRenderOnSSR = Boolean(ssr && deviceType && !domFullyLoaded && flexBisis);
+  return {
+    shouldRenderOnSSR: shouldRenderOnSSR,
+    flexBisis: flexBisis,
+    domFullyLoaded: domFullyLoaded,
+    partialVisibilityGutter: elementWidth_1.getPartialVisibilityGutter(responsive, partialVisbile || partialVisible, deviceType, state.deviceType),
+    shouldRenderAtAll: shouldRenderOnSSR || domFullyLoaded
+  };
+}
+
+function getIfSlideIsVisbile(index, state) {
+  var currentSlide = state.currentSlide,
+      slidesToShow = state.slidesToShow;
+  return currentSlide <= index && index < currentSlide + slidesToShow;
+}
+
+function getTransformForCenterMode(state, props, transformPlaceHolder) {
+  var transform = transformPlaceHolder || state.transform;
+  return !props.infinite && 0 === state.currentSlide || notEnoughChildren(state) ? transform : transform + state.itemWidth / 2;
+}
+
+function isInLeftEnd(_a) {
+  return !(0 < _a.currentSlide);
+}
+
+function isInRightEnd(_a) {
+  var currentSlide = _a.currentSlide,
+      totalItems = _a.totalItems;
+  return !(currentSlide + _a.slidesToShow < totalItems);
+}
+
+function getTransformForPartialVsibile(state, partialVisibilityGutter, props, transformPlaceHolder) {
+  void 0 === partialVisibilityGutter && (partialVisibilityGutter = 0);
+  var currentSlide = state.currentSlide,
+      slidesToShow = state.slidesToShow,
+      isRightEndReach = isInRightEnd(state),
+      shouldRemoveRightGutter = !props.infinite && isRightEndReach,
+      baseTransform = transformPlaceHolder || state.transform;
+  if (notEnoughChildren(state)) return baseTransform;
+  var transform = baseTransform + currentSlide * partialVisibilityGutter;
+  return shouldRemoveRightGutter ? transform + (state.containerWidth - (state.itemWidth - partialVisibilityGutter) * slidesToShow) : transform;
+}
+
+function getTransform(state, props, transformPlaceHolder) {
+  var partialVisbile = props.partialVisbile,
+      partialVisible = props.partialVisible,
+      responsive = props.responsive,
+      deviceType = props.deviceType,
+      centerMode = props.centerMode,
+      transform = transformPlaceHolder || state.transform,
+      partialVisibilityGutter = elementWidth_1.getPartialVisibilityGutter(responsive, partialVisbile || partialVisible, deviceType, state.deviceType);
+  return partialVisible || partialVisbile ? getTransformForPartialVsibile(state, partialVisibilityGutter, props, transformPlaceHolder) : centerMode ? getTransformForCenterMode(state, props, transformPlaceHolder) : transform;
+}
+
+function getSlidesToSlide(state, props) {
+  var domLoaded = state.domLoaded,
+      slidesToShow = state.slidesToShow,
+      containerWidth = state.containerWidth,
+      itemWidth = state.itemWidth,
+      deviceType = props.deviceType,
+      responsive = props.responsive,
+      slidesToScroll = props.slidesToSlide || 1,
+      domFullyLoaded = Boolean(domLoaded && slidesToShow && containerWidth && itemWidth);
+  return props.ssr && props.deviceType && !domFullyLoaded && Object.keys(responsive).forEach(function (device) {
+    var slidesToSlide = responsive[device].slidesToSlide;
+    deviceType === device && slidesToSlide && (slidesToScroll = slidesToSlide);
+  }), domFullyLoaded && Object.keys(responsive).forEach(function (item) {
+    var _a = responsive[item],
+        breakpoint = _a.breakpoint,
+        slidesToSlide = _a.slidesToSlide,
+        max = breakpoint.max,
+        min = breakpoint.min;
+    slidesToSlide && window.innerWidth >= min && window.innerWidth <= max && (slidesToScroll = slidesToSlide);
+  }), slidesToScroll;
+}
+
+exports.notEnoughChildren = notEnoughChildren, exports.getInitialState = getInitialState, exports.getIfSlideIsVisbile = getIfSlideIsVisbile, exports.getTransformForCenterMode = getTransformForCenterMode, exports.isInLeftEnd = isInLeftEnd, exports.isInRightEnd = isInRightEnd, exports.getTransformForPartialVsibile = getTransformForPartialVsibile, exports.getTransform = getTransform, exports.getSlidesToSlide = getSlidesToSlide;
+},{"./elementWidth":"../node_modules/react-multi-carousel/lib/utils/elementWidth.js"}],"../node_modules/react-multi-carousel/lib/utils/throttle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var throttle = function throttle(func, limit, setIsInThrottle) {
+  var inThrottle;
+  return function () {
+    var args = arguments;
+    inThrottle || (func.apply(this, args), inThrottle = !0, "function" == typeof setIsInThrottle && setIsInThrottle(!0), setTimeout(function () {
+      inThrottle = !1, "function" == typeof setIsInThrottle && setIsInThrottle(!1);
+    }, limit));
+  };
+};
+
+exports.default = throttle;
+},{}],"../node_modules/react-multi-carousel/lib/utils/throwError.js":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function throwError(state, props) {
+  var partialVisbile = props.partialVisbile,
+      partialVisible = props.partialVisible,
+      centerMode = props.centerMode,
+      ssr = props.ssr,
+      responsive = props.responsive;
+  if ((partialVisbile || partialVisible) && centerMode) throw new Error("center mode can not be used at the same time with partialVisible");
+  if (!responsive) throw ssr ? new Error("ssr mode need to be used in conjunction with responsive prop") : new Error("Responsive prop is needed for deciding the amount of items to show on the screen");
+  if (responsive && "object" != _typeof(responsive)) throw new Error("responsive prop must be an object");
+}
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.default = throwError;
+},{}],"../node_modules/react-multi-carousel/lib/utils/next.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var common_1 = require("./common");
+
+function populateNextSlides(state, props, slidesHavePassed) {
+  void 0 === slidesHavePassed && (slidesHavePassed = 0);
+  var nextSlides,
+      nextPosition,
+      slidesToShow = state.slidesToShow,
+      currentSlide = state.currentSlide,
+      itemWidth = state.itemWidth,
+      totalItems = state.totalItems,
+      slidesToSlide = common_1.getSlidesToSlide(state, props),
+      nextMaximumSlides = currentSlide + 1 + slidesHavePassed + slidesToShow + (0 < slidesHavePassed ? 0 : slidesToSlide);
+  return nextPosition = nextMaximumSlides <= totalItems ? -itemWidth * (nextSlides = currentSlide + slidesHavePassed + (0 < slidesHavePassed ? 0 : slidesToSlide)) : totalItems < nextMaximumSlides && currentSlide !== totalItems - slidesToShow ? -itemWidth * (nextSlides = totalItems - slidesToShow) : nextSlides = void 0, {
+    nextSlides: nextSlides,
+    nextPosition: nextPosition
+  };
+}
+
+exports.populateNextSlides = populateNextSlides;
+},{"./common":"../node_modules/react-multi-carousel/lib/utils/common.js"}],"../node_modules/react-multi-carousel/lib/utils/previous.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var React = require("react"),
+    common_1 = require("./common"),
+    common_2 = require("./common");
+
+function populatePreviousSlides(state, props, slidesHavePassed) {
+  void 0 === slidesHavePassed && (slidesHavePassed = 0);
+  var nextSlides,
+      nextPosition,
+      currentSlide = state.currentSlide,
+      itemWidth = state.itemWidth,
+      slidesToShow = state.slidesToShow,
+      children = props.children,
+      showDots = props.showDots,
+      infinite = props.infinite,
+      slidesToSlide = common_1.getSlidesToSlide(state, props),
+      nextMaximumSlides = currentSlide - slidesHavePassed - (0 < slidesHavePassed ? 0 : slidesToSlide),
+      additionalSlides = (React.Children.toArray(children).length - slidesToShow) % slidesToSlide;
+  return nextPosition = 0 <= nextMaximumSlides ? (nextSlides = nextMaximumSlides, showDots && !infinite && 0 < additionalSlides && common_2.isInRightEnd(state) && (nextSlides = currentSlide - additionalSlides), -itemWidth * nextSlides) : nextSlides = nextMaximumSlides < 0 && 0 !== currentSlide ? 0 : void 0, {
+    nextSlides: nextSlides,
+    nextPosition: nextPosition
+  };
+}
+
+exports.populatePreviousSlides = populatePreviousSlides;
+},{"react":"../node_modules/react/index.js","./common":"../node_modules/react-multi-carousel/lib/utils/common.js"}],"../node_modules/react-multi-carousel/lib/utils/mouseOrTouchMove.js":[function(require,module,exports) {
+"use strict";
+
+function populateSlidesOnMouseTouchMove(state, props, initialX, lastX, clientX, transformPlaceHolder) {
+  var direction,
+      nextPosition,
+      itemWidth = state.itemWidth,
+      slidesToShow = state.slidesToShow,
+      totalItems = state.totalItems,
+      currentSlide = state.currentSlide,
+      infinite = props.infinite,
+      canContinue = !1,
+      slidesHavePassedRight = Math.round((initialX - lastX) / itemWidth),
+      slidesHavePassedLeft = Math.round((lastX - initialX) / itemWidth),
+      isMovingLeft = initialX < clientX;
+
+  if (clientX < initialX && !!(slidesHavePassedRight <= slidesToShow)) {
+    direction = "right";
+    var translateXLimit = Math.abs(-itemWidth * (totalItems - slidesToShow)),
+        nextTranslate = transformPlaceHolder - (lastX - clientX),
+        isLastSlide = currentSlide === totalItems - slidesToShow;
+    (Math.abs(nextTranslate) <= translateXLimit || isLastSlide && infinite) && (nextPosition = nextTranslate, canContinue = !0);
+  }
+
+  isMovingLeft && slidesHavePassedLeft <= slidesToShow && (direction = "left", ((nextTranslate = transformPlaceHolder + (clientX - lastX)) <= 0 || 0 === currentSlide && infinite) && (canContinue = !0, nextPosition = nextTranslate));
+  return {
+    direction: direction,
+    nextPosition: nextPosition,
+    canContinue: canContinue
+  };
+}
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.populateSlidesOnMouseTouchMove = populateSlidesOnMouseTouchMove;
+},{}],"../node_modules/react-multi-carousel/lib/utils/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var clones_1 = require("./clones");
+
+exports.getOriginalCounterPart = clones_1.getOriginalCounterPart, exports.getClones = clones_1.getClones, exports.checkClonesPosition = clones_1.checkClonesPosition, exports.getInitialSlideInInfiniteMode = clones_1.getInitialSlideInInfiniteMode;
+
+var elementWidth_1 = require("./elementWidth");
+
+exports.getWidthFromDeviceType = elementWidth_1.getWidthFromDeviceType, exports.getPartialVisibilityGutter = elementWidth_1.getPartialVisibilityGutter, exports.getItemClientSideWidth = elementWidth_1.getItemClientSideWidth;
+
+var common_1 = require("./common");
+
+exports.getInitialState = common_1.getInitialState, exports.getIfSlideIsVisbile = common_1.getIfSlideIsVisbile, exports.getTransformForCenterMode = common_1.getTransformForCenterMode, exports.getTransformForPartialVsibile = common_1.getTransformForPartialVsibile, exports.isInLeftEnd = common_1.isInLeftEnd, exports.isInRightEnd = common_1.isInRightEnd, exports.notEnoughChildren = common_1.notEnoughChildren, exports.getSlidesToSlide = common_1.getSlidesToSlide;
+
+var throttle_1 = require("./throttle");
+
+exports.throttle = throttle_1.default;
+
+var throwError_1 = require("./throwError");
+
+exports.throwError = throwError_1.default;
+
+var next_1 = require("./next");
+
+exports.populateNextSlides = next_1.populateNextSlides;
+
+var previous_1 = require("./previous");
+
+exports.populatePreviousSlides = previous_1.populatePreviousSlides;
+
+var mouseOrTouchMove_1 = require("./mouseOrTouchMove");
+
+exports.populateSlidesOnMouseTouchMove = mouseOrTouchMove_1.populateSlidesOnMouseTouchMove;
+},{"./clones":"../node_modules/react-multi-carousel/lib/utils/clones.js","./elementWidth":"../node_modules/react-multi-carousel/lib/utils/elementWidth.js","./common":"../node_modules/react-multi-carousel/lib/utils/common.js","./throttle":"../node_modules/react-multi-carousel/lib/utils/throttle.js","./throwError":"../node_modules/react-multi-carousel/lib/utils/throwError.js","./next":"../node_modules/react-multi-carousel/lib/utils/next.js","./previous":"../node_modules/react-multi-carousel/lib/utils/previous.js","./mouseOrTouchMove":"../node_modules/react-multi-carousel/lib/utils/mouseOrTouchMove.js"}],"../node_modules/react-multi-carousel/lib/types.js":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    return (_extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        b.hasOwnProperty(p) && (d[p] = b[p]);
+      }
+    })(d, b);
+  };
+
+  return function (d, b) {
+    function __() {
+      this.constructor = d;
+    }
+
+    _extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var React = require("react");
+
+function isMouseMoveEvent(e) {
+  return "clientY" in e;
+}
+
+exports.isMouseMoveEvent = isMouseMoveEvent;
+
+var Carousel = function (_super) {
+  function Carousel() {
+    return null !== _super && _super.apply(this, arguments) || this;
+  }
+
+  return __extends(Carousel, _super), Carousel;
+}(React.Component);
+
+exports.default = Carousel;
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-multi-carousel/lib/utils/dots.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var clones_1 = require("./clones"),
+    common_1 = require("./common");
+
+function getLookupTableForNextSlides(numberOfDotsToShow, state, props, childrenArr) {
+  var table = {},
+      slidesToSlide = common_1.getSlidesToSlide(state, props);
+  return Array(numberOfDotsToShow).fill(0).forEach(function (_, i) {
+    var nextSlide = clones_1.getOriginalCounterPart(i, state, childrenArr);
+    if (0 === i) table[0] = nextSlide;else {
+      var now = table[i - 1] + slidesToSlide;
+      table[i] = now;
+    }
+  }), table;
+}
+
+exports.getLookupTableForNextSlides = getLookupTableForNextSlides;
+},{"./clones":"../node_modules/react-multi-carousel/lib/utils/clones.js","./common":"../node_modules/react-multi-carousel/lib/utils/common.js"}],"../node_modules/react-multi-carousel/lib/Dots.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var React = require("react"),
+    clones_1 = require("./utils/clones"),
+    dots_1 = require("./utils/dots"),
+    common_1 = require("./utils/common"),
+    Dots = function Dots(_a) {
+  var props = _a.props,
+      state = _a.state,
+      goToSlide = _a.goToSlide,
+      getState = _a.getState,
+      showDots = props.showDots,
+      customDot = props.customDot,
+      dotListClass = props.dotListClass,
+      infinite = props.infinite,
+      children = props.children;
+  if (!showDots || common_1.notEnoughChildren(state)) return null;
+  var numberOfDotsToShow,
+      currentSlide = state.currentSlide,
+      slidesToShow = state.slidesToShow,
+      slidesToSlide = common_1.getSlidesToSlide(state, props),
+      childrenArr = React.Children.toArray(children);
+  numberOfDotsToShow = infinite ? Math.ceil(childrenArr.length / slidesToSlide) : Math.ceil((childrenArr.length - slidesToShow) / slidesToSlide) + 1;
+  var nextSlidesTable = dots_1.getLookupTableForNextSlides(numberOfDotsToShow, state, props, childrenArr),
+      lookupTable = clones_1.getOriginalIndexLookupTableByClones(slidesToShow, childrenArr),
+      currentSlides = lookupTable[currentSlide];
+  return React.createElement("ul", {
+    className: "react-multi-carousel-dot-list " + dotListClass
+  }, Array(numberOfDotsToShow).fill(0).map(function (_, index) {
+    var isActive, nextSlide;
+
+    if (infinite) {
+      nextSlide = nextSlidesTable[index];
+      var cloneIndex = lookupTable[nextSlide];
+      isActive = currentSlides === cloneIndex || cloneIndex <= currentSlides && currentSlides < cloneIndex + slidesToSlide;
+    } else {
+      var maximumNextSlide = childrenArr.length - slidesToShow,
+          possibileNextSlides = index * slidesToSlide;
+      isActive = (nextSlide = maximumNextSlide < possibileNextSlides ? maximumNextSlide : possibileNextSlides) === currentSlide || nextSlide < currentSlide && currentSlide < nextSlide + slidesToSlide && currentSlide < childrenArr.length - slidesToShow;
+    }
+
+    return customDot ? React.cloneElement(customDot, {
+      index: index,
+      active: isActive,
+      key: index,
+      onClick: function onClick() {
+        return goToSlide(nextSlide);
+      },
+      carouselState: getState()
+    }) : React.createElement("li", {
+      "data-index": index,
+      key: index,
+      className: "react-multi-carousel-dot " + (isActive ? "react-multi-carousel-dot--active" : "")
+    }, React.createElement("button", {
+      "aria-label": "Go to slide " + (index + 1),
+      onClick: function onClick() {
+        return goToSlide(nextSlide);
+      }
+    }));
+  }));
+};
+
+exports.default = Dots;
+},{"react":"../node_modules/react/index.js","./utils/clones":"../node_modules/react-multi-carousel/lib/utils/clones.js","./utils/dots":"../node_modules/react-multi-carousel/lib/utils/dots.js","./utils/common":"../node_modules/react-multi-carousel/lib/utils/common.js"}],"../node_modules/react-multi-carousel/lib/Arrows.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var React = require("react"),
+    LeftArrow = function LeftArrow(_a) {
+  var customLeftArrow = _a.customLeftArrow,
+      getState = _a.getState,
+      previous = _a.previous;
+  return customLeftArrow ? React.cloneElement(customLeftArrow, {
+    onClick: function onClick() {
+      return previous();
+    },
+    carouselState: getState()
+  }) : React.createElement("button", {
+    "aria-label": "Go to previous slide",
+    className: "react-multiple-carousel__arrow react-multiple-carousel__arrow--left",
+    onClick: function onClick() {
+      return previous();
+    }
+  });
+};
+
+exports.LeftArrow = LeftArrow;
+
+var RightArrow = function RightArrow(_a) {
+  var customRightArrow = _a.customRightArrow,
+      next = _a.next,
+      getState = _a.getState;
+  return customRightArrow ? React.cloneElement(customRightArrow, {
+    onClick: function onClick() {
+      return next();
+    },
+    carouselState: getState()
+  }) : React.createElement("button", {
+    "aria-label": "Go to next slide",
+    className: "react-multiple-carousel__arrow react-multiple-carousel__arrow--right",
+    onClick: function onClick() {
+      return next();
+    }
+  });
+};
+
+exports.RightArrow = RightArrow;
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-multi-carousel/lib/CarouselItems.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var React = require("react"),
+    utils_1 = require("./utils"),
+    CarouselItems = function CarouselItems(_a) {
+  var props = _a.props,
+      state = _a.state,
+      goToSlide = _a.goToSlide,
+      clones = _a.clones,
+      notEnoughChildren = _a.notEnoughChildren,
+      itemWidth = state.itemWidth,
+      children = props.children,
+      infinite = props.infinite,
+      itemClass = props.itemClass,
+      partialVisbile = props.partialVisbile,
+      partialVisible = props.partialVisible,
+      _b = utils_1.getInitialState(state, props),
+      flexBisis = _b.flexBisis,
+      shouldRenderOnSSR = _b.shouldRenderOnSSR,
+      domFullyLoaded = _b.domFullyLoaded,
+      partialVisibilityGutter = _b.partialVisibilityGutter;
+
+  return _b.shouldRenderAtAll ? (partialVisbile && console.warn('WARNING: Please correct props name: "partialVisible" as old typo will be removed in future versions!'), React.createElement(React.Fragment, null, (infinite ? clones : React.Children.toArray(children)).map(function (child, index) {
+    return React.createElement("li", {
+      key: index,
+      "data-index": index,
+      onClick: function onClick() {
+        props.focusOnSelect && goToSlide(index);
+      },
+      "aria-hidden": utils_1.getIfSlideIsVisbile(index, state) ? "false" : "true",
+      style: {
+        flex: shouldRenderOnSSR ? "1 0 " + flexBisis + "%" : "auto",
+        position: "relative",
+        width: domFullyLoaded ? ((partialVisbile || partialVisible) && partialVisibilityGutter && !notEnoughChildren ? itemWidth - partialVisibilityGutter : itemWidth) + "px" : "auto"
+      },
+      className: "react-multi-carousel-item " + (utils_1.getIfSlideIsVisbile(index, state) ? "react-multi-carousel-item--active" : "") + " " + itemClass
+    }, child);
+  }))) : null;
+};
+
+exports.default = CarouselItems;
+},{"react":"../node_modules/react/index.js","./utils":"../node_modules/react-multi-carousel/lib/utils/index.js"}],"../node_modules/react-multi-carousel/lib/Carousel.js":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    return (_extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        b.hasOwnProperty(p) && (d[p] = b[p]);
+      }
+    })(d, b);
+  };
+
+  return function (d, b) {
+    function __() {
+      this.constructor = d;
+    }
+
+    _extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var React = require("react"),
+    utils_1 = require("./utils"),
+    types_1 = require("./types"),
+    Dots_1 = require("./Dots"),
+    Arrows_1 = require("./Arrows"),
+    CarouselItems_1 = require("./CarouselItems"),
+    common_1 = require("./utils/common"),
+    defaultTransitionDuration = 400,
+    defaultTransition = "transform 400ms ease-in-out",
+    Carousel = function (_super) {
+  function Carousel(props) {
+    var _this = _super.call(this, props) || this;
+
+    return _this.containerRef = React.createRef(), _this.listRef = React.createRef(), _this.state = {
+      itemWidth: 0,
+      slidesToShow: 0,
+      currentSlide: 0,
+      totalItems: React.Children.count(props.children),
+      deviceType: "",
+      domLoaded: !1,
+      transform: 0,
+      containerWidth: 0
+    }, _this.onResize = _this.onResize.bind(_this), _this.handleDown = _this.handleDown.bind(_this), _this.handleMove = _this.handleMove.bind(_this), _this.handleOut = _this.handleOut.bind(_this), _this.onKeyUp = _this.onKeyUp.bind(_this), _this.handleEnter = _this.handleEnter.bind(_this), _this.setIsInThrottle = _this.setIsInThrottle.bind(_this), _this.next = utils_1.throttle(_this.next.bind(_this), props.transitionDuration || defaultTransitionDuration, _this.setIsInThrottle), _this.previous = utils_1.throttle(_this.previous.bind(_this), props.transitionDuration || defaultTransitionDuration, _this.setIsInThrottle), _this.goToSlide = utils_1.throttle(_this.goToSlide.bind(_this), props.transitionDuration || defaultTransitionDuration, _this.setIsInThrottle), _this.onMove = !1, _this.initialX = 0, _this.lastX = 0, _this.isAnimationAllowed = !1, _this.direction = "", _this.initialY = 0, _this.isInThrottle = !1, _this.transformPlaceHolder = 0, _this;
+  }
+
+  return __extends(Carousel, _super), Carousel.prototype.resetTotalItems = function () {
+    var _this = this,
+        totalItems = React.Children.count(this.props.children),
+        currentSlide = utils_1.notEnoughChildren(this.state) ? 0 : Math.max(0, Math.min(this.state.currentSlide, totalItems));
+
+    this.setState({
+      totalItems: totalItems,
+      currentSlide: currentSlide
+    }, function () {
+      _this.setContainerAndItemWidth(_this.state.slidesToShow, !0);
+    });
+  }, Carousel.prototype.setIsInThrottle = function (isInThrottle) {
+    void 0 === isInThrottle && (isInThrottle = !1), this.isInThrottle = isInThrottle;
+  }, Carousel.prototype.setTransformDirectly = function (position, withAnimation) {
+    var additionalTransfrom = this.props.additionalTransfrom,
+        currentTransform = common_1.getTransform(this.state, this.props, position);
+    this.transformPlaceHolder = position, this.listRef && this.listRef.current && (this.setAnimationDirectly(withAnimation), this.listRef.current.style.transform = "translate3d(" + (currentTransform + additionalTransfrom) + "px,0,0)");
+  }, Carousel.prototype.setAnimationDirectly = function (animationAllowed) {
+    this.listRef && this.listRef.current && (this.listRef.current.style.transition = animationAllowed ? this.props.customTransition || defaultTransition : "none");
+  }, Carousel.prototype.componentDidMount = function () {
+    this.setState({
+      domLoaded: !0
+    }), this.setItemsToShow(), window.addEventListener("resize", this.onResize), this.onResize(!0), this.props.keyBoardControl && window.addEventListener("keyup", this.onKeyUp), this.props.autoPlay && this.props.autoPlaySpeed && (this.autoPlay = setInterval(this.next, this.props.autoPlaySpeed));
+  }, Carousel.prototype.setClones = function (slidesToShow, itemWidth, forResizing, resetCurrentSlide) {
+    var _this = this;
+
+    void 0 === resetCurrentSlide && (resetCurrentSlide = !1), this.isAnimationAllowed = !1;
+    var childrenArr = React.Children.toArray(this.props.children),
+        initialSlide = utils_1.getInitialSlideInInfiniteMode(slidesToShow || this.state.slidesToShow, childrenArr),
+        clones = utils_1.getClones(this.state.slidesToShow, childrenArr),
+        currentSlide = childrenArr.length < this.state.slidesToShow ? 0 : this.state.currentSlide;
+    this.setState({
+      totalItems: clones.length,
+      currentSlide: forResizing && !resetCurrentSlide ? currentSlide : initialSlide
+    }, function () {
+      _this.correctItemsPosition(itemWidth || _this.state.itemWidth);
+    });
+  }, Carousel.prototype.setItemsToShow = function (shouldCorrectItemPosition, resetCurrentSlide) {
+    var _this = this,
+        responsive = this.props.responsive;
+
+    Object.keys(responsive).forEach(function (item) {
+      var _a = responsive[item],
+          breakpoint = _a.breakpoint,
+          items = _a.items,
+          max = breakpoint.max,
+          min = breakpoint.min;
+      window.innerWidth >= min && window.innerWidth <= max && (_this.setState({
+        slidesToShow: items,
+        deviceType: item
+      }), _this.setContainerAndItemWidth(items, shouldCorrectItemPosition, resetCurrentSlide));
+    });
+  }, Carousel.prototype.setContainerAndItemWidth = function (slidesToShow, shouldCorrectItemPosition, resetCurrentSlide) {
+    var _this = this;
+
+    if (this.containerRef && this.containerRef.current) {
+      var containerWidth = this.containerRef.current.offsetWidth,
+          itemWidth_1 = utils_1.getItemClientSideWidth(this.props, slidesToShow, containerWidth);
+      this.setState({
+        containerWidth: containerWidth,
+        itemWidth: itemWidth_1
+      }, function () {
+        _this.props.infinite && _this.setClones(slidesToShow, itemWidth_1, shouldCorrectItemPosition, resetCurrentSlide);
+      }), shouldCorrectItemPosition && this.correctItemsPosition(itemWidth_1);
+    }
+  }, Carousel.prototype.correctItemsPosition = function (itemWidth, isAnimationAllowed, setToDomDirectly) {
+    isAnimationAllowed && (this.isAnimationAllowed = !0), !isAnimationAllowed && this.isAnimationAllowed && (this.isAnimationAllowed = !1);
+    var nextTransform = this.state.totalItems < this.state.slidesToShow ? 0 : -itemWidth * this.state.currentSlide;
+    setToDomDirectly && this.setTransformDirectly(nextTransform, !0), this.setState({
+      transform: nextTransform
+    });
+  }, Carousel.prototype.onResize = function (value) {
+    var shouldCorrectItemPosition;
+    shouldCorrectItemPosition = !!this.props.infinite && ("boolean" != typeof value || !value), this.setItemsToShow(shouldCorrectItemPosition);
+  }, Carousel.prototype.componentDidUpdate = function (_a, _b) {
+    var _this = this,
+        keyBoardControl = _a.keyBoardControl,
+        autoPlay = _a.autoPlay,
+        children = _a.children,
+        containerWidth = _b.containerWidth,
+        domLoaded = _b.domLoaded,
+        currentSlide = _b.currentSlide;
+
+    this.containerRef && this.containerRef.current && this.containerRef.current.offsetWidth !== containerWidth && setTimeout(function () {
+      _this.setItemsToShow(!0);
+    }, this.props.transitionDuration || defaultTransitionDuration), keyBoardControl && !this.props.keyBoardControl && window.removeEventListener("keyup", this.onKeyUp), !keyBoardControl && this.props.keyBoardControl && window.addEventListener("keyup", this.onKeyUp), autoPlay && !this.props.autoPlay && this.autoPlay && (clearInterval(this.autoPlay), this.autoPlay = void 0), autoPlay || !this.props.autoPlay || this.autoPlay || (this.autoPlay = setInterval(this.next, this.props.autoPlaySpeed)), children.length !== this.props.children.length ? setTimeout(function () {
+      _this.props.infinite ? _this.setClones(_this.state.slidesToShow, _this.state.itemWidth, !0, !0) : _this.resetTotalItems();
+    }, this.props.transitionDuration || defaultTransitionDuration) : this.props.infinite && this.state.currentSlide !== currentSlide && this.correctClonesPosition({
+      domLoaded: domLoaded
+    }), this.transformPlaceHolder !== this.state.transform && (this.transformPlaceHolder = this.state.transform);
+  }, Carousel.prototype.correctClonesPosition = function (_a) {
+    var _this = this,
+        domLoaded = _a.domLoaded,
+        childrenArr = React.Children.toArray(this.props.children),
+        _b = utils_1.checkClonesPosition(this.state, childrenArr, this.props),
+        isReachingTheEnd = _b.isReachingTheEnd,
+        isReachingTheStart = _b.isReachingTheStart,
+        nextSlide = _b.nextSlide,
+        nextPosition = _b.nextPosition;
+
+    this.state.domLoaded && domLoaded && (isReachingTheEnd || isReachingTheStart) && (this.isAnimationAllowed = !1, setTimeout(function () {
+      _this.setState({
+        transform: nextPosition,
+        currentSlide: nextSlide
+      });
+    }, this.props.transitionDuration || defaultTransitionDuration));
+  }, Carousel.prototype.next = function (slidesHavePassed) {
+    var _this = this;
+
+    void 0 === slidesHavePassed && (slidesHavePassed = 0);
+    var _a = this.props,
+        afterChange = _a.afterChange,
+        beforeChange = _a.beforeChange;
+
+    if (!utils_1.notEnoughChildren(this.state)) {
+      var _b = utils_1.populateNextSlides(this.state, this.props, slidesHavePassed),
+          nextSlides = _b.nextSlides,
+          nextPosition = _b.nextPosition,
+          previousSlide = this.state.currentSlide;
+
+      void 0 !== nextSlides && void 0 !== nextPosition && ("function" == typeof beforeChange && beforeChange(nextSlides, this.getState()), this.isAnimationAllowed = !0, this.setState({
+        transform: nextPosition,
+        currentSlide: nextSlides
+      }, function () {
+        "function" == typeof afterChange && setTimeout(function () {
+          afterChange(previousSlide, _this.getState());
+        }, _this.props.transitionDuration || defaultTransitionDuration);
+      }));
+    }
+  }, Carousel.prototype.previous = function (slidesHavePassed) {
+    var _this = this;
+
+    void 0 === slidesHavePassed && (slidesHavePassed = 0);
+    var _a = this.props,
+        afterChange = _a.afterChange,
+        beforeChange = _a.beforeChange;
+
+    if (!utils_1.notEnoughChildren(this.state)) {
+      var _b = utils_1.populatePreviousSlides(this.state, this.props, slidesHavePassed),
+          nextSlides = _b.nextSlides,
+          nextPosition = _b.nextPosition;
+
+      if (void 0 !== nextSlides && void 0 !== nextPosition) {
+        var previousSlide = this.state.currentSlide;
+        "function" == typeof beforeChange && beforeChange(nextSlides, this.getState()), this.isAnimationAllowed = !0, this.setState({
+          transform: nextPosition,
+          currentSlide: nextSlides
+        }, function () {
+          "function" == typeof afterChange && setTimeout(function () {
+            afterChange(previousSlide, _this.getState());
+          }, _this.props.transitionDuration || defaultTransitionDuration);
+        });
+      }
+    }
+  }, Carousel.prototype.componentWillUnmount = function () {
+    window.removeEventListener("resize", this.onResize), this.props.keyBoardControl && window.removeEventListener("keyup", this.onKeyUp), this.props.autoPlay && this.autoPlay && (clearInterval(this.autoPlay), this.autoPlay = void 0);
+  }, Carousel.prototype.resetMoveStatus = function () {
+    this.onMove = !1, this.initialX = 0, this.lastX = 0, this.direction = "", this.initialY = 0;
+  }, Carousel.prototype.handleDown = function (e) {
+    if (!(!types_1.isMouseMoveEvent(e) && !this.props.swipeable || types_1.isMouseMoveEvent(e) && !this.props.draggable || this.isInThrottle)) {
+      var _a = types_1.isMouseMoveEvent(e) ? e : e.touches[0],
+          clientX = _a.clientX,
+          clientY = _a.clientY;
+
+      this.onMove = !0, this.initialX = clientX, this.initialY = clientY, this.lastX = clientX, this.isAnimationAllowed = !1;
+    }
+  }, Carousel.prototype.handleMove = function (e) {
+    if (!(!types_1.isMouseMoveEvent(e) && !this.props.swipeable || types_1.isMouseMoveEvent(e) && !this.props.draggable || utils_1.notEnoughChildren(this.state))) {
+      var _a = types_1.isMouseMoveEvent(e) ? e : e.touches[0],
+          clientX = _a.clientX,
+          clientY = _a.clientY,
+          diffX = this.initialX - clientX,
+          diffY = this.initialY - clientY;
+
+      if (!types_1.isMouseMoveEvent(e) && this.autoPlay && this.props.autoPlay && (clearInterval(this.autoPlay), this.autoPlay = void 0), this.onMove) {
+        if (!(Math.abs(diffX) > Math.abs(diffY))) return;
+
+        var _b = utils_1.populateSlidesOnMouseTouchMove(this.state, this.props, this.initialX, this.lastX, clientX, this.transformPlaceHolder),
+            direction = _b.direction,
+            nextPosition = _b.nextPosition,
+            canContinue = _b.canContinue;
+
+        direction && (this.direction = direction, canContinue && void 0 !== nextPosition && this.setTransformDirectly(nextPosition)), this.lastX = clientX;
+      }
+    }
+  }, Carousel.prototype.handleOut = function (e) {
+    this.props.autoPlay && !this.autoPlay && (this.autoPlay = setInterval(this.next, this.props.autoPlaySpeed));
+    var shouldDisableOnMobile = "touchend" === e.type && !this.props.swipeable,
+        shouldDisableOnDesktop = ("mouseleave" === e.type || "mouseup" === e.type) && !this.props.draggable;
+
+    if (!shouldDisableOnMobile && !shouldDisableOnDesktop && this.onMove) {
+      if (this.setAnimationDirectly(!0), "right" === this.direction) if (this.initialX - this.lastX >= this.props.minimumTouchDrag) {
+        var slidesHavePassed = Math.round((this.initialX - this.lastX) / this.state.itemWidth);
+        this.next(slidesHavePassed);
+      } else this.correctItemsPosition(this.state.itemWidth, !0, !0);
+      if ("left" === this.direction) if (this.lastX - this.initialX > this.props.minimumTouchDrag) {
+        slidesHavePassed = Math.round((this.lastX - this.initialX) / this.state.itemWidth);
+        this.previous(slidesHavePassed);
+      } else this.correctItemsPosition(this.state.itemWidth, !0, !0);
+      this.resetMoveStatus();
+    }
+  }, Carousel.prototype.onKeyUp = function (e) {
+    switch (e.keyCode) {
+      case 37:
+        return this.previous();
+
+      case 39:
+        return this.next();
+    }
+  }, Carousel.prototype.handleEnter = function () {
+    this.autoPlay && this.props.autoPlay && (clearInterval(this.autoPlay), this.autoPlay = void 0);
+  }, Carousel.prototype.goToSlide = function (slide, skipCallbacks) {
+    var _this = this;
+
+    if (!this.isInThrottle) {
+      var itemWidth = this.state.itemWidth,
+          _a = this.props,
+          afterChange = _a.afterChange,
+          beforeChange = _a.beforeChange,
+          previousSlide = this.state.currentSlide;
+      "function" != typeof beforeChange || skipCallbacks && ("object" != _typeof(skipCallbacks) || skipCallbacks.skipBeforeChange) || beforeChange(slide, this.getState()), this.isAnimationAllowed = !0, this.setState({
+        currentSlide: slide,
+        transform: -itemWidth * slide
+      }, function () {
+        _this.props.infinite && _this.correctClonesPosition({
+          domLoaded: !0
+        }), "function" != typeof afterChange || skipCallbacks && ("object" != _typeof(skipCallbacks) || skipCallbacks.skipAfterChange) || setTimeout(function () {
+          afterChange(previousSlide, _this.getState());
+        }, _this.props.transitionDuration || defaultTransitionDuration);
+      });
+    }
+  }, Carousel.prototype.getState = function () {
+    return this.state;
+  }, Carousel.prototype.renderLeftArrow = function () {
+    var _this = this,
+        customLeftArrow = this.props.customLeftArrow;
+
+    return React.createElement(Arrows_1.LeftArrow, {
+      customLeftArrow: customLeftArrow,
+      getState: function getState() {
+        return _this.getState();
+      },
+      previous: this.previous
+    });
+  }, Carousel.prototype.renderRightArrow = function () {
+    var _this = this,
+        customRightArrow = this.props.customRightArrow;
+
+    return React.createElement(Arrows_1.RightArrow, {
+      customRightArrow: customRightArrow,
+      getState: function getState() {
+        return _this.getState();
+      },
+      next: this.next
+    });
+  }, Carousel.prototype.renderButtonGroups = function () {
+    var _this = this,
+        customButtonGroup = this.props.customButtonGroup;
+
+    return customButtonGroup ? React.cloneElement(customButtonGroup, {
+      previous: function previous() {
+        return _this.previous();
+      },
+      next: function next() {
+        return _this.next();
+      },
+      goToSlide: function goToSlide(slideIndex, skipCallbacks) {
+        return _this.goToSlide(slideIndex, skipCallbacks);
+      },
+      carouselState: this.getState()
+    }) : null;
+  }, Carousel.prototype.renderDotsList = function () {
+    var _this = this;
+
+    return React.createElement(Dots_1.default, {
+      state: this.state,
+      props: this.props,
+      goToSlide: this.goToSlide,
+      getState: function getState() {
+        return _this.getState();
+      }
+    });
+  }, Carousel.prototype.renderCarouselItems = function () {
+    var clones = [];
+
+    if (this.props.infinite) {
+      var childrenArr = React.Children.toArray(this.props.children);
+      clones = utils_1.getClones(this.state.slidesToShow, childrenArr);
+    }
+
+    return React.createElement(CarouselItems_1.default, {
+      clones: clones,
+      goToSlide: this.goToSlide,
+      state: this.state,
+      notEnoughChildren: utils_1.notEnoughChildren(this.state),
+      props: this.props
+    });
+  }, Carousel.prototype.render = function () {
+    var _a = this.props,
+        deviceType = _a.deviceType,
+        arrows = _a.arrows,
+        removeArrowOnDeviceType = _a.removeArrowOnDeviceType,
+        infinite = _a.infinite,
+        containerClass = _a.containerClass,
+        sliderClass = _a.sliderClass,
+        customTransition = _a.customTransition,
+        additionalTransfrom = _a.additionalTransfrom,
+        renderDotsOutside = _a.renderDotsOutside,
+        renderButtonGroupOutside = _a.renderButtonGroupOutside,
+        className = _a.className;
+    "production" !== "development" && utils_1.throwError(this.state, this.props);
+
+    var _b = utils_1.getInitialState(this.state, this.props),
+        shouldRenderOnSSR = _b.shouldRenderOnSSR,
+        shouldRenderAtAll = _b.shouldRenderAtAll,
+        isLeftEndReach = utils_1.isInLeftEnd(this.state),
+        isRightEndReach = utils_1.isInRightEnd(this.state),
+        shouldShowArrows = arrows && !(removeArrowOnDeviceType && (deviceType && -1 < removeArrowOnDeviceType.indexOf(deviceType) || this.state.deviceType && -1 < removeArrowOnDeviceType.indexOf(this.state.deviceType))) && !utils_1.notEnoughChildren(this.state) && shouldRenderAtAll,
+        disableLeftArrow = !infinite && isLeftEndReach,
+        disableRightArrow = !infinite && isRightEndReach,
+        currentTransform = common_1.getTransform(this.state, this.props);
+
+    return React.createElement(React.Fragment, null, React.createElement("div", {
+      className: "react-multi-carousel-list " + containerClass + " " + className,
+      ref: this.containerRef
+    }, React.createElement("ul", {
+      ref: this.listRef,
+      className: "react-multi-carousel-track " + sliderClass,
+      style: {
+        transition: this.isAnimationAllowed ? customTransition || defaultTransition : "none",
+        overflow: shouldRenderOnSSR ? "hidden" : "unset",
+        transform: "translate3d(" + (currentTransform + additionalTransfrom) + "px,0,0)"
+      },
+      onMouseMove: this.handleMove,
+      onMouseDown: this.handleDown,
+      onMouseUp: this.handleOut,
+      onMouseEnter: this.handleEnter,
+      onMouseLeave: this.handleOut,
+      onTouchStart: this.handleDown,
+      onTouchMove: this.handleMove,
+      onTouchEnd: this.handleOut
+    }, this.renderCarouselItems()), shouldShowArrows && !disableLeftArrow && this.renderLeftArrow(), shouldShowArrows && !disableRightArrow && this.renderRightArrow(), shouldRenderAtAll && !renderButtonGroupOutside && this.renderButtonGroups(), shouldRenderAtAll && !renderDotsOutside && this.renderDotsList()), shouldRenderAtAll && renderDotsOutside && this.renderDotsList(), shouldRenderAtAll && renderButtonGroupOutside && this.renderButtonGroups());
+  }, Carousel.defaultProps = {
+    slidesToSlide: 1,
+    infinite: !1,
+    draggable: !0,
+    swipeable: !0,
+    arrows: !0,
+    containerClass: "",
+    sliderClass: "",
+    itemClass: "",
+    keyBoardControl: !0,
+    autoPlaySpeed: 3e3,
+    showDots: !1,
+    renderDotsOutside: !1,
+    renderButtonGroupOutside: !1,
+    minimumTouchDrag: 80,
+    className: "",
+    dotListClass: "",
+    focusOnSelect: !1,
+    centerMode: !1,
+    additionalTransfrom: 0
+  }, Carousel;
+}(React.Component);
+
+exports.default = Carousel;
+},{"react":"../node_modules/react/index.js","./utils":"../node_modules/react-multi-carousel/lib/utils/index.js","./types":"../node_modules/react-multi-carousel/lib/types.js","./Dots":"../node_modules/react-multi-carousel/lib/Dots.js","./Arrows":"../node_modules/react-multi-carousel/lib/Arrows.js","./CarouselItems":"../node_modules/react-multi-carousel/lib/CarouselItems.js","./utils/common":"../node_modules/react-multi-carousel/lib/utils/common.js"}],"../node_modules/react-multi-carousel/lib/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+});
+
+var Carousel_1 = require("./Carousel");
+
+exports.default = Carousel_1.default;
+},{"./Carousel":"../node_modules/react-multi-carousel/lib/Carousel.js"}],"../node_modules/react-multi-carousel/index.js":[function(require,module,exports) {
+module.exports = require('./lib');
+},{"./lib":"../node_modules/react-multi-carousel/lib/index.js"}],"../node_modules/react-multi-carousel/lib/styles.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"./revicons.woff":[["revicons.bbe64dbc.woff","../node_modules/react-multi-carousel/lib/revicons.woff"],"../node_modules/react-multi-carousel/lib/revicons.woff"],"./revicons.ttf":[["revicons.acce3a14.ttf","../node_modules/react-multi-carousel/lib/revicons.ttf"],"../node_modules/react-multi-carousel/lib/revicons.ttf"],"./revicons.eot":[["revicons.12977cf3.eot","../node_modules/react-multi-carousel/lib/revicons.eot"],"../node_modules/react-multi-carousel/lib/revicons.eot"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var InfoIcon = function InfoIcon(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, " ", react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    x: "0",
+    y: "0",
+    enableBackground: "new 0 0 512 512",
+    version: "1.1",
+    viewBox: "0 0 512 512",
+    xmlSpace: "preserve"
+  }, react_1.default.createElement("path", {
+    d: "M256 0C114.51 0 0 114.497 0 256c0 141.49 114.497 256 256 256 141.49 0 256-114.497 256-256C512 114.51 397.503 0 256 0zm0 477.867c-122.337 0-221.867-99.529-221.867-221.867S133.663 34.133 256 34.133 477.867 133.663 477.867 256 378.337 477.867 256 477.867z"
+  }), react_1.default.createElement("path", {
+    d: "M255.997 209.777c-9.425 0-17.067 7.641-17.067 17.067v143.969c0 9.425 7.641 17.067 17.067 17.067s17.067-7.641 17.067-17.067v-143.97c-.001-9.426-7.642-17.066-17.067-17.066zM256 124.122c-18.821 0-34.133 15.312-34.133 34.133s15.312 34.133 34.133 34.133 34.133-15.312 34.133-34.133-15.312-34.133-34.133-34.133z"
+  })));
+};
+
+exports.default = InfoIcon;
+},{"react":"../node_modules/react/index.js"}],"icons/PlusIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var PlusIcon = function PlusIcon(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    x: "0",
+    y: "0",
+    enableBackground: "new 0 0 409.6 409.6",
+    version: "1.1",
+    viewBox: "0 0 409.6 409.6",
+    xmlSpace: "preserve"
+  }, react_1.default.createElement("path", {
+    d: "M392.533 187.733H221.867V17.067C221.867 7.641 214.226 0 204.8 0s-17.067 7.641-17.067 17.067v170.667H17.067C7.641 187.733 0 195.374 0 204.8s7.641 17.067 17.067 17.067h170.667v170.667c0 9.426 7.641 17.067 17.067 17.067s17.067-7.641 17.067-17.067V221.867h170.667c9.426 0 17.067-7.641 17.067-17.067s-7.643-17.067-17.069-17.067z"
+  })));
+};
+
+exports.default = PlusIcon;
+},{"react":"../node_modules/react/index.js"}],"icons/SvgContainer.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var SvgContainer = function SvgContainer(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className,
+      children = _a.children;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, children);
+};
+
+exports.default = SvgContainer;
+},{"react":"../node_modules/react/index.js"}],"icons/PlayIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var SvgContainer_1 = __importDefault(require("./SvgContainer"));
+
+exports.default = function (props) {
+  return react_1.default.createElement(SvgContainer_1.default, __assign({
+    style: {
+      fill: "#ea1437",
+      background: "white",
+      borderRadius: "50%",
+      maxWidth: "3rem",
+      maxHeight: "3rem",
+      minWidth: "3rem",
+      minHeight: "3rem"
+    },
+    width: "3rem",
+    height: "3rem"
+  }, props), react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 565.648 565.648"
+  }, react_1.default.createElement("path", {
+    d: "M282.824 0C126.877 0 0 126.877 0 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824S438.771 0 282.824 0zm-70.706 424.233V141.411l212.118 141.41z"
+  })));
+};
+},{"react":"../node_modules/react/index.js","./SvgContainer":"icons/SvgContainer.tsx"}],"styles/Title.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Title.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var InfoIcon_1 = __importDefault(require("~icons/InfoIcon"));
+
+var PlusIcon_1 = __importDefault(require("~icons/PlusIcon"));
+
+var PlayIcon_1 = __importDefault(require("~icons/PlayIcon"));
+
+require("../styles/Title.scss");
+
+var styles = {
+  card: {
+    backgroundImage: "url(/static/frontend/images/dark.jpg)",
+    backgroundPosition: "center",
+    backgroundSize: "cover"
+  }
+};
+
+var Title = function Title(_a) {
+  var title = _a.title;
+  return react_1.default.createElement("div", {
+    className: "inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
+  }, react_1.default.createElement("div", {
+    className: "hidden md:flex top-info mb-2 justify-end"
+  }, react_1.default.createElement(PlusIcon_1.default, {
+    className: "mr-3 card-container-slide-reveal transition-500"
+  }), react_1.default.createElement(InfoIcon_1.default, {
+    className: "card-container-slide-reveal transition-200"
+  })), react_1.default.createElement("div", {
+    className: "bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center",
+    style: styles.card
+  }, react_1.default.createElement("div", {
+    className: "m-1 bg-green-600 text-black rounded-sm px-1 self-start"
+  }, title.is_new ? title.type === "s" ? "New Episodes" : "New" : ""), react_1.default.createElement(PlayIcon_1.default, {
+    className: "hidden md:block card-container-reveal"
+  }), react_1.default.createElement("div", {
+    className: "self-stretch v-gradient"
+  }, react_1.default.createElement("h4", {
+    className: "card-container-reveal self-start font-medium md:text-xs pl-1"
+  }, title.name), react_1.default.createElement("div", {
+    className: "p-1 flex justify-between items-center self-stretch"
+  }, react_1.default.createElement("span", null, new Date(title.released_at).getFullYear()), react_1.default.createElement("span", null, title.rating)))), react_1.default.createElement("div", {
+    className: "hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin"
+  }, title.genres.slice(0, 3).map(function (g) {
+    return g.name.charAt(0).toUpperCase() + g.name.slice(1);
+  }).join(" • ")));
+};
+
+exports.default = Title;
+},{"react":"../node_modules/react/index.js","~icons/InfoIcon":"icons/InfoIcon.tsx","~icons/PlusIcon":"icons/PlusIcon.tsx","~icons/PlayIcon":"icons/PlayIcon.tsx","../styles/Title.scss":"styles/Title.scss"}],"styles/TitleRow.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/TitleRow.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var react_multi_carousel_1 = __importDefault(require("react-multi-carousel"));
+
+require("react-multi-carousel/lib/styles.css");
+
+var Title_1 = __importDefault(require("~components/Title"));
+
+require("../styles/TitleRow.scss");
+
+var responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: {
+      max: 4000,
+      min: 3000
+    },
+    items: 15
+  },
+  desktop: {
+    breakpoint: {
+      max: 3000,
+      min: 1024
+    },
+    items: 6
+  },
+  tablet: {
+    breakpoint: {
+      max: 1024,
+      min: 464
+    },
+    items: 4
+  },
+  midTablet: {
+    breakpoint: {
+      max: 750,
+      min: 540
+    },
+    items: 3
+  },
+  mobile: {
+    breakpoint: {
+      max: 464,
+      min: 0
+    },
+    items: 3
+  }
+};
+
+var TitleRow = function TitleRow(_a) {
+  var row = _a.row;
+  return react_1.default.createElement("div", {
+    className: "relative"
+  }, react_1.default.createElement("h3", {
+    className: "md:absolute md:text-lg text-sm ml-3 font-semibold leading-none"
+  }, row.name.charAt(0).toUpperCase() + row.name.slice(1)), react_1.default.createElement(react_multi_carousel_1.default, {
+    className: "py-2 md:py-3",
+    responsive: responsive
+  }, row.title_list.map(function (t) {
+    return react_1.default.createElement(Title_1.default, {
+      key: t.id,
+      title: t
+    });
+  })));
+};
+
+exports.default = TitleRow;
+},{"react":"../node_modules/react/index.js","react-multi-carousel":"../node_modules/react-multi-carousel/index.js","react-multi-carousel/lib/styles.css":"../node_modules/react-multi-carousel/lib/styles.css","~components/Title":"components/Title.tsx","../styles/TitleRow.scss":"styles/TitleRow.scss"}],"pages/HomePage.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -48786,13 +50255,20 @@ var home_json_1 = __importDefault(require("~api/mock/home.json"));
 
 var Featured_1 = __importDefault(require("~components/Featured"));
 
+var TitleRow_1 = __importDefault(require("~components/TitleRow"));
+
 exports.default = function () {
   var data = home_json_1.default;
   return react_1.default.createElement("div", null, react_1.default.createElement(Featured_1.default, {
     data: data.results.featured
+  }), data.results.rows.map(function (row) {
+    return react_1.default.createElement(TitleRow_1.default, {
+      key: row.id,
+      row: row
+    });
   }));
 };
-},{"react":"../node_modules/react/index.js","~api/mock/home.json":"api/mock/home.json","~components/Featured":"components/Featured.tsx"}],"styles/Header.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~api/mock/home.json":"api/mock/home.json","~components/Featured":"components/Featured.tsx","~components/TitleRow":"components/TitleRow.tsx"}],"styles/Header.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -52186,7 +53662,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56369" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53576" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

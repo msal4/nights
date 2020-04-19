@@ -1,9 +1,15 @@
 import { Title as ITitle } from "~core/interfaces/title"
 import React, { FunctionComponent } from "react"
-import { IoIosStar, IoIosPlay } from "react-icons/io"
+import {
+  IoIosStar,
+  IoIosPlay,
+  IoIosAdd,
+  IoIosInformationCircle,
+  IoIosInformationCircleOutline,
+} from "react-icons/io"
 
 import Title from "./Title"
-import Button from "./Button"
+import Button, { InfoIconButton } from "./Button"
 import { useTranslation } from "react-i18next"
 
 export interface FeaturedProps {
@@ -44,7 +50,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         <h1 className="text-xl md:text-3xl font-bold leading-none">
           {data[0].name}
         </h1>
-        <div className="text-sm text-gray-500">
+        <div className="text-xs md:text-sm text-gray-500">
           <p>
             {data[0].genres
               .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
@@ -60,17 +66,29 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           </div>
         </div>
       </div>
-      <div>
-        <Button to="/series/play">
+      <div className="flex items-center">
+        <Button className="md:mr-4" to="/series/play">
           <IoIosPlay size="1.5em" />
           {t("play")}
         </Button>
+        <InfoIconButton
+          className="hidden md:flex mr-4"
+          icon={<IoIosAdd className="text-base" />}
+        >
+          {t("myList")}
+        </InfoIconButton>
+        <InfoIconButton
+          className="hidden md:flex"
+          icon={<IoIosInformationCircleOutline className="text-base" />}
+        >
+          {t("info")}
+        </InfoIconButton>
       </div>
     </div>
   )
 
   return (
-    <div className="flex mt-4">
+    <div className="flex mt-4 mb-5">
       <div
         className="relative h-64 md:h-auto flex-1 bg-cover bg-center rounded-lg md:mr-4"
         style={{

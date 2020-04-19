@@ -6,6 +6,7 @@ import PlayIcon from "~icons/PlayIcon"
 
 import "../styles/Title.scss"
 import { Title } from "~core/interfaces/title"
+import { IoIosAdd } from "react-icons/io"
 
 const styles = {
   card: {
@@ -21,21 +22,21 @@ export interface TitleProps {
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
   return (
-    <div className="card-container px-1 py-2 hover:bg-white text-xss cursor-pointer select-none">
-      <div className="top-info flex mb-2 justify-end">
+    <div className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none">
+      <div className="hidden md:flex top-info mb-2 justify-end">
         <PlusIcon className="mr-3 card-container-slide-reveal transition-500" />
         <InfoIcon className="card-container-slide-reveal transition-200" />
       </div>
       <div
-        className="bg-black w-40 h-56 font-light flex flex-col justify-between items-center"
+        className="bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center"
         style={styles.card}
       >
         <div className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
           {title.is_new ? (title.type === "s" ? "New Episodes" : "New") : ""}
         </div>
-        <PlayIcon className="card-container-reveal" />
+        <PlayIcon className="hidden md:block card-container-reveal" />
         <div className="self-stretch v-gradient">
-          <h4 className="card-container-reveal self-start font-medium text-xs pl-1">
+          <h4 className="card-container-reveal self-start font-medium md:text-xs pl-1">
             {title.name}
           </h4>
           <div className="p-1 flex justify-between items-center self-stretch">
@@ -44,8 +45,9 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
           </div>
         </div>
       </div>
-      <div className="bottom-info card-container-reveal text-black pt-2 font-thin">
+      <div className="hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin">
         {title.genres
+          .slice(0, 3)
           .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
           .join(" • ")}
       </div>

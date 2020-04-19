@@ -27,6 +27,7 @@
     "react-dom": "^16.13.1",
     "react-i18next": "^11.3.4",
     "react-icons": "^3.9.0",
+    "react-multi-carousel": "^2.5.5",
     "react-router-dom": "^5.1.2",
     "react-slick": "^0.25.2",
     "tailwindcss": "^1.2.0",

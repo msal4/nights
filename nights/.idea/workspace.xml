@@ -2,33 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6e42863-a63e-4e4e-924d-1f75d3f6a8c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/styles/Title.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/i18n.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/i18n.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/postcss.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/postcss.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/App.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Header.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Title.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Title.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Title.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/public/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/index.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/public/index.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/public/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/public/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/css/tailwind.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/templates/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nights_cinema.iml" beforeDir="false" afterPath="$PROJECT_DIR$/nights_cinema.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nights/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nights/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +57,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="11.0.6" />
     <property name="jdk.selected.PYTHON_MODULE" value="Python 3.7 (nights-RZ0hMN4u)" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/frontend/static/frontend/images" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
@@ -89,6 +67,9 @@
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/static/frontend/images" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend/static/frontend/css" />
       <recent name="$PROJECT_DIR$/frontend/src/components" />
@@ -199,7 +180,13 @@
       <workItem from="1586883499549" duration="6185000" />
       <workItem from="1586953890747" duration="10000" />
       <workItem from="1587037772804" duration="6518000" />
-      <workItem from="1587052107291" duration="2111000" />
+      <workItem from="1587052107291" duration="2309000" />
+      <workItem from="1587062734907" duration="4021000" />
+      <workItem from="1587112465335" duration="7959000" />
+      <workItem from="1587134459741" duration="9084000" />
+      <workItem from="1587196493020" duration="23000" />
+      <workItem from="1587221226775" duration="194000" />
+      <workItem from="1587297073310" duration="362000" />
     </task>
     <servers />
   </component>
@@ -215,10 +202,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="320" y="115" key="#Plugins/0.0.1440.900@0.0.1440.900" timestamp="1586665411606" />
-    <state x="320" y="115" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587052201583">
+    <state x="320" y="115" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587062767953">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="115" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1587052201583" />
+    <state x="320" y="115" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1587062767953" />
     <state x="443" y="250" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586319117942">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -259,28 +246,28 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="239" height="457" key="HiddenNamespacesPopup/0.0.1440.900@0.0.1440.900" timestamp="1587052221190" />
-    <state x="308" y="200" key="IDE.errors.dialog" timestamp="1586879017424">
+    <state x="308" y="200" key="IDE.errors.dialog" timestamp="1587140109484">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="308" y="200" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1586879017424" />
+    <state x="308" y="200" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1587140109484" />
     <state x="323" y="63" key="SettingsEditor" timestamp="1587038951620">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="323" y="63" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1587038951620" />
     <state x="355" y="84" key="SettingsEditor/41.23.1399.877@41.23.1399.877" timestamp="1587038708281" />
-    <state width="500" height="445" key="SwitcherDM" timestamp="1586939314448">
+    <state width="500" height="445" key="SwitcherDM" timestamp="1587145191097">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="500" height="445" key="SwitcherDM/0.0.1440.900@0.0.1440.900" timestamp="1586939314448" />
+    <state width="500" height="445" key="SwitcherDM/0.0.1440.900@0.0.1440.900" timestamp="1587145191097" />
     <state width="500" height="445" key="SwitcherDM/41.23.1399.877@41.23.1399.877" timestamp="1586620215969" />
     <state x="97" y="2" key="new project wizard" timestamp="1586618529094">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="97" y="2" key="new project wizard/0.0.1440.900@0.0.1440.900" timestamp="1586618529094" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1587056244160">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1587299278176">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1587056244160" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1587299278176" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/41.23.1399.877@41.23.1399.877" timestamp="1586495466742" />
   </component>
 </project>
