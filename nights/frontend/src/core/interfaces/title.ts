@@ -16,30 +16,18 @@ export interface TitleDetail {
   genres: Topic[]
   cast: Topic[]
   recommended: Title[]
-  released_at: Date
-  created_at: Date
-  updated_at: Date
+  released_at: string
+  created_at: string
+  updated_at: string
 }
 
 export interface Title {
   id: number
   name: string
-  type: Type
+  type: string
   is_new: boolean
-  rated: Rated
+  rated: string
   rating: number | null
   genres: Topic[]
-  released_at: Date
-}
-
-export enum Rated {
-  G = "G",
-  PG = "PG",
-  PG13 = "PG-13",
-  R = "R",
-}
-
-export enum Type {
-  M = "m",
-  S = "s",
+  released_at: string
 }

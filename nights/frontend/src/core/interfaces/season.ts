@@ -5,5 +5,5 @@ export interface Season {
   name: string
   index: number
   episodes: Episode[]
-  released_at: Date
+  released_at: string
 }

@@ -10,5 +10,5 @@ export interface ViewHit {
   episode: Episode
   playback_position: number
   runtime: number
-  hit_date: Date
+  hit_date: string
 }
