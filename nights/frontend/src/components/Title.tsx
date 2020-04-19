@@ -1,10 +1,11 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 
 import InfoIcon from "~icons/InfoIcon"
 import PlusIcon from "~icons/PlusIcon"
 import PlayIcon from "~icons/PlayIcon"
 
 import "../styles/Title.scss"
+import { Title } from "~core/interfaces/title"
 
 const styles = {
   card: {
@@ -14,7 +15,11 @@ const styles = {
   },
 }
 
-export default () => {
+export interface TitleProps {
+  title: Title
+}
+
+const Title: FunctionComponent<TitleProps> = ({ title }) => {
   return (
     <div className="card-container px-1 py-2 hover:bg-white text-xss cursor-pointer select-none">
       <div className="top-info flex mb-2 justify-end">
@@ -26,22 +31,26 @@ export default () => {
         style={styles.card}
       >
         <div className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
-          New Episodes
+          {title.is_new ? (title.type === "s" ? "New Episodes" : "New") : ""}
         </div>
         <PlayIcon className="card-container-reveal" />
         <div className="self-stretch v-gradient">
           <h4 className="card-container-reveal self-start font-medium text-xs pl-1">
-            Dark
+            {title.name}
           </h4>
           <div className="p-1 flex justify-between items-center self-stretch">
-            <span>150 mins</span>
-            <span>7.5</span>
+            <span>{new Date(title.released_at).getFullYear()}</span>
+            <span>{title.rating}</span>
           </div>
         </div>
       </div>
       <div className="bottom-info card-container-reveal text-black pt-2 font-thin">
-        Superhero . Action . Thriller
+        {title.genres
+          .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
+          .join(" • ")}
       </div>
     </div>
   )
 }
+
+export default Title

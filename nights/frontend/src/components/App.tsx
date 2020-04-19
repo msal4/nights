@@ -11,7 +11,7 @@ import { I18nextProvider } from "react-i18next"
 
 export const App = () => {
   return (
-    <div className="mx-10 my-5 lg:mx-16">
+    <div className="mx-5 my-3 md:mx-10 md:my-5 lg:mx-16 xl:max-w-6xl xl:mx-auto">
       <I18nextProvider i18n={i18n}>
         <IconContext.Provider value={{ size: "2em" }}>
           <Router>

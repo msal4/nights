@@ -1,17 +1,16 @@
 import React from "react"
 
-import TitleRow from "~components/TitleRow"
 import homeMockJson from "~api/mock/home.json"
+import Featured from "~components/Featured"
+import { HomeResults } from "~core/interfaces/home"
+import { PaginatedResults } from "~core/interfaces/paginated-results"
 
 export default () => {
-  console.log(homeMockJson)
+  const data = homeMockJson as PaginatedResults<HomeResults>
+
   return (
     <div>
-      <TitleRow />
-      <TitleRow />
-      <TitleRow />
-      <TitleRow />
-      <TitleRow />
+      <Featured data={data.results.featured} />
     </div>
   )
 }

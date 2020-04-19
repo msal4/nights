@@ -7,6 +7,7 @@ i18n
     resources: {
       en: {
         translations: {
+          lang: "عربي",
           home: "Home",
           movies: "Movies",
           series: "Series",
@@ -16,10 +17,12 @@ i18n
           info: "Info",
           continueWatching: "Continue Watching",
           signIn: "Sign in",
+          search: "Search",
         },
       },
       ar: {
         translations: {
+          lang: "English",
           home: "الصفحة الرئيسية",
           movies: "الافلام",
           series: "المسلسلات",
@@ -29,6 +32,7 @@ i18n
           info: "معلومات",
           continueWatching: "واصل المشاهدة",
           signIn: "تسجيل الدخول",
+          search: "بحث",
         },
       },
     },

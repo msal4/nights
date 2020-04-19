@@ -1,56 +1,229 @@
-:lang(en) {
-  font-family: "Almarai", sans-serif;
+/* arabic */
+
+@font-face {
+  font-family: "Almarai";
+
+  font-style: normal;
+
+  font-weight: 300;
+
+  font-display: swap;
+
+  src: local("Almarai Light"), local("Almarai-Light"), url(/static/frontend/public/Almarai-Light.90fd4dd9.ttf) format("woff2");
+
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* arabic */
+
+@font-face {
+  font-family: "Almarai";
+
+  font-style: normal;
+
+  font-weight: 400;
+
+  font-display: swap;
+
+  src: local("Almarai"), local("Almarai-Regular"), url(/static/frontend/public/Almarai-Regular.eb3a364d.ttf) format("woff2");
+
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* arabic */
+
+@font-face {
+  font-family: "Almarai";
+
+  font-style: normal;
+
+  font-weight: 700;
+
+  font-display: swap;
+
+  src: local("Almarai Bold"), local("Almarai-Bold"), url(/static/frontend/public/Almarai-Bold.3c31446b.ttf) format("woff2");
+
+  unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+}
+
+/* latin-ext */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 300;
+
+  font-display: swap;
+
+  src: local("Open Sans Light"), local("OpenSans-Light"), url(/static/frontend/public/OpenSans-Light.b85bbaaa.ttf) format("woff2");
+
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 300;
+
+  font-display: swap;
+
+  src: local("Open Sans Light"), local("OpenSans-Light"), url(/static/frontend/public/OpenSans-Light.b85bbaaa.ttf) format("woff2");
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 400;
+
+  font-display: swap;
+
+  src: local("Open Sans Regular"), local("OpenSans-Regular"), url(/static/frontend/public/OpenSans-Regular.6dea000c.ttf) format("woff2");
+
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 400;
+
+  font-display: swap;
+
+  src: local("Open Sans Regular"), local("OpenSans-Regular"), url(/static/frontend/public/OpenSans-Regular.6dea000c.ttf) format("woff2");
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 600;
+
+  font-display: swap;
+
+  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(/static/frontend/public/OpenSans-SemiBold.3762b4d2.ttf) format("woff2");
+
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 600;
+
+  font-display: swap;
+
+  src: local("Open Sans SemiBold"), local("OpenSans-SemiBold"), url(/static/frontend/public/OpenSans-SemiBold.3762b4d2.ttf) format("woff2");
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 700;
+
+  font-display: swap;
+
+  src: local("Open Sans Bold"), local("OpenSans-Bold"), url(/static/frontend/public/OpenSans-Bold.412bd32d.ttf) format("woff2");
+
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 700;
+
+  font-display: swap;
+
+  src: local("Open Sans Bold"), local("OpenSans-Bold"), url(/static/frontend/public/OpenSans-Bold.412bd32d.ttf) format("woff2");
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 800;
+
+  font-display: swap;
+
+  src: local("Open Sans ExtraBold"), local("OpenSans-ExtraBold"), url(/static/frontend/public/OpenSans-ExtraBold.558d1ea6.ttf) format("woff2");
+
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+
+@font-face {
+  font-family: "Open Sans";
+
+  font-style: normal;
+
+  font-weight: 800;
+
+  font-display: swap;
+
+  src: local("Open Sans ExtraBold"), local("OpenSans-ExtraBold"), url(/static/frontend/public/OpenSans-ExtraBold.558d1ea6.ttf) format("woff2");
+
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  font-family: "Almarai", "Open Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .text-xss {
   font-size: 0.6rem;
 }
+
 .v-gradient {
   background: linear-gradient(transparent, black);
 }
 
-.card-container {
-  transition: all 500ms;
-  min-width: 10.5rem;
-  position: relative;
-  z-index: 2;
+.border-1 {
+  box-shadow: 0 0 0 1px white;
 }
 
-.card-container .transition-500 {
-  transition: all 500ms;
-}
-
-.card-container .transition-200 {
-  transition: all 200ms;
-}
-
-.card-container .card-container-reveal {
-  transition: all 500ms;
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-.card-container .card-container-slide-reveal {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.card-container:hover {
-  transform: scale(1.1);
-}
-
-.card-container:hover .card-container-reveal {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.card-container:hover .card-container-slide-reveal {
-  opacity: 1;
-  transform: translateY(0);
-}
-.title {
-  position: relative;
-  top: 1.8rem;
+.hover\:border-1:hover {
+  box-shadow: 0 0 0 1px white;
 }
 
 /*# sourceMappingURL=/static/frontend/public/index.css.map */

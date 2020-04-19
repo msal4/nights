@@ -20,7 +20,9 @@ const useMenuOpenedState = (value: boolean) => {
 export default () => {
   const { menuOpened, openMenu, closeMenu } = useMenuOpenedState(false)
   const { path } = useRouteMatch()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const toggleLanguage = () =>
+    i18n.changeLanguage(i18n.language == "ar" ? "en" : "ar")
 
   return (
     <nav className="py-4 md:flex md:justify-between font-thin">
@@ -85,7 +87,13 @@ export default () => {
               <IoIosAdd />
               {t("myList")}
             </Link>
-            <Link to="/signin">{t("signIn")}</Link>
+            <Link
+              className="md:mr-1 lg:mr-6 rounded-full px-3 border-1 md:hover:bg-white md:hover:text-black"
+              to="/signin"
+            >
+              {t("signIn")}
+            </Link>
+            <button onClick={toggleLanguage}>{t("lang")}</button>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { IoIosSearch } from "react-icons/io"
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 const useSearchFocusState = (value: boolean) => {
   const [searchFocused, setSearchFocused] = useState(value)
@@ -10,6 +11,7 @@ const useSearchFocusState = (value: boolean) => {
 
 export default (props: { className?: string }) => {
   const { searchFocused, focusSearch, blurSearch } = useSearchFocusState(false)
+  const { t } = useTranslation()
 
   return (
     <div
@@ -29,7 +31,7 @@ export default (props: { className?: string }) => {
       <input
         className="bg-transparent text-sm w-full mx-2 font-thin outline-none"
         type="text"
-        placeholder="Search"
+        placeholder={t("search")}
         onFocus={focusSearch}
         onBlur={blurSearch}
       />

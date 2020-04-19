@@ -1,7 +1,7 @@
 import React from "react"
 
 import Title from "~components/Title"
-import "../styles/TitleRow.css"
+import "../styles/TitleRow.scss"
 
 export default () => {
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
