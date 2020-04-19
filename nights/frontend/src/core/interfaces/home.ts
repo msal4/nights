@@ -5,8 +5,8 @@ export interface HomeResults {
   rows: Row[]
   featured: Title[]
   recently_added: Title[]
-  recently_watched: ViewHit[]
-  recommended: TitleDetail
+  recently_watched?: ViewHit[]
+  recommended?: TitleDetail
 }
 
 export interface Row {
