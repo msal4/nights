@@ -34013,10 +34013,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var react_1 = __importDefault(require("react"));
 
+var react_router_dom_1 = require("react-router-dom");
+
 exports.default = function () {
-  return react_1.default.createElement("div", null, "Title");
+  var id = react_router_dom_1.useParams().id;
+  return react_1.default.createElement("div", null, "Title id ", id);
 };
-},{"react":"../node_modules/react/index.js"}],"api/mock/home.json":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"api/mock/home.json":[function(require,module,exports) {
 module.exports = {
   "count": 27,
   "next": "http://localhost:8000/api/home/?page=2",
@@ -48642,7 +48645,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Button.tsx":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Buttons.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -48681,7 +48684,8 @@ exports.InfoIconButton = function (_a) {
       onClick = _a.onClick,
       children = _a.children,
       icon = _a.icon,
-      className = _a.className;
+      _b = _a.className,
+      className = _b === void 0 ? "" : _b;
   return react_1.default.createElement(exports.BaseButton, {
     className: "flex flex-col items-center text-xs text-gray-500 hover:text-white\n       " + className,
     to: to,
@@ -48689,7 +48693,7 @@ exports.InfoIconButton = function (_a) {
   }, icon, children);
 };
 
-var PrimaryButton = function PrimaryButton(_a) {
+exports.PrimaryButton = function (_a) {
   var to = _a.to,
       onClick = _a.onClick,
       children = _a.children,
@@ -48700,25 +48704,33 @@ var PrimaryButton = function PrimaryButton(_a) {
     className: "flex items-center px-5 text-sm font-semibold py-2 rounded-full button-container " + className
   }, children);
 };
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Button.scss":"styles/Button.scss"}],"utils/common.ts":[function(require,module,exports) {
+"use strict";
 
-exports.default = PrimaryButton;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Button.scss":"styles/Button.scss"}],"components/Featured.tsx":[function(require,module,exports) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.capitalizeFirst = function (str) {
+  return (str === null || str === void 0 ? void 0 : str.charAt(0).toUpperCase()) + str.slice(1);
+};
+
+exports.joinTopics = function (topics, sep) {
+  if (sep === void 0) {
+    sep = " • ";
+  }
+
+  return topics === null || topics === void 0 ? void 0 : topics.map(function (g) {
+    return exports.capitalizeFirst(g.name);
+  }).join(sep);
+};
+},{}],"components/Featured.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
     "default": mod
   };
-};
-
-var __importStar = this && this.__importStar || function (mod) {
-  if (mod && mod.__esModule) return mod;
-  var result = {};
-  if (mod != null) for (var k in mod) {
-    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-  }
-  result["default"] = mod;
-  return result;
 };
 
 Object.defineProperty(exports, "__esModule", {
@@ -48729,19 +48741,22 @@ var react_1 = __importDefault(require("react"));
 
 var io_1 = require("react-icons/io");
 
-var Button_1 = __importStar(require("./Button"));
-
 var react_i18next_1 = require("react-i18next");
+
+var Buttons_1 = require("./Buttons");
+
+var common_1 = require("~utils/common");
 
 var Featured = function Featured(_a) {
   var data = _a.data;
   var t = react_i18next_1.useTranslation().t;
 
   var FeaturedItem = function FeaturedItem(_a) {
-    var className = _a.className,
+    var _b = _a.className,
+        className = _b === void 0 ? "" : _b,
         title = _a.title;
     return react_1.default.createElement("div", {
-      className: "h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light " + (className || ""),
+      className: "h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light " + className,
       style: {
         background: "url(/static/frontend/images/mulan.png)",
         backgroundSize: "cover",
@@ -48754,17 +48769,17 @@ var Featured = function Featured(_a) {
   };
 
   var BottomInfo = function BottomInfo() {
+    var _a, _b;
+
     return react_1.default.createElement("div", {
       className: "absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3"
     }, react_1.default.createElement("div", {
       className: "mr-2"
     }, react_1.default.createElement("h1", {
       className: "text-xl md:text-3xl font-bold leading-none"
-    }, data[0].name), react_1.default.createElement("div", {
+    }, (_a = data[0]) === null || _a === void 0 ? void 0 : _a.name), react_1.default.createElement("div", {
       className: "text-xs md:text-sm text-gray-500"
-    }, react_1.default.createElement("p", null, data[0].genres.map(function (g) {
-      return g.name.charAt(0).toUpperCase() + g.name.slice(1);
-    }).join(" • ")), react_1.default.createElement("div", {
+    }, react_1.default.createElement("p", null, common_1.joinTopics((_b = data[0]) === null || _b === void 0 ? void 0 : _b.genres)), react_1.default.createElement("div", {
       className: "flex items-center"
     }, react_1.default.createElement("p", {
       className: "mr-2"
@@ -48775,17 +48790,17 @@ var Featured = function Featured(_a) {
       fontSize: ".55em"
     }), data[0].rating), react_1.default.createElement("p", null, new Date(data[0].released_at).getFullYear())))), react_1.default.createElement("div", {
       className: "flex items-center"
-    }, react_1.default.createElement(Button_1.default, {
+    }, react_1.default.createElement(Buttons_1.PrimaryButton, {
       className: "md:mr-4",
       to: "/series/play"
     }, react_1.default.createElement(io_1.IoIosPlay, {
       size: "1.5em"
-    }), t("play")), react_1.default.createElement(Button_1.InfoIconButton, {
+    }), t("play")), react_1.default.createElement(Buttons_1.InfoIconButton, {
       className: "hidden md:flex mr-4",
       icon: react_1.default.createElement(io_1.IoIosAdd, {
         className: "text-base"
       })
-    }, t("myList")), react_1.default.createElement(Button_1.InfoIconButton, {
+    }, t("myList")), react_1.default.createElement(Buttons_1.InfoIconButton, {
       className: "hidden md:flex",
       icon: react_1.default.createElement(io_1.IoIosInformationCircleOutline, {
         className: "text-base"
@@ -48817,7 +48832,303 @@ var Featured = function Featured(_a) {
 };
 
 exports.default = Featured;
-},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","./Button":"components/Button.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"../node_modules/react-multi-carousel/lib/utils/clones.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./Buttons":"components/Buttons.tsx","~utils/common":"utils/common.ts"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var InfoIcon = function InfoIcon(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, " ", react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    x: "0",
+    y: "0",
+    enableBackground: "new 0 0 512 512",
+    version: "1.1",
+    viewBox: "0 0 512 512",
+    xmlSpace: "preserve"
+  }, react_1.default.createElement("path", {
+    d: "M256 0C114.51 0 0 114.497 0 256c0 141.49 114.497 256 256 256 141.49 0 256-114.497 256-256C512 114.51 397.503 0 256 0zm0 477.867c-122.337 0-221.867-99.529-221.867-221.867S133.663 34.133 256 34.133 477.867 133.663 477.867 256 378.337 477.867 256 477.867z"
+  }), react_1.default.createElement("path", {
+    d: "M255.997 209.777c-9.425 0-17.067 7.641-17.067 17.067v143.969c0 9.425 7.641 17.067 17.067 17.067s17.067-7.641 17.067-17.067v-143.97c-.001-9.426-7.642-17.066-17.067-17.066zM256 124.122c-18.821 0-34.133 15.312-34.133 34.133s15.312 34.133 34.133 34.133 34.133-15.312 34.133-34.133-15.312-34.133-34.133-34.133z"
+  })));
+};
+
+exports.default = InfoIcon;
+},{"react":"../node_modules/react/index.js"}],"icons/PlusIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var PlusIcon = function PlusIcon(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    x: "0",
+    y: "0",
+    enableBackground: "new 0 0 409.6 409.6",
+    version: "1.1",
+    viewBox: "0 0 409.6 409.6",
+    xmlSpace: "preserve"
+  }, react_1.default.createElement("path", {
+    d: "M392.533 187.733H221.867V17.067C221.867 7.641 214.226 0 204.8 0s-17.067 7.641-17.067 17.067v170.667H17.067C7.641 187.733 0 195.374 0 204.8s7.641 17.067 17.067 17.067h170.667v170.667c0 9.426 7.641 17.067 17.067 17.067s17.067-7.641 17.067-17.067V221.867h170.667c9.426 0 17.067-7.641 17.067-17.067s-7.643-17.067-17.069-17.067z"
+  })));
+};
+
+exports.default = PlusIcon;
+},{"react":"../node_modules/react/index.js"}],"icons/SvgContainer.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var SvgContainer = function SvgContainer(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className,
+      children = _a.children;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, children);
+};
+
+exports.default = SvgContainer;
+},{"react":"../node_modules/react/index.js"}],"icons/PlayIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var SvgContainer_1 = __importDefault(require("./SvgContainer"));
+
+exports.default = function (props) {
+  return react_1.default.createElement(SvgContainer_1.default, __assign({
+    style: {
+      fill: "#ea1437",
+      background: "white",
+      borderRadius: "50%",
+      maxWidth: "3rem",
+      maxHeight: "3rem",
+      minWidth: "3rem",
+      minHeight: "3rem"
+    },
+    width: "3rem",
+    height: "3rem"
+  }, props), react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 565.648 565.648"
+  }, react_1.default.createElement("path", {
+    d: "M282.824 0C126.877 0 0 126.877 0 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824S438.771 0 282.824 0zm-70.706 424.233V141.411l212.118 141.41z"
+  })));
+};
+},{"react":"../node_modules/react/index.js","./SvgContainer":"icons/SvgContainer.tsx"}],"styles/Title.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Title.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var InfoIcon_1 = __importDefault(require("~icons/InfoIcon"));
+
+var PlusIcon_1 = __importDefault(require("~icons/PlusIcon"));
+
+var PlayIcon_1 = __importDefault(require("~icons/PlayIcon"));
+
+require("../styles/Title.scss");
+
+var react_router_dom_1 = require("react-router-dom");
+
+var Title = function Title(_a) {
+  var title = _a.title;
+  console.log("http://static.1001nights.fun/250tmdb/" + title.id + ".jpg");
+  return react_1.default.createElement(react_router_dom_1.Link, {
+    to: "/title/" + title.id,
+    className: "inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
+  }, react_1.default.createElement("div", {
+    className: "hidden md:flex top-info mb-2 justify-end"
+  }, react_1.default.createElement(PlusIcon_1.default, {
+    className: "mr-3 card-container-slide-reveal transition-500"
+  }), react_1.default.createElement(InfoIcon_1.default, {
+    className: "card-container-slide-reveal transition-200"
+  })), react_1.default.createElement("div", {
+    className: "bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center",
+    style: {
+      backgroundImage: "url(http://static.1001nights.fun/250tmdb/" + title.id + ".jpg), url(http://static.1001nights.fun/250v/" + title.id + ".jpg)",
+      backgroundPosition: "center",
+      backgroundSize: "cover"
+    }
+  }, react_1.default.createElement("div", {
+    className: "m-1 bg-green-600 text-black rounded-sm px-1 self-start"
+  }, title.is_new ? title.type === "s" ? "New Episodes" : "New" : ""), react_1.default.createElement(PlayIcon_1.default, {
+    className: "hidden md:block card-container-reveal"
+  }), react_1.default.createElement("div", {
+    className: "self-stretch v-gradient"
+  }, react_1.default.createElement("h4", {
+    className: "card-container-reveal self-start font-medium md:text-xs pl-1"
+  }, title.name), react_1.default.createElement("div", {
+    className: "p-1 flex justify-between items-center self-stretch"
+  }, react_1.default.createElement("span", null, new Date(title.released_at).getFullYear()), react_1.default.createElement("span", null, title.rating)))), react_1.default.createElement("div", {
+    className: "hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin"
+  }, title.genres.slice(0, 3).map(function (g) {
+    return g.name.charAt(0).toUpperCase() + g.name.slice(1);
+  }).join(" • ")));
+};
+
+exports.default = Title;
+},{"react":"../node_modules/react/index.js","~icons/InfoIcon":"icons/InfoIcon.tsx","~icons/PlusIcon":"icons/PlusIcon.tsx","~icons/PlayIcon":"icons/PlayIcon.tsx","../styles/Title.scss":"styles/Title.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"../node_modules/react-multi-carousel/lib/utils/clones.js":[function(require,module,exports) {
 "use strict";
 
 function getOriginalCounterPart(index, _a, childrenArr) {
@@ -49855,7 +50166,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./revicons.woff":[["revicons.bbe64dbc.woff","../node_modules/react-multi-carousel/lib/revicons.woff"],"../node_modules/react-multi-carousel/lib/revicons.woff"],"./revicons.ttf":[["revicons.acce3a14.ttf","../node_modules/react-multi-carousel/lib/revicons.ttf"],"../node_modules/react-multi-carousel/lib/revicons.ttf"],"./revicons.eot":[["revicons.12977cf3.eot","../node_modules/react-multi-carousel/lib/revicons.eot"],"../node_modules/react-multi-carousel/lib/revicons.eot"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
+},{"./revicons.woff":[["revicons.bbe64dbc.woff","../node_modules/react-multi-carousel/lib/revicons.woff"],"../node_modules/react-multi-carousel/lib/revicons.woff"],"./revicons.ttf":[["revicons.acce3a14.ttf","../node_modules/react-multi-carousel/lib/revicons.ttf"],"../node_modules/react-multi-carousel/lib/revicons.ttf"],"./revicons.eot":[["revicons.12977cf3.eot","../node_modules/react-multi-carousel/lib/revicons.eot"],"../node_modules/react-multi-carousel/lib/revicons.eot"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/CarouselRow.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -49873,291 +50184,6 @@ var __assign = this && this.__assign || function () {
 
   return __assign.apply(this, arguments);
 };
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var InfoIcon = function InfoIcon(_a) {
-  var _b = _a.width,
-      width = _b === void 0 ? "1rem" : _b,
-      _c = _a.height,
-      height = _c === void 0 ? "1rem" : _c,
-      _d = _a.fill,
-      fill = _d === void 0 ? "black" : _d,
-      style = _a.style,
-      className = _a.className;
-  return react_1.default.createElement("div", {
-    className: className,
-    style: __assign({
-      width: width,
-      height: height,
-      fill: fill
-    }, style)
-  }, " ", react_1.default.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    x: "0",
-    y: "0",
-    enableBackground: "new 0 0 512 512",
-    version: "1.1",
-    viewBox: "0 0 512 512",
-    xmlSpace: "preserve"
-  }, react_1.default.createElement("path", {
-    d: "M256 0C114.51 0 0 114.497 0 256c0 141.49 114.497 256 256 256 141.49 0 256-114.497 256-256C512 114.51 397.503 0 256 0zm0 477.867c-122.337 0-221.867-99.529-221.867-221.867S133.663 34.133 256 34.133 477.867 133.663 477.867 256 378.337 477.867 256 477.867z"
-  }), react_1.default.createElement("path", {
-    d: "M255.997 209.777c-9.425 0-17.067 7.641-17.067 17.067v143.969c0 9.425 7.641 17.067 17.067 17.067s17.067-7.641 17.067-17.067v-143.97c-.001-9.426-7.642-17.066-17.067-17.066zM256 124.122c-18.821 0-34.133 15.312-34.133 34.133s15.312 34.133 34.133 34.133 34.133-15.312 34.133-34.133-15.312-34.133-34.133-34.133z"
-  })));
-};
-
-exports.default = InfoIcon;
-},{"react":"../node_modules/react/index.js"}],"icons/PlusIcon.tsx":[function(require,module,exports) {
-"use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var PlusIcon = function PlusIcon(_a) {
-  var _b = _a.width,
-      width = _b === void 0 ? "1rem" : _b,
-      _c = _a.height,
-      height = _c === void 0 ? "1rem" : _c,
-      _d = _a.fill,
-      fill = _d === void 0 ? "black" : _d,
-      style = _a.style,
-      className = _a.className;
-  return react_1.default.createElement("div", {
-    className: className,
-    style: __assign({
-      width: width,
-      height: height,
-      fill: fill
-    }, style)
-  }, react_1.default.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    x: "0",
-    y: "0",
-    enableBackground: "new 0 0 409.6 409.6",
-    version: "1.1",
-    viewBox: "0 0 409.6 409.6",
-    xmlSpace: "preserve"
-  }, react_1.default.createElement("path", {
-    d: "M392.533 187.733H221.867V17.067C221.867 7.641 214.226 0 204.8 0s-17.067 7.641-17.067 17.067v170.667H17.067C7.641 187.733 0 195.374 0 204.8s7.641 17.067 17.067 17.067h170.667v170.667c0 9.426 7.641 17.067 17.067 17.067s17.067-7.641 17.067-17.067V221.867h170.667c9.426 0 17.067-7.641 17.067-17.067s-7.643-17.067-17.069-17.067z"
-  })));
-};
-
-exports.default = PlusIcon;
-},{"react":"../node_modules/react/index.js"}],"icons/SvgContainer.tsx":[function(require,module,exports) {
-"use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var SvgContainer = function SvgContainer(_a) {
-  var _b = _a.width,
-      width = _b === void 0 ? "1rem" : _b,
-      _c = _a.height,
-      height = _c === void 0 ? "1rem" : _c,
-      _d = _a.fill,
-      fill = _d === void 0 ? "black" : _d,
-      style = _a.style,
-      className = _a.className,
-      children = _a.children;
-  return react_1.default.createElement("div", {
-    className: className,
-    style: __assign({
-      width: width,
-      height: height,
-      fill: fill
-    }, style)
-  }, children);
-};
-
-exports.default = SvgContainer;
-},{"react":"../node_modules/react/index.js"}],"icons/PlayIcon.tsx":[function(require,module,exports) {
-"use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var SvgContainer_1 = __importDefault(require("./SvgContainer"));
-
-exports.default = function (props) {
-  return react_1.default.createElement(SvgContainer_1.default, __assign({
-    style: {
-      fill: "#ea1437",
-      background: "white",
-      borderRadius: "50%",
-      maxWidth: "3rem",
-      maxHeight: "3rem",
-      minWidth: "3rem",
-      minHeight: "3rem"
-    },
-    width: "3rem",
-    height: "3rem"
-  }, props), react_1.default.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 565.648 565.648"
-  }, react_1.default.createElement("path", {
-    d: "M282.824 0C126.877 0 0 126.877 0 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824S438.771 0 282.824 0zm-70.706 424.233V141.411l212.118 141.41z"
-  })));
-};
-},{"react":"../node_modules/react/index.js","./SvgContainer":"icons/SvgContainer.tsx"}],"styles/Title.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Title.tsx":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var InfoIcon_1 = __importDefault(require("~icons/InfoIcon"));
-
-var PlusIcon_1 = __importDefault(require("~icons/PlusIcon"));
-
-var PlayIcon_1 = __importDefault(require("~icons/PlayIcon"));
-
-require("../styles/Title.scss");
-
-var styles = {
-  card: {
-    backgroundImage: "url(/static/frontend/images/dark.jpg)",
-    backgroundPosition: "center",
-    backgroundSize: "cover"
-  }
-};
-
-var Title = function Title(_a) {
-  var title = _a.title;
-  return react_1.default.createElement("div", {
-    className: "inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
-  }, react_1.default.createElement("div", {
-    className: "hidden md:flex top-info mb-2 justify-end"
-  }, react_1.default.createElement(PlusIcon_1.default, {
-    className: "mr-3 card-container-slide-reveal transition-500"
-  }), react_1.default.createElement(InfoIcon_1.default, {
-    className: "card-container-slide-reveal transition-200"
-  })), react_1.default.createElement("div", {
-    className: "bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center",
-    style: styles.card
-  }, react_1.default.createElement("div", {
-    className: "m-1 bg-green-600 text-black rounded-sm px-1 self-start"
-  }, title.is_new ? title.type === "s" ? "New Episodes" : "New" : ""), react_1.default.createElement(PlayIcon_1.default, {
-    className: "hidden md:block card-container-reveal"
-  }), react_1.default.createElement("div", {
-    className: "self-stretch v-gradient"
-  }, react_1.default.createElement("h4", {
-    className: "card-container-reveal self-start font-medium md:text-xs pl-1"
-  }, title.name), react_1.default.createElement("div", {
-    className: "p-1 flex justify-between items-center self-stretch"
-  }, react_1.default.createElement("span", null, new Date(title.released_at).getFullYear()), react_1.default.createElement("span", null, title.rating)))), react_1.default.createElement("div", {
-    className: "hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin"
-  }, title.genres.slice(0, 3).map(function (g) {
-    return g.name.charAt(0).toUpperCase() + g.name.slice(1);
-  }).join(" • ")));
-};
-
-exports.default = Title;
-},{"react":"../node_modules/react/index.js","~icons/InfoIcon":"icons/InfoIcon.tsx","~icons/PlusIcon":"icons/PlusIcon.tsx","~icons/PlayIcon":"icons/PlayIcon.tsx","../styles/Title.scss":"styles/Title.scss"}],"styles/TitleRow.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/TitleRow.tsx":[function(require,module,exports) {
-"use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
@@ -50175,13 +50201,8 @@ var react_multi_carousel_1 = __importDefault(require("react-multi-carousel"));
 
 require("react-multi-carousel/lib/styles.css");
 
-var Title_1 = __importDefault(require("~components/Title"));
-
-require("../styles/TitleRow.scss");
-
-var responsive = {
+exports.defaultResponsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: {
       max: 4000,
       min: 3000
@@ -50202,13 +50223,6 @@ var responsive = {
     },
     items: 4
   },
-  midTablet: {
-    breakpoint: {
-      max: 750,
-      min: 540
-    },
-    items: 3
-  },
   mobile: {
     breakpoint: {
       max: 464,
@@ -50218,25 +50232,249 @@ var responsive = {
   }
 };
 
-var TitleRow = function TitleRow(_a) {
-  var row = _a.row;
+var CarouselRow = function CarouselRow(_a) {
+  var title = _a.title,
+      children = _a.children,
+      _b = _a.className,
+      className = _b === void 0 ? "" : _b,
+      _c = _a.responsive,
+      responsive = _c === void 0 ? {} : _c;
   return react_1.default.createElement("div", {
-    className: "relative"
+    className: "relative " + className
   }, react_1.default.createElement("h3", {
     className: "md:absolute md:text-lg text-sm ml-3 font-semibold leading-none"
-  }, row.name.charAt(0).toUpperCase() + row.name.slice(1)), react_1.default.createElement(react_multi_carousel_1.default, {
+  }, title), react_1.default.createElement(react_multi_carousel_1.default, {
     className: "py-2 md:py-3",
-    responsive: responsive
-  }, row.title_list.map(function (t) {
+    responsive: __assign(__assign({}, exports.defaultResponsive), responsive)
+  }, children));
+};
+
+exports.default = CarouselRow;
+},{"react":"../node_modules/react/index.js","react-multi-carousel":"../node_modules/react-multi-carousel/index.js","react-multi-carousel/lib/styles.css":"../node_modules/react-multi-carousel/lib/styles.css"}],"components/TitleRow.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var Title_1 = __importDefault(require("~components/Title"));
+
+var CarouselRow_1 = __importDefault(require("./CarouselRow"));
+
+var TitleRow = function TitleRow(_a) {
+  var row = _a.row,
+      name = _a.name;
+  return react_1.default.createElement(CarouselRow_1.default, {
+    title: name
+  }, row.map(function (title) {
     return react_1.default.createElement(Title_1.default, {
-      key: t.id,
-      title: t
+      key: title.id,
+      title: title
     });
-  })));
+  }));
 };
 
 exports.default = TitleRow;
-},{"react":"../node_modules/react/index.js","react-multi-carousel":"../node_modules/react-multi-carousel/index.js","react-multi-carousel/lib/styles.css":"../node_modules/react-multi-carousel/lib/styles.css","~components/Title":"components/Title.tsx","../styles/TitleRow.scss":"styles/TitleRow.scss"}],"pages/HomePage.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~components/Title":"components/Title.tsx","./CarouselRow":"components/CarouselRow.tsx"}],"styles/CWCard.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/CWCard.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+require("../styles/CWCard.scss");
+
+var CWCard = function CWCard(_a) {
+  var hit = _a.hit;
+
+  var _b;
+
+  var percent = hit.playback_position / hit.runtime * 100;
+  return react_1.default.createElement("div", {
+    className: "cw-card-container flex pt-2 md:pt-8 ml-3 mr-2 cursor-pointer"
+  }, react_1.default.createElement("img", {
+    className: "glow w-32 h-20 object-cover rounded mr-2",
+    draggable: false,
+    src: "/static/frontend/images/mulan.png",
+    alt: ""
+  }), react_1.default.createElement("div", {
+    className: "flex flex-col flex-1 justify-between"
+  }, react_1.default.createElement("p", {
+    className: "text-sm"
+  }, hit.topic.name), react_1.default.createElement("p", null, (_b = hit.episode) === null || _b === void 0 ? void 0 : _b.name), react_1.default.createElement("div", {
+    className: "progress h-1 overflow-hidden rounded bg-gray-900"
+  }, react_1.default.createElement("div", {
+    className: "h-full h-rainbow",
+    style: {
+      width: percent + "%"
+    }
+  }))));
+};
+
+exports.default = CWCard;
+},{"react":"../node_modules/react/index.js","../styles/CWCard.scss":"styles/CWCard.scss"}],"components/CWRow.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var CarouselRow_1 = __importDefault(require("./CarouselRow"));
+
+var CWCard_1 = __importDefault(require("./CWCard"));
+
+var react_i18next_1 = require("react-i18next");
+
+var CWRow = function CWRow(_a) {
+  var row = _a.row;
+  var t = react_i18next_1.useTranslation().t;
+  return react_1.default.createElement(CarouselRow_1.default, {
+    className: "pb-6",
+    title: t("continueWatching"),
+    responsive: {
+      superLargeDesktop: {
+        breakpoint: {
+          max: 4000,
+          min: 3000
+        },
+        items: 3
+      },
+      desktop: {
+        breakpoint: {
+          max: 3000,
+          min: 1024
+        },
+        items: 3
+      },
+      tablet: {
+        breakpoint: {
+          max: 1024,
+          min: 464
+        },
+        items: 2
+      },
+      mobile: {
+        breakpoint: {
+          max: 464,
+          min: 0
+        },
+        items: 1
+      }
+    }
+  }, row.map(function (hit) {
+    return react_1.default.createElement(CWCard_1.default, {
+      key: hit.id,
+      hit: hit
+    });
+  }));
+};
+
+exports.default = CWRow;
+},{"react":"../node_modules/react/index.js","./CarouselRow":"components/CarouselRow.tsx","./CWCard":"components/CWCard.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"components/Recommended.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var common_1 = require("~utils/common");
+
+var io_1 = require("react-icons/io");
+
+var Buttons_1 = require("./Buttons");
+
+var react_i18next_1 = require("react-i18next");
+
+var Recommended = function Recommended(_a) {
+  var title = _a.title;
+  var t = react_i18next_1.useTranslation().t;
+  return react_1.default.createElement("div", {
+    className: "mb-8 mx-3"
+  }, react_1.default.createElement("h3", {
+    className: "md:text-lg mb-6 text-sm font-semibold leading-none"
+  }, "Picked for You"), react_1.default.createElement("div", {
+    className: "flex flex-col md:flex-row"
+  }, react_1.default.createElement("div", {
+    className: "rounded-lg mb-2 w-full h-40 md:w-0 flex-1 h-full md:mr-4"
+  }, react_1.default.createElement("img", {
+    className: "h-full w-full object-cover",
+    src: "/static/frontend/images/mulan.png",
+    alt: ""
+  })), react_1.default.createElement("div", {
+    className: "flex flex-col md:flex-1 md:justify-between md:mt-2"
+  }, react_1.default.createElement("div", {
+    className: "flex flex-col items-start"
+  }, react_1.default.createElement("div", {
+    className: "bg-green-600 text-black text-xss rounded-sm px-1 mb-2 self-start"
+  }, title.is_new ? title.type === "s" ? "New Episodes" : "New" : ""), react_1.default.createElement("h1", {
+    className: "md:text-2xl md:font-thin mb-2 md:mb-4"
+  }, title.name), react_1.default.createElement("div", {
+    className: "flex items-center text-xs md:text-sm mb-2 md:mb-4"
+  }, react_1.default.createElement("p", {
+    className: "text-gray-500 mr-2"
+  }, common_1.joinTopics(title.genres)), react_1.default.createElement("p", {
+    className: "flex items-center text-white font-semibold"
+  }, react_1.default.createElement(io_1.IoIosStar, {
+    className: "text-blue-600 mr-1",
+    size: "1em"
+  }), title.rating))), react_1.default.createElement("div", {
+    className: "flex items-center mb-2 md:mb-4"
+  }, react_1.default.createElement(Buttons_1.PrimaryButton, {
+    className: "mr-4",
+    to: "/series/play"
+  }, react_1.default.createElement(io_1.IoIosPlay, {
+    size: "1.5em"
+  }), t("play")), react_1.default.createElement(Buttons_1.InfoIconButton, {
+    className: "mr-4",
+    icon: react_1.default.createElement(io_1.IoIosAdd, {
+      className: "text-base"
+    })
+  }, t("myList")), react_1.default.createElement(Buttons_1.InfoIconButton, {
+    icon: react_1.default.createElement(io_1.IoIosInformationCircleOutline, {
+      className: "text-base"
+    })
+  }, t("info"))))));
+};
+
+exports.default = Recommended;
+},{"react":"../node_modules/react/index.js","~utils/common":"utils/common.ts","react-icons/io":"../node_modules/react-icons/io/index.esm.js","./Buttons":"components/Buttons.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"pages/HomePage.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -50257,18 +50495,35 @@ var Featured_1 = __importDefault(require("~components/Featured"));
 
 var TitleRow_1 = __importDefault(require("~components/TitleRow"));
 
+var CWRow_1 = __importDefault(require("~components/CWRow"));
+
+var common_1 = require("~utils/common");
+
+var react_i18next_1 = require("react-i18next");
+
+var Recommended_1 = __importDefault(require("~components/Recommended"));
+
 exports.default = function () {
-  var data = home_json_1.default;
-  return react_1.default.createElement("div", null, react_1.default.createElement(Featured_1.default, {
-    data: data.results.featured
-  }), data.results.rows.map(function (row) {
+  var t = react_i18next_1.useTranslation().t;
+  var results = home_json_1.default.results;
+  return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement(Featured_1.default, {
+    data: results.featured
+  }), results.recently_watched && react_1.default.createElement(CWRow_1.default, {
+    row: results.recently_watched
+  }), results.recently_added && react_1.default.createElement(TitleRow_1.default, {
+    row: results.recently_added,
+    name: t("recentlyAdded")
+  }), results.recommended && react_1.default.createElement(Recommended_1.default, {
+    title: results.recommended
+  }), results.rows.map(function (row) {
     return react_1.default.createElement(TitleRow_1.default, {
       key: row.id,
-      row: row
+      row: row.title_list,
+      name: common_1.capitalizeFirst(row.name)
     });
   }));
 };
-},{"react":"../node_modules/react/index.js","~api/mock/home.json":"api/mock/home.json","~components/Featured":"components/Featured.tsx","~components/TitleRow":"components/TitleRow.tsx"}],"styles/Header.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~api/mock/home.json":"api/mock/home.json","~components/Featured":"components/Featured.tsx","~components/TitleRow":"components/TitleRow.tsx","~components/CWRow":"components/CWRow.tsx","~utils/common":"utils/common.ts","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~components/Recommended":"components/Recommended.tsx"}],"styles/Header.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -53527,7 +53782,8 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
         info: "Info",
         continueWatching: "Continue Watching",
         signIn: "Sign in",
-        search: "Search"
+        search: "Search",
+        recentlyAdded: "Recently Added"
       }
     },
     ar: {
@@ -53542,7 +53798,8 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
         info: "معلومات",
         continueWatching: "واصل المشاهدة",
         signIn: "تسجيل الدخول",
-        search: "بحث"
+        search: "بحث",
+        recentlyAdded: "احدث الاضافات"
       }
     }
   },
@@ -53603,7 +53860,7 @@ exports.App = function () {
       size: "2em"
     }
   }, react_1.default.createElement(react_router_dom_1.BrowserRouter, null, react_1.default.createElement(Header_1.default, null), react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(react_router_dom_1.Route, {
-    path: "/title"
+    path: "/title/:id"
   }, react_1.default.createElement(TitlePage_1.default, null)), react_1.default.createElement(react_router_dom_1.Route, {
     path: "/"
   }, react_1.default.createElement(HomePage_1.default, null)))))));

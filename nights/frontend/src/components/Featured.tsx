@@ -4,13 +4,12 @@ import {
   IoIosStar,
   IoIosPlay,
   IoIosAdd,
-  IoIosInformationCircle,
   IoIosInformationCircleOutline,
 } from "react-icons/io"
-
-import Title from "./Title"
-import Button, { InfoIconButton } from "./Button"
 import { useTranslation } from "react-i18next"
+
+import { PrimaryButton, InfoIconButton } from "./Buttons"
+import { joinTopics } from "~utils/common"
 
 export interface FeaturedProps {
   data: ITitle[]
@@ -20,17 +19,14 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   const { t } = useTranslation()
 
   const FeaturedItem = ({
-    className,
+    className = "",
     title,
   }: {
     className?: string
     title: ITitle
   }) => (
     <div
-      className={
-        "h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light " +
-        (className || "")
-      }
+      className={`h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light ${className}`}
       style={{
         background: "url(/static/frontend/images/mulan.png)",
         backgroundSize: "cover",
@@ -48,14 +44,10 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
       <div className="mr-2">
         <h1 className="text-xl md:text-3xl font-bold leading-none">
-          {data[0].name}
+          {data[0]?.name}
         </h1>
         <div className="text-xs md:text-sm text-gray-500">
-          <p>
-            {data[0].genres
-              .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
-              .join(" • ")}
-          </p>
+          <p>{joinTopics(data[0]?.genres)}</p>
           <div className="flex items-center">
             <p className="mr-2">{data[0].rated}</p>
             <p className="flex items-center mr-2">
@@ -67,10 +59,10 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         </div>
       </div>
       <div className="flex items-center">
-        <Button className="md:mr-4" to="/series/play">
+        <PrimaryButton className="md:mr-4" to="/series/play">
           <IoIosPlay size="1.5em" />
           {t("play")}
-        </Button>
+        </PrimaryButton>
         <InfoIconButton
           className="hidden md:flex mr-4"
           icon={<IoIosAdd className="text-base" />}

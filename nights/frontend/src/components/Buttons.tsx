@@ -1,7 +1,6 @@
-import { FunctionComponent, JSXElementConstructor, DOMAttributes } from "react"
+import { FunctionComponent } from "react"
 import React from "react"
 import { Link } from "react-router-dom"
-import { IconBaseProps } from "react-icons"
 import "../styles/Button.scss"
 
 export interface ButtonProps {
@@ -37,7 +36,7 @@ export const InfoIconButton: FunctionComponent<InfoButtonProps> = ({
   onClick,
   children,
   icon,
-  className,
+  className = "",
 }) => {
   return (
     <BaseButton
@@ -52,7 +51,7 @@ export const InfoIconButton: FunctionComponent<InfoButtonProps> = ({
   )
 }
 
-const PrimaryButton: FunctionComponent<ButtonProps> = ({
+export const PrimaryButton: FunctionComponent<ButtonProps> = ({
   to,
   onClick,
   children,
@@ -66,5 +65,3 @@ const PrimaryButton: FunctionComponent<ButtonProps> = ({
     {children}
   </BaseButton>
 )
-
-export default PrimaryButton

@@ -5,16 +5,33 @@ import Featured from "~components/Featured"
 import { HomeResults } from "~core/interfaces/home"
 import { PaginatedResults } from "~core/interfaces/paginated-results"
 import TitleRow from "~components/TitleRow"
+import CWRow from "~components/CWRow"
+import Title from "~components/Title"
+import { capitalizeFirst } from "~utils/common"
+import { useTranslation } from "react-i18next"
+import Recommended from "~components/Recommended"
 
 export default () => {
-  const data = homeMockJson as PaginatedResults<HomeResults>
+  const { t } = useTranslation()
 
+  const { results } = homeMockJson as PaginatedResults<HomeResults>
   return (
-    <div>
-      <Featured data={data.results.featured} />
-      {data.results.rows.map((row) => (
-        <TitleRow key={row.id} row={row} />
+    <>
+      <Featured data={results.featured} />
+      {/* Continue watching */}
+      {results.recently_watched && <CWRow row={results.recently_watched} />}
+      {results.recently_added && (
+        <TitleRow row={results.recently_added} name={t("recentlyAdded")} />
+      )}
+      {results.recommended && <Recommended title={results.recommended} />}
+      {/* Genre rows */}
+      {results.rows.map((row) => (
+        <TitleRow
+          key={row.id}
+          row={row.title_list}
+          name={capitalizeFirst(row.name)}
+        />
       ))}
-    </div>
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { IconContext } from "react-icons"
 
@@ -17,7 +17,7 @@ export const App = () => {
           <Router>
             <Header />
             <Switch>
-              <Route path="/title">
+              <Route path="/title/:id">
                 <TitlePage />
               </Route>
               <Route path="/">

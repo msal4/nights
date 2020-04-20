@@ -1,3 +1,7 @@
-import React from 'react'
+import React from "react"
+import { useParams } from "react-router-dom"
 
-export default () => <div>Title</div>
+export default () => {
+  const { id } = useParams()
+  return <div>Title id {id}</div>
+}

@@ -6,30 +6,30 @@ import PlayIcon from "~icons/PlayIcon"
 
 import "../styles/Title.scss"
 import { Title } from "~core/interfaces/title"
-import { IoIosAdd } from "react-icons/io"
-
-const styles = {
-  card: {
-    backgroundImage: "url(/static/frontend/images/dark.jpg)",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-  },
-}
+import { Link } from "react-router-dom"
 
 export interface TitleProps {
   title: Title
 }
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
+  console.log(`http://static.1001nights.fun/250tmdb/${title.id}.jpg`)
   return (
-    <div className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none">
+    <Link
+      to={`/title/${title.id}`}
+      className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
+    >
       <div className="hidden md:flex top-info mb-2 justify-end">
         <PlusIcon className="mr-3 card-container-slide-reveal transition-500" />
         <InfoIcon className="card-container-slide-reveal transition-200" />
       </div>
       <div
         className="bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center"
-        style={styles.card}
+        style={{
+          backgroundImage: `url(http://static.1001nights.fun/250tmdb/${title.id}.jpg), url(http://static.1001nights.fun/250v/${title.id}.jpg)`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
       >
         <div className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
           {title.is_new ? (title.type === "s" ? "New Episodes" : "New") : ""}
@@ -51,7 +51,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
           .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
           .join(" • ")}
       </div>
-    </div>
+    </Link>
   )
 }
 

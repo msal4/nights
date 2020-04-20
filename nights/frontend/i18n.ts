@@ -18,6 +18,7 @@ i18n
           continueWatching: "Continue Watching",
           signIn: "Sign in",
           search: "Search",
+          recentlyAdded: "Recently Added",
         },
       },
       ar: {
@@ -33,6 +34,7 @@ i18n
           continueWatching: "واصل المشاهدة",
           signIn: "تسجيل الدخول",
           search: "بحث",
+          recentlyAdded: "احدث الاضافات",
         },
       },
     },
