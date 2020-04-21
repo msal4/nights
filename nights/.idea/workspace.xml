@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b6e42863-a63e-4e4e-924d-1f75d3f6a8c9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nights/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/nights/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,6 +186,7 @@
       <workItem from="1587196493020" duration="23000" />
       <workItem from="1587221226775" duration="194000" />
       <workItem from="1587297073310" duration="362000" />
+      <workItem from="1587466493909" duration="3277000" />
     </task>
     <servers />
   </component>
@@ -210,10 +210,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="443" y="250" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1586319117942" />
-    <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586497089343">
+    <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1587466515123">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1440.900@0.0.1440.900" timestamp="1586497089343" />
+    <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1440.900@0.0.1440.900" timestamp="1587466515123" />
     <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587039680284">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

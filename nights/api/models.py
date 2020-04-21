@@ -41,12 +41,14 @@ class Language(Topic):
 class Title(Topic):
     genres = models.ManyToManyField(Genre, related_name='titles', blank=True)
     cast = models.ManyToManyField(Cast, related_name='titles', blank=True)
-    languages = models.ManyToManyField(Language, blank=True, related_name='titles')
+    languages = models.ManyToManyField(
+        Language, blank=True, related_name='titles')
     users = models.ManyToManyField(User, blank=True, related_name='my_list',
                                    through='MyList', through_fields=('title', 'user'))
 
     plot = models.TextField(null=True)
-    runtime = models.IntegerField(null=True, blank=True, help_text='In minutes')
+    runtime = models.IntegerField(
+        null=True, blank=True, help_text='In minutes')
     imdb = models.CharField(max_length=50, null=True)
     rating = models.FloatField(null=True)
     type = models.CharField(
@@ -68,37 +70,49 @@ class Title(Topic):
 
 
 class Season(Topic):
-    series = models.ForeignKey(Title, limit_choices_to={'type': 's'}, related_name='seasons', on_delete=models.CASCADE)
-    index = models.IntegerField(blank=True, default=0, help_text='Season number')
+    series = models.ForeignKey(Title, limit_choices_to={
+        'type': 's'}, related_name='seasons', on_delete=models.CASCADE)
+    index = models.IntegerField(
+        blank=True, default=0, help_text='Season number')
 
     def save(self, *args, **kwargs):
         if not self.name:
-            self.name = '%s S%02d' % (self.series.name if self.series else '', self.index)
+            self.name = '%s S%02d' % (
+                self.series.name if self.series else '', self.index)
         super().save(*args, **kwargs)
 
 
 class Episode(Topic):
-    episode_series = models.ForeignKey(Title, blank=True, null=True, related_name='episodes', on_delete=models.CASCADE)
-    episode_season = models.ForeignKey(Season, related_name='episodes', on_delete=models.CASCADE)
+    episode_series = models.ForeignKey(
+        Title, blank=True, null=True, related_name='episodes', on_delete=models.CASCADE)
+    episode_season = models.ForeignKey(
+        Season, related_name='episodes', on_delete=models.CASCADE)
 
     plot = models.TextField(null=True)
-    runtime = models.IntegerField(null=True, blank=True, help_text='In minutes')
-    index = models.IntegerField(blank=True, default=0, help_text='Episode number')
+    runtime = models.IntegerField(
+        null=True, blank=True, help_text='In minutes')
+    index = models.IntegerField(
+        blank=True, default=0, help_text='Episode number')
 
     def save(self, *args, **kwargs):
         if not self.episode_series:
             self.episode_series = self.episode_season.series
 
         if not self.name:
-            self.name = '%s S%02dE%02d' % (self.episode_series.name, self.episode_season.index, self.index)
+            self.name = '%s S%02dE%02d' % (
+                self.episode_series.name, self.episode_season.index, self.index)
         super().save(*args, **kwargs)
 
 
 class ViewHit(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, related_name='hits', on_delete=models.CASCADE)
-    season = models.ForeignKey(Season, blank=True, null=True, related_name='viewhits', on_delete=models.CASCADE)
-    episode = models.ForeignKey(Episode, blank=True, null=True, related_name='viewhits', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.CASCADE)
+    topic = models.ForeignKey(
+        Topic, related_name='hits', on_delete=models.CASCADE)
+    season = models.ForeignKey(
+        Season, blank=True, null=True, related_name='viewhits', on_delete=models.CASCADE)
+    episode = models.ForeignKey(
+        Episode, blank=True, null=True, related_name='viewhits', on_delete=models.CASCADE)
 
     type = models.CharField(max_length=10, blank=True, default='title')
     playback_position = models.IntegerField(blank=True, default=0)
@@ -116,3 +130,40 @@ class MyList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.ForeignKey(Title, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+class Provider(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+
+class Availability(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+
+
+class Media(PolymorphicModel):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    provider = models.ForeignKey(Provider, null=True, on_delete=models.SET_NULL)
+    availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL)
+
+    language = models.CharField(max_length=10, blank=True, null=True)
+    content = models.TextField()
+    formats = models.CharField(max_length=255)
+    qualities = models.CharField(max_length=255)
+    type = models.IntegerField()
+
+
+class Image(Media):
+    pass
+
+
+class MovieVideo(Media):
+    pass
+
+
+class EpisodeVideo(Media):
+    pass
+
+
+class Subtitle(Media):
+    pass
