@@ -111,8 +111,8 @@ class MyListTests(APITestCase):
     def setUp(self) -> None:
         self.title = Title(name='test title')
         self.title.save()
-        self.list_url = reverse('my_list-list')
-        self.detail_url = reverse('my_list-detail', args=(self.title.id,))
+        self.list_url = reverse('MyList-list')
+        self.detail_url = reverse('MyList-detail', args=(self.title.id,))
         self.client = APIClient()
 
     def _login(self):

@@ -1,8 +1,8 @@
-from pprint import pprint
-
 from django.core.files.storage import default_storage
 from django.db.models import Q, Count
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 from rest_framework import status, filters, mixins, generics
@@ -59,6 +59,8 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
     def get_queryset(self):
         return Genre.objects.order_by('-name')
 
+    # Cache requested url for each user for 2 hours
+    # @method_decorator(cache_page(60 * 60 * 2))
     def get(self, request, *args, **kwargs):
         titles = self.filter_queryset(Title.objects.all())
         queryset = self.get_queryset()
@@ -87,6 +89,7 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         return self.get_paginated_response(data)
 
 
+# @method_decorator(cache_page(60 * 60 * 2))
 class CastViewSet(viewsets.ModelViewSet):
     queryset = Cast.objects.all()
     serializer_class = serializers.CastSerializer
@@ -115,6 +118,10 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     search_fields = ('name', 'plot')
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
+
+    @method_decorator(cache_page(60 * 60 * 2))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class SeasonViewSet(viewsets.ModelViewSet):
@@ -206,9 +213,19 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
 
     @staticmethod
     def put(request, pk, *args, **kwargs):
+        topic_type = 'title'
+        season_id = None
+        episode_id = None
+
         try:
             position = int(float(request.data['playback_position']))
             runtime = int(float(request.data['runtime']))
+            if 'type' in request.data:
+                topic_type = request.data['type']
+            if 'episode' in request.data and 'season' in request.data:
+                season_id = request.data['season']
+                episode_id = request.data['episode']
+
         except KeyError as e:
             return Response({'detail': '%s is required.' % e.args[0]})
 
@@ -225,6 +242,9 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
             if hit.playback_position != position:
                 hit.playback_position = position
 
+            hit.episode = episode_id
+            hit.season = season_id
+
             # Update `hit_date` for ordering titles
             hit.hit_date = timezone.now()
             hit.save()
@@ -232,6 +252,7 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
         except ViewHit.DoesNotExist:
             # Otherwise add a new hit
             user.viewhit_set.create(
-                topic=title, playback_position=position, runtime=runtime)
+                topic=title, playback_position=position, runtime=runtime,
+                type=topic_type, season=season_id, episode=episode_id)
 
         return Response(status=status.HTTP_204_NO_CONTENT)

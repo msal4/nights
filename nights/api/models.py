@@ -142,26 +142,29 @@ class Availability(models.Model):
 
 
 class Media(PolymorphicModel):
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, related_name='media', on_delete=models.CASCADE)
     provider = models.ForeignKey(Provider, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL)
 
     language = models.CharField(max_length=10, blank=True, null=True)
-    content = models.TextField()
+    url = models.TextField()
     formats = models.CharField(max_length=255)
-    qualities = models.CharField(max_length=255)
+    qualities = models.CharField(max_length=255, null=True, blank=True)
     type = models.IntegerField()
+
+    def __str__(self):
+        return self.content
 
 
 class Image(Media):
     pass
 
 
-class MovieVideo(Media):
+class Video(Media):
     pass
 
 
-class EpisodeVideo(Media):
+class Trailer(Media):
     pass
 
 

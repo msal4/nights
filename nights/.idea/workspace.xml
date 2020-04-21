@@ -5,6 +5,9 @@
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +189,7 @@
       <workItem from="1587196493020" duration="23000" />
       <workItem from="1587221226775" duration="194000" />
       <workItem from="1587297073310" duration="362000" />
-      <workItem from="1587466493909" duration="3277000" />
+      <workItem from="1587466493909" duration="12259000" />
     </task>
     <servers />
   </component>
@@ -264,10 +267,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="97" y="2" key="new project wizard/0.0.1440.900@0.0.1440.900" timestamp="1586618529094" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1587299278176">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1587490272713">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1587299278176" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1587490272713" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/41.23.1399.877@41.23.1399.877" timestamp="1586495466742" />
   </component>
 </project>
