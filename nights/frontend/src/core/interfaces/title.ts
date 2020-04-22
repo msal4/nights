@@ -28,6 +28,13 @@ export interface Title {
   is_new: boolean
   rated: string
   rating: number | null
+  image: { url: string }
   genres: Topic[]
   released_at: string
+}
+
+export enum ImageQuality {
+  h900 = "900h",
+  v250 = "250v",
+  v100 = "100v",
 }

@@ -7,7 +7,7 @@ from .models import Title, Season, Episode, Topic, Genre, \
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('id',)
+        fields = ('url',)
 
 
 class VideoSerializer(serializers.ModelSerializer):
@@ -42,14 +42,33 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class EpisodeSerializer(serializers.ModelSerializer):
     views = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
+    videos = serializers.SerializerMethodField()
+    subtitles = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
-        fields = ('id', 'name', 'plot', 'runtime', 'index', 'views')
+        fields = ('id', 'name', 'plot', 'runtime', 'images', 'videos', 'subtitles',
+                  'index', 'views')
 
     # noinspection PyMethodMayBeStatic
     def get_views(self, title):
         return title.hits.count()
+
+    @staticmethod
+    def get_media(serializer, model, instance):
+        serializer = serializer(instance.media.instance_of(model),
+                                many=True, read_only=True)
+        return serializer.data
+
+    def get_images(self, instance):
+        return self.get_media(ImageSerializer, Image, instance)
+
+    def get_videos(self, instance):
+        return self.get_media(VideoSerializer, Video, instance)
+
+    def get_subtitles(self, instance):
+        return self.get_media(SubtitleSerializer, Subtitle, instance)
 
 
 class SeasonSerializer(serializers.ModelSerializer):
@@ -66,14 +85,14 @@ class TitleSerializer(serializers.ModelSerializer):
     cast = CastSerializer(many=True, read_only=True)
     views = serializers.SerializerMethodField()
     recommended = serializers.SerializerMethodField()
-    image = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
     videos = serializers.SerializerMethodField()
     subtitles = serializers.SerializerMethodField()
     trailers = serializers.SerializerMethodField()
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated', 'image',
+        fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated', 'images',
                   'videos', 'subtitles', 'trailers', 'type', 'is_new', 'views', 'seasons',
                   'genres', 'cast', 'recommended', 'released_at', 'created_at', 'updated_at')
 
@@ -95,7 +114,7 @@ class TitleSerializer(serializers.ModelSerializer):
                                 many=True, read_only=True)
         return serializer.data
 
-    def get_image(self, instance):
+    def get_images(self, instance):
         return self.get_media(ImageSerializer, Image, instance)
 
     def get_videos(self, instance):
@@ -110,24 +129,25 @@ class TitleSerializer(serializers.ModelSerializer):
 
 class TitleListSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, read_only=True)
-    image = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'type', 'is_new', 'rated', 'rating', 'image',
+        fields = ('id', 'name', 'type', 'is_new', 'rated', 'rating', 'images',
                   'genres', 'released_at')
 
     # noinspection PyMethodMayBeStatic
-    def get_image(self, instance):
-        serializer = ImageSerializer(instance.media.instance_of(Image)[0],
-                                     read_only=True)
+    def get_images(self, instance):
+        serializer = ImageSerializer(instance.media.instance_of(Image),
+                                     many=True, read_only=True)
         return serializer.data
 
 
 class ViewHitSerializer(serializers.ModelSerializer):
     class Meta:
         model = ViewHit
-        fields = ('id', 'user', 'topic', 'playback_position', 'runtime', 'hit_date')
+        fields = ('id', 'user', 'topic', 'playback_position',
+                  'season', 'episode', 'runtime', 'hit_date')
 
 
 class HistorySerializer(serializers.ModelSerializer):

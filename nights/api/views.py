@@ -3,6 +3,7 @@ from django.db.models import Q, Count
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 from rest_framework import status, filters, mixins, generics
@@ -60,7 +61,8 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         return Genre.objects.order_by('-name')
 
     # Cache requested url for each user for 2 hours
-    # @method_decorator(cache_page(60 * 60 * 2))
+    @method_decorator(cache_page(60 * 60))
+    @vary_on_cookie
     def get(self, request, *args, **kwargs):
         titles = self.filter_queryset(Title.objects.all())
         queryset = self.get_queryset()
@@ -119,7 +121,7 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
 
-    @method_decorator(cache_page(60 * 60 * 2))
+    @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -205,8 +207,8 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
-        return user.viewhit_set.order_by('-hit_date')
+        return self.request.user.viewhit_set.filter(
+            type='title').order_by('-hit_date')
 
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

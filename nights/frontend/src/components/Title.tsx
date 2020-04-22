@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useEffect } from "react"
 
 import InfoIcon from "~icons/InfoIcon"
 import PlusIcon from "~icons/PlusIcon"
@@ -7,15 +7,19 @@ import PlayIcon from "~icons/PlayIcon"
 import "../styles/Title.scss"
 import { Title } from "~core/interfaces/title"
 import { Link } from "react-router-dom"
+import { getImageUrl } from "~utils/common"
 
 export interface TitleProps {
   title: Title
 }
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
-  console.log(`http://static.1001nights.fun/250tmdb/${title.id}.jpg`)
+  const image = getImageUrl(title.image.url)
+  const tmdbImage = image.replace("250v", "250tmdb")
+
   return (
     <Link
+      draggable={false}
       to={`/title/${title.id}`}
       className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
     >
@@ -26,7 +30,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
       <div
         className="bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center"
         style={{
-          backgroundImage: `url(http://static.1001nights.fun/250tmdb/${title.id}.jpg), url(http://static.1001nights.fun/250v/${title.id}.jpg)`,
+          backgroundImage: `url(${tmdbImage}), url(${image})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}

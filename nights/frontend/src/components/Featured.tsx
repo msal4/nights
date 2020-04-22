@@ -1,4 +1,4 @@
-import { Title as ITitle } from "~core/interfaces/title"
+import { Title as ITitle, ImageQuality } from "~core/interfaces/title"
 import React, { FunctionComponent } from "react"
 import {
   IoIosStar,
@@ -9,7 +9,7 @@ import {
 import { useTranslation } from "react-i18next"
 
 import { PrimaryButton, InfoIconButton } from "./Buttons"
-import { joinTopics } from "~utils/common"
+import { joinTopics, getImageUrl } from "~utils/common"
 
 export interface FeaturedProps {
   data: ITitle[]
@@ -24,21 +24,24 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   }: {
     className?: string
     title: ITitle
-  }) => (
-    <div
-      className={`h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light ${className}`}
-      style={{
-        background: "url(/static/frontend/images/mulan.png)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      <h4 className="absolute bottom-0 right-0 left-0 px-3 py-2 v-gradient">
-        {title.name}
-      </h4>
-    </div>
-  )
+  }) => {
+    const image = getImageUrl(title.image.url, ImageQuality.h900)
+    return (
+      <div
+        className={`h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light ${className}`}
+        style={{
+          background: `url(${image})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
+        <h4 className="absolute bottom-0 right-0 left-0 px-3 py-2 v-gradient">
+          {title.name}
+        </h4>
+      </div>
+    )
+  }
 
   const BottomInfo = () => (
     <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
@@ -79,12 +82,13 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     </div>
   )
 
+  const image = getImageUrl(data[0].image.url, ImageQuality.h900)
   return (
     <div className="flex mt-4 mb-5">
       <div
         className="relative h-64 md:h-auto flex-1 bg-cover bg-center rounded-lg md:mr-4"
         style={{
-          background: "url(/static/frontend/images/mulan.png)",
+          background: `url(${image})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",

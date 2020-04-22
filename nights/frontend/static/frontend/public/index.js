@@ -34032,9 +34032,12 @@ module.exports = {
         "id": 372043,
         "name": "Wynonna Earp",
         "type": "s",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": null,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/Q1U82OO6AF.{f}"
+        },
         "genres": [{
           "id": 356960,
           "name": "action"
@@ -34047,9 +34050,12 @@ module.exports = {
         "id": 357559,
         "name": "The Warrant",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/WEQtCin8cS.{f}"
+        },
         "genres": [{
           "id": 356972,
           "name": "western"
@@ -34059,9 +34065,12 @@ module.exports = {
         "id": 371823,
         "name": "Deputy",
         "type": "s",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": null,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/E6wtpqMksk.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34077,9 +34086,12 @@ module.exports = {
         "id": 357461,
         "name": "Hell on the Border",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 5.8,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/NiZRN0dTSs.{f}"
+        },
         "genres": [{
           "id": 356963,
           "name": "adventure"
@@ -34092,9 +34104,12 @@ module.exports = {
         "id": 358843,
         "name": "The Shootist",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "PG",
         "rating": 7.7,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/17791.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34110,9 +34125,12 @@ module.exports = {
         "id": 358837,
         "name": "River of No Return",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "PG-13",
         "rating": 6.6,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/17780.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34137,9 +34155,12 @@ module.exports = {
         "id": 358835,
         "name": "Bacurau",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "PG-13",
         "rating": 7.9,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/17778.{f}"
+        },
         "genres": [{
           "id": 356956,
           "name": "thriller"
@@ -34164,9 +34185,12 @@ module.exports = {
         "id": 358986,
         "name": "Sonora, the Devil's Highway",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "PG-13",
         "rating": 6.2,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/17693.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34182,9 +34206,12 @@ module.exports = {
         "id": 358932,
         "name": "Eminence Hill",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "R",
         "rating": 4.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/17568.{f}"
+        },
         "genres": [{
           "id": 356972,
           "name": "western"
@@ -34194,9 +34221,12 @@ module.exports = {
         "id": 358918,
         "name": "Badland",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "PG-13",
         "rating": 6.7,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/17549.{f}"
+        },
         "genres": [{
           "id": 356972,
           "name": "western"
@@ -34210,9 +34240,12 @@ module.exports = {
         "id": 357727,
         "name": "The Platform",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 7.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/nshTG6r0qn.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34234,9 +34267,12 @@ module.exports = {
         "id": 357550,
         "name": "Shoulder Arms",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.9,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/KioAxVL1dK.{f}"
+        },
         "genres": [{
           "id": 356954,
           "name": "comedy"
@@ -34249,9 +34285,12 @@ module.exports = {
         "id": 357630,
         "name": "The Lost Strait",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 8.6,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/b7U1Ai1Kte.{f}"
+        },
         "genres": [{
           "id": 356965,
           "name": "war"
@@ -34261,9 +34300,12 @@ module.exports = {
         "id": 357637,
         "name": "The Endless Trench",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 7.2,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/9XHtBD8tti.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34276,9 +34318,12 @@ module.exports = {
         "id": 357953,
         "name": "Game of Thrones: Conquest & Rebellion",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 8.1,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/cWQZvrkdrQ.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34297,9 +34342,12 @@ module.exports = {
         "id": 357931,
         "name": "Panipat",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 8.3,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/yxa89c6rYg.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34318,9 +34366,12 @@ module.exports = {
         "id": 358009,
         "name": "Towards The River Glorious",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 0.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/8yuhAufeA0.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34333,9 +34384,12 @@ module.exports = {
         "id": 357800,
         "name": "Waiting for Anya",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 0.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/32fzzFCEjT.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34348,9 +34402,12 @@ module.exports = {
         "id": 357802,
         "name": "Ay, Carmela!",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.8,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/AsEx2XKvCh.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34366,9 +34423,12 @@ module.exports = {
         "id": 357900,
         "name": "Sisters in Arms",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 7.9,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/IaJH3jSeD6.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34388,9 +34448,12 @@ module.exports = {
         "id": 357695,
         "name": "Capsized: Blood in the Water",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 2.4,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/DSKaBxNfhR.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34406,9 +34469,12 @@ module.exports = {
         "id": 357692,
         "name": "No Good Deed",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/76M0lKI9pJ.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34421,9 +34487,12 @@ module.exports = {
         "id": 357762,
         "name": "Toy Story of Terror!",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 7.2,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/zHEpClSd7G.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34451,9 +34520,12 @@ module.exports = {
         "id": 357771,
         "name": "Ice Age: The Great Egg-Scapade",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.3,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/WMwQHTv1vJ.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34475,9 +34547,12 @@ module.exports = {
         "id": 357772,
         "name": "Ice Age: A Mammoth Christmas",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.2,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/hAsOic3yxS.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34493,9 +34568,12 @@ module.exports = {
         "id": 357629,
         "name": "Killer in Suburbia",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.3,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/SwAhI6xBzn.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34508,9 +34586,12 @@ module.exports = {
         "id": 357622,
         "name": "Island of Shadows",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 0.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/o9U7yo9Isd.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34523,9 +34604,12 @@ module.exports = {
         "id": 357953,
         "name": "Game of Thrones: Conquest & Rebellion",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 8.1,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/cWQZvrkdrQ.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34544,9 +34628,12 @@ module.exports = {
         "id": 358005,
         "name": "Rocko's Modern Life: Static Cling",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.5,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/AcBWUQFD7n.{f}"
+        },
         "genres": [{
           "id": 356952,
           "name": "tv"
@@ -34562,9 +34649,12 @@ module.exports = {
         "id": 357892,
         "name": "Secrets in a Small Town",
         "type": "m",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": 6.2,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/olXVkKIC2V.{f}"
+        },
         "genres": [{
           "id": 356817,
           "name": "drama"
@@ -34579,70 +34669,82 @@ module.exports = {
       }]
     }],
     "featured": [{
-      "id": 357034,
-      "name": "Beasts Clawing at Straws",
+      "id": 357041,
+      "name": "Romeo Akbar Walter",
       "type": "m",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
-      "rating": 7.0,
+      "rating": 6.2,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/AzHBRhUqZb.{f}"
+      },
+      "genres": [{
+        "id": 356817,
+        "name": "drama"
+      }, {
+        "id": 356956,
+        "name": "thriller"
+      }, {
+        "id": 356960,
+        "name": "action"
+      }],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 357700,
+      "name": "000",
+      "type": "m",
+      "is_new": false,
+      "rated": "G",
+      "rating": 5.7,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/Mq7e3k4vZB.{f}"
+      },
       "genres": [{
         "id": 356956,
         "name": "thriller"
       }, {
-        "id": 356961,
-        "name": "mystery"
-      }],
-      "released_at": "2020-04-13T09:19:46.342018+03:00"
-    }, {
-      "id": 357035,
-      "name": "Doom: Annihilation",
-      "type": "m",
-      "is_new": true,
-      "rated": "G",
-      "rating": 4.5,
-      "genres": [{
-        "id": 356958,
-        "name": "horror"
-      }, {
         "id": 356960,
         "name": "action"
-      }, {
-        "id": 356961,
-        "name": "mystery"
-      }, {
-        "id": 356969,
-        "name": "sci-fi"
-      }],
-      "released_at": "2020-04-13T09:19:46.342018+03:00"
-    }, {
-      "id": 357036,
-      "name": "State Like Sleep",
-      "type": "m",
-      "is_new": true,
-      "rated": "G",
-      "rating": 4.9,
-      "genres": [{
-        "id": 356817,
-        "name": "drama"
       }],
       "released_at": "2020-04-13T09:19:46.342018+03:00"
     }, {
       "id": 357033,
       "name": "We Only Know So Much",
       "type": "m",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": 6.0,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/CMUNuRU8ie.{f}"
+      },
       "genres": [],
+      "released_at": "2020-04-13T09:19:46.342018+03:00"
+    }, {
+      "id": 357703,
+      "name": "Impractical Jokers: The Movie",
+      "type": "m",
+      "is_new": false,
+      "rated": "G",
+      "rating": 8.1,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/FhtVnEo86T.{f}"
+      },
+      "genres": [{
+        "id": 356954,
+        "name": "comedy"
+      }],
       "released_at": "2020-04-13T09:19:46.342018+03:00"
     }],
     "recently_added": [{
       "id": 399043,
       "name": "بث نكات",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13917.{f}"
+      },
       "genres": [{
         "id": 356954,
         "name": "comedy"
@@ -34652,9 +34754,12 @@ module.exports = {
       "id": 399044,
       "name": "S'parta",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/14084.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34664,9 +34769,12 @@ module.exports = {
       "id": 399045,
       "name": "وتمضي الأيام",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13919.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34685,9 +34793,12 @@ module.exports = {
       "id": 399048,
       "name": "When Heroes Fly",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13940.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34700,9 +34811,12 @@ module.exports = {
       "id": 399049,
       "name": "Hymn of Death",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13941.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34712,9 +34826,12 @@ module.exports = {
       "id": 399050,
       "name": "50 ألف",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13942.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34724,9 +34841,12 @@ module.exports = {
       "id": 399051,
       "name": "Fluttering Warning",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13943.{f}"
+      },
       "genres": [{
         "id": 356962,
         "name": "romance"
@@ -34736,9 +34856,12 @@ module.exports = {
       "id": 399052,
       "name": "A.D. The Bible Continues",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13945.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34748,9 +34871,12 @@ module.exports = {
       "id": 399053,
       "name": "بره الدنيا",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13946.{f}"
+      },
       "genres": [{
         "id": 356817,
         "name": "drama"
@@ -34760,9 +34886,12 @@ module.exports = {
       "id": 399041,
       "name": "The Story of Us with Morgan Freeman",
       "type": "s",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
       "rating": null,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/13915.{f}"
+      },
       "genres": [{
         "id": 356967,
         "name": "documentary"
@@ -34770,15 +34899,120 @@ module.exports = {
       "released_at": "2020-04-13T09:19:46.342018+03:00"
     }],
     "recently_watched": [{
+      "id": 18,
+      "user": 4,
+      "topic": {
+        "id": 357041,
+        "name": "Romeo Akbar Walter",
+        "type": "m",
+        "is_new": false,
+        "rated": "G",
+        "rating": 6.2,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/AzHBRhUqZb.{f}"
+        },
+        "genres": [{
+          "id": 356817,
+          "name": "drama"
+        }, {
+          "id": 356956,
+          "name": "thriller"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-21T22:13:40.418141+03:00"
+    }, {
+      "id": 17,
+      "user": 4,
+      "topic": {
+        "id": 357700,
+        "name": "000",
+        "type": "m",
+        "is_new": false,
+        "rated": "G",
+        "rating": 5.7,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/Mq7e3k4vZB.{f}"
+        },
+        "genres": [{
+          "id": 356956,
+          "name": "thriller"
+        }, {
+          "id": 356960,
+          "name": "action"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-21T22:04:39.838964+03:00"
+    }, {
+      "id": 16,
+      "user": 4,
+      "topic": {
+        "id": 357703,
+        "name": "Impractical Jokers: The Movie",
+        "type": "m",
+        "is_new": false,
+        "rated": "G",
+        "rating": 8.1,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/FhtVnEo86T.{f}"
+        },
+        "genres": [{
+          "id": 356954,
+          "name": "comedy"
+        }],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-21T21:30:06.918600+03:00"
+    }, {
+      "id": 14,
+      "user": 4,
+      "topic": {
+        "id": 357033,
+        "name": "We Only Know So Much",
+        "type": "m",
+        "is_new": false,
+        "rated": "G",
+        "rating": 6.0,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/CMUNuRU8ie.{f}"
+        },
+        "genres": [],
+        "released_at": "2020-04-13T09:19:46.342018+03:00"
+      },
+      "season": null,
+      "episode": null,
+      "playback_position": 50,
+      "runtime": 130,
+      "hit_date": "2020-04-21T21:29:10.067747+03:00"
+    }, {
       "id": 13,
       "user": 4,
       "topic": {
         "id": 372183,
         "name": "One Piece",
         "type": "s",
-        "is_new": true,
+        "is_new": false,
         "rated": "G",
         "rating": null,
+        "image": {
+          "url": "http://static.1001nights.fun/{q}v/tBYsa3iI9D.{f}"
+        },
         "genres": [{
           "id": 356954,
           "name": "comedy"
@@ -34795,125 +35029,42 @@ module.exports = {
       "episode": null,
       "playback_position": 50,
       "runtime": 130,
-      "hit_date": "2020-04-14T12:47:27.209783+03:00"
-    }, {
-      "id": 12,
-      "user": 4,
-      "topic": {
-        "id": 357550,
-        "name": "Shoulder Arms",
-        "type": "m",
-        "is_new": true,
-        "rated": "G",
-        "rating": 6.9,
-        "genres": [{
-          "id": 356954,
-          "name": "comedy"
-        }, {
-          "id": 356965,
-          "name": "war"
-        }],
-        "released_at": "2020-04-13T09:19:46.342018+03:00"
-      },
-      "season": null,
-      "episode": null,
-      "playback_position": 50,
-      "runtime": 130,
-      "hit_date": "2020-04-14T09:22:09.731768+03:00"
-    }, {
-      "id": 11,
-      "user": 4,
-      "topic": {
-        "id": 398474,
-        "name": "Broken Trail",
-        "type": "s",
-        "is_new": true,
-        "rated": "G",
-        "rating": null,
-        "genres": [{
-          "id": 356972,
-          "name": "western"
-        }],
-        "released_at": "2020-04-13T09:19:46.342018+03:00"
-      },
-      "season": null,
-      "episode": null,
-      "playback_position": 50,
-      "runtime": 130,
-      "hit_date": "2020-04-14T09:21:27.768669+03:00"
-    }, {
-      "id": 10,
-      "user": 4,
-      "topic": {
-        "id": 357931,
-        "name": "Panipat",
-        "type": "m",
-        "is_new": true,
-        "rated": "G",
-        "rating": 8.3,
-        "genres": [{
-          "id": 356817,
-          "name": "drama"
-        }, {
-          "id": 356960,
-          "name": "action"
-        }, {
-          "id": 356964,
-          "name": "history"
-        }, {
-          "id": 356965,
-          "name": "war"
-        }],
-        "released_at": "2020-04-13T09:19:46.342018+03:00"
-      },
-      "season": null,
-      "episode": null,
-      "playback_position": 50,
-      "runtime": 130,
-      "hit_date": "2020-04-14T09:18:03.609838+03:00"
-    }, {
-      "id": 7,
-      "user": 4,
-      "topic": {
-        "id": 371504,
-        "name": "Lonesome Dove",
-        "type": "s",
-        "is_new": true,
-        "rated": "G",
-        "rating": null,
-        "genres": [{
-          "id": 356817,
-          "name": "drama"
-        }, {
-          "id": 356963,
-          "name": "adventure"
-        }, {
-          "id": 356972,
-          "name": "western"
-        }],
-        "released_at": "2020-04-13T09:19:46.342018+03:00"
-      },
-      "season": null,
-      "episode": null,
-      "playback_position": 50,
-      "runtime": 130,
-      "hit_date": "2020-04-14T08:43:03.567651+03:00"
+      "hit_date": "2020-04-21T21:20:18.217896+03:00"
     }],
     "recommended": {
-      "id": 357703,
-      "name": "Impractical Jokers: The Movie",
+      "id": 357702,
+      "name": "Yeh Saali Aashiqui",
       "type": "m",
-      "is_new": true,
+      "is_new": false,
       "rated": "G",
-      "rating": 8.1,
+      "rating": 0.0,
+      "image": {
+        "url": "http://static.1001nights.fun/{q}v/fRtbdvRr8q.{f}"
+      },
       "genres": [{
-        "id": 356954,
-        "name": "comedy"
+        "id": 356956,
+        "name": "thriller"
+      }, {
+        "id": 356962,
+        "name": "romance"
       }],
       "released_at": "2020-04-13T09:19:46.342018+03:00"
     }
   }
 };
+},{}],"core/interfaces/title.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ImageQuality;
+
+(function (ImageQuality) {
+  ImageQuality["h900"] = "900h";
+  ImageQuality["v250"] = "250v";
+  ImageQuality["v100"] = "100v";
+})(ImageQuality = exports.ImageQuality || (exports.ImageQuality = {}));
 },{}],"../node_modules/react-icons/io/index.esm.js":[function(require,module,exports) {
 "use strict";
 
@@ -48711,6 +48862,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var title_1 = require("~core/interfaces/title");
+
 exports.capitalizeFirst = function (str) {
   return (str === null || str === void 0 ? void 0 : str.charAt(0).toUpperCase()) + str.slice(1);
 };
@@ -48724,7 +48877,15 @@ exports.joinTopics = function (topics, sep) {
     return exports.capitalizeFirst(g.name);
   }).join(sep);
 };
-},{}],"components/Featured.tsx":[function(require,module,exports) {
+
+exports.getImageUrl = function (url, quality) {
+  if (quality === void 0) {
+    quality = title_1.ImageQuality.v250;
+  }
+
+  return url.replace("{q}v", quality).replace("{f}", "jpg");
+};
+},{"~core/interfaces/title":"core/interfaces/title.ts"}],"components/Featured.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -48736,6 +48897,8 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var title_1 = require("~core/interfaces/title");
 
 var react_1 = __importDefault(require("react"));
 
@@ -48755,10 +48918,11 @@ var Featured = function Featured(_a) {
     var _b = _a.className,
         className = _b === void 0 ? "" : _b,
         title = _a.title;
+    var image = common_1.getImageUrl(title.image.url, title_1.ImageQuality.h900);
     return react_1.default.createElement("div", {
       className: "h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light " + className,
       style: {
-        background: "url(/static/frontend/images/mulan.png)",
+        background: "url(" + image + ")",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center"
@@ -48808,12 +48972,13 @@ var Featured = function Featured(_a) {
     }, t("info"))));
   };
 
+  var image = common_1.getImageUrl(data[0].image.url, title_1.ImageQuality.h900);
   return react_1.default.createElement("div", {
     className: "flex mt-4 mb-5"
   }, react_1.default.createElement("div", {
     className: "relative h-64 md:h-auto flex-1 bg-cover bg-center rounded-lg md:mr-4",
     style: {
-      background: "url(/static/frontend/images/mulan.png)",
+      background: "url(" + image + ")",
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center"
@@ -48832,7 +48997,7 @@ var Featured = function Featured(_a) {
 };
 
 exports.default = Featured;
-},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./Buttons":"components/Buttons.tsx","~utils/common":"utils/common.ts"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
+},{"~core/interfaces/title":"core/interfaces/title.ts","react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./Buttons":"components/Buttons.tsx","~utils/common":"utils/common.ts"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -49091,10 +49256,14 @@ require("../styles/Title.scss");
 
 var react_router_dom_1 = require("react-router-dom");
 
+var common_1 = require("~utils/common");
+
 var Title = function Title(_a) {
   var title = _a.title;
-  console.log("http://static.1001nights.fun/250tmdb/" + title.id + ".jpg");
+  var image = common_1.getImageUrl(title.image.url);
+  var tmdbImage = image.replace("250v", "250tmdb");
   return react_1.default.createElement(react_router_dom_1.Link, {
+    draggable: false,
     to: "/title/" + title.id,
     className: "inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
   }, react_1.default.createElement("div", {
@@ -49106,7 +49275,7 @@ var Title = function Title(_a) {
   })), react_1.default.createElement("div", {
     className: "bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center",
     style: {
-      backgroundImage: "url(http://static.1001nights.fun/250tmdb/" + title.id + ".jpg), url(http://static.1001nights.fun/250v/" + title.id + ".jpg)",
+      backgroundImage: "url(" + tmdbImage + "), url(" + image + ")",
       backgroundPosition: "center",
       backgroundSize: "cover"
     }
@@ -49128,7 +49297,7 @@ var Title = function Title(_a) {
 };
 
 exports.default = Title;
-},{"react":"../node_modules/react/index.js","~icons/InfoIcon":"icons/InfoIcon.tsx","~icons/PlusIcon":"icons/PlusIcon.tsx","~icons/PlayIcon":"icons/PlayIcon.tsx","../styles/Title.scss":"styles/Title.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"../node_modules/react-multi-carousel/lib/utils/clones.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~icons/InfoIcon":"icons/InfoIcon.tsx","~icons/PlusIcon":"icons/PlusIcon.tsx","~icons/PlayIcon":"icons/PlayIcon.tsx","../styles/Title.scss":"styles/Title.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","~utils/common":"utils/common.ts"}],"../node_modules/react-multi-carousel/lib/utils/clones.js":[function(require,module,exports) {
 "use strict";
 
 function getOriginalCounterPart(index, _a, childrenArr) {
@@ -53919,7 +54088,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51889" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61440" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
