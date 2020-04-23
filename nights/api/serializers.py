@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from rest_framework import serializers
 
 from .models import Title, Season, Episode, Topic, Genre, \
@@ -13,19 +15,19 @@ class ImageSerializer(serializers.ModelSerializer):
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
-        fields = ('id', 'url', 'formats', 'qualities')
+        fields = ('url', 'formats', 'qualities')
 
 
 class SubtitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subtitle
-        fields = ('id', 'url', 'language')
+        fields = ('url', 'language', 'formats')
 
 
 class TrailerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trailer
-        fields = ('id', 'url', 'language')
+        fields = ('url', 'formats')
 
 
 class CastSerializer(serializers.ModelSerializer):
@@ -45,11 +47,12 @@ class EpisodeSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     videos = serializers.SerializerMethodField()
     subtitles = serializers.SerializerMethodField()
+    hits = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
-        fields = ('id', 'name', 'plot', 'runtime', 'images', 'videos', 'subtitles',
-                  'index', 'views')
+        fields = ('id', 'name', 'plot', 'runtime', 'images', 'videos',
+                  'subtitles', 'hits', 'index', 'views')
 
     # noinspection PyMethodMayBeStatic
     def get_views(self, title):
@@ -69,6 +72,14 @@ class EpisodeSerializer(serializers.ModelSerializer):
 
     def get_subtitles(self, instance):
         return self.get_media(SubtitleSerializer, Subtitle, instance)
+
+    def get_hits(self, instance):
+        user = self.context['request'].user
+        if not user.is_anonymous:
+            hits = user.viewhit_set.filter(topic_id=instance.id)
+            print(hits)
+            return HistorySerializer(hits, many=True, read_only=True).data
+        return None
 
 
 class SeasonSerializer(serializers.ModelSerializer):

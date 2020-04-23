@@ -1,11 +1,17 @@
 import axios from "axios"
 
-axios.interceptors.request.use(
+const client = axios.create({
+  baseURL: "http://localhost:8000/api",
+  timeout: 10000,
+})
+
+client.interceptors.response.use(
   (response) => {
-    console.log("a request is sent to", response.url)
-    return response
+    return response.data
   },
   (error) => {
-    console.log(error)
+    return Promise.reject(error)
   }
 )
+
+export default client

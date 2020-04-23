@@ -80,7 +80,7 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         data['recently_added'] = self._get_recently_added(titles)
 
         # Recently watched
-        if request.user and not request.user.is_anonymous:
+        if not request.user.is_anonymous:
             recently_watched = self._get_history(request.user.viewhit_set)
             if len(recently_watched):
                 data['recently_watched'] = self._serialize_history(
@@ -121,9 +121,9 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
 
-    @method_decorator(cache_page(60 * 60))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    # @method_decorator(cache_page(60 * 60))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
 
 
 class SeasonViewSet(viewsets.ModelViewSet):
@@ -244,17 +244,33 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
             if hit.playback_position != position:
                 hit.playback_position = position
 
-            hit.episode = episode_id
-            hit.season = season_id
+            # Update episode hit if it's a series
+            if episode_id and season_id:
+                if (hit.episode and episode_id != hit.episode.id) or not hit.episode:
+                    hit.episode = get_object_or_404(Episode, pk=episode_id)
+                if (hit.season and season_id != hit.episode.id) or not hit.season:
+                    hit.season = get_object_or_404(Season, pk=season_id)
+
+                episode_hit, created = user.viewhit_set.get_or_create(topic=hit.episode)
+                episode_hit.runtime = runtime
+                episode_hit.playback_position = position
+
+                episode_hit.save()
 
             # Update `hit_date` for ordering titles
             hit.hit_date = timezone.now()
             hit.save()
 
         except ViewHit.DoesNotExist:
+            season = None
+            episode = None
+            if episode_id and season_id:
+                episode = get_object_or_404(Episode, pk=episode_id)
+                season = get_object_or_404(Season, pk=season_id)
+
             # Otherwise add a new hit
             user.viewhit_set.create(
                 topic=title, playback_position=position, runtime=runtime,
-                type=topic_type, season=season_id, episode=episode_id)
+                type=topic_type, season=season, episode=episode)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
