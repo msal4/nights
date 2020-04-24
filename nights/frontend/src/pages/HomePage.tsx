@@ -49,9 +49,9 @@ export default () => {
       {/* Continue watching */}
       {results.recently_watched && <CWRow row={results.recently_watched} />}
       {/* Recently added */}
-      {/* {results.recently_added && (
+      {results.recently_added && (
         <TitleRow row={results.recently_added} name={t("recentlyAdded")} />
-      )} */}
+      )}
       {/* Recommended featured */}
       {results.recommended && <Recommended title={results.recommended} />}
       {/* Genre rows */}

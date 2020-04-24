@@ -26,8 +26,11 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
         Picked for You
       </h3>
       <div className="flex flex-col md:flex-row">
-        <div className="rounded-lg mb-2 w-full h-40 md:w-0 flex-1 md:mr-4 md:h-64">
-          <NImage className="h-full w-full object-cover" src={image} />
+        <div
+          className="rounded-lg mb-2 w-full h-40 md:w-0 flex-1 md:mr-4 md:h-full"
+          style={{ height: "20rem" }}
+        >
+          <NImage className="h-full w-full" src={image} />
         </div>
         <div className="flex flex-col md:flex-1 md:justify-between md:mt-2">
           <div className="flex flex-col items-start">

@@ -2,10 +2,11 @@ import React, { FunctionComponent } from "react"
 
 type ImageProps = React.ComponentProps<"img">
 
-const Image: FunctionComponent<ImageProps> = ({
+const NImage: FunctionComponent<ImageProps> = ({
   children,
   className,
   src,
+  style,
   ...props
 }) => {
   const fallback = "/static/frontend/images/fallback.jpg"
@@ -16,6 +17,7 @@ const Image: FunctionComponent<ImageProps> = ({
         background: `url(${src}), url(${fallback})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        ...style,
       }}
       {...props}
     >
@@ -24,4 +26,4 @@ const Image: FunctionComponent<ImageProps> = ({
   )
 }
 
-export default Image
+export default NImage
