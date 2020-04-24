@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next"
 
 import { PrimaryButton, InfoIconButton } from "./Buttons"
 import { joinTopics, getImageUrl } from "~utils/common"
+import NImage from "./NImage"
 
 export interface FeaturedProps {
   data: ITitle[]
@@ -25,21 +26,16 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     className?: string
     title: ITitle
   }) => {
-    const image = getImageUrl(title.image.url, ImageQuality.h900)
+    const image = getImageUrl(title.images[0]?.url, ImageQuality.h900)
     return (
-      <div
-        className={`h-40 w-64 bg-cover bg-center rounded-lg relative text-sm font-light ${className}`}
-        style={{
-          background: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
+      <NImage
+        className={`h-40 w-64 object-cover object-center rounded-lg relative text-sm font-light ${className}`}
+        src={image}
       >
         <h4 className="absolute bottom-0 right-0 left-0 px-3 py-2 v-gradient">
           {title.name}
         </h4>
-      </div>
+      </NImage>
     )
   }
 
@@ -81,21 +77,15 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
       </div>
     </div>
   )
-
-  const image = getImageUrl(data[0].image.url, ImageQuality.h900)
+  const image = getImageUrl(data[0]?.images[0]?.url, ImageQuality.h900)
   return (
     <div className="flex mt-4 mb-5">
-      <div
-        className="relative h-64 md:h-auto flex-1 bg-cover bg-center rounded-lg md:mr-4"
-        style={{
-          background: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
+      <NImage
+        className="relative h-64 md:h-auto flex-1 object-cover object-center rounded-lg md:mr-4"
+        src={image}
       >
         <BottomInfo />
-      </div>
+      </NImage>
       <div className="hidden md:block">
         <FeaturedItem className="mb-4" title={data[1]} />
         <FeaturedItem className="mb-4" title={data[2]} />

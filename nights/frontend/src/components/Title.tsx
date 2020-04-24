@@ -14,7 +14,7 @@ export interface TitleProps {
 }
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
-  const image = getImageUrl(title.image.url)
+  const image = getImageUrl(title.images[0]?.url)
   const tmdbImage = image.replace("250v", "250tmdb")
 
   return (

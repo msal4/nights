@@ -8,12 +8,8 @@ import HomePage from "~pages/HomePage"
 import Header from "~components/Header"
 import i18n from "../../i18n"
 import { I18nextProvider } from "react-i18next"
-import { getTitles } from "~api/title"
 
 export const App = () => {
-  useEffect(() => {
-    getTitles().then(console.log).catch(console.log)
-  }, [])
   return (
     <div className="mx-5 my-3 md:mx-10 md:my-5 lg:mx-16 xl:max-w-6xl xl:mx-auto">
       <I18nextProvider i18n={i18n}>

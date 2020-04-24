@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
-import { Title } from "~core/interfaces/title"
-import { joinTopics } from "~utils/common"
+import { Title, ImageQuality } from "~core/interfaces/title"
+import { joinTopics, getImageUrl } from "~utils/common"
 import {
   IoIosStar,
   IoIosPlay,
@@ -10,6 +10,8 @@ import {
 import { PrimaryButton, InfoIconButton } from "./Buttons"
 import { useTranslation } from "react-i18next"
 
+import NImage from "./NImage"
+
 export interface RecommendedProps {
   title?: Title
 }
@@ -17,18 +19,15 @@ export interface RecommendedProps {
 const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
   const { t } = useTranslation()
 
+  const image = getImageUrl(title.images[0]?.url, ImageQuality.h900)
   return (
     <div className="mb-8 mx-3">
       <h3 className="md:text-lg mb-6 text-sm font-semibold leading-none">
         Picked for You
       </h3>
       <div className="flex flex-col md:flex-row">
-        <div className="rounded-lg mb-2 w-full h-40 md:w-0 flex-1 h-full md:mr-4">
-          <img
-            className="h-full w-full object-cover"
-            src="/static/frontend/images/mulan.png"
-            alt=""
-          />
+        <div className="rounded-lg mb-2 w-full h-40 md:w-0 flex-1 md:mr-4 md:h-64">
+          <NImage className="h-full w-full object-cover" src={image} />
         </div>
         <div className="flex flex-col md:flex-1 md:justify-between md:mt-2">
           <div className="flex flex-col items-start">

@@ -15,6 +15,7 @@ export interface TitleDetail {
   seasons: Season[]
   genres: Topic[]
   cast: Topic[]
+  images: Image[]
   recommended: Title[]
   released_at: string
   created_at: string
@@ -28,9 +29,13 @@ export interface Title {
   is_new: boolean
   rated: string
   rating: number | null
-  image: { url: string }
+  images: Image[]
   genres: Topic[]
   released_at: string
+}
+
+export interface Image {
+  url: string
 }
 
 export enum ImageQuality {
