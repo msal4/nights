@@ -1,13 +1,13 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { IconContext } from "react-icons"
-
-import "../styles/App.scss"
-import TitlePage from "~pages/TitlePage"
-import HomePage from "~pages/HomePage"
-import Header from "~components/Header"
-import i18n from "../../i18n"
 import { I18nextProvider } from "react-i18next"
+
+import "./styles/App.scss"
+import TitlePage from "./pages/TitlePage"
+import HomePage from "./pages/HomePage"
+import Header from "./components/Header"
+import i18n from "../i18n"
 
 export const App = () => {
   return (

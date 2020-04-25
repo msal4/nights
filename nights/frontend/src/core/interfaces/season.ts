@@ -7,3 +7,9 @@ export interface Season {
   episodes: Episode[]
   released_at: string
 }
+
+export interface SimpleSeason {
+  id: number
+  name: string
+  index: number
+}

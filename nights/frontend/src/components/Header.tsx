@@ -1,14 +1,10 @@
 import React, { useState } from "react"
-import {
-  IoIosAdd,
-  IoIosMenu,
-  IoIosCloseCircleOutline,
-  IoIosSearch,
-} from "react-icons/io"
+import { IoIosAdd, IoIosMenu, IoIosCloseCircleOutline } from "react-icons/io"
 import { Link, useRouteMatch } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+
 import "../styles/Header.scss"
 import Search from "~components/Search"
-import { I18nContext, useTranslation } from "react-i18next"
 
 const useMenuOpenedState = (value: boolean) => {
   const [menuOpened, setMenuOpened] = useState(value)

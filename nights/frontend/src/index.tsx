@@ -2,7 +2,7 @@ import React from "react"
 import ReactDom from "react-dom"
 import { I18nextProvider } from "react-i18next"
 
-import { App } from "~components/App"
+import { App } from "./App"
 import i18n from "~../i18n"
 
 ReactDom.render(

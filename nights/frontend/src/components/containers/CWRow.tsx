@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react"
-
-import CarouselRow from "./CarouselRow"
-import { ViewHit } from "~core/interfaces/view-hit"
-import CWCard from "./CWCard"
 import { useTranslation } from "react-i18next"
+
+import CarouselRow from "../CarouselRow"
+import { ViewHit } from "~core/interfaces/view-hit"
+import CWCard from "~components/containers/CWCard"
 
 export interface TitleRowProps {
   row: ViewHit[]

@@ -7,11 +7,11 @@ import {
   IoIosInformationCircleOutline,
 } from "react-icons/io"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
-import { PrimaryButton, InfoIconButton } from "./Buttons"
+import { PrimaryButton, InfoIconButton } from "./common/Buttons"
 import { joinTopics, getImageUrl } from "~utils/common"
 import NImage from "./NImage"
-import { Link } from "react-router-dom"
 
 export interface FeaturedProps {
   data: ITitle[]
@@ -45,9 +45,11 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   const BottomInfo = () => (
     <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
       <div className="mr-2">
-        <h1 className="text-xl md:text-3xl font-bold leading-none">
-          {data[0]?.name}
-        </h1>
+        <Link to={`/title/${data[0].id}`}>
+          <h1 className="text-xl md:text-3xl font-bold leading-none">
+            {data[0]?.name}
+          </h1>
+        </Link>
         <div className="text-xs md:text-sm text-gray-500">
           <p>{joinTopics(data[0]?.genres)}</p>
           <div className="flex items-center">
@@ -73,6 +75,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         </InfoIconButton>
         <InfoIconButton
           className="hidden md:flex"
+          to={`/title/${data[0].id}`}
           icon={<IoIosInformationCircleOutline className="text-base" />}
         >
           {t("info")}
@@ -80,21 +83,17 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
       </div>
     </div>
   )
+
   const image = getImageUrl(data[0]?.images[0]?.url, ImageQuality.h900)
   return (
     <div className="flex mt-4 mb-5">
-      <Link
-        className="h-64 md:h-auto flex-1 rounded-lg md:mr-4"
-        to={`/title/${data[0].id}`}
+      <NImage
+        className="relative object-cover object-center h-64 md:h-auto flex-1 rounded-lg md:mr-4"
+        style={{ maxHeight: "40rem" }}
+        src={image}
       >
-        <NImage
-          className="h-full w-full relative object-cover object-center"
-          style={{ maxHeight: "40rem" }}
-          src={image}
-        >
-          <BottomInfo />
-        </NImage>
-      </Link>
+        <BottomInfo />
+      </NImage>
       <div className="hidden md:block">
         <FeaturedItem className="mb-4" title={data[1]} />
         <FeaturedItem className="mb-4" title={data[2]} />

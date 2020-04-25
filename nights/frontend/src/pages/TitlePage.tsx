@@ -4,28 +4,41 @@ import { IoIosPlay, IoIosAdd } from "react-icons/io"
 import { useTranslation } from "react-i18next"
 
 import { TitleDetail, ImageQuality } from "~core/interfaces/title"
-import { getTitle } from "~api/title"
-import NImage from "~components/NImage"
+import { SimpleSeason } from "~core/interfaces/season"
 import { getImageUrl, joinTopics } from "~utils/common"
-import { PrimaryButton, InfoIconButton } from "~components/Buttons"
+import { getTitle } from "~api/title"
+import { PrimaryButton, InfoIconButton } from "../components/common/Buttons"
+import NImage from "~components/NImage"
 import TitleRecommended from "~components/TitleRecommended"
 import TitleInfo from "~components/TitleInfo"
+import UnderlineLink from "~components/UnderlineLink"
+import Season from "~components/containers/Season"
 
 const useTitle = () => {
   const [title, setTitle] = useState<TitleDetail>(null)
   const [error, setError] = useState<{}>(null)
-  return { title, setTitle, error, setError }
+  const [selectedSeason, setSelectedSeason] = useState<SimpleSeason>(null)
+  return { title, setTitle, error, setError, selectedSeason, setSelectedSeason }
 }
 
 export default () => {
   const { id } = useParams()
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-  const { title, setTitle, error, setError } = useTitle()
+  const {
+    title,
+    setTitle,
+    error,
+    setError,
+    selectedSeason,
+    setSelectedSeason,
+  } = useTitle()
 
   const getTitleDetail = async () => {
     try {
-      setTitle(await getTitle(id))
+      const title = await getTitle(id)
+      setTitle(title)
+      if (title.type === "s") setSelectedSeason(title.seasons[0])
       if (error) setError(null)
     } catch (error) {
       setError(error)
@@ -41,7 +54,7 @@ export default () => {
   ) : title ? (
     <div>
       <NImage
-        className="rounded-lg mb-4"
+        className="rounded-lg mb-16"
         src={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
         style={{ width: "100%", paddingBottom: "40%" }}
       >
@@ -68,17 +81,31 @@ export default () => {
           </div>
         </div>
       </NImage>
-      <div>
-        <Link to={`${url}`}>Info</Link>
-        <Link to={`${url}/recommended`}>More Like This</Link>
+      <div className="mb-10 flex">
+        {title.type === "s" && (
+          <UnderlineLink className="mr-2" to={url}>
+            {t("episodes")}
+          </UnderlineLink>
+        )}
+        <UnderlineLink className="mr-4" to={`${url}/info`}>
+          {t("info")}
+        </UnderlineLink>
+        <UnderlineLink to={`${url}/recommended`}>
+          {t("moreLikeThis")}
+        </UnderlineLink>
       </div>
       <Switch>
-        <Route key="title-detail-recommended" path={`${path}/recommended`}>
+        <Route path={`${path}/recommended`}>
           <TitleRecommended />
         </Route>
-        <Route key="title-detail-info" path={`${path}`}>
+        <Route path={`${path}/info`}>
           <TitleInfo />
         </Route>
+        {selectedSeason && (
+          <Route path={`${path}`}>
+            <Season seasonId={selectedSeason.id} />
+          </Route>
+        )}
       </Switch>
     </div>
   ) : (

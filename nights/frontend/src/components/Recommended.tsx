@@ -7,7 +7,7 @@ import {
   IoIosInformationCircleOutline,
   IoIosAdd,
 } from "react-icons/io"
-import { PrimaryButton, InfoIconButton } from "./Buttons"
+import { PrimaryButton, InfoIconButton } from "./common/Buttons"
 import { useTranslation } from "react-i18next"
 
 import NImage from "./NImage"
@@ -23,7 +23,7 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
   return (
     <div className="mb-8 mx-3">
       <h3 className="md:text-lg mb-6 text-sm font-semibold leading-none">
-        Picked for You
+        {t("pickedForYou")}
       </h3>
       <div className="flex flex-col md:flex-row">
         <div

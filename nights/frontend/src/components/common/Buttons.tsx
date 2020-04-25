@@ -1,7 +1,8 @@
 import { FunctionComponent } from "react"
 import React from "react"
 import { Link } from "react-router-dom"
-import "../styles/Button.scss"
+
+import "../../styles/Buttons.scss"
 
 export interface ButtonProps {
   to?: string

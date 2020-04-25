@@ -229,6 +229,33 @@
 .hover\:border-1:hover {
   box-shadow: 0 0 0 1px white;
 }
+
+.highlight-before {
+  color: white !important;
+}
+
+.highlight-before::before {
+  background: linear-gradient(90deg, #0d87fd, #ea1437);
+  box-sizing: border-box;
+  height: 2px;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.underline-before {
+  position: relative;
+  padding: 0 0.3rem 0.3rem 0.3rem;
+  color: #777;
+}
+
+.underline-before::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  transition: all ease-in-out 300ms;
+}
 .button-container {
   background: #ea1437;
   box-shadow: 0 0 15px #ea1437;

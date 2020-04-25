@@ -47737,7 +47737,37 @@ var ImageQuality;
   ImageQuality["v250"] = "250v";
   ImageQuality["v100"] = "100v";
 })(ImageQuality = exports.ImageQuality || (exports.ImageQuality = {}));
-},{}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+},{}],"utils/common.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var title_1 = require("~core/interfaces/title");
+
+exports.capitalizeFirst = function (str) {
+  return (str === null || str === void 0 ? void 0 : str.charAt(0).toUpperCase()) + str.slice(1);
+};
+
+exports.joinTopics = function (topics, sep) {
+  if (sep === void 0) {
+    sep = " • ";
+  }
+
+  return topics === null || topics === void 0 ? void 0 : topics.map(function (g) {
+    return exports.capitalizeFirst(g.name);
+  }).join(sep);
+};
+
+exports.getImageUrl = function (url, quality) {
+  if (quality === void 0) {
+    quality = title_1.ImageQuality.v250;
+  }
+
+  return url.replace("{q}v", quality).replace("{f}", "jpg");
+};
+},{"~core/interfaces/title":"core/interfaces/title.ts"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -49553,7 +49583,75 @@ exports.getTitles = function (params) {
 exports.getTitle = function (id) {
   return client_1.default.get("/titles/" + id + "/");
 };
-},{"./client":"api/client.ts"}],"components/NImage.tsx":[function(require,module,exports) {
+
+exports.getSeason = function (id) {
+  return client_1.default.get("/seasons/" + id + "/");
+};
+},{"./client":"api/client.ts"}],"styles/Buttons.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/common/Buttons.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var react_router_dom_1 = require("react-router-dom");
+
+require("../../styles/Buttons.scss");
+
+exports.BaseButton = function (_a) {
+  var to = _a.to,
+      onClick = _a.onClick,
+      className = _a.className,
+      children = _a.children;
+  if (to && onClick) throw Error("Only `to` or `onClick` should be passed.");
+  return to ? react_1.default.createElement(react_router_dom_1.Link, {
+    className: className,
+    to: to
+  }, children) : react_1.default.createElement("button", {
+    className: className,
+    onClick: onClick
+  }, children);
+};
+
+exports.InfoIconButton = function (_a) {
+  var to = _a.to,
+      onClick = _a.onClick,
+      children = _a.children,
+      icon = _a.icon,
+      _b = _a.className,
+      className = _b === void 0 ? "" : _b;
+  return react_1.default.createElement(exports.BaseButton, {
+    className: "flex flex-col items-center text-xs text-gray-500 hover:text-white\n       " + className,
+    to: to,
+    onClick: onClick
+  }, icon, children);
+};
+
+exports.PrimaryButton = function (_a) {
+  var to = _a.to,
+      onClick = _a.onClick,
+      children = _a.children,
+      className = _a.className;
+  return react_1.default.createElement(exports.BaseButton, {
+    to: to,
+    onClick: onClick,
+    className: "flex items-center px-5 text-sm font-semibold py-2 rounded-full button-container " + className
+  }, children);
+};
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../../styles/Buttons.scss":"styles/Buttons.scss"}],"components/NImage.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -49616,101 +49714,7 @@ var NImage = function NImage(_a) {
 };
 
 exports.default = NImage;
-},{"react":"../node_modules/react/index.js"}],"utils/common.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var title_1 = require("~core/interfaces/title");
-
-exports.capitalizeFirst = function (str) {
-  return (str === null || str === void 0 ? void 0 : str.charAt(0).toUpperCase()) + str.slice(1);
-};
-
-exports.joinTopics = function (topics, sep) {
-  if (sep === void 0) {
-    sep = " • ";
-  }
-
-  return topics === null || topics === void 0 ? void 0 : topics.map(function (g) {
-    return exports.capitalizeFirst(g.name);
-  }).join(sep);
-};
-
-exports.getImageUrl = function (url, quality) {
-  if (quality === void 0) {
-    quality = title_1.ImageQuality.v250;
-  }
-
-  return url.replace("{q}v", quality).replace("{f}", "jpg");
-};
-},{"~core/interfaces/title":"core/interfaces/title.ts"}],"styles/Button.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/Buttons.tsx":[function(require,module,exports) {
-"use strict";
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var react_router_dom_1 = require("react-router-dom");
-
-require("../styles/Button.scss");
-
-exports.BaseButton = function (_a) {
-  var to = _a.to,
-      onClick = _a.onClick,
-      className = _a.className,
-      children = _a.children;
-  if (to && onClick) throw Error("Only `to` or `onClick` should be passed.");
-  return to ? react_1.default.createElement(react_router_dom_1.Link, {
-    className: className,
-    to: to
-  }, children) : react_1.default.createElement("button", {
-    className: className,
-    onClick: onClick
-  }, children);
-};
-
-exports.InfoIconButton = function (_a) {
-  var to = _a.to,
-      onClick = _a.onClick,
-      children = _a.children,
-      icon = _a.icon,
-      _b = _a.className,
-      className = _b === void 0 ? "" : _b;
-  return react_1.default.createElement(exports.BaseButton, {
-    className: "flex flex-col items-center text-xs text-gray-500 hover:text-white\n       " + className,
-    to: to,
-    onClick: onClick
-  }, icon, children);
-};
-
-exports.PrimaryButton = function (_a) {
-  var to = _a.to,
-      onClick = _a.onClick,
-      children = _a.children,
-      className = _a.className;
-  return react_1.default.createElement(exports.BaseButton, {
-    to: to,
-    onClick: onClick,
-    className: "flex items-center px-5 text-sm font-semibold py-2 rounded-full button-container " + className
-  }, children);
-};
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Button.scss":"styles/Button.scss"}],"components/TitleRecommended.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"components/TitleRecommended.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -49750,7 +49754,312 @@ var TitleInfo = function TitleInfo() {
 };
 
 exports.default = TitleInfo;
-},{"react":"../node_modules/react/index.js"}],"pages/TitlePage.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"components/UnderlineLink.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var react_router_dom_1 = require("react-router-dom");
+
+var UnderlineLink = function UnderlineLink(_a) {
+  var to = _a.to,
+      _b = _a.className,
+      className = _b === void 0 ? "" : _b,
+      _c = _a.activeOnlyWhenExact,
+      activeOnlyWhenExact = _c === void 0 ? true : _c,
+      children = _a.children;
+  var match = react_router_dom_1.useRouteMatch({
+    path: to,
+    exact: activeOnlyWhenExact
+  });
+  return react_1.default.createElement(react_router_dom_1.Link, {
+    className: "underline-before " + (match ? "highlight-before" : "") + " " + className,
+    to: to
+  }, children);
+};
+
+exports.default = UnderlineLink;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/EpisodeList.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var EpisodeList = function EpisodeList(_a) {
+  var season = _a.season;
+  return react_1.default.createElement("div", null, season.name);
+};
+
+exports.default = EpisodeList;
+},{"react":"../node_modules/react/index.js"}],"components/containers/Season.tsx":[function(require,module,exports) {
+"use strict";
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importStar(require("react"));
+
+var title_1 = require("~api/title");
+
+var EpisodeList_1 = __importDefault(require("~components/EpisodeList"));
+
+var useSeason = function useSeason() {
+  var _a = react_1.useState(null),
+      season = _a[0],
+      setSeason = _a[1];
+
+  var _b = react_1.useState(null),
+      error = _b[0],
+      setError = _b[1];
+
+  return {
+    season: season,
+    setSeason: setSeason,
+    error: error,
+    setError: setError
+  };
+};
+
+var Season = function Season(_a) {
+  var seasonId = _a.seasonId;
+
+  var _b = useSeason(),
+      season = _b.season,
+      setSeason = _b.setSeason,
+      error = _b.error,
+      setError = _b.setError;
+
+  var getSeasonDetail = function getSeasonDetail() {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var _a, error_1;
+
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            _b.trys.push([0, 2,, 3]);
+
+            _a = setSeason;
+            return [4
+            /*yield*/
+            , title_1.getSeason(seasonId)];
+
+          case 1:
+            _a.apply(void 0, [_b.sent()]);
+
+            if (error) setError(null);
+            return [3
+            /*break*/
+            , 3];
+
+          case 2:
+            error_1 = _b.sent();
+            setError(error_1);
+            return [3
+            /*break*/
+            , 3];
+
+          case 3:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  react_1.useEffect(function () {
+    getSeasonDetail();
+  }, [seasonId]);
+  if (!season && !error) return react_1.default.createElement("div", null, "Loading...");else if (error) {
+    console.log(error);
+    return react_1.default.createElement("div", null, "error");
+  }
+  return react_1.default.createElement(EpisodeList_1.default, {
+    season: season
+  });
+};
+
+exports.default = Season;
+},{"react":"../node_modules/react/index.js","~api/title":"api/title.ts","~components/EpisodeList":"components/EpisodeList.tsx"}],"pages/TitlePage.tsx":[function(require,module,exports) {
 "use strict";
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -49926,17 +50235,21 @@ var react_i18next_1 = require("react-i18next");
 
 var title_1 = require("~core/interfaces/title");
 
-var title_2 = require("~api/title");
-
-var NImage_1 = __importDefault(require("~components/NImage"));
-
 var common_1 = require("~utils/common");
 
-var Buttons_1 = require("~components/Buttons");
+var title_2 = require("~api/title");
+
+var Buttons_1 = require("../components/common/Buttons");
+
+var NImage_1 = __importDefault(require("~components/NImage"));
 
 var TitleRecommended_1 = __importDefault(require("~components/TitleRecommended"));
 
 var TitleInfo_1 = __importDefault(require("~components/TitleInfo"));
+
+var UnderlineLink_1 = __importDefault(require("~components/UnderlineLink"));
+
+var Season_1 = __importDefault(require("~components/containers/Season"));
 
 var useTitle = function useTitle() {
   var _a = react_1.useState(null),
@@ -49947,11 +50260,17 @@ var useTitle = function useTitle() {
       error = _b[0],
       setError = _b[1];
 
+  var _c = react_1.useState(null),
+      selectedSeason = _c[0],
+      setSelectedSeason = _c[1];
+
   return {
     title: title,
     setTitle: setTitle,
     error: error,
-    setError: setError
+    setError: setError,
+    selectedSeason: selectedSeason,
+    setSelectedSeason: setSelectedSeason
   };
 };
 
@@ -49970,32 +50289,33 @@ exports.default = function () {
       title = _c.title,
       setTitle = _c.setTitle,
       error = _c.error,
-      setError = _c.setError;
+      setError = _c.setError,
+      selectedSeason = _c.selectedSeason,
+      setSelectedSeason = _c.setSelectedSeason;
 
   var getTitleDetail = function getTitleDetail() {
     return __awaiter(void 0, void 0, void 0, function () {
-      var _a, error_1;
-
-      return __generator(this, function (_b) {
-        switch (_b.label) {
+      var title_3, error_1;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
           case 0:
-            _b.trys.push([0, 2,, 3]);
+            _a.trys.push([0, 2,, 3]);
 
-            _a = setTitle;
             return [4
             /*yield*/
             , title_2.getTitle(id)];
 
           case 1:
-            _a.apply(void 0, [_b.sent()]);
-
+            title_3 = _a.sent();
+            setTitle(title_3);
+            if (title_3.type === "s") setSelectedSeason(title_3.seasons[0]);
             if (error) setError(null);
             return [3
             /*break*/
             , 3];
 
           case 2:
-            error_1 = _b.sent();
+            error_1 = _a.sent();
             setError(error_1);
             return [3
             /*break*/
@@ -50014,7 +50334,7 @@ exports.default = function () {
     getTitleDetail();
   }, [id]);
   return error ? react_1.default.createElement("div", null, error) : title ? react_1.default.createElement("div", null, react_1.default.createElement(NImage_1.default, {
-    className: "rounded-lg mb-4",
+    className: "rounded-lg mb-16",
     src: common_1.getImageUrl((_a = title.images[0]) === null || _a === void 0 ? void 0 : _a.url, title_1.ImageQuality.h900),
     style: {
       width: "100%",
@@ -50043,19 +50363,27 @@ exports.default = function () {
     })
   }, react_1.default.createElement("span", {
     className: "hidden md:block"
-  }, t("myList")))))), react_1.default.createElement("div", null, react_1.default.createElement(react_router_dom_1.Link, {
-    to: "" + url
-  }, "Info"), react_1.default.createElement(react_router_dom_1.Link, {
+  }, t("myList")))))), react_1.default.createElement("div", {
+    className: "mb-10 flex"
+  }, title.type === "s" && react_1.default.createElement(UnderlineLink_1.default, {
+    className: "mr-2",
+    to: url
+  }, t("episodes")), react_1.default.createElement(UnderlineLink_1.default, {
+    className: "mr-4",
+    to: url + "/info"
+  }, t("info")), react_1.default.createElement(UnderlineLink_1.default, {
     to: url + "/recommended"
-  }, "More Like This")), react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(react_router_dom_1.Route, {
-    key: "title-detail-recommended",
+  }, t("moreLikeThis"))), react_1.default.createElement(react_router_dom_1.Switch, null, react_1.default.createElement(react_router_dom_1.Route, {
     path: path + "/recommended"
   }, react_1.default.createElement(TitleRecommended_1.default, null)), react_1.default.createElement(react_router_dom_1.Route, {
-    key: "title-detail-info",
+    path: path + "/info"
+  }, react_1.default.createElement(TitleInfo_1.default, null)), selectedSeason && react_1.default.createElement(react_router_dom_1.Route, {
     path: "" + path
-  }, react_1.default.createElement(TitleInfo_1.default, null)))) : react_1.default.createElement("div", null, "Loading...");
+  }, react_1.default.createElement(Season_1.default, {
+    seasonId: selectedSeason.id
+  })))) : react_1.default.createElement("div", null, "Loading...");
 };
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~core/interfaces/title":"core/interfaces/title.ts","~api/title":"api/title.ts","~components/NImage":"components/NImage.tsx","~utils/common":"utils/common.ts","~components/Buttons":"components/Buttons.tsx","~components/TitleRecommended":"components/TitleRecommended.tsx","~components/TitleInfo":"components/TitleInfo.tsx"}],"components/Featured.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~core/interfaces/title":"core/interfaces/title.ts","~utils/common":"utils/common.ts","~api/title":"api/title.ts","../components/common/Buttons":"components/common/Buttons.tsx","~components/NImage":"components/NImage.tsx","~components/TitleRecommended":"components/TitleRecommended.tsx","~components/TitleInfo":"components/TitleInfo.tsx","~components/UnderlineLink":"components/UnderlineLink.tsx","~components/containers/Season":"components/containers/Season.tsx"}],"components/Featured.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -50076,13 +50404,13 @@ var io_1 = require("react-icons/io");
 
 var react_i18next_1 = require("react-i18next");
 
-var Buttons_1 = require("./Buttons");
+var react_router_dom_1 = require("react-router-dom");
+
+var Buttons_1 = require("./common/Buttons");
 
 var common_1 = require("~utils/common");
 
 var NImage_1 = __importDefault(require("./NImage"));
-
-var react_router_dom_1 = require("react-router-dom");
 
 var Featured = function Featured(_a) {
   var data = _a.data;
@@ -50116,9 +50444,11 @@ var Featured = function Featured(_a) {
       className: "absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3"
     }, react_1.default.createElement("div", {
       className: "mr-2"
+    }, react_1.default.createElement(react_router_dom_1.Link, {
+      to: "/title/" + data[0].id
     }, react_1.default.createElement("h1", {
       className: "text-xl md:text-3xl font-bold leading-none"
-    }, (_a = data[0]) === null || _a === void 0 ? void 0 : _a.name), react_1.default.createElement("div", {
+    }, (_a = data[0]) === null || _a === void 0 ? void 0 : _a.name)), react_1.default.createElement("div", {
       className: "text-xs md:text-sm text-gray-500"
     }, react_1.default.createElement("p", null, common_1.joinTopics((_b = data[0]) === null || _b === void 0 ? void 0 : _b.genres)), react_1.default.createElement("div", {
       className: "flex items-center"
@@ -50143,6 +50473,7 @@ var Featured = function Featured(_a) {
       })
     }, t("myList")), react_1.default.createElement(Buttons_1.InfoIconButton, {
       className: "hidden md:flex",
+      to: "/title/" + data[0].id,
       icon: react_1.default.createElement(io_1.IoIosInformationCircleOutline, {
         className: "text-base"
       })
@@ -50152,16 +50483,13 @@ var Featured = function Featured(_a) {
   var image = common_1.getImageUrl((_c = (_b = data[0]) === null || _b === void 0 ? void 0 : _b.images[0]) === null || _c === void 0 ? void 0 : _c.url, title_1.ImageQuality.h900);
   return react_1.default.createElement("div", {
     className: "flex mt-4 mb-5"
-  }, react_1.default.createElement(react_router_dom_1.Link, {
-    className: "h-64 md:h-auto flex-1 rounded-lg md:mr-4",
-    to: "/title/" + data[0].id
   }, react_1.default.createElement(NImage_1.default, {
-    className: "h-full w-full relative object-cover object-center",
+    className: "relative object-cover object-center h-64 md:h-auto flex-1 rounded-lg md:mr-4",
     style: {
       maxHeight: "40rem"
     },
     src: image
-  }, react_1.default.createElement(BottomInfo, null))), react_1.default.createElement("div", {
+  }, react_1.default.createElement(BottomInfo, null)), react_1.default.createElement("div", {
     className: "hidden md:block"
   }, react_1.default.createElement(FeaturedItem, {
     className: "mb-4",
@@ -50175,7 +50503,7 @@ var Featured = function Featured(_a) {
 };
 
 exports.default = Featured;
-},{"~core/interfaces/title":"core/interfaces/title.ts","react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./Buttons":"components/Buttons.tsx","~utils/common":"utils/common.ts","./NImage":"components/NImage.tsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
+},{"~core/interfaces/title":"core/interfaces/title.ts","react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./common/Buttons":"components/common/Buttons.tsx","~utils/common":"utils/common.ts","./NImage":"components/NImage.tsx"}],"icons/InfoIcon.tsx":[function(require,module,exports) {
 "use strict";
 
 var __assign = this && this.__assign || function () {
@@ -51638,7 +51966,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/CWCard.tsx":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/ProgressCard.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -51653,40 +51981,68 @@ Object.defineProperty(exports, "__esModule", {
 
 var react_1 = __importDefault(require("react"));
 
+var NImage_1 = __importDefault(require("./NImage"));
+
 require("../styles/CWCard.scss");
+
+var ProgressCard = function ProgressCard(_a) {
+  var progress = _a.progress,
+      imageUrl = _a.imageUrl,
+      name = _a.name;
+  return react_1.default.createElement("div", {
+    className: "cw-card-container flex pt-2 md:pt-8 ml-3 mr-2 cursor-pointer"
+  }, react_1.default.createElement(NImage_1.default, {
+    className: "glow w-32 h-20 object-cover rounded mr-2",
+    draggable: false,
+    src: imageUrl
+  }), react_1.default.createElement("div", {
+    className: "flex flex-col flex-1 justify-between"
+  }, react_1.default.createElement("p", {
+    className: "text-sm"
+  }, name), react_1.default.createElement("div", {
+    className: "progress h-1 overflow-hidden rounded bg-gray-900"
+  }, react_1.default.createElement("div", {
+    className: "h-full h-rainbow",
+    style: {
+      width: progress + "%"
+    }
+  }))));
+};
+
+exports.default = ProgressCard;
+},{"react":"../node_modules/react/index.js","./NImage":"components/NImage.tsx","../styles/CWCard.scss":"styles/CWCard.scss"}],"components/containers/CWCard.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
 
 var common_1 = require("~utils/common");
 
-var NImage_1 = __importDefault(require("./NImage"));
+var ProgressCard_1 = __importDefault(require("~components/ProgressCard"));
 
 var CWCard = function CWCard(_a) {
   var hit = _a.hit;
 
   var _b, _c, _d;
 
-  var percent = hit.playback_position / hit.runtime * 100;
-  return react_1.default.createElement("div", {
-    className: "cw-card-container flex pt-2 md:pt-8 ml-3 mr-2 cursor-pointer"
-  }, react_1.default.createElement(NImage_1.default, {
-    className: "glow w-32 h-20 object-cover rounded mr-2",
-    draggable: false,
-    src: common_1.getImageUrl((_c = (_b = hit.topic) === null || _b === void 0 ? void 0 : _b.images[0]) === null || _c === void 0 ? void 0 : _c.url)
-  }), react_1.default.createElement("div", {
-    className: "flex flex-col flex-1 justify-between"
-  }, react_1.default.createElement("p", {
-    className: "text-sm"
-  }, hit.topic.name), react_1.default.createElement("p", null, (_d = hit.episode) === null || _d === void 0 ? void 0 : _d.name), react_1.default.createElement("div", {
-    className: "progress h-1 overflow-hidden rounded bg-gray-900"
-  }, react_1.default.createElement("div", {
-    className: "h-full h-rainbow",
-    style: {
-      width: percent + "%"
-    }
-  }))));
+  return react_1.default.createElement(ProgressCard_1.default, {
+    progress: hit.playback_position / hit.runtime * 100,
+    imageUrl: common_1.getImageUrl((_c = (_b = hit.topic) === null || _b === void 0 ? void 0 : _b.images[0]) === null || _c === void 0 ? void 0 : _c.url),
+    name: hit.topic.type === "s" ? (_d = hit.episode) === null || _d === void 0 ? void 0 : _d.name : hit.topic.name
+  });
 };
 
 exports.default = CWCard;
-},{"react":"../node_modules/react/index.js","../styles/CWCard.scss":"styles/CWCard.scss","~utils/common":"utils/common.ts","./NImage":"components/NImage.tsx"}],"components/CWRow.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~utils/common":"utils/common.ts","~components/ProgressCard":"components/ProgressCard.tsx"}],"components/containers/CWRow.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -51701,11 +52057,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var react_1 = __importDefault(require("react"));
 
-var CarouselRow_1 = __importDefault(require("./CarouselRow"));
-
-var CWCard_1 = __importDefault(require("./CWCard"));
-
 var react_i18next_1 = require("react-i18next");
+
+var CarouselRow_1 = __importDefault(require("../CarouselRow"));
+
+var CWCard_1 = __importDefault(require("~components/containers/CWCard"));
 
 var CWRow = function CWRow(_a) {
   var row = _a.row;
@@ -51752,7 +52108,7 @@ var CWRow = function CWRow(_a) {
 };
 
 exports.default = CWRow;
-},{"react":"../node_modules/react/index.js","./CarouselRow":"components/CarouselRow.tsx","./CWCard":"components/CWCard.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"components/Recommended.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","../CarouselRow":"components/CarouselRow.tsx","~components/containers/CWCard":"components/containers/CWCard.tsx"}],"components/Recommended.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -51773,7 +52129,7 @@ var common_1 = require("~utils/common");
 
 var io_1 = require("react-icons/io");
 
-var Buttons_1 = require("./Buttons");
+var Buttons_1 = require("./common/Buttons");
 
 var react_i18next_1 = require("react-i18next");
 
@@ -51790,7 +52146,7 @@ var Recommended = function Recommended(_a) {
     className: "mb-8 mx-3"
   }, react_1.default.createElement("h3", {
     className: "md:text-lg mb-6 text-sm font-semibold leading-none"
-  }, "Picked for You"), react_1.default.createElement("div", {
+  }, t("pickedForYou")), react_1.default.createElement("div", {
     className: "flex flex-col md:flex-row"
   }, react_1.default.createElement("div", {
     className: "rounded-lg mb-2 w-full h-40 md:w-0 flex-1 md:mr-4 md:h-full",
@@ -51837,7 +52193,7 @@ var Recommended = function Recommended(_a) {
 };
 
 exports.default = Recommended;
-},{"react":"../node_modules/react/index.js","~core/interfaces/title":"core/interfaces/title.ts","~utils/common":"utils/common.ts","react-icons/io":"../node_modules/react-icons/io/index.esm.js","./Buttons":"components/Buttons.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./NImage":"components/NImage.tsx"}],"api/home.ts":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~core/interfaces/title":"core/interfaces/title.ts","~utils/common":"utils/common.ts","react-icons/io":"../node_modules/react-icons/io/index.esm.js","./common/Buttons":"components/common/Buttons.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./NImage":"components/NImage.tsx"}],"api/home.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -52043,7 +52399,7 @@ var Featured_1 = __importDefault(require("~components/Featured"));
 
 var TitleRow_1 = __importDefault(require("~components/TitleRow"));
 
-var CWRow_1 = __importDefault(require("~components/CWRow"));
+var CWRow_1 = __importDefault(require("~components/containers/CWRow"));
 
 var react_i18next_1 = require("react-i18next");
 
@@ -52135,7 +52491,7 @@ exports.default = function () {
     title: results.recommended
   }));
 };
-},{"react":"../node_modules/react/index.js","~components/Featured":"components/Featured.tsx","~components/TitleRow":"components/TitleRow.tsx","~components/CWRow":"components/CWRow.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~components/Recommended":"components/Recommended.tsx","~api/home":"api/home.ts"}],"styles/Header.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~components/Featured":"components/Featured.tsx","~components/TitleRow":"components/TitleRow.tsx","~components/containers/CWRow":"components/containers/CWRow.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~components/Recommended":"components/Recommended.tsx","~api/home":"api/home.ts"}],"styles/Header.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -52238,11 +52594,11 @@ var io_1 = require("react-icons/io");
 
 var react_router_dom_1 = require("react-router-dom");
 
+var react_i18next_1 = require("react-i18next");
+
 require("../styles/Header.scss");
 
 var Search_1 = __importDefault(require("~components/Search"));
-
-var react_i18next_1 = require("react-i18next");
 
 var useMenuOpenedState = function useMenuOpenedState(value) {
   var _a = react_1.useState(value),
@@ -52329,7 +52685,7 @@ exports.default = function () {
     onClick: toggleLanguage
   }, t("lang"))))));
 };
-},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../styles/Header.scss":"styles/Header.scss","~components/Search":"components/Search.tsx","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"../node_modules/@babel/runtime/helpers/esm/typeof.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","../styles/Header.scss":"styles/Header.scss","~components/Search":"components/Search.tsx"}],"../node_modules/@babel/runtime/helpers/esm/typeof.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55395,7 +55751,10 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
         continueWatching: "Continue Watching",
         signIn: "Sign in",
         search: "Search",
-        recentlyAdded: "Recently Added"
+        recentlyAdded: "Recently Added",
+        moreLikeThis: "More Like This",
+        episodes: "Episodes",
+        pickedForYou: "Picked for You"
       }
     },
     ar: {
@@ -55411,7 +55770,10 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
         continueWatching: "واصل المشاهدة",
         signIn: "تسجيل الدخول",
         search: "بحث",
-        recentlyAdded: "احدث الاضافات"
+        recentlyAdded: "احدث الاضافات",
+        moreLikeThis: "المزيد مثل هذا",
+        episodes: "الحلقات",
+        pickedForYou: "اختيرت من اجلك"
       }
     }
   },
@@ -55431,7 +55793,7 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
   return console.log("Translations loaded.");
 });
 exports.default = i18next_1.default;
-},{"i18next":"../node_modules/i18next/dist/esm/i18next.js","i18next-browser-languagedetector":"../node_modules/i18next-browser-languagedetector/dist/esm/i18nextBrowserLanguageDetector.js"}],"components/App.tsx":[function(require,module,exports) {
+},{"i18next":"../node_modules/i18next/dist/esm/i18next.js","i18next-browser-languagedetector":"../node_modules/i18next-browser-languagedetector/dist/esm/i18nextBrowserLanguageDetector.js"}],"App.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -55450,17 +55812,17 @@ var react_router_dom_1 = require("react-router-dom");
 
 var react_icons_1 = require("react-icons");
 
-require("../styles/App.scss");
-
-var TitlePage_1 = __importDefault(require("~pages/TitlePage"));
-
-var HomePage_1 = __importDefault(require("~pages/HomePage"));
-
-var Header_1 = __importDefault(require("~components/Header"));
-
-var i18n_1 = __importDefault(require("../../i18n"));
-
 var react_i18next_1 = require("react-i18next");
+
+require("./styles/App.scss");
+
+var TitlePage_1 = __importDefault(require("./pages/TitlePage"));
+
+var HomePage_1 = __importDefault(require("./pages/HomePage"));
+
+var Header_1 = __importDefault(require("./components/Header"));
+
+var i18n_1 = __importDefault(require("../i18n"));
 
 exports.App = function () {
   return react_1.default.createElement("div", {
@@ -55480,7 +55842,7 @@ exports.App = function () {
     path: "/"
   }, react_1.default.createElement(HomePage_1.default, null)))))));
 };
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons":"../node_modules/react-icons/lib/esm/index.js","../styles/App.scss":"styles/App.scss","~pages/TitlePage":"pages/TitlePage.tsx","~pages/HomePage":"pages/HomePage.tsx","~components/Header":"components/Header.tsx","../../i18n":"../i18n.ts","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"index.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons":"../node_modules/react-icons/lib/esm/index.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./styles/App.scss":"styles/App.scss","./pages/TitlePage":"pages/TitlePage.tsx","./pages/HomePage":"pages/HomePage.tsx","./components/Header":"components/Header.tsx","../i18n":"../i18n.ts"}],"index.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -55499,14 +55861,14 @@ var react_dom_1 = __importDefault(require("react-dom"));
 
 var react_i18next_1 = require("react-i18next");
 
-var App_1 = require("~components/App");
+var App_1 = require("./App");
 
 var i18n_1 = __importDefault(require("~../i18n"));
 
 react_dom_1.default.render(react_1.default.createElement(react_i18next_1.I18nextProvider, {
   i18n: i18n_1.default
 }, react_1.default.createElement(App_1.App, null)), document.getElementById("app"));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~components/App":"components/App.tsx","~../i18n":"../i18n.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","./App":"App.tsx","~../i18n":"../i18n.ts"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -55534,7 +55896,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63519" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59280" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
