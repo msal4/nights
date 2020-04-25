@@ -7,12 +7,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/interceptors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/interceptors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/title.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/title.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/public/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/public/index.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/public/index.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nights/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/nights/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +192,10 @@
       <workItem from="1587501571537" duration="578000" />
       <workItem from="1587539553942" duration="63000" />
       <workItem from="1587570607637" duration="9503000" />
-      <workItem from="1587669261995" duration="130000" />
+      <workItem from="1587669261995" duration="207000" />
+      <workItem from="1587729317529" duration="918000" />
+      <workItem from="1587752467003" duration="45000" />
+      <workItem from="1587821913017" duration="2807000" />
     </task>
     <servers />
   </component>

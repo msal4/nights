@@ -60,7 +60,6 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
     def get_queryset(self):
         return Genre.objects.order_by('-name')
 
-    # Cache requested url for each user for 2 hours
     @method_decorator(cache_page(60 * 60))
     @vary_on_cookie
     def get(self, request, *args, **kwargs):
@@ -91,7 +90,7 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         return self.get_paginated_response(data)
 
 
-# @method_decorator(cache_page(60 * 60 * 2))
+# @method_decorator(cache_page(60 * 60))
 class CastViewSet(viewsets.ModelViewSet):
     queryset = Cast.objects.all()
     serializer_class = serializers.CastSerializer
@@ -121,15 +120,20 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
 
-    # @method_decorator(cache_page(60 * 60))
-    # def dispatch(self, request, *args, **kwargs):
-    #     return super().dispatch(request, *args, **kwargs)
+    @method_decorator(cache_page(60 * 60))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class SeasonViewSet(viewsets.ModelViewSet):
     queryset = Season.objects.all()
     serializer_class = serializers.SeasonSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    @method_decorator(cache_page(60))
+    @vary_on_cookie
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class EpisodeViewSet(viewsets.ModelViewSet):
@@ -203,7 +207,7 @@ class MyListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
 
 
 class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
-    serializer_class = serializers.ViewHitSerializer
+    serializer_class = serializers.HistorySerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):

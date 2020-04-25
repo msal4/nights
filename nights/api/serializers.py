@@ -90,8 +90,14 @@ class SeasonSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'index', 'episodes', 'released_at')
 
 
+class SeasonListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = ('id', 'name', 'index', 'released_at')
+
+
 class TitleSerializer(serializers.ModelSerializer):
-    seasons = SeasonSerializer(many=True, read_only=True)
+    seasons = SeasonListSerializer(many=True, read_only=True)
     genres = GenreSerializer(many=True, read_only=True)
     cast = CastSerializer(many=True, read_only=True)
     views = serializers.SerializerMethodField()
@@ -161,14 +167,20 @@ class ViewHitSerializer(serializers.ModelSerializer):
                   'season', 'episode', 'runtime', 'hit_date')
 
 
+class SimpleEpisodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = ('id', 'name')
+
+
 class HistorySerializer(serializers.ModelSerializer):
     topic = TitleListSerializer(read_only=True)
-    season = SeasonSerializer(read_only=True)
-    episode = EpisodeSerializer(read_only=True)
+    episode = SimpleEpisodeSerializer(read_only=True)
 
     class Meta:
         model = ViewHit
-        fields = ('id', 'user', 'topic', 'season', 'episode', 'playback_position', 'runtime', 'hit_date')
+        fields = ('id', 'user', 'topic', 'season', 'episode',
+                  'playback_position', 'runtime', 'hit_date')
 
 
 class HomeGenreSerializer(serializers.ModelSerializer):
