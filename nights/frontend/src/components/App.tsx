@@ -17,10 +17,10 @@ export const App = () => {
           <Router>
             <Header />
             <Switch>
-              <Route path="/title/:id">
+              <Route key="title-detail" path="/title/:id">
                 <TitlePage />
               </Route>
-              <Route path="/">
+              <Route exact key="home" path="/">
                 <HomePage />
               </Route>
             </Switch>

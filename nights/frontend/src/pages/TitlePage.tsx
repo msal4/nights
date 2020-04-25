@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react"
-import { useParams, Switch, Route, useRouteMatch } from "react-router-dom"
+import { useParams, Switch, Route, useRouteMatch, Link } from "react-router-dom"
+import { IoIosPlay, IoIosAdd } from "react-icons/io"
+import { useTranslation } from "react-i18next"
 
 import { TitleDetail, ImageQuality } from "~core/interfaces/title"
 import { getTitle } from "~api/title"
 import NImage from "~components/NImage"
 import { getImageUrl, joinTopics } from "~utils/common"
-import { IoIosStar, IoIosPlay, IoIosAdd } from "react-icons/io"
 import { PrimaryButton, InfoIconButton } from "~components/Buttons"
-import { useTranslation } from "react-i18next"
 import TitleRecommended from "~components/TitleRecommended"
 import TitleInfo from "~components/TitleInfo"
 
@@ -19,9 +19,9 @@ const useTitle = () => {
 
 export default () => {
   const { id } = useParams()
+  const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { title, setTitle, error, setError } = useTitle()
-  const { path } = useRouteMatch()
 
   const getTitleDetail = async () => {
     try {
@@ -68,11 +68,15 @@ export default () => {
           </div>
         </div>
       </NImage>
+      <div>
+        <Link to={`${url}`}>Info</Link>
+        <Link to={`${url}/recommended`}>More Like This</Link>
+      </div>
       <Switch>
-        <Route path={`${path}/recommended`}>
+        <Route key="title-detail-recommended" path={`${path}/recommended`}>
           <TitleRecommended />
         </Route>
-        <Route path={`${path}`}>
+        <Route key="title-detail-info" path={`${path}`}>
           <TitleInfo />
         </Route>
       </Switch>
