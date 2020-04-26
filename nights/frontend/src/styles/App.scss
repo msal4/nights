@@ -12,6 +12,10 @@
   font-size: 0.6rem;
 }
 
+.text-n-red {
+  color: $color-red !important;
+}
+
 .v-gradient {
   background: linear-gradient(transparent, black);
 }
@@ -36,6 +40,12 @@
     height: 2px;
     left: 0 !important;
     right: 0 !important;
+  }
+}
+
+.highlight-red-before {
+  &::before {
+    background: $color-red !important;
   }
 }
 

@@ -22,6 +22,8 @@ i18n
           moreLikeThis: "More Like This",
           episodes: "Episodes",
           pickedForYou: "Picked for You",
+          season: "Season",
+          episode: "Episode",
         },
       },
       ar: {
@@ -41,6 +43,8 @@ i18n
           moreLikeThis: "المزيد مثل هذا",
           episodes: "الحلقات",
           pickedForYou: "اختيرت من اجلك",
+          season: "الموسم",
+          episode: "الحلقة",
         },
       },
     },

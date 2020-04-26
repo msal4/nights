@@ -49789,7 +49789,117 @@ var UnderlineLink = function UnderlineLink(_a) {
 };
 
 exports.default = UnderlineLink;
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/EpisodeList.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"icons/SvgContainer.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var SvgContainer = function SvgContainer(_a) {
+  var _b = _a.width,
+      width = _b === void 0 ? "1rem" : _b,
+      _c = _a.height,
+      height = _c === void 0 ? "1rem" : _c,
+      _d = _a.fill,
+      fill = _d === void 0 ? "black" : _d,
+      style = _a.style,
+      className = _a.className,
+      children = _a.children;
+  return react_1.default.createElement("div", {
+    className: className,
+    style: __assign({
+      width: width,
+      height: height,
+      fill: fill
+    }, style)
+  }, children);
+};
+
+exports.default = SvgContainer;
+},{"react":"../node_modules/react/index.js"}],"icons/PlayIcon.tsx":[function(require,module,exports) {
+"use strict";
+
+var __assign = this && this.__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var SvgContainer_1 = __importDefault(require("./SvgContainer"));
+
+exports.default = function (props) {
+  return react_1.default.createElement(SvgContainer_1.default, __assign({
+    style: {
+      fill: "#ea1437",
+      background: "white",
+      borderRadius: "50%",
+      maxWidth: "3rem",
+      maxHeight: "3rem",
+      minWidth: "3rem",
+      minHeight: "3rem"
+    },
+    width: "3rem",
+    height: "3rem"
+  }, props), react_1.default.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 565.648 565.648"
+  }, react_1.default.createElement("path", {
+    d: "M282.824 0C126.877 0 0 126.877 0 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824S438.771 0 282.824 0zm-70.706 424.233V141.411l212.118 141.41z"
+  })));
+};
+},{"react":"../node_modules/react/index.js","./SvgContainer":"icons/SvgContainer.tsx"}],"styles/EpisodeCard.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/EpisodeCard.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -49804,13 +49914,60 @@ Object.defineProperty(exports, "__esModule", {
 
 var react_1 = __importDefault(require("react"));
 
+var NImage_1 = __importDefault(require("./NImage"));
+
+var react_router_dom_1 = require("react-router-dom");
+
+var PlayIcon_1 = __importDefault(require("~icons/PlayIcon"));
+
+require("../styles/EpisodeCard.scss");
+
+var EpisodeCard = function EpisodeCard(_a) {
+  var episode = _a.episode;
+  return react_1.default.createElement(react_router_dom_1.Link, {
+    to: "/",
+    className: "episode-card-container flex items-start mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
+  }, react_1.default.createElement(NImage_1.default, {
+    className: "h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center"
+  }, react_1.default.createElement("div", {
+    className: "episode-play-icon bg-white rounded-full"
+  }, react_1.default.createElement(PlayIcon_1.default, null))), react_1.default.createElement("div", null, react_1.default.createElement("h4", {
+    className: "mb-1 text-base md:text-xl text-n-red"
+  }, episode.index + 1), react_1.default.createElement("h4", {
+    className: "text-xs font-thin md:text-lg"
+  }, episode.name)));
+};
+
+exports.default = EpisodeCard;
+},{"react":"../node_modules/react/index.js","./NImage":"components/NImage.tsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","~icons/PlayIcon":"icons/PlayIcon.tsx","../styles/EpisodeCard.scss":"styles/EpisodeCard.scss"}],"components/EpisodeList.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importDefault(require("react"));
+
+var EpisodeCard_1 = __importDefault(require("./EpisodeCard"));
+
 var EpisodeList = function EpisodeList(_a) {
   var season = _a.season;
-  return react_1.default.createElement("div", null, season.name);
+  return react_1.default.createElement("div", null, season.episodes.map(function (episode) {
+    return react_1.default.createElement(EpisodeCard_1.default, {
+      key: episode.id,
+      episode: episode
+    });
+  }));
 };
 
 exports.default = EpisodeList;
-},{"react":"../node_modules/react/index.js"}],"components/containers/Season.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./EpisodeCard":"components/EpisodeCard.tsx"}],"components/containers/Season.tsx":[function(require,module,exports) {
 "use strict";
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -50059,7 +50216,72 @@ var Season = function Season(_a) {
 };
 
 exports.default = Season;
-},{"react":"../node_modules/react/index.js","~api/title":"api/title.ts","~components/EpisodeList":"components/EpisodeList.tsx"}],"pages/TitlePage.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","~api/title":"api/title.ts","~components/EpisodeList":"components/EpisodeList.tsx"}],"components/SeasonDropdown.tsx":[function(require,module,exports) {
+"use strict";
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var react_1 = __importStar(require("react"));
+
+var io_1 = require("react-icons/io");
+
+var react_i18next_1 = require("react-i18next");
+
+var SeasonDropdown = function SeasonDropdown(_a) {
+  var seasons = _a.seasons,
+      currentSeason = _a.currentSeason,
+      onChange = _a.onChange;
+
+  var _b = react_1.useState(false),
+      menuOpened = _b[0],
+      setMenuOpened = _b[1];
+
+  var t = react_i18next_1.useTranslation().t;
+  return react_1.default.createElement("div", {
+    className: "relative flex flex-col items-center"
+  }, react_1.default.createElement("button", {
+    className: "flex items-center relative z-10 underline-before " + (menuOpened ? "highlight-before" : "highlight-red-before") + " text-white focus:outline-none hover:text-white",
+    onClick: function onClick() {
+      return setMenuOpened(!menuOpened);
+    }
+  }, t("season"), " ", currentSeason.index + 1, react_1.default.createElement(io_1.IoIosArrowDown, {
+    className: "ml-2 transition-transform duration-500 ease-in-out " + (menuOpened ? "transform rotate-180" : ""),
+    size: "1em"
+  })), menuOpened && react_1.default.createElement("div", {
+    className: "mt-10 pt-2 absolute z-10 h-40 rounded bg-gray-900 overflow-auto"
+  }, seasons.filter(function (season) {
+    return season.id !== currentSeason.id;
+  }).map(function (season) {
+    return react_1.default.createElement("button", {
+      className: "block px-4 py-1 mb-2 hover:bg-blue-500 hover:text-black",
+      key: season.id,
+      onClick: function onClick() {
+        onChange(season);
+        setMenuOpened(false);
+      }
+    }, "Season ", season.index + 1);
+  })), menuOpened && react_1.default.createElement("div", {
+    className: "fixed top-0 bottom-0 left-0 right-0 w-full h-full",
+    onClick: function onClick() {
+      return setMenuOpened(false);
+    }
+  }));
+};
+
+exports.default = SeasonDropdown;
+},{"react":"../node_modules/react/index.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js"}],"pages/TitlePage.tsx":[function(require,module,exports) {
 "use strict";
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -50251,6 +50473,8 @@ var UnderlineLink_1 = __importDefault(require("~components/UnderlineLink"));
 
 var Season_1 = __importDefault(require("~components/containers/Season"));
 
+var SeasonDropdown_1 = __importDefault(require("~components/SeasonDropdown"));
+
 var useTitle = function useTitle() {
   var _a = react_1.useState(null),
       title = _a[0],
@@ -50307,9 +50531,9 @@ exports.default = function () {
 
           case 1:
             title_3 = _a.sent();
-            setTitle(title_3);
             if (title_3.type === "s") setSelectedSeason(title_3.seasons[0]);
             if (error) setError(null);
+            setTitle(title_3);
             return [3
             /*break*/
             , 3];
@@ -50333,7 +50557,9 @@ exports.default = function () {
   react_1.useEffect(function () {
     getTitleDetail();
   }, [id]);
-  return error ? react_1.default.createElement("div", null, error) : title ? react_1.default.createElement("div", null, react_1.default.createElement(NImage_1.default, {
+  return error ? react_1.default.createElement("div", null, error) : title ? react_1.default.createElement("div", {
+    className: "pb-40"
+  }, react_1.default.createElement(NImage_1.default, {
     className: "rounded-lg mb-16",
     src: common_1.getImageUrl((_a = title.images[0]) === null || _a === void 0 ? void 0 : _a.url, title_1.ImageQuality.h900),
     style: {
@@ -50341,11 +50567,11 @@ exports.default = function () {
       paddingBottom: "40%"
     }
   }, react_1.default.createElement("div", {
-    className: "absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3"
+    className: "flex justify-between items-center p-3 absolute bottom-0 left-0 right-0 v-gradient "
   }, react_1.default.createElement("div", {
     className: "mr-2"
   }, title.is_new && react_1.default.createElement("span", {
-    className: "bg-green-600 text-black text-xs px-1"
+    className: "px-1 bg-green-600 text-black text-xs"
   }, title.type === "s" ? "New Episodes" : "New"), react_1.default.createElement("h1", {
     className: "text-lg md:text-3xl font-bold"
   }, title.name), react_1.default.createElement("div", {
@@ -50363,8 +50589,12 @@ exports.default = function () {
     })
   }, react_1.default.createElement("span", {
     className: "hidden md:block"
-  }, t("myList")))))), react_1.default.createElement("div", {
-    className: "mb-10 flex"
+  }, t("myList")))))), title.seasons.length > 1 && react_1.default.createElement(SeasonDropdown_1.default, {
+    seasons: title.seasons,
+    currentSeason: selectedSeason,
+    onChange: setSelectedSeason
+  }), react_1.default.createElement("div", {
+    className: "mt-10 mb-10 flex"
   }, title.type === "s" && react_1.default.createElement(UnderlineLink_1.default, {
     className: "mr-2",
     to: url
@@ -50383,7 +50613,7 @@ exports.default = function () {
     seasonId: selectedSeason.id
   })))) : react_1.default.createElement("div", null, "Loading...");
 };
-},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~core/interfaces/title":"core/interfaces/title.ts","~utils/common":"utils/common.ts","~api/title":"api/title.ts","../components/common/Buttons":"components/common/Buttons.tsx","~components/NImage":"components/NImage.tsx","~components/TitleRecommended":"components/TitleRecommended.tsx","~components/TitleInfo":"components/TitleInfo.tsx","~components/UnderlineLink":"components/UnderlineLink.tsx","~components/containers/Season":"components/containers/Season.tsx"}],"components/Featured.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-icons/io":"../node_modules/react-icons/io/index.esm.js","react-i18next":"../node_modules/react-i18next/dist/es/index.js","~core/interfaces/title":"core/interfaces/title.ts","~utils/common":"utils/common.ts","~api/title":"api/title.ts","../components/common/Buttons":"components/common/Buttons.tsx","~components/NImage":"components/NImage.tsx","~components/TitleRecommended":"components/TitleRecommended.tsx","~components/TitleInfo":"components/TitleInfo.tsx","~components/UnderlineLink":"components/UnderlineLink.tsx","~components/containers/Season":"components/containers/Season.tsx","~components/SeasonDropdown":"components/SeasonDropdown.tsx"}],"components/Featured.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -50627,112 +50857,7 @@ var PlusIcon = function PlusIcon(_a) {
 };
 
 exports.default = PlusIcon;
-},{"react":"../node_modules/react/index.js"}],"icons/SvgContainer.tsx":[function(require,module,exports) {
-"use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var SvgContainer = function SvgContainer(_a) {
-  var _b = _a.width,
-      width = _b === void 0 ? "1rem" : _b,
-      _c = _a.height,
-      height = _c === void 0 ? "1rem" : _c,
-      _d = _a.fill,
-      fill = _d === void 0 ? "black" : _d,
-      style = _a.style,
-      className = _a.className,
-      children = _a.children;
-  return react_1.default.createElement("div", {
-    className: className,
-    style: __assign({
-      width: width,
-      height: height,
-      fill: fill
-    }, style)
-  }, children);
-};
-
-exports.default = SvgContainer;
-},{"react":"../node_modules/react/index.js"}],"icons/PlayIcon.tsx":[function(require,module,exports) {
-"use strict";
-
-var __assign = this && this.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var react_1 = __importDefault(require("react"));
-
-var SvgContainer_1 = __importDefault(require("./SvgContainer"));
-
-exports.default = function (props) {
-  return react_1.default.createElement(SvgContainer_1.default, __assign({
-    style: {
-      fill: "#ea1437",
-      background: "white",
-      borderRadius: "50%",
-      maxWidth: "3rem",
-      maxHeight: "3rem",
-      minWidth: "3rem",
-      minHeight: "3rem"
-    },
-    width: "3rem",
-    height: "3rem"
-  }, props), react_1.default.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 565.648 565.648"
-  }, react_1.default.createElement("path", {
-    d: "M282.824 0C126.877 0 0 126.877 0 282.824s126.877 282.824 282.824 282.824 282.824-126.877 282.824-282.824S438.771 0 282.824 0zm-70.706 424.233V141.411l212.118 141.41z"
-  })));
-};
-},{"react":"../node_modules/react/index.js","./SvgContainer":"icons/SvgContainer.tsx"}],"styles/Title.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"styles/Title.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -55754,7 +55879,9 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
         recentlyAdded: "Recently Added",
         moreLikeThis: "More Like This",
         episodes: "Episodes",
-        pickedForYou: "Picked for You"
+        pickedForYou: "Picked for You",
+        season: "Season",
+        episode: "Episode"
       }
     },
     ar: {
@@ -55773,7 +55900,9 @@ i18next_1.default.use(i18next_browser_languagedetector_1.default).init({
         recentlyAdded: "احدث الاضافات",
         moreLikeThis: "المزيد مثل هذا",
         episodes: "الحلقات",
-        pickedForYou: "اختيرت من اجلك"
+        pickedForYou: "اختيرت من اجلك",
+        season: "الموسم",
+        episode: "الحلقة"
       }
     }
   },
@@ -55896,7 +56025,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59280" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50303" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

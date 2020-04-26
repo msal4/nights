@@ -13,6 +13,7 @@ import TitleRecommended from "~components/TitleRecommended"
 import TitleInfo from "~components/TitleInfo"
 import UnderlineLink from "~components/UnderlineLink"
 import Season from "~components/containers/Season"
+import SeasonDropdown from "~components/SeasonDropdown"
 
 const useTitle = () => {
   const [title, setTitle] = useState<TitleDetail>(null)
@@ -37,9 +38,9 @@ export default () => {
   const getTitleDetail = async () => {
     try {
       const title = await getTitle(id)
-      setTitle(title)
       if (title.type === "s") setSelectedSeason(title.seasons[0])
       if (error) setError(null)
+      setTitle(title)
     } catch (error) {
       setError(error)
     }
@@ -52,16 +53,16 @@ export default () => {
   return error ? (
     <div>{error}</div>
   ) : title ? (
-    <div>
+    <div className="pb-40">
       <NImage
         className="rounded-lg mb-16"
         src={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
         style={{ width: "100%", paddingBottom: "40%" }}
       >
-        <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
+        <div className="flex justify-between items-center p-3 absolute bottom-0 left-0 right-0 v-gradient ">
           <div className="mr-2">
             {title.is_new && (
-              <span className="bg-green-600 text-black text-xs px-1">
+              <span className="px-1 bg-green-600 text-black text-xs">
                 {title.type === "s" ? "New Episodes" : "New"}
               </span>
             )}
@@ -81,7 +82,16 @@ export default () => {
           </div>
         </div>
       </NImage>
-      <div className="mb-10 flex">
+
+      {title.seasons.length > 1 && (
+        <SeasonDropdown
+          seasons={title.seasons}
+          currentSeason={selectedSeason}
+          onChange={setSelectedSeason}
+        />
+      )}
+
+      <div className="mt-10 mb-10 flex">
         {title.type === "s" && (
           <UnderlineLink className="mr-2" to={url}>
             {t("episodes")}

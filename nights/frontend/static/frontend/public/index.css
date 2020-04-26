@@ -214,6 +214,10 @@
   font-size: 0.6rem;
 }
 
+.text-n-red {
+  color: #ea1437 !important;
+}
+
 .v-gradient {
   background: linear-gradient(transparent, black);
 }
@@ -242,6 +246,10 @@
   right: 0 !important;
 }
 
+.highlight-red-before::before {
+  background: #ea1437 !important;
+}
+
 .underline-before {
   position: relative;
   padding: 0 0.3rem 0.3rem 0.3rem;
@@ -265,6 +273,18 @@
 .button-container:hover {
   background: linear-gradient(90deg, #0d87fd, #ea1437);
   box-shadow: 0 0 40px #0d87fd;
+}
+.episode-card-container {
+  transition: all ease-in-out 200ms;
+}
+
+.episode-card-container .episode-play-icon {
+  opacity: 0;
+  transition: opacity ease-in-out 300ms;
+}
+
+.episode-card-container:hover .episode-play-icon {
+  opacity: 1;
 }
 .card-container {
   transition: all 500ms;
