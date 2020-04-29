@@ -5,40 +5,60 @@ import { HomeResults } from "~core/interfaces/home"
 import { PaginatedResults } from "~core/interfaces/paginated-results"
 import TitleRow from "~components/TitleRow"
 import CWRow from "~components/containers/CWRow"
-import { capitalizeFirst } from "~utils/common"
 import { useTranslation } from "react-i18next"
 import Recommended from "~components/Recommended"
 import { getHome } from "~api/home"
-import client from "~api/client"
+import { useAuth } from "~context/auth-context"
+import { ViewHit } from "~core/interfaces/view-hit"
+import { getHistory } from "~api/title"
+import { capitalizeFirst } from "~utils/common"
 
 type Home = PaginatedResults<HomeResults>
 
 const useHome = () => {
   const [home, setHome] = useState<Home>(null)
+  const [continueWatching, setContinueWatching] = useState<ViewHit[]>(null)
   const [error, setError] = useState<{}>(null)
 
-  return { home, setHome, error, setError }
+  return {
+    home,
+    setHome,
+    continueWatching,
+    setContinueWatching,
+    error,
+    setError,
+  }
 }
 
-export default () => {
+export default ({ filters = {} }: { filters?: {} }) => {
   const { t } = useTranslation()
-  const { home, setHome, error, setError } = useHome()
-  console.log(home)
+  const {
+    home,
+    setHome,
+    continueWatching,
+    setContinueWatching,
+    error,
+    setError,
+  } = useHome()
+  const { token } = useAuth()
+  console.log(filters)
 
   const getHomePage = async () => {
     try {
-      setHome(await getHome())
-      console.log("vaoala")
+      setHome(await getHome(filters))
+      if (token) {
+        const history = await getHistory()
+        setContinueWatching(history.results)
+      }
       if (error) setError(null)
     } catch (error) {
-      console.log(error)
       setError(error)
     }
   }
 
   useEffect(() => {
     getHomePage()
-  }, [])
+  }, [token])
 
   if (home == null) return <div>Loading home...</div>
 
@@ -47,7 +67,9 @@ export default () => {
     <>
       <Featured data={results.featured} />
       {/* Continue watching */}
-      {results.recently_watched && <CWRow row={results.recently_watched} />}
+      {continueWatching && continueWatching.length > 0 && (
+        <CWRow row={continueWatching} />
+      )}
       {/* Recently added */}
       {results.recently_added && (
         <TitleRow row={results.recently_added} name={t("recentlyAdded")} />
@@ -55,13 +77,13 @@ export default () => {
       {/* Recommended featured */}
       {results.recommended && <Recommended title={results.recommended} />}
       {/* Genre rows */}
-      {/* {results.rows.map((row) => (
+      {results.rows.map((row) => (
         <TitleRow
           key={row.id}
           row={row.title_list}
           name={capitalizeFirst(row.name)}
         />
-      ))} */}
+      ))}
     </>
   )
 }

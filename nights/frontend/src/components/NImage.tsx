@@ -17,6 +17,7 @@ const NImage: FunctionComponent<ImageProps> = ({
         background: `url(${src}), url(${fallback})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         ...style,
       }}
       {...props}

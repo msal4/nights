@@ -1,26 +1,28 @@
-import React, { FunctionComponent, useEffect } from "react"
+import React, { FunctionComponent } from "react"
+import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
 import InfoIcon from "~icons/InfoIcon"
 import PlusIcon from "~icons/PlusIcon"
 import PlayIcon from "~icons/PlayIcon"
 
-import "../styles/Title.scss"
 import { Title } from "~core/interfaces/title"
-import { Link } from "react-router-dom"
 import { getImageUrl } from "~utils/common"
+import "../styles/Title.scss"
 
 export interface TitleProps {
   title: Title
 }
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
+  const { t } = useTranslation()
   const image = getImageUrl(title.images[0]?.url)
   const tmdbImage = image.replace("250v", "250tmdb")
 
   return (
     <Link
       draggable={false}
-      to={`/title/${title.id}`}
+      to={`/title/${title.id}/${title.type === "m" ? "info" : ""}`}
       className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
     >
       <div className="hidden md:flex top-info mb-2 justify-end">
@@ -36,7 +38,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
         }}
       >
         <div className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
-          {title.is_new ? (title.type === "s" ? "New Episodes" : "New") : ""}
+          {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
         </div>
         <PlayIcon className="hidden md:block card-container-reveal" />
         <div className="self-stretch v-gradient">
@@ -44,7 +46,11 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
             {title.name}
           </h4>
           <div className="p-1 flex justify-between items-center self-stretch">
-            <span>{new Date(title.released_at).getFullYear()}</span>
+            <span>
+              {title.runtime
+                ? Math.floor(title.runtime / 60) + " min"
+                : title.rated}
+            </span>
             <span>{title.rating}</span>
           </div>
         </div>

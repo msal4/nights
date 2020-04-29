@@ -1,21 +1,22 @@
 {% load static %}
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="min-h-screen">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Font -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet"> -->
+
     <!-- styles -->
+    <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static "frontend/css/tailwind.css" %}">
     <link rel="stylesheet" href="{% static "frontend/public/index.css" %}">
     <title>'Nights | Stream movies and TV shows</title>
 </head>
-<body class="bg-black text-white select-none">
-<div id="app"></div>
+<body class="bg-black text-white select-none min-h-screen">
+<div id="app" class="min-h-screen"></div>
 </body>
 <script src="{% static "frontend/public/index.js" %}"></script>
 </html>

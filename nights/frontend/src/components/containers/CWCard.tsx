@@ -14,6 +14,11 @@ const CWCard: FunctionComponent<CWCardProps> = ({ hit }) => {
       progress={(hit.playback_position / hit.runtime) * 100}
       imageUrl={getImageUrl(hit.topic?.images[0]?.url)}
       name={hit.topic.type === "s" ? hit.episode?.name : hit.topic.name}
+      path={
+        hit.topic.type === "m"
+          ? `movie/${hit.topic.id}/play`
+          : `episode/${hit.episode?.id}/play`
+      }
     />
   )
 }

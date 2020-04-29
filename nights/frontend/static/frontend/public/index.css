@@ -218,6 +218,10 @@
   color: #ea1437 !important;
 }
 
+.text-n-blue {
+  color: #0d87fd !important;
+}
+
 .v-gradient {
   background: linear-gradient(transparent, black);
 }
@@ -263,6 +267,14 @@
   left: 20px;
   right: 20px;
   transition: all ease-in-out 300ms;
+}
+
+.video-js .vjs-modal-dialog-content .vjs-track-settings-colors {
+  color: black;
+}
+
+.video-js .vjs-modal-dialog-content .vjs-track-settings-font {
+  color: black;
 }
 .button-container {
   background: #ea1437;
@@ -331,11 +343,19 @@
   transition: transform ease-in-out 200ms;
 }
 
+.cw-card-container .play-icon {
+  opacity: 0;
+}
+
 .cw-card-container:hover {
   transform: scale(0.9);
 }
 
 .cw-card-container:hover .progress {
   transform: scaleY(2);
+}
+
+.cw-card-container:hover .play-icon {
+  opacity: 1;
 }
 /*# sourceMappingURL=/static/frontend/public/index.css.map */

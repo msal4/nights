@@ -42,47 +42,51 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     )
   }
 
-  const BottomInfo = () => (
-    <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
-      <div className="mr-2">
-        <Link to={`/title/${data[0].id}`}>
-          <h1 className="text-xl md:text-3xl font-bold leading-none">
-            {data[0]?.name}
-          </h1>
-        </Link>
-        <div className="text-xs md:text-sm text-gray-500">
-          <p>{joinTopics(data[0]?.genres)}</p>
-          <div className="flex items-center">
-            <p className="mr-2">{data[0].rated}</p>
-            <p className="flex items-center mr-2">
-              <IoIosStar className="text-blue-600" fontSize=".55em" />
-              {data[0].rating}
-            </p>
-            <p>{new Date(data[0].released_at).getFullYear()}</p>
+  const BottomInfo = () => {
+    const title = data[0]
+
+    return (
+      <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
+        <div className="mr-2">
+          <Link to={`/title/${title.id}/${title.type === "m" ? "info" : ""}`}>
+            <h1 className="text-xl md:text-3xl font-bold leading-none">
+              {title?.name}
+            </h1>
+          </Link>
+          <div className="text-xs md:text-sm text-gray-500">
+            <p>{joinTopics(data[0]?.genres)}</p>
+            <div className="flex items-center">
+              <p className="mr-2">{data[0].rated}</p>
+              <p className="flex items-center mr-2">
+                <IoIosStar className="text-blue-600" fontSize=".55em" />
+                {title.rating}
+              </p>
+              <p>{new Date(title.released_at).getFullYear()}</p>
+            </div>
           </div>
         </div>
+        <div className="flex items-center">
+          <PrimaryButton className="md:mr-4" to="/series/play">
+            <IoIosPlay size="1.5em" />
+            {t("play")}
+          </PrimaryButton>
+          <InfoIconButton
+            className="hidden md:flex mr-4"
+            icon={<IoIosAdd className="text-base" />}
+          >
+            {t("myList")}
+          </InfoIconButton>
+          <InfoIconButton
+            className="hidden md:flex"
+            to={`/title/${data[0].id}`}
+            icon={<IoIosInformationCircleOutline className="text-base" />}
+          >
+            {t("info")}
+          </InfoIconButton>
+        </div>
       </div>
-      <div className="flex items-center">
-        <PrimaryButton className="md:mr-4" to="/series/play">
-          <IoIosPlay size="1.5em" />
-          {t("play")}
-        </PrimaryButton>
-        <InfoIconButton
-          className="hidden md:flex mr-4"
-          icon={<IoIosAdd className="text-base" />}
-        >
-          {t("myList")}
-        </InfoIconButton>
-        <InfoIconButton
-          className="hidden md:flex"
-          to={`/title/${data[0].id}`}
-          icon={<IoIosInformationCircleOutline className="text-base" />}
-        >
-          {t("info")}
-        </InfoIconButton>
-      </div>
-    </div>
-  )
+    )
+  }
 
   const image = getImageUrl(data[0]?.images[0]?.url, ImageQuality.h900)
   return (

@@ -13,7 +13,7 @@ export interface EpisodeCardProps {
 const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode }) => {
   return (
     <Link
-      to="/"
+      to={`/episode/${episode.id}/play`}
       className="episode-card-container flex items-start mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
     >
       <NImage className="h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center">

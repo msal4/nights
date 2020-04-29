@@ -9,3 +9,15 @@ export const joinTopics = (topics: Topic[], sep = " • ") =>
 
 export const getImageUrl = (url: string, quality = ImageQuality.v250) =>
   url.replace("{q}v", quality).replace("{f}", "jpg")
+
+export const swapEpisodeUrlId = (url: string) => {
+  const arr = url.split("/")
+
+  const fourth = arr[4]
+  const fifth = arr[5]
+  const sixth = arr[6]
+  arr[4] = sixth
+  arr[5] = fourth
+  arr[6] = fifth
+  return arr.join("/")
+}

@@ -52,6 +52,7 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
               </p>
             </div>
           </div>
+          <p className="opacity-50 text-sm">{title.plot}</p>
 
           <div className="flex items-center mb-2 md:mb-4">
             <PrimaryButton className="mr-4" to="/series/play">

@@ -16,6 +16,10 @@
   color: $color-red !important;
 }
 
+.text-n-blue {
+  color: $color-blue !important;
+}
+
 .v-gradient {
   background: linear-gradient(transparent, black);
 }
@@ -61,5 +65,14 @@
     left: 20px;
     right: 20px;
     transition: all ease-in-out 300ms;
+  }
+}
+
+.video-js .vjs-modal-dialog-content {
+  .vjs-track-settings-colors {
+    color: black;
+  }
+  .vjs-track-settings-font {
+    color: black;
   }
 }

@@ -14,6 +14,7 @@ import TitleInfo from "~components/TitleInfo"
 import UnderlineLink from "~components/UnderlineLink"
 import Season from "~components/containers/Season"
 import SeasonDropdown from "~components/SeasonDropdown"
+import TitleRow from "~components/TitleRow"
 
 const useTitle = () => {
   const [title, setTitle] = useState<TitleDetail>(null)
@@ -72,7 +73,10 @@ export default () => {
             </div>
           </div>
           <div className="flex items-center">
-            <PrimaryButton className="mr-4" to="/series/play">
+            <PrimaryButton
+              className="mr-4"
+              to={`${url.replace("title", "movie")}/play`}
+            >
               <IoIosPlay size="1.5em" />
               {t("play")}
             </PrimaryButton>
@@ -106,13 +110,13 @@ export default () => {
       </div>
       <Switch>
         <Route path={`${path}/recommended`}>
-          <TitleRecommended />
+          <TitleRow row={title.recommended} name={""} />
         </Route>
         <Route path={`${path}/info`}>
-          <TitleInfo />
+          <TitleInfo title={title} />
         </Route>
         {selectedSeason && (
-          <Route path={`${path}`}>
+          <Route path={path}>
             <Season seasonId={selectedSeason.id} />
           </Route>
         )}

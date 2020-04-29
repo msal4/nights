@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import { IoIosAdd, IoIosMenu, IoIosCloseCircleOutline } from "react-icons/io"
-import { Link, useRouteMatch } from "react-router-dom"
+import { Link, useRouteMatch, useHistory } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import "../styles/Header.scss"
 import Search from "~components/Search"
+import { useAuth } from "~context/auth-context"
 
 const useMenuOpenedState = (value: boolean) => {
   const [menuOpened, setMenuOpened] = useState(value)
@@ -17,11 +18,13 @@ export default () => {
   const { menuOpened, openMenu, closeMenu } = useMenuOpenedState(false)
   const { path } = useRouteMatch()
   const { t, i18n } = useTranslation()
+  const { token, logout } = useAuth()
+
   const toggleLanguage = () =>
     i18n.changeLanguage(i18n.language == "ar" ? "en" : "ar")
 
   return (
-    <nav className="py-4 md:flex md:justify-between font-thin">
+    <nav className="py-4 relative z-10 md:flex md:justify-between font-thin">
       <div className="flex items-center justify-between">
         <Link className="select-none" to="/">
           <img
@@ -44,29 +47,32 @@ export default () => {
           menuOpened ? "block" : "hidden"
         } md:block md:flex md:items-center md:mt-0 md:justify-between md:w-full`}
       >
-        <div className="flex justify-between text-gray-600 md:ml-6 md:text-sm lg:text-base">
-          <Link className={path === "/" && "font-bold text-white"} to="/">
+        <div className="flex justify-between md:ml-6 md:text-sm lg:text-base">
+          <Link
+            className={`opacity-50 ${path === "/" && "font-bold opacity-100"}`}
+            to="/"
+          >
             {t("home")}
           </Link>
           <Link
-            className={`md:ml-5 ${
-              path === "/movies" && "font-bold text-white"
+            className={`md:ml-5 opacity-50 ${
+              path === "/movies" && "font-bold opacity-100"
             }`}
             to="/movies"
           >
             {t("movies")}
           </Link>
           <Link
-            className={`md:ml-5 ${
-              path === "/series" && "font-bold text-white"
+            className={`md:ml-5 opacity-50 ${
+              path === "/series" && "font-bold opacity-100"
             }`}
             to="/series"
           >
             {t("series")}
           </Link>
           <Link
-            className={`md:ml-5 ${
-              path === "/series" && "font-bold text-white"
+            className={`md:ml-5 opacity-50 ${
+              path === "/series" && "font-bold text-white opacity-100"
             }`}
             to="/kids"
           >
@@ -83,12 +89,20 @@ export default () => {
               <IoIosAdd />
               {t("myList")}
             </Link>
-            <Link
-              className="md:mr-1 lg:mr-6 rounded-full px-3 border-1 md:hover:bg-white md:hover:text-black"
-              to="/signin"
-            >
-              {t("signIn")}
-            </Link>
+            <div className="md:mr-1 lg:mr-6">
+              {token ? (
+                <button className="hover:text-red-600" onClick={logout}>
+                  {t("logout")}
+                </button>
+              ) : (
+                <Link
+                  className="rounded-full px-3 py-1 border-1 md:hover:bg-white md:hover:text-black"
+                  to="/login"
+                >
+                  {t("signIn")}
+                </Link>
+              )}
+            </div>
             <button onClick={toggleLanguage}>{t("lang")}</button>
           </div>
         </div>
