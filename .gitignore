@@ -86,5 +86,7 @@ local_settings.py
 .env
 db.sqlite3
 
-nights/frontend/node_modules/
-nights/frontend/static/frontend/public/
+frontend/node_modules/
+frontend/static/frontend/public/
+
+storage/
