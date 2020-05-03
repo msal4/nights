@@ -16,6 +16,7 @@ djoser = "*"
 django-rest-polymorphic = "*"
 factory-boy = "*"
 faker = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
