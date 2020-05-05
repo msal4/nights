@@ -28,7 +28,7 @@ const AppRouter = () => {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/episode/:id/play">
+          <Route exact path="/series/:seriesId/:seasonId/:episodeIndex/play">
             <SeriesPlayer />
           </Route>
           <Route exact path="/movie/:id/play">

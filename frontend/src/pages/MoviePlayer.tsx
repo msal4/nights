@@ -7,18 +7,35 @@ import Player from "~components/Player"
 import { useAuth } from "~context/auth-context"
 import { ViewHit } from "~core/interfaces/view-hit"
 
-const useTitle = () => {
+const MoviePlayer: FunctionComponent = () => {
+  const { id } = useParams()
+  const { token } = useAuth()
+  const { title, hit, error } = useTitle(id, token)
+
+  const onUpdatePosition = async (position: number, duration: number) => {
+    if (token) {
+      await hitTopic(title.id, {
+        playback_position: position,
+        runtime: duration,
+      })
+    }
+  }
+
+  if (!title) return <div>Loading...</div>
+  return (
+    <Player
+      videos={title.videos}
+      subtitles={title.subtitles || []}
+      onUpdatePosition={onUpdatePosition}
+      position={hit?.playback_position || 0}
+    />
+  )
+}
+
+const useTitle = (id: string | number, token: string) => {
   const [title, setTitle] = useState<TitleDetail>(null)
   const [error, setError] = useState(null)
   const [hit, setHit] = useState<ViewHit>(null)
-
-  return { title, setTitle, hit, setHit, error, setError }
-}
-
-const MoviePlayer: FunctionComponent = () => {
-  const { id } = useParams()
-  const { title, setTitle, hit, setHit, error, setError } = useTitle()
-  const { token } = useAuth()
 
   const getTitleDetail = async () => {
     try {
@@ -39,28 +56,11 @@ const MoviePlayer: FunctionComponent = () => {
     }
   }
 
-  const onUpdatePosition = async (position: number, duration: number) => {
-    if (token) {
-      await hitTopic(title.id, {
-        playback_position: position,
-        runtime: duration,
-      })
-    }
-  }
-
   useEffect(() => {
     getTitleDetail()
   }, [id, token])
 
-  if (!title) return <div>Loading...</div>
-  return (
-    <Player
-      videos={title.videos}
-      subtitles={title.subtitles || []}
-      onUpdatePosition={onUpdatePosition}
-      position={hit?.playback_position || 0}
-    />
-  )
+  return { title, setTitle, hit, setHit, error, setError }
 }
 
 export default MoviePlayer

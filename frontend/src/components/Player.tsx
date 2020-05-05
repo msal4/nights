@@ -8,7 +8,10 @@ export interface PlayerProps {
   videos: Video[]
   subtitles: Subtitle[]
   position: number
-  onUpdatePosition: (position: number, duration: number) => void | Promise<void>
+  onUpdatePosition?: (
+    position: number,
+    duration: number
+  ) => void | Promise<void>
 }
 
 const Player: FunctionComponent<PlayerProps> = ({
@@ -31,7 +34,8 @@ const Player: FunctionComponent<PlayerProps> = ({
         // Update the position
         const duration = Math.floor(player.duration())
         position = currentPosition
-        onUpdatePosition(position, duration)
+
+        onUpdatePosition && position && onUpdatePosition(position, duration)
       }
     })
     return () => {

@@ -26,6 +26,6 @@ export interface Image {
 export interface ViewHitData {
   playback_position: number
   runtime: number
-  season?: number
-  episode?: number
+  season?: number | string
+  episode?: number | string
 }

@@ -130,10 +130,10 @@ class SeasonViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.SeasonSerializer
     permission_classes = [IsAdminOrReadOnly]
 
-    @method_decorator(cache_page(60))
-    @vary_on_cookie
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    # @method_decorator(cache_page(60))
+    # @vary_on_cookie
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
 
 
 class EpisodeViewSet(viewsets.ModelViewSet):
@@ -256,9 +256,10 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
                     hit.season = get_object_or_404(Season, pk=season_id)
 
                 episode_hit, created = user.viewhit_set.get_or_create(topic=hit.episode)
+
+                if created: episode_hit.type = 'episode'
                 episode_hit.runtime = runtime
                 episode_hit.playback_position = position
-
                 episode_hit.save()
 
             # Update `hit_date` for ordering titles
