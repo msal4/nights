@@ -24,6 +24,7 @@ const MoviePlayer: FunctionComponent = () => {
   if (!title) return <div>Loading...</div>
   return (
     <Player
+      name={title.name}
       videos={title.videos}
       subtitles={title.subtitles || []}
       onUpdatePosition={onUpdatePosition}

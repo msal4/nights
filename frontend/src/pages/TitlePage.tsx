@@ -9,7 +9,6 @@ import { getImageUrl, joinTopics } from "~utils/common"
 import { getTitle } from "~api/title"
 import { PrimaryButton, InfoIconButton } from "../components/common/Buttons"
 import NImage from "~components/NImage"
-import TitleRecommended from "~components/TitleRecommended"
 import TitleInfo from "~components/TitleInfo"
 import UnderlineLink from "~components/UnderlineLink"
 import Season from "~components/containers/Season"
@@ -117,7 +116,7 @@ export default () => {
         </Route>
         {selectedSeason && (
           <Route path={path}>
-            <Season seasonId={selectedSeason.id} />
+            <Season seriesId={title.id} seasonId={selectedSeason.id} />
           </Route>
         )}
       </Switch>

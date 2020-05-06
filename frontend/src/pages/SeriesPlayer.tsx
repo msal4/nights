@@ -32,6 +32,7 @@ const SeriesPlayer: FunctionComponent = () => {
   if (!episode) return <div>Loading...</div>
   return (
     <Player
+      name={episode.name}
       videos={episode.videos}
       subtitles={episode.subtitles || []}
       position={episode.hits[0]?.playback_position | 0}

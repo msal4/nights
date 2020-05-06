@@ -5,13 +5,22 @@ import EpisodeCard from "./EpisodeCard"
 
 export interface EpisodeListProps {
   season: Season
+  seriesId: string | number
 }
 
-const EpisodeList: FunctionComponent<EpisodeListProps> = ({ season }) => {
+const EpisodeList: FunctionComponent<EpisodeListProps> = ({
+  season,
+  seriesId,
+}) => {
   return (
     <div>
-      {season.episodes.map((episode) => (
-        <EpisodeCard key={episode.id} episode={episode} />
+      {season.episodes.map(episode => (
+        <EpisodeCard
+          key={episode.id}
+          seriesId={seriesId}
+          seasonId={season.id}
+          episode={episode}
+        />
       ))}
     </div>
   )

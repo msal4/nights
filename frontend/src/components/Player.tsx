@@ -1,10 +1,41 @@
 import React, { FunctionComponent, useEffect, useRef } from "react"
-import videojs from "video.js"
+import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
 import { Video, Subtitle } from "~core/interfaces/topic"
 import { swapEpisodeUrlId } from "~utils/common"
+import "~styles/Player.scss"
+
+const Component = videojs.getComponent("Component")
+
+export interface PlayerTitleBarOptions extends VideoJsPlayerOptions {
+  text?: string
+}
+
+class PlayerTitleBar extends Component {
+  constructor(player: VideoJsPlayer, options: PlayerTitleBarOptions) {
+    super(player, options)
+
+    options.text && this.updateTextContent(options.text)
+  }
+
+  createEl() {
+    return videojs.dom.createEl("div", { className: "vjs-title-bar" })
+  }
+
+  updateTextContent(text: string) {
+    if (typeof text !== "string") {
+      text = "Title Unknown"
+    }
+
+    videojs.dom.emptyEl(this.el())
+    videojs.dom.appendContent(this.el(), text)
+  }
+}
+
+videojs.registerComponent("TitleBar", PlayerTitleBar)
 
 export interface PlayerProps {
+  name: string
   videos: Video[]
   subtitles: Subtitle[]
   position: number
@@ -15,6 +46,7 @@ export interface PlayerProps {
 }
 
 const Player: FunctionComponent<PlayerProps> = ({
+  name,
   videos,
   subtitles,
   onUpdatePosition,
@@ -38,6 +70,10 @@ const Player: FunctionComponent<PlayerProps> = ({
         onUpdatePosition && position && onUpdatePosition(position, duration)
       }
     })
+
+    // Add title bar
+    player.addChild("TitleBar", { text: name })
+
     return () => {
       player.dispose()
     }

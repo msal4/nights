@@ -8,12 +8,18 @@ import "../styles/EpisodeCard.scss"
 
 export interface EpisodeCardProps {
   episode: Episode
+  seriesId: string | number
+  seasonId: string | number
 }
 
-const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode }) => {
+const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
+  seriesId,
+  seasonId,
+  episode,
+}) => {
   return (
     <Link
-      to={`/episode/${episode.id}/play`}
+      to={`/series/${seriesId}/${seasonId}/${episode.index}/play`}
       className="episode-card-container flex items-start mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
     >
       <NImage className="h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center">

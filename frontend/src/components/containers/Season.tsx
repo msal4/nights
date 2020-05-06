@@ -6,17 +6,16 @@ import { Season } from "~core/interfaces/season"
 
 export interface SeasonProps {
   seasonId: number
+  seriesId: string | number
 }
 
-const Season: FunctionComponent<SeasonProps> = ({ seasonId }) => {
+const Season: FunctionComponent<SeasonProps> = ({ seriesId, seasonId }) => {
   const { season, error } = useSeason(seasonId)
 
   if (!season && !error) return <div>Loading...</div>
-  else if (error) {
-    console.log(error)
-    return <div>error</div>
-  }
-  return <EpisodeList season={season} />
+  else if (error) return <div>error</div>
+
+  return <EpisodeList seriesId={seriesId} season={season} />
 }
 
 const useSeason = (id: string | number) => {
