@@ -1,7 +1,8 @@
+import client from "./client"
+
 import { PaginatedResults } from "~core/interfaces/paginated-results"
 import { HomeResults } from "~core/interfaces/home"
-import { TitleDetail } from "~core/interfaces/title"
-import client from "./client"
+import { TitleDetail, Title } from "~core/interfaces/title"
 import { Season } from "~core/interfaces/season"
 import { Episode } from "~core/interfaces/episode"
 import { ViewHitData } from "~core/interfaces/topic"
@@ -28,3 +29,15 @@ export const getHit = (id: string | number): Promise<ViewHit> =>
 
 export const hitTopic = (topicId: number | string, data: ViewHitData) =>
   client.put(`/history/${topicId}/`, data)
+
+export const getMyList = (): Promise<PaginatedResults<Title[]>> =>
+  client.get("/my_list/")
+
+export const checkMyList = (id: string | number) =>
+  client.get(`/my_list/${id}/`)
+
+export const addToMyList = (id: string | number): Promise<{ detail: string }> =>
+  client.post("/my_list/", { id })
+
+export const removeFromMyList = (id: string | number) =>
+  client.delete(`/my_list/${id}/`)

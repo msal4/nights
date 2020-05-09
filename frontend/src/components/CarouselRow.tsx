@@ -3,12 +3,8 @@ import Carousel, { ResponsiveType } from "react-multi-carousel"
 import "react-multi-carousel/lib/styles.css"
 
 export const defaultResponsive = {
-  superLargeDesktop: {
-    breakpoint: { max: 4000, min: 3000 },
-    items: 15,
-  },
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+    breakpoint: { max: 6000, min: 1024 },
     items: 6,
   },
   tablet: {
@@ -39,7 +35,7 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
         {title}
       </h3>
       <Carousel
-        className="py-2 md:py-3"
+        className="carousel-row"
         responsive={{ ...defaultResponsive, ...responsive }}
       >
         {children}

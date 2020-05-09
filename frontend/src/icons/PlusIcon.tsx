@@ -6,14 +6,22 @@ const PlusIcon: FunctionComponent<{
   fill?: string
   style?: {}
   className?: string
+  onClick?: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void | Promise<void>
 }> = ({
   width = "1rem",
   height = "1rem",
   fill = "black",
   style,
   className,
+  onClick,
 }) => (
-  <div className={className} style={{ width, height, fill, ...style }}>
+  <div
+    className={className}
+    style={{ width, height, fill, ...style }}
+    onClick={onClick}
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       x="0"

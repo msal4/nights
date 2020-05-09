@@ -9,6 +9,7 @@ import MoviePlayer from "./MoviePlayer"
 import TitlePage from "./TitlePage"
 import LoginPage from "./LoginPage"
 import HomePage from "./HomePage"
+import MyListPage from "./MyListPage"
 // import { useBackground } from "~context/background-context"
 
 const history = createBrowserHistory()
@@ -42,6 +43,9 @@ const AppRouter = () => {
           </Route>
           <Route exact path="/login">
             <LoginPage />
+          </Route>
+          <Route path="/my_list">
+            <MyListPage />
           </Route>
           <Route path="/movies">
             <HomePage filters={{ type: "m" }} />

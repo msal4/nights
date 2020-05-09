@@ -1,6 +1,6 @@
 import React, { useState, FunctionComponent } from "react"
-import { IoIosAdd, IoIosMenu, IoIosCloseCircleOutline } from "react-icons/io"
-import { Link, useRouteMatch, useHistory } from "react-router-dom"
+import { IoIosAdd, IoIosMenu, IoMdClose } from "react-icons/io"
+import { Link, useRouteMatch } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import "../styles/Header.scss"
@@ -56,7 +56,7 @@ export default () => {
             alt="1001Nights"
           />
         </Link>
-        <IoIosCloseCircleOutline
+        <IoMdClose
           className={`${menuOpened ? "block" : "hidden"} md:hidden`}
           onClick={closeMenu}
         />
@@ -70,7 +70,7 @@ export default () => {
           menuOpened ? "block" : "hidden"
         } md:block md:flex md:items-center md:mt-0 md:justify-between md:w-full`}
       >
-        <div className="flex justify-between md:ml-6 md:text-sm lg:text-base">
+        <div className="flex flex-col md:flex-row justify-between md:ml-6 md:text-sm lg:text-base">
           <NavLink to="/">{t("home")}</NavLink>
           <NavLink className="md:ml-2" to="/movies">
             {t("movies")}
@@ -84,9 +84,9 @@ export default () => {
         </div>
         <div className="md:flex">
           <Search className="md:mx-2 md:w-56" />
-          <div className="flex items-center justify-between mt-2 md:mt-0 md:ml-2">
+          <div className="mt-4 md:mt-0 md:ml-2 flex items-center justify-between">
             <Link
-              className="flex items-center md:mr-1 lg:mr-6 md:hidden lg:flex"
+              className="md:mr-1 lg:mr-6 flex items-center md:hidden lg:flex"
               to="/my_list"
             >
               <IoIosAdd />

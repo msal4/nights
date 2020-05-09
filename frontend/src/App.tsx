@@ -10,7 +10,7 @@ import { BackgroundProvider } from "~context/background-context"
 
 export const App = () => {
   return (
-    <div className="mx-5 my-3 md:mx-10 md:my-5 lg:mx-16 xl:max-w-6xl xl:mx-auto min-h-full">
+    <div className="mx-5 my-3 md:mx-10 md:my-5 lg:mx-16 min-h-full">
       <I18nextProvider i18n={i18n}>
         <AuthProvider>
           <BackgroundProvider>

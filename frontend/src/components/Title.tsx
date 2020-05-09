@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { Link, Redirect, useLocation } from "react-router-dom"
 
 import InfoIcon from "~icons/InfoIcon"
 import PlusIcon from "~icons/PlusIcon"
@@ -9,6 +9,10 @@ import PlayIcon from "~icons/PlayIcon"
 import { Title } from "~core/interfaces/title"
 import { getImageUrl } from "~utils/common"
 import "../styles/Title.scss"
+import { addToMyList, removeFromMyList, checkMyList } from "~api/title"
+import { useAuth } from "~context/auth-context"
+
+import { FiCheck } from "react-icons/fi"
 
 export interface TitleProps {
   title: Title
@@ -16,21 +20,66 @@ export interface TitleProps {
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
   const { t } = useTranslation()
+  const { token } = useAuth()
+  const [inMyList, setInMyList] = useState(false)
+  const [redirect, setRedirect] = useState(false)
+
+  if (redirect) return <Redirect to="/login" />
+
   const image = getImageUrl(title.images[0]?.url)
   const tmdbImage = image.replace("250v", "250tmdb")
 
   return (
-    <Link
-      draggable={false}
-      to={`/title/${title.id}/${title.type === "m" ? "info" : ""}`}
+    <div
       className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
+      onMouseEnter={async () => {
+        if (!token) return
+        try {
+          await checkMyList(title.id)
+          setInMyList(true)
+        } catch (err) {
+          setInMyList(false)
+        }
+      }}
+      // onMouseLeave={}
     >
       <div className="hidden md:flex top-info mb-2 justify-end">
-        <PlusIcon className="mr-3 card-container-slide-reveal transition-500" />
-        <InfoIcon className="card-container-slide-reveal transition-200" />
+        {!inMyList ? (
+          <PlusIcon
+            className="mr-3 card-container-slide-reveal transition-500"
+            onClick={async () => {
+              !token && setRedirect(true)
+              try {
+                await addToMyList(title.id)
+                setInMyList(true)
+              } catch (err) {
+                console.log(err)
+              }
+            }}
+          />
+        ) : (
+          <FiCheck
+            fontSize=".5rem"
+            className="text-black mr-3 card-container-slide-reveal transition-500"
+            onClick={async () => {
+              !token && setRedirect(true)
+              try {
+                await removeFromMyList(title.id)
+                setInMyList(false)
+              } catch (err) {
+                console.log(err)
+              }
+            }}
+          />
+        )}
+        <Link to={`/title/${title.id}`}>
+          <InfoIcon className="card-container-slide-reveal transition-200" />
+        </Link>
       </div>
-      <div
-        className="bg-black w-20 h-32 md:w-40 md:h-56 font-light flex flex-col justify-between items-center"
+      <Link
+        draggable={false}
+        to={`/title/${title.id}/${title.type === "m" ? "info" : ""}`}
+        className="title-poster bg-black font-light flex flex-col justify-between items-center"
         style={{
           backgroundImage: `url(${tmdbImage}), url(${image})`,
           backgroundPosition: "center",
@@ -40,7 +89,15 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
         <div className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
           {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
         </div>
-        <PlayIcon className="hidden md:block card-container-reveal" />
+        <Link
+          to={
+            title.type === "s"
+              ? `/series/${title.id}/auto/auto/play`
+              : `/movie/${title.id}/play`
+          }
+        >
+          <PlayIcon className="hidden md:block card-container-reveal" />
+        </Link>
         <div className="self-stretch v-gradient">
           <h4 className="card-container-reveal self-start font-medium md:text-xs pl-1">
             {title.name}
@@ -54,14 +111,14 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
             <span>{title.rating}</span>
           </div>
         </div>
-      </div>
+      </Link>
       <div className="hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin">
         {title.genres
           .slice(0, 3)
-          .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
+          .map(g => g.name.charAt(0).toUpperCase() + g.name.slice(1))
           .join(" • ")}
       </div>
-    </Link>
+    </div>
   )
 }
 
