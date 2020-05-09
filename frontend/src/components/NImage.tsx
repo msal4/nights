@@ -14,7 +14,7 @@ const NImage: FunctionComponent<ImageProps> = ({
     <div
       className={`relative ${className} overflow-hidden`}
       style={{
-        background: `url(${src}), url(${fallback})`,
+        backgroundImage: `url(${src}), url(${fallback})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

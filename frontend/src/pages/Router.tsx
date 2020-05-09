@@ -1,6 +1,7 @@
 //
 import React from "react"
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
+import { createBrowserHistory } from "history"
 
 import Header from "~components/Header"
 import SeriesPlayer from "./SeriesPlayer"
@@ -9,6 +10,8 @@ import TitlePage from "./TitlePage"
 import LoginPage from "./LoginPage"
 import HomePage from "./HomePage"
 // import { useBackground } from "~context/background-context"
+
+const history = createBrowserHistory()
 
 const AppRouter = () => {
   // const { background } = useBackground()

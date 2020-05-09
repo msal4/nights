@@ -16,8 +16,8 @@ const CWCard: FunctionComponent<CWCardProps> = ({ hit }) => {
       name={hit.topic.type === "s" ? hit.episode?.name : hit.topic.name}
       path={
         hit.topic.type === "m"
-          ? `movie/${hit.topic.id}/play`
-          : `series/${hit.topic.id}/${hit.season}/${hit.episode?.index}/play`
+          ? `/movie/${hit.topic.id}/play`
+          : `/series/${hit.topic.id}/${hit.season}/${hit.episode?.index}/play`
       }
     />
   )

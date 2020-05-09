@@ -1,85 +1,96 @@
-import React, { FunctionComponent, useEffect, useRef } from "react"
-import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
+import React, {
+  FunctionComponent,
+  useEffect,
+  useRef,
+  Ref,
+  useState,
+} from "react"
+import videojs, { VideoJsPlayer } from "video.js"
+import { History } from "history"
 
+import "~styles/Player.scss"
 import { Video, Subtitle } from "~core/interfaces/topic"
 import { swapEpisodeUrlId } from "~utils/common"
-import "~styles/Player.scss"
+import { vjsComponent, vjsTitleBar } from "./vjs-components"
+import PlayerSidebar from "./PlayerSidebar"
+import { useDisposableEffect } from "~hooks"
 
-const Component = videojs.getComponent("Component")
+// Register videojs components
+vjsComponent.registerComponent("vjsTitleBar", vjsTitleBar)
 
-export interface PlayerTitleBarOptions extends VideoJsPlayerOptions {
-  text?: string
-}
-
-class PlayerTitleBar extends Component {
-  constructor(player: VideoJsPlayer, options: PlayerTitleBarOptions) {
-    super(player, options)
-
-    options.text && this.updateTextContent(options.text)
-  }
-
-  createEl() {
-    return videojs.dom.createEl("div", { className: "vjs-title-bar" })
-  }
-
-  updateTextContent(text: string) {
-    if (typeof text !== "string") {
-      text = "Title Unknown"
-    }
-
-    videojs.dom.emptyEl(this.el())
-    videojs.dom.appendContent(this.el(), text)
-  }
-}
-
-videojs.registerComponent("TitleBar", PlayerTitleBar)
+type OnUpdatePositionCallback = (
+  position: number,
+  duration: number
+) => void | Promise<void>
 
 export interface PlayerProps {
   name: string
+  history: History
   videos: Video[]
   subtitles: Subtitle[]
+  poster: string
   position: number
-  onUpdatePosition?: (
-    position: number,
-    duration: number
-  ) => void | Promise<void>
+  onUpdatePosition?: OnUpdatePositionCallback
+  displaySidebar?: boolean
 }
 
 const Player: FunctionComponent<PlayerProps> = ({
   name,
+  history,
   videos,
   subtitles,
+  poster,
   onUpdatePosition,
   position = 0,
+  displaySidebar = false,
 }) => {
-  const videoNode = useRef(null)
+  const videoNode = useRef<HTMLVideoElement>(null)
+  const seasonRef = useRef<HTMLDivElement>(null)
+  const videoContainerRef = useRef<HTMLDivElement>(null)
+  const [showSidebar, setShowSidebar] = useState(false)
 
-  useEffect(() => {
-    const player = videojs(videoNode.current)
-    // Set the current time from view hit
-    player.currentTime(position)
-    // Update the position for the parent to handle it
-    player.on("timeupdate", () => {
-      const currentPosition = Math.floor(player.currentTime())
-      // Check if the player seeked over 30 secs or the user is seeking back
-      if (currentPosition >= position + 30 || currentPosition <= position) {
-        // Update the position
-        const duration = Math.floor(player.duration())
-        position = currentPosition
+  useDisposableEffect(
+    disposed => {
+      const player = videojs(videoNode.current)
 
-        onUpdatePosition && position && onUpdatePosition(position, duration)
+      // Set the current time from view hit
+      player.currentTime(position)
+
+      // Update the position for the parent to handle it
+      player.on(
+        "timeupdate",
+        () => !disposed && handleTimeUpdate(player, position, onUpdatePosition)
+      )
+
+      // Toggle sidebar
+      player.on(
+        "togglesidebar",
+        () => !disposed && setShowSidebar(showSidebar => !showSidebar)
+      )
+
+      // Add title bar
+      player.addChild("vjsTitleBar", {
+        title: name,
+        goBack: history.goBack,
+        displaySidebar,
+      })
+
+      const disposeFullscreenButton = replaceFullscreenButton(
+        videoContainerRef,
+        player
+      )
+
+      return () => {
+        disposeFullscreenButton()
+        player.dispose()
       }
-    })
+    },
+    [videos && videos[0]?.url]
+  )
 
-    // Add title bar
-    player.addChild("TitleBar", { text: name })
+  const Video = ({ video }: { video: Video }) => {
+    if (!video) return null
 
-    return () => {
-      player.dispose()
-    }
-  }, [])
-
-  const renderVideo = (video: Video) => {
     const format = video.formats.split(",")[0] || "mp4"
     // Shift the id before the season index for legacy reasons
     const url = swapEpisodeUrlId(
@@ -88,41 +99,102 @@ const Player: FunctionComponent<PlayerProps> = ({
 
     return (
       <source
-        key={url}
         src={url}
         type={format === "mp4" ? "video/mp4" : "application/x-mpegURL"}
       />
     )
   }
 
-  const renderSubtitle = (subtitle: Subtitle) => (
-    <track
-      key={subtitle.url}
-      kind="captions"
-      src={swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt"))}
-      srcLang={subtitle.language}
-      label={subtitle.language === "ar" ? "العربية" : "English"}
-      default={subtitle.language === "ar"}
-    />
-  )
+  const Subtitle = ({ subtitle }: { subtitle: Subtitle }) => {
+    if (!subtitle) return null
+    return (
+      <track
+        kind="captions"
+        src={swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt"))}
+        srcLang={subtitle.language}
+        label={subtitle.language === "ar" ? "العربية" : "English"}
+        default={subtitle.language === "ar"}
+      />
+    )
+  }
 
   return (
-    <div className="player text-black">
-      <div data-vjs-player>
+    <div
+      ref={videoContainerRef}
+      className="absolute left-0 top-0 md:mt-20 right-0 bottom-0 z-10 overflow-hidden player text-black"
+    >
+      <div data-vjs-player style={{ width: showSidebar ? "75vw" : "100vw" }}>
         <video
           ref={videoNode}
           id="video-js-player"
-          className="video-js vjs-16-9"
+          className="video-js"
+          poster={poster}
           autoPlay
           controls
           playsInline
         >
-          {videos.map(renderVideo)}
-          {subtitles.map(renderSubtitle)}
+          {videos.map(video => (
+            <Video key={video.url} video={video} />
+          ))}
+          {/* {subtitles.map(subtitle => ( */}
+          {/* <Subtitle key={subtitle.url} subtitle={subtitle} /> */}
+          {/* ))} */}
         </video>
       </div>
+      {displaySidebar && (
+        <div
+          ref={seasonRef}
+          className="season-container bg-gray-900 overflow-auto"
+          style={{ right: showSidebar ? "0" : "-25vw" }}
+        >
+          <PlayerSidebar />
+        </div>
+      )}
     </div>
   )
+}
+
+const handleTimeUpdate = (
+  player: VideoJsPlayer,
+  position: number,
+  onUpdatePosition: OnUpdatePositionCallback
+) => {
+  const currentPosition = Math.floor(player.currentTime())
+  // Check if the player seeked over 30 secs or the user is seeking back
+  if (currentPosition > position + 30 || currentPosition < position) {
+    // Update the position
+    const duration = Math.floor(player.duration())
+    position = currentPosition
+
+    onUpdatePosition && position && onUpdatePosition(position, duration)
+  }
+}
+
+const replaceFullscreenButton = (
+  ref: React.MutableRefObject<HTMLDivElement>,
+  player: VideoJsPlayer
+) => {
+  let isFullscreen = false
+
+  ref.current.onfullscreenchange = e => {
+    isFullscreen = !isFullscreen
+  }
+
+  const toggleFullscreen = () => {
+    if (isFullscreen) document.exitFullscreen()
+    else ref.current.requestFullscreen()
+  }
+  const el = videojs.dom.$(".vjs-fullscreen-control").cloneNode(true)
+
+  videojs.dom.$(".vjs-fullscreen-control").replaceWith(el)
+  el.addEventListener("click", toggleFullscreen)
+  player.ready(function () {
+    ;(player as any).tech_.off("dblclick")
+  })
+
+  player.on("dblclick", toggleFullscreen)
+
+  return () => el.removeEventListener("click", toggleFullscreen)
 }
 
 export default Player

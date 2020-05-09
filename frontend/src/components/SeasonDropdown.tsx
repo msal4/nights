@@ -21,7 +21,7 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
     <div className="relative flex flex-col items-center">
       <button
         className={`flex items-center relative z-10 underline-before ${
-          menuOpened ? "highlight-before" : "highlight-red-before"
+          menuOpened ? "highlight-before" : ""
         } text-white focus:outline-none hover:text-white`}
         onClick={() => setMenuOpened(!menuOpened)}
       >
@@ -36,17 +36,17 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
       {menuOpened && (
         <div className="mt-10 pt-2 absolute z-10 h-40 rounded bg-gray-900 overflow-auto">
           {seasons
-            .filter((season) => season.id !== currentSeason.id)
-            .map((season) => (
+            .filter(season => season.id !== currentSeason.id)
+            .map(season => (
               <button
-                className="block px-4 py-1 mb-2 hover:bg-blue-500 hover:text-black"
+                className="block px-4 py-1 mb-2 text-white hover:bg-blue-500 hover:text-black"
                 key={season.id}
                 onClick={() => {
                   onChange(season)
                   setMenuOpened(false)
                 }}
               >
-                Season {season.index + 1}
+                {t("season")} {season.index + 1}
               </button>
             ))}
         </div>

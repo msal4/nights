@@ -121,8 +121,10 @@ class TitleSerializer(serializers.ModelSerializer):
     def get_recommended(self, title):
         genres = title.genres.all()
         titles = Title.objects.filter(genres__in=genres)
-        ordered_titles = titles.order_by('-created_at').exclude(pk=title.id).distinct()[:5]
-        serializer = TitleListSerializer(ordered_titles, many=True, read_only=True)
+        ordered_titles = titles.order_by(
+            '-created_at').exclude(pk=title.id).distinct()[:5]
+        serializer = TitleListSerializer(
+            ordered_titles, many=True, read_only=True)
         return serializer.data
 
     @staticmethod
@@ -170,7 +172,7 @@ class ViewHitSerializer(serializers.ModelSerializer):
 class SimpleEpisodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Season
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'index')
 
 
 class HistorySerializer(serializers.ModelSerializer):

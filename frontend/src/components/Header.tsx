@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, FunctionComponent } from "react"
 import { IoIosAdd, IoIosMenu, IoIosCloseCircleOutline } from "react-icons/io"
 import { Link, useRouteMatch, useHistory } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -14,9 +14,32 @@ const useMenuOpenedState = (value: boolean) => {
   return { menuOpened, openMenu, closeMenu }
 }
 
+interface NavLinkProps {
+  className?: string
+  to: string
+}
+
+const NavLink: FunctionComponent<NavLinkProps> = ({
+  to,
+  className,
+  children,
+}) => {
+  const match = useRouteMatch({ path: to, exact: true })
+
+  return (
+    <Link
+      className={`opacity-50 py-2 px-3 rounded-full hover:bg-gray-900 hover:opacity-100 ${
+        match && "font-bold opacity-100"
+      } ${className}`}
+      to={to}
+    >
+      {children}
+    </Link>
+  )
+}
+
 export default () => {
   const { menuOpened, openMenu, closeMenu } = useMenuOpenedState(false)
-  const { path } = useRouteMatch()
   const { t, i18n } = useTranslation()
   const { token, logout } = useAuth()
 
@@ -48,36 +71,16 @@ export default () => {
         } md:block md:flex md:items-center md:mt-0 md:justify-between md:w-full`}
       >
         <div className="flex justify-between md:ml-6 md:text-sm lg:text-base">
-          <Link
-            className={`opacity-50 ${path === "/" && "font-bold opacity-100"}`}
-            to="/"
-          >
-            {t("home")}
-          </Link>
-          <Link
-            className={`md:ml-5 opacity-50 ${
-              path === "/movies" && "font-bold opacity-100"
-            }`}
-            to="/movies"
-          >
+          <NavLink to="/">{t("home")}</NavLink>
+          <NavLink className="md:ml-2" to="/movies">
             {t("movies")}
-          </Link>
-          <Link
-            className={`md:ml-5 opacity-50 ${
-              path === "/series" && "font-bold opacity-100"
-            }`}
-            to="/series"
-          >
+          </NavLink>
+          <NavLink className="md:ml-2" to="/series">
             {t("series")}
-          </Link>
-          <Link
-            className={`md:ml-5 opacity-50 ${
-              path === "/series" && "font-bold text-white opacity-100"
-            }`}
-            to="/kids"
-          >
+          </NavLink>
+          <NavLink className="md:ml-2" to="/kids">
             {t("kids")}
-          </Link>
+          </NavLink>
         </div>
         <div className="md:flex">
           <Search className="md:mx-2 md:w-56" />

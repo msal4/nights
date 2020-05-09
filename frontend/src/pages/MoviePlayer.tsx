@@ -1,14 +1,16 @@
 import React, { FunctionComponent, useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 
-import { TitleDetail } from "~core/interfaces/title"
+import { TitleDetail, ImageQuality } from "~core/interfaces/title"
 import { getTitle, hitTopic, getHit } from "~api/title"
 import Player from "~components/Player"
 import { useAuth } from "~context/auth-context"
 import { ViewHit } from "~core/interfaces/view-hit"
+import { getImageUrl } from "~utils/common"
 
 const MoviePlayer: FunctionComponent = () => {
   const { id } = useParams()
+  const history = useHistory()
   const { token } = useAuth()
   const { title, hit, error } = useTitle(id, token)
 
@@ -25,8 +27,10 @@ const MoviePlayer: FunctionComponent = () => {
   return (
     <Player
       name={title.name}
+      history={history}
       videos={title.videos}
       subtitles={title.subtitles || []}
+      poster={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
       onUpdatePosition={onUpdatePosition}
       position={hit?.playback_position || 0}
     />
@@ -44,7 +48,6 @@ const useTitle = (id: string | number, token: string) => {
       if (token) {
         try {
           const data = await getHit(title.id)
-          console.log(data)
           setHit(data)
         } catch (error) {
           console.log(error)

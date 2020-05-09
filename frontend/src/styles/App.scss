@@ -1,7 +1,7 @@
 @import "./fonts.scss";
 @import "./variables.scss";
 
-:root {
+* {
   font-family: "Almarai", "Open Sans", system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
@@ -24,6 +24,10 @@
   background: linear-gradient(transparent, black);
 }
 
+.v-gradient-inverse {
+  background: linear-gradient(black, transparent);
+}
+
 .h-rainbow {
   background: linear-gradient(90deg, $color-blue, $color-red);
 }
@@ -39,7 +43,7 @@
 .highlight-before {
   color: white !important;
   &::before {
-    background: linear-gradient(90deg, $color-blue, $color-red);
+    background: $color-blue !important;
     box-sizing: border-box;
     height: 2px;
     left: 0 !important;
@@ -47,16 +51,10 @@
   }
 }
 
-.highlight-red-before {
-  &::before {
-    background: $color-red !important;
-  }
-}
-
 .underline-before {
   position: relative;
   padding: 0 0.3rem 0.3rem 0.3rem;
-  color: #777;
+  color: white;
 
   &::before {
     content: "";
@@ -64,15 +62,8 @@
     bottom: 0;
     left: 20px;
     right: 20px;
+    height: 2px;
+    background: $color-red !important;
     transition: all ease-in-out 300ms;
-  }
-}
-
-.video-js .vjs-modal-dialog-content {
-  .vjs-track-settings-colors {
-    color: black;
-  }
-  .vjs-track-settings-font {
-    color: black;
   }
 }

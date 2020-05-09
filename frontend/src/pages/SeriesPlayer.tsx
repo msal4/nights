@@ -1,21 +1,23 @@
 import React, { FunctionComponent, useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 
 import Player from "~components/Player"
 import { Episode } from "~core/interfaces/episode"
 import { hitTopic, getTitle, getSeason } from "~api/title"
 import { useAuth } from "~context/auth-context"
-import { TitleDetail } from "~core/interfaces/title"
+import { TitleDetail, ImageQuality } from "~core/interfaces/title"
 import { Season } from "~core/interfaces/season"
+import { getImageUrl } from "~utils/common"
+import { SeasonProvider } from "~context/season-context"
+import { useDisposableEffect } from "~hooks"
 
 const SeriesPlayer: FunctionComponent = () => {
+  const history = useHistory()
   const { seriesId, seasonId, episodeIndex } = useParams()
   const { token } = useAuth()
-  const { series, season, episode, error } = useEpisode(
-    seriesId,
-    seasonId,
-    episodeIndex
-  )
+  const { data, error } = useEpisode(seriesId, seasonId, episodeIndex)
+
+  const { series, season, episode } = data
 
   const onUpdatePosition = async (position: number, duration: number) => {
     if (token) {
@@ -30,14 +32,20 @@ const SeriesPlayer: FunctionComponent = () => {
 
   if (error) return <div>{error.message}</div>
   if (!episode) return <div>Loading...</div>
+
   return (
-    <Player
-      name={episode.name}
-      videos={episode.videos}
-      subtitles={episode.subtitles || []}
-      position={episode.hits[0]?.playback_position | 0}
-      onUpdatePosition={onUpdatePosition}
-    />
+    <SeasonProvider seasonId={seasonId} series={series} defaultSeason={season}>
+      <Player
+        name={episode.name}
+        history={history}
+        videos={episode.videos}
+        subtitles={episode.subtitles || []}
+        poster={getImageUrl(episode.images[0]?.url, ImageQuality.h900)}
+        position={episode.hits && episode.hits[0]?.playback_position | 0}
+        onUpdatePosition={onUpdatePosition}
+        displaySidebar
+      />
+    </SeasonProvider>
   )
 }
 
@@ -46,40 +54,59 @@ const useEpisode = (
   seasonId: string | number,
   episodeIndex: string
 ) => {
-  const [series, setSeries] = useState<TitleDetail>(null)
-  const [season, setSeason] = useState<Season>(null)
-  const [episode, setEpisode] = useState<Episode>(null)
+  interface DataState {
+    series: TitleDetail
+    season: Season
+    episode: Episode
+  }
+
+  const [data, setData] = useState<DataState>({
+    series: null,
+    season: null,
+    episode: null,
+  })
   const [error, setError] = useState(null)
 
-  const getEpisode = (season: Season, index: string) =>
-    season.episodes.find(episode => episode.index.toString() === index)
+  const getEpisode = (season: Season, index: string) => {
+    const episode = season.episodes.find(
+      episode => episode.index.toString() === index
+    )
 
-  const getSeasonDetail = async () => {
+    if (!episode) throw Error("No Episode Found.")
+
+    return episode
+  }
+
+  const getSeasonDetail = async (disposed: boolean) => {
     try {
+      if (seriesId == data.series?.id && seasonId == data.season?.id) {
+        const episode = getEpisode(data.season, episodeIndex)
+        setData({ ...data, episode })
+      }
+
       const series = await getTitle(seriesId)
       const season = await getSeason(seasonId)
+      const episode = await getEpisode(season, episodeIndex)
 
-      setSeries(series)
-      setSeason(season)
-
-      // Get episode
-      const episode = getEpisode(season, episodeIndex)
-      if (!episode) throw Error("No Episode Found.")
+      if (!disposed) {
+        setData({ ...data, series, season, episode })
+      }
 
       // Clean
-      if (error) setError(null)
-
-      setEpisode(episode)
+      if (error && !disposed) setError(null)
     } catch (error) {
-      setError(error)
+      !disposed && setError(error)
     }
   }
 
-  useEffect(() => {
-    getSeasonDetail()
-  }, [seriesId, seasonId])
+  useDisposableEffect(
+    disposed => {
+      getSeasonDetail(disposed)
+    },
+    [seriesId, seasonId, episodeIndex]
+  )
 
-  return { series, season, episode, setEpisode, error, setError }
+  return { data, setData, error, setError }
 }
 
 export default SeriesPlayer

@@ -12,6 +12,7 @@ import { useAuth } from "~context/auth-context"
 import { ViewHit } from "~core/interfaces/view-hit"
 import { getHistory } from "~api/title"
 import { capitalizeFirst } from "~utils/common"
+import { useLocation } from "react-router-dom"
 
 type Home = PaginatedResults<HomeResults>
 
@@ -41,7 +42,7 @@ export default ({ filters = {} }: { filters?: {} }) => {
     setError,
   } = useHome()
   const { token } = useAuth()
-  console.log(filters)
+  const { pathname } = useLocation()
 
   const getHomePage = async () => {
     try {
@@ -58,13 +59,13 @@ export default ({ filters = {} }: { filters?: {} }) => {
 
   useEffect(() => {
     getHomePage()
-  }, [token])
+  }, [token, pathname])
 
   if (home == null) return <div>Loading home...</div>
 
   const { results } = home
   return (
-    <>
+    <div>
       <Featured data={results.featured} />
       {/* Continue watching */}
       {continueWatching && continueWatching.length > 0 && (
@@ -77,13 +78,13 @@ export default ({ filters = {} }: { filters?: {} }) => {
       {/* Recommended featured */}
       {results.recommended && <Recommended title={results.recommended} />}
       {/* Genre rows */}
-      {results.rows.map((row) => (
+      {results.rows.map(row => (
         <TitleRow
           key={row.id}
           row={row.title_list}
           name={capitalizeFirst(row.name)}
         />
       ))}
-    </>
+    </div>
   )
 }

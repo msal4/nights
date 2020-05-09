@@ -1,17 +1,21 @@
+@import "./variables.scss";
 .video-js {
-  .vjs-title-bar {
-    background: rgba(0, 0, 0, 0.5);
-    background: linear-gradient(black, transparent);
-    padding: 0.5rem;
-    text-align: center;
-    font-size: 2.2rem;
-    color: white;
-    opacity: 0;
+  width: 100vw;
+  height: 100%;
+  transition: width 500ms;
+  overflow: hidden;
+
+  .vjs-big-play-button {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transition: opacity 700ms;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8rem;
+    height: 8rem;
+    line-height: 8rem;
+    font-size: 5rem;
+    border-radius: 50%;
+    border: none;
   }
 
   .vjs-control,
@@ -35,6 +39,7 @@
   .vjs-time-control {
     display: block;
     line-height: 3rem;
+    font-size: 1rem;
   }
 
   .vjs-remaining-time {
@@ -44,6 +49,9 @@
   .vjs-current-time {
     margin-left: auto;
   }
+  .vjs-volume-control.vjs-volume-horizontal {
+    margin-top: 0.5rem;
+  }
 
   .vjs-button > .vjs-icon-placeholder:before {
     font-size: 3em;
@@ -51,19 +59,53 @@
   }
 
   .vjs-control {
-    min-width: 5em;
+    min-width: 5rem;
     transition: color 200ms;
     &:hover {
       color: #ed1b58;
     }
+  }
+
+  .vjs-modal-dialog.vjs-text-track-settings {
+    z-index: 1;
   }
 }
 
 .video-js.vjs-paused.vjs-has-started .vjs-title-bar,
 .video-js.vjs-user-active.vjs-has-started .vjs-title-bar {
   opacity: 1;
+  transition: 200ms;
 }
 
 video {
   outline: none;
+}
+
+.season-container {
+  position: absolute;
+  width: 25vw;
+  height: 100%;
+  top: 0;
+  right: -25vw;
+  transition: right 500ms;
+}
+
+.video-js .vjs-modal-dialog-content {
+  .vjs-track-settings-colors {
+    color: black;
+  }
+  .vjs-track-settings-font {
+    color: black;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .video-js {
+    .vjs-volume-panel,
+    .vjs-duration,
+    .vjs-time-divider,
+    .vjs-mute-control {
+      display: none;
+    }
+  }
 }
