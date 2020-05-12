@@ -66,7 +66,10 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           </div>
         </div>
         <div className="flex items-center">
-          <PrimaryButton className="md:mr-4" to="/series/play">
+          <PrimaryButton
+            className="md:mr-4"
+            to={`/series/${title.id}/auto/auto/play`}
+          >
             <IoIosPlay size="1.5em" />
             {t("play")}
           </PrimaryButton>

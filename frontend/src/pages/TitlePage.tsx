@@ -55,7 +55,7 @@ export default () => {
   ) : title ? (
     <div className="pb-40">
       <NImage
-        className="rounded-lg mb-16"
+        className="relative rounded-lg mb-16"
         src={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
         style={{ width: "100%", paddingBottom: "40%" }}
       >

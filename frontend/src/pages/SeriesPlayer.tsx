@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom"
 
 import Player from "~components/Player"
 import { Episode } from "~core/interfaces/episode"
-import { hitTopic, getTitle, getSeason } from "~api/title"
+import { hitTopic, getTitle, getSeason, getHit } from "~api/title"
 import { useAuth } from "~context/auth-context"
 import { TitleDetail, ImageQuality } from "~core/interfaces/title"
 import { Season } from "~core/interfaces/season"
@@ -13,9 +13,8 @@ import { useDisposableEffect } from "~hooks"
 
 const SeriesPlayer: FunctionComponent = () => {
   const history = useHistory()
-  const { seriesId, seasonId, episodeIndex } = useParams()
   const { token } = useAuth()
-  const { data, error } = useEpisode(seriesId, seasonId, episodeIndex)
+  const { data, error } = useEpisode(token)
 
   const { series, season, episode } = data
 
@@ -24,7 +23,7 @@ const SeriesPlayer: FunctionComponent = () => {
       await hitTopic(series.id, {
         playback_position: position,
         runtime: duration,
-        season: seasonId,
+        season: season.id,
         episode: episode.id,
       })
     }
@@ -34,7 +33,7 @@ const SeriesPlayer: FunctionComponent = () => {
   if (!episode) return <div>Loading...</div>
 
   return (
-    <SeasonProvider seasonId={seasonId} series={series} defaultSeason={season}>
+    <SeasonProvider seasonId={season.id} series={series} defaultSeason={season}>
       <Player
         name={episode.name}
         history={history}
@@ -48,17 +47,14 @@ const SeriesPlayer: FunctionComponent = () => {
     </SeasonProvider>
   )
 }
+interface DataState {
+  series: TitleDetail
+  season: Season
+  episode: Episode
+}
 
-const useEpisode = (
-  seriesId: string | number,
-  seasonId: string | number,
-  episodeIndex: string
-) => {
-  interface DataState {
-    series: TitleDetail
-    season: Season
-    episode: Episode
-  }
+const useEpisode = (token: string) => {
+  let { seriesId, seasonId, episodeIndex } = useParams()
 
   const [data, setData] = useState<DataState>({
     series: null,
@@ -67,26 +63,43 @@ const useEpisode = (
   })
   const [error, setError] = useState(null)
 
-  const getEpisode = (season: Season, index: string) => {
-    const episode = season.episodes.find(
-      episode => episode.index.toString() === index
-    )
-
-    if (!episode) throw Error("No Episode Found.")
-
-    return episode
-  }
+  useDisposableEffect(
+    disposed => {
+      getSeasonDetail(disposed)
+    },
+    [seriesId, seasonId, episodeIndex]
+  )
 
   const getSeasonDetail = async (disposed: boolean) => {
     try {
-      if (seriesId == data.series?.id && seasonId == data.season?.id) {
+      if (
+        seriesId === data.series?.id.toString() &&
+        seasonId === data.season?.id.toString()
+      ) {
         const episode = getEpisode(data.season, episodeIndex)
         setData({ ...data, episode })
       }
 
       const series = await getTitle(seriesId)
+
+      if (seasonId === "auto" && episodeIndex === "auto") {
+        try {
+          const hit = token && (await getHit(seriesId))
+          console.log(hit)
+          seasonId = hit?.season?.toString() || series.seasons[0].id.toString()
+          episodeIndex = hit?.episode?.index.toString()
+        } catch (error) {
+          seasonId = series.seasons[0]?.id.toString()
+        }
+      }
+
       const season = await getSeason(seasonId)
-      const episode = await getEpisode(season, episodeIndex)
+
+      if (!episodeIndex) {
+        episodeIndex = season.episodes[0]?.index.toString()
+      }
+
+      const episode = getEpisode(season, episodeIndex)
 
       if (!disposed) {
         setData({ ...data, series, season, episode })
@@ -99,12 +112,15 @@ const useEpisode = (
     }
   }
 
-  useDisposableEffect(
-    disposed => {
-      getSeasonDetail(disposed)
-    },
-    [seriesId, seasonId, episodeIndex]
-  )
+  const getEpisode = (season: Season, index: string) => {
+    const episode = season.episodes.find(
+      episode => episode.index.toString() === index
+    )
+
+    if (!episode) throw Error("No Episode Found.")
+
+    return episode
+  }
 
   return { data, setData, error, setError }
 }

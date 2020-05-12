@@ -8,11 +8,11 @@ export const defaultResponsive = {
     items: 6,
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1024, min: 600 },
     items: 4,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 600, min: 0 },
     items: 3,
   },
 }
@@ -31,7 +31,7 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
 }) => {
   return (
     <div className={`relative ${className}`}>
-      <h3 className="md:absolute md:text-lg text-sm ml-3 font-semibold leading-none">
+      <h3 className="ml-3 md:absolute md:text-lg text-sm font-semibold leading-none">
         {title}
       </h3>
       <Carousel

@@ -1,13 +1,8 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useRef,
-  Ref,
-  useState,
-} from "react"
+import React, { FunctionComponent, useRef, useState } from "react"
 import videojs, { VideoJsPlayer } from "video.js"
 import { History } from "history"
 
+import "video.js/src/css/video-js.scss"
 import "~styles/Player.scss"
 import { Video, Subtitle } from "~core/interfaces/topic"
 import { swapEpisodeUrlId } from "~utils/common"

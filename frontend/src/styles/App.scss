@@ -1,6 +1,15 @@
 @import "./fonts.scss";
 @import "./variables.scss";
 
+:root {
+  font-size: 1vw;
+}
+@media screen and (max-width: 600px) {
+  :root {
+    font-size: 3vw;
+  }
+}
+
 * {
   font-family: "Almarai", "Open Sans", system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
@@ -69,6 +78,6 @@
 }
 
 .carousel-row {
-  padding-top: 3vw;
-  padding-bottom: 3vw;
+  padding-top: 1.3vw;
+  padding-bottom: 2vw;
 }

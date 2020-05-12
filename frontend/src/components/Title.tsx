@@ -78,39 +78,37 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
       </div>
       <Link
         draggable={false}
-        to={`/title/${title.id}/${title.type === "m" ? "info" : ""}`}
-        className="title-poster bg-black font-light flex flex-col justify-between items-center"
+        to={
+          title.type === "s"
+            ? `/series/${title.id}/auto/auto/play`
+            : `/movie/${title.id}/play`
+        }
+        className="title-poster block relative bg-black font-light"
         style={{
           backgroundImage: `url(${tmdbImage}), url(${image})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       >
-        <div className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
-          {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
-        </div>
-        <Link
-          to={
-            title.type === "s"
-              ? `/series/${title.id}/auto/auto/play`
-              : `/movie/${title.id}/play`
-          }
-        >
+        <span className="absolute inset-0 w-full h-full flex flex-col justify-between items-center">
+          <span className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
+            {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
+          </span>
           <PlayIcon className="hidden md:block card-container-reveal" />
-        </Link>
-        <div className="self-stretch v-gradient">
-          <h4 className="card-container-reveal self-start font-medium md:text-xs pl-1">
-            {title.name}
-          </h4>
-          <div className="p-1 flex justify-between items-center self-stretch">
-            <span>
-              {title.runtime
-                ? Math.floor(title.runtime / 60) + " min"
-                : title.rated}
-            </span>
-            <span>{title.rating}</span>
+          <div className="self-stretch v-gradient">
+            <h4 className="card-container-reveal self-start font-medium md:text-xs pl-1">
+              {title.name}
+            </h4>
+            <div className="p-1 flex justify-between items-center self-stretch">
+              <span>
+                {title.runtime
+                  ? Math.floor(title.runtime / 60) + " min"
+                  : title.rated}
+              </span>
+              <span>{title.rating}</span>
+            </div>
           </div>
-        </div>
+        </span>
       </Link>
       <div className="hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin">
         {title.genres

@@ -109,3 +109,7 @@ video {
     }
   }
 }
+
+.vjs-paused.vjs-has-started .vjs-big-play-button {
+  display: block;
+}

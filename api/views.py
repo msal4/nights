@@ -206,23 +206,21 @@ class MyListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
                         status=status.HTTP_200_OK)
 
 
-class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
+class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
+                          viewsets.GenericViewSet):
     serializer_class = serializers.HistorySerializer
     permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'topic_id'
 
     def get_queryset(self):
         return self.request.user.viewhit_set.filter(
             type='title').order_by('-hit_date')
 
-    def get(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-
     @staticmethod
-    def put(request, pk, *args, **kwargs):
+    def put(request, topic_id, *args, **kwargs):
         topic_type = 'title'
         season_id = None
         episode_id = None
-
         try:
             position = int(float(request.data['playback_position']))
             runtime = int(float(request.data['runtime']))
@@ -237,7 +235,7 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
 
         user = request.user
 
-        title = get_object_or_404(Title, pk=pk)
+        title = get_object_or_404(Title, pk=topic_id)
 
         try:
             # Check if hit already exists
@@ -255,9 +253,11 @@ class WatchHistoryView(mixins.ListModelMixin, generics.GenericAPIView):
                 if (hit.season and season_id != hit.episode.id) or not hit.season:
                     hit.season = get_object_or_404(Season, pk=season_id)
 
-                episode_hit, created = user.viewhit_set.get_or_create(topic=hit.episode)
+                episode_hit, created = user.viewhit_set.get_or_create(
+                    topic=hit.episode)
 
-                if created: episode_hit.type = 'episode'
+                if created:
+                    episode_hit.type = 'episode'
                 episode_hit.runtime = runtime
                 episode_hit.playback_position = position
                 episode_hit.save()

@@ -12,7 +12,7 @@ const NImage: FunctionComponent<ImageProps> = ({
   const fallback = "/static/frontend/images/fallback.jpg"
   return (
     <div
-      className={`relative ${className} overflow-hidden`}
+      className={`${className} overflow-hidden`}
       style={{
         backgroundImage: `url(${src}), url(${fallback})`,
         backgroundSize: "cover",

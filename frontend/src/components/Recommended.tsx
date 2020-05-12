@@ -22,15 +22,18 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
   const image = getImageUrl(title.images[0]?.url, ImageQuality.h900)
   return (
     <div className="mb-8 mx-3">
-      <h3 className="md:text-lg mb-6 text-sm font-semibold leading-none">
+      <h3
+        className="md:text-lg text-sm font-semibold leading-none"
+        style={{ marginBottom: "3vw" }}
+      >
         {t("pickedForYou")}
       </h3>
       <div className="flex flex-col md:flex-row">
         <div
-          className="rounded-lg mb-2 w-full h-40 md:w-0 flex-1 md:mr-4 md:h-full"
-          style={{ height: "20rem" }}
+          className="relative rounded-lg mb-2 w-full flex-1 md:mr-4 md:h-full"
+          style={{ paddingTop: "30%" }}
         >
-          <NImage className="h-full w-full" src={image} />
+          <NImage className="absolute inset-0" src={image} />
         </div>
         <div className="flex flex-col md:flex-1 md:justify-between md:mt-2">
           <div className="flex flex-col items-start">

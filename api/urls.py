@@ -12,14 +12,17 @@ router.register(r'titles', views.TitleViewSet)
 router.register(r'seasons', views.SeasonViewSet)
 router.register(r'episodes', views.EpisodeViewSet)
 router.register(r'my_list', views.MyListViewSet, basename='MyList')
+router.register(r'history', views.WatchHistoryViewSet, basename='History')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('auth', include('rest_framework.urls')),
-    path('history/', views.WatchHistoryView.as_view(), name='history-list'),
-    path('history/<int:pk>/', views.WatchHistoryView.as_view(), name='history-detail'),
+    # path('history/', views.WatchHistoryView.as_view(), name='history-list'),
+    # path('history/<int:pk>/', views.WatchHistoryView.as_view(),
+    #  name='history-detail'),
     path('home/', views.HomeView.as_view(), name='home'),
-    path('upload/<str:directory>/<str:filename>/', FileUploadView.as_view(), name='fileupload'),
+    path('upload/<str:directory>/<str:filename>/',
+         FileUploadView.as_view(), name='fileupload'),
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
 ]
