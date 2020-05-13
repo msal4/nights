@@ -61,7 +61,6 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         return Genre.objects.order_by('-name')
 
     @method_decorator(cache_page(60 * 60))
-    @vary_on_cookie
     def get(self, request, *args, **kwargs):
         titles = self.filter_queryset(Title.objects.all())
         queryset = self.get_queryset()
@@ -82,8 +81,6 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         if not request.user.is_anonymous:
             recently_watched = self._get_history(request.user.viewhit_set)
             if len(recently_watched):
-                data['recently_watched'] = self._serialize_history(
-                    recently_watched)
                 data['recommended'] = self._get_recommended(
                     recently_watched[0], titles)
 

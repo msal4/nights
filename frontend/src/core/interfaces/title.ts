@@ -1,5 +1,5 @@
 import { Topic, Subtitle, Video, Trailer, Image } from "./topic"
-import { Season } from "./season"
+import { Season, SimpleSeason } from "./season"
 
 export interface TitleDetail {
   id: number
@@ -16,7 +16,7 @@ export interface TitleDetail {
   type: string
   is_new: boolean
   views: number
-  seasons: Season[]
+  seasons: SimpleSeason[]
   genres: Topic[]
   cast: Topic[]
   recommended: Title[]

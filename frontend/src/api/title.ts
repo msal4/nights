@@ -7,16 +7,23 @@ import { Season } from "~core/interfaces/season"
 import { Episode } from "~core/interfaces/episode"
 import { ViewHitData } from "~core/interfaces/topic"
 import { ViewHit } from "~core/interfaces/view-hit"
+import { sortTopics } from "~utils/common"
 
 export const getTitles = (
   params: {} = {}
-): Promise<PaginatedResults<HomeResults>> => client.get("/titles/", { params })
+): Promise<PaginatedResults<Title[]>> => client.get("/titles/", { params })
 
-export const getTitle = (id: number | string): Promise<TitleDetail> =>
-  client.get(`/titles/${id}/`)
+export const getTitle = async (id: number | string): Promise<TitleDetail> => {
+  const title: TitleDetail = await client.get(`/titles/${id}/`)
+  title.type === "s" && (title.seasons = sortTopics(title.seasons))
+  return title
+}
 
-export const getSeason = (id: number | string): Promise<Season> =>
-  client.get(`/seasons/${id}/`)
+export const getSeason = async (id: number | string): Promise<Season> => {
+  const season: Season = await client.get(`/seasons/${id}/`)
+  season.episodes = sortTopics(season.episodes) as Episode[]
+  return season
+}
 
 export const getEpisode = (id: number | string): Promise<Episode> =>
   client.get(`/episodes/${id}/`)

@@ -13,78 +13,133 @@ import { ViewHit } from "~core/interfaces/view-hit"
 import { getHistory } from "~api/title"
 import { capitalizeFirst } from "~utils/common"
 import { useLocation } from "react-router-dom"
+import client from "~api/client"
+import { useDisposableEffect } from "~hooks"
+import LoadingIndicator from "~components/LoadingIndicator"
+
+const HomePage = ({ filters = {} }: { filters?: {} }) => {
+  const { t } = useTranslation()
+  const { home, continueWatching, loading } = useHome(filters)
+
+  return (
+    <>
+      <LoadingIndicator show={loading} />
+      {home && (
+        <>
+          <Featured data={home.results.featured} />
+          {/* Continue watching */}
+          {continueWatching && continueWatching.length > 0 && (
+            <CWRow row={continueWatching} />
+          )}
+          {/* Recently added */}
+          {home.results.recently_added && (
+            <TitleRow
+              row={home.results.recently_added}
+              name={t("recentlyAdded")}
+            />
+          )}
+          {/* Recommended featured */}
+          {home.results.recommended && (
+            <Recommended title={home.results.recommended} />
+          )}
+          {/* Genre rows */}
+          {home.results.rows.map(row => (
+            <TitleRow
+              key={row.id}
+              row={row.title_list}
+              name={capitalizeFirst(row.name)}
+            />
+          ))}
+        </>
+      )}
+    </>
+  )
+}
 
 type Home = PaginatedResults<HomeResults>
 
-const useHome = () => {
+const threshold = 200
+
+const useHome = (filters: {}) => {
   const [home, setHome] = useState<Home>(null)
+  const [loadMore, setLoadMore] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [continueWatching, setContinueWatching] = useState<ViewHit[]>(null)
   const [error, setError] = useState<{}>(null)
-
-  return {
-    home,
-    setHome,
-    continueWatching,
-    setContinueWatching,
-    error,
-    setError,
-  }
-}
-
-export default ({ filters = {} }: { filters?: {} }) => {
-  const { t } = useTranslation()
-  const {
-    home,
-    setHome,
-    continueWatching,
-    setContinueWatching,
-    error,
-    setError,
-  } = useHome()
   const { token } = useAuth()
   const { pathname } = useLocation()
 
-  const getHomePage = async () => {
+  const getHomeRows = async (disposed: boolean) => {
     try {
-      setHome(await getHome(filters))
-      if (token) {
-        const history = await getHistory()
-        setContinueWatching(history.results)
+      if (home.next) {
+        const result: Home = await client.get(home.next)
+        result.results.rows = [...home.results.rows, ...result.results.rows]
+        !disposed && setHome(result)
       }
-      if (error) setError(null)
     } catch (error) {
-      setError(error)
+      !disposed && setError(error)
+    } finally {
+      !disposed && setLoadMore(false)
     }
   }
 
-  useEffect(() => {
-    getHomePage()
-  }, [token, pathname])
+  const getHomePage = async (disposed: boolean) => {
+    setLoading(true)
+    try {
+      const result = await getHome(filters)
+      !disposed && setHome(result)
+      if (token) {
+        const history = await getHistory()
+        !disposed && setContinueWatching(history.results)
+      }
+      if (error && !disposed) setError(null)
+    } catch (error) {
+      !disposed && setError(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  if (home == null) return <div>Loading home...</div>
+  useDisposableEffect(disposed => {
+    const listener = () => {
+      const didHitBottom =
+        window.scrollY + window.innerHeight + threshold >=
+        document.body.scrollHeight
 
-  const { results } = home
-  return (
-    <div>
-      <Featured data={results.featured} />
-      {/* Continue watching */}
-      {continueWatching && continueWatching.length > 0 && (
-        <CWRow row={continueWatching} />
-      )}
-      {/* Recently added */}
-      {results.recently_added && (
-        <TitleRow row={results.recently_added} name={t("recentlyAdded")} />
-      )}
-      {/* Recommended featured */}
-      {results.recommended && <Recommended title={results.recommended} />}
-      {/* Genre rows */}
-      {results.rows.map(row => (
-        <TitleRow
-          key={row.id}
-          row={row.title_list}
-          name={capitalizeFirst(row.name)}
-        />
-      ))}
-    </div>
+      if (didHitBottom && !loadMore) {
+        setLoadMore(true)
+      }
+    }
+
+    window.addEventListener("scroll", listener)
+
+    return () => {
+      window.removeEventListener("scroll", listener)
+    }
+  }, [])
+
+  useDisposableEffect(
+    disposed => {
+      getHomeRows(disposed)
+    },
+    [loadMore]
   )
+
+  useDisposableEffect(
+    disposed => {
+      setHome(null)
+      getHomePage(disposed)
+    },
+    [pathname, token]
+  )
+
+  return {
+    home,
+    loadMore,
+    loading,
+    continueWatching,
+    error,
+  }
 }
+
+export default HomePage

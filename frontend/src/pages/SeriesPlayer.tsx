@@ -10,11 +10,12 @@ import { Season } from "~core/interfaces/season"
 import { getImageUrl } from "~utils/common"
 import { SeasonProvider } from "~context/season-context"
 import { useDisposableEffect } from "~hooks"
+import LoadingIndicator from "~components/LoadingIndicator"
 
 const SeriesPlayer: FunctionComponent = () => {
   const history = useHistory()
   const { token } = useAuth()
-  const { data, error } = useEpisode(token)
+  const { data, error, loading } = useEpisode(token)
 
   const { series, season, episode } = data
 
@@ -30,21 +31,28 @@ const SeriesPlayer: FunctionComponent = () => {
   }
 
   if (error) return <div>{error.message}</div>
-  if (!episode) return <div>Loading...</div>
-
   return (
-    <SeasonProvider seasonId={season.id} series={series} defaultSeason={season}>
-      <Player
-        name={episode.name}
-        history={history}
-        videos={episode.videos}
-        subtitles={episode.subtitles || []}
-        poster={getImageUrl(episode.images[0]?.url, ImageQuality.h900)}
-        position={episode.hits && episode.hits[0]?.playback_position | 0}
-        onUpdatePosition={onUpdatePosition}
-        displaySidebar
-      />
-    </SeasonProvider>
+    <>
+      <LoadingIndicator show={loading} />
+      {episode && (
+        <SeasonProvider
+          seasonId={season.id}
+          series={series}
+          defaultSeason={season}
+        >
+          <Player
+            name={episode.name}
+            history={history}
+            videos={episode.videos}
+            subtitles={episode.subtitles || []}
+            poster={getImageUrl(episode.images[0]?.url, ImageQuality.h900)}
+            position={episode.hits && episode.hits[0]?.playback_position | 0}
+            onUpdatePosition={onUpdatePosition}
+            displaySidebar
+          />
+        </SeasonProvider>
+      )}
+    </>
   )
 }
 interface DataState {
@@ -61,6 +69,7 @@ const useEpisode = (token: string) => {
     season: null,
     episode: null,
   })
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useDisposableEffect(
@@ -71,6 +80,7 @@ const useEpisode = (token: string) => {
   )
 
   const getSeasonDetail = async (disposed: boolean) => {
+    setLoading(true)
     try {
       if (
         seriesId === data.series?.id.toString() &&
@@ -85,7 +95,6 @@ const useEpisode = (token: string) => {
       if (seasonId === "auto" && episodeIndex === "auto") {
         try {
           const hit = token && (await getHit(seriesId))
-          console.log(hit)
           seasonId = hit?.season?.toString() || series.seasons[0].id.toString()
           episodeIndex = hit?.episode?.index.toString()
         } catch (error) {
@@ -95,7 +104,7 @@ const useEpisode = (token: string) => {
 
       const season = await getSeason(seasonId)
 
-      if (!episodeIndex) {
+      if (episodeIndex === "auto" || !episodeIndex) {
         episodeIndex = season.episodes[0]?.index.toString()
       }
 
@@ -109,6 +118,8 @@ const useEpisode = (token: string) => {
       if (error && !disposed) setError(null)
     } catch (error) {
       !disposed && setError(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -122,7 +133,7 @@ const useEpisode = (token: string) => {
     return episode
   }
 
-  return { data, setData, error, setError }
+  return { data, error, loading }
 }
 
 export default SeriesPlayer

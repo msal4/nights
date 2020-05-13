@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 export const useDisposableEffect = (
   effect: (disposed: boolean) => void | (() => void),
-  dependencies: any[]
+  dependencies?: any[]
 ) => {
   let disposed: boolean
   useEffect(() => {

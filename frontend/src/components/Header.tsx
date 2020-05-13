@@ -47,7 +47,7 @@ export default () => {
     i18n.changeLanguage(i18n.language == "ar" ? "en" : "ar")
 
   return (
-    <nav className="py-4 relative z-10 md:flex md:justify-between font-thin">
+    <nav className="mb-4 py-4 relative z-10 md:flex md:justify-between font-thin">
       <div className="flex items-center justify-between">
         <Link className="select-none" to="/">
           <img

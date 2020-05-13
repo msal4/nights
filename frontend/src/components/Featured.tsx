@@ -68,7 +68,11 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         <div className="flex items-center">
           <PrimaryButton
             className="md:mr-4"
-            to={`/series/${title.id}/auto/auto/play`}
+            to={
+              title.type === "m"
+                ? `/movie/${title.id}/play`
+                : `/series/${title.id}/auto/auto/play`
+            }
           >
             <IoIosPlay size="1.5em" />
             {t("play")}
@@ -93,7 +97,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
 
   const image = getImageUrl(data[0]?.images[0]?.url, ImageQuality.h900)
   return (
-    <div className="flex mt-4 mb-5">
+    <div className="flex mb-5">
       <NImage
         className="relative object-cover object-center h-64 md:h-auto flex-1 rounded-lg md:mr-4"
         style={{ maxHeight: "40rem" }}

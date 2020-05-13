@@ -7,12 +7,13 @@ import Player from "~components/Player"
 import { useAuth } from "~context/auth-context"
 import { ViewHit } from "~core/interfaces/view-hit"
 import { getImageUrl } from "~utils/common"
+import LoadingIndicator from "~components/LoadingIndicator"
 
 const MoviePlayer: FunctionComponent = () => {
   const { id } = useParams()
   const history = useHistory()
   const { token } = useAuth()
-  const { title, hit, error } = useTitle(id, token)
+  const { title, hit, error, loading } = useTitle(id, token)
 
   const onUpdatePosition = async (position: number, duration: number) => {
     if (token) {
@@ -23,26 +24,32 @@ const MoviePlayer: FunctionComponent = () => {
     }
   }
 
-  if (!title) return <div>Loading...</div>
   return (
-    <Player
-      name={title.name}
-      history={history}
-      videos={title.videos}
-      subtitles={title.subtitles || []}
-      poster={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
-      onUpdatePosition={onUpdatePosition}
-      position={hit?.playback_position || 0}
-    />
+    <>
+      <LoadingIndicator show={loading} />
+      {title && (
+        <Player
+          name={title.name}
+          history={history}
+          videos={title.videos}
+          subtitles={title.subtitles || []}
+          poster={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
+          onUpdatePosition={onUpdatePosition}
+          position={hit?.playback_position || 0}
+        />
+      )}
+    </>
   )
 }
 
 const useTitle = (id: string | number, token: string) => {
   const [title, setTitle] = useState<TitleDetail>(null)
   const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [hit, setHit] = useState<ViewHit>(null)
 
   const getTitleDetail = async () => {
+    setLoading(true)
     try {
       const title = await getTitle(id)
       if (token) {
@@ -57,6 +64,8 @@ const useTitle = (id: string | number, token: string) => {
       setTitle(title)
     } catch (error) {
       setError(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -64,7 +73,7 @@ const useTitle = (id: string | number, token: string) => {
     getTitleDetail()
   }, [id, token])
 
-  return { title, setTitle, hit, setHit, error, setError }
+  return { title, hit, error, loading }
 }
 
 export default MoviePlayer

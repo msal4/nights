@@ -1,5 +1,7 @@
 import { Topic } from "~core/interfaces/topic"
 import { ImageQuality } from "~core/interfaces/title"
+import { Episode } from "~core/interfaces/episode"
+import { SimpleSeason } from "~core/interfaces/season"
 
 export const capitalizeFirst = (str: string) =>
   str?.charAt(0).toUpperCase() + str.slice(1)
@@ -23,3 +25,8 @@ export const swapEpisodeUrlId = (url: string) => {
   arr[6] = fifth
   return arr.join("/")
 }
+
+export const sortTopics = (
+  topics: Episode[] | SimpleSeason[]
+): Episode[] | SimpleSeason[] =>
+  topics.sort((a, b) => (a.index < b.index ? -1 : a.index === b.index ? 0 : 1))
