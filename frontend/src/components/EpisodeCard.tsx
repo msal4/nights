@@ -17,14 +17,24 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
   seasonId,
   episode,
 }) => {
+  const progress =
+    episode.hits?.length &&
+    (episode.hits[0].playback_position / episode.hits[0].runtime) * 10
+  console.log(progress)
   return (
-    <Link
-      to={`/series/${seriesId}/${seasonId}/${episode.index}/play`}
+    <div
+      // to={`/series/${seriesId}/${seasonId}/${episode.index}/play`}
+      onClick={() =>
+        (window.location.pathname = `/series/${seriesId}/${seasonId}/${episode.index}/play`)
+      }
       className="episode-card-container flex items-start mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
     >
-      <NImage className="h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center">
+      <NImage className="relative h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center">
         <div className="episode-play-icon bg-white rounded-full">
           <PlayIcon />
+        </div>
+        <div className="absolute bottom-0 left-0 progress h-1 w-full overflow-hidden rounded bg-gray-900">
+          <div className="h-full h-rainbow" style={{ width: `${progress}%` }} />
         </div>
       </NImage>
       <div>
@@ -33,7 +43,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
         </h4>
         <h4 className="text-xs font-thin md:text-lg">{episode.name}</h4>
       </div>
-    </Link>
+    </div>
   )
 }
 

@@ -13,6 +13,15 @@ import { useDisposableEffect } from "~hooks"
 // Register videojs components
 vjsComponent.registerComponent("vjsTitleBar", vjsTitleBar)
 
+const getVideoUrl = (video: Video) => {
+  const format = video.formats.split(",")[0] || "mp4"
+  // Shift the id before the season index for legacy reasons
+  const url = swapEpisodeUrlId(
+    video.url.replace("{q}", "720").replace("{f}", format)
+  )
+  return { url, format }
+}
+
 type OnUpdatePositionCallback = (
   position: number,
   duration: number
@@ -46,7 +55,22 @@ const Player: FunctionComponent<PlayerProps> = ({
 
   useDisposableEffect(
     disposed => {
-      const player = videojs(videoNode.current)
+      const player = videojs(videoNode.current, {
+        sources: videos.map(video => {
+          const { format, url } = getVideoUrl(video)
+          return {
+            src: url,
+            type: format === "mp4" ? "video/mp4" : "application/x-mpegURL",
+          }
+        }),
+        tracks: subtitles.map(subtitle => ({
+          kind: "captions",
+          src: swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")),
+          srcLang: subtitle.language,
+          label: subtitle.language === "ar" ? "العربية" : "English",
+          default: subtitle.language === "ar",
+        })),
+      })
 
       // Set the current time from view hit
       player.currentTime(position)
@@ -66,7 +90,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       // Add title bar
       player.addChild("vjsTitleBar", {
         title: name,
-        goBack: history.goBack,
+        goBack: () => history.push("/"),
         displaySidebar,
       })
 
@@ -83,40 +107,10 @@ const Player: FunctionComponent<PlayerProps> = ({
     [videos && videos[0]?.url]
   )
 
-  const Video = ({ video }: { video: Video }) => {
-    if (!video) return null
-
-    const format = video.formats.split(",")[0] || "mp4"
-    // Shift the id before the season index for legacy reasons
-    const url = swapEpisodeUrlId(
-      video.url.replace("{q}", "720").replace("{f}", format)
-    )
-
-    return (
-      <source
-        src={url}
-        type={format === "mp4" ? "video/mp4" : "application/x-mpegURL"}
-      />
-    )
-  }
-
-  const Subtitle = ({ subtitle }: { subtitle: Subtitle }) => {
-    if (!subtitle) return null
-    return (
-      <track
-        kind="captions"
-        src={swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt"))}
-        srcLang={subtitle.language}
-        label={subtitle.language === "ar" ? "العربية" : "English"}
-        default={subtitle.language === "ar"}
-      />
-    )
-  }
-
   return (
     <div
       ref={videoContainerRef}
-      className="absolute left-0 top-0 md:mt-20 right-0 bottom-0 z-10 overflow-hidden player text-black"
+      className="absolute inset-0 z-10 overflow-hidden player text-black"
     >
       <div data-vjs-player style={{ width: showSidebar ? "75vw" : "100vw" }}>
         <video
@@ -127,14 +121,7 @@ const Player: FunctionComponent<PlayerProps> = ({
           autoPlay
           controls
           playsInline
-        >
-          {videos.map(video => (
-            <Video key={video.url} video={video} />
-          ))}
-          {/* {subtitles.map(subtitle => ( */}
-          {/* <Subtitle key={subtitle.url} subtitle={subtitle} /> */}
-          {/* ))} */}
-        </video>
+        />
       </div>
       {displaySidebar && (
         <div

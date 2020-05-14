@@ -3,7 +3,7 @@ import { ViewHit } from "./view-hit"
 
 export interface HomeResults {
   rows: GenreRow[]
-  featured: Title[]
+  featured: TitleDetail[]
   recently_added: Title[]
   recently_watched?: ViewHit[]
   recommended?: Title

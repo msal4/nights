@@ -41,7 +41,7 @@ export const InfoIconButton: FunctionComponent<InfoButtonProps> = ({
 }) => {
   return (
     <BaseButton
-      className={`flex flex-col items-center text-xs text-gray-500 hover:text-white
+      className={`flex flex-col items-center text-xs opacity-50 hover:opacity-100 text-xl
        ${className}`}
       to={to}
       onClick={onClick}
@@ -61,7 +61,7 @@ export const PrimaryButton: FunctionComponent<ButtonProps> = ({
   <BaseButton
     to={to}
     onClick={onClick}
-    className={`flex items-center px-5 text-sm font-semibold py-2 rounded-full button-container ${className}`}
+    className={`flex items-center px-10 py-4 text-lg font-bold rounded-full button-container ${className}`}
   >
     {children}
   </BaseButton>

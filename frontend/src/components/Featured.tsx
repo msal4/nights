@@ -1,40 +1,43 @@
-import { Title as ITitle, ImageQuality } from "~core/interfaces/title"
-import React, { FunctionComponent } from "react"
+import {Title as ITitle, ImageQuality, TitleDetail} from '~core/interfaces/title'
+import React, {FunctionComponent} from 'react'
 import {
-  IoIosStar,
-  IoIosPlay,
-  IoIosAdd,
-  IoIosInformationCircleOutline,
-} from "react-icons/io"
-import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+  FaStar,
+  FaPlay,
+  FaPlus,
+  FaEye
+} from 'react-icons/fa'
+import {FiInfo} from 'react-icons/fi'
 
-import { PrimaryButton, InfoIconButton } from "./common/Buttons"
-import { joinTopics, getImageUrl } from "~utils/common"
-import NImage from "./NImage"
+import {useTranslation} from 'react-i18next'
+import {Link} from 'react-router-dom'
+
+import {PrimaryButton, InfoIconButton} from './common/Buttons'
+import {joinTopics, getImageUrl} from '~utils/common'
+import NImage from './NImage'
 
 export interface FeaturedProps {
-  data: ITitle[]
+  data: TitleDetail[]
 }
 
-const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
-  const { t } = useTranslation()
+const Featured: FunctionComponent<FeaturedProps> = ({data}) => {
+  const {t} = useTranslation()
 
   const FeaturedItem = ({
-    className = "",
-    title,
-  }: {
+                          className = '',
+                          title,
+                        }: {
     className?: string
-    title: ITitle
+    title: TitleDetail
   }) => {
     const image = getImageUrl(title.images[0]?.url, ImageQuality.h900)
     return (
       <Link to={`/title/${title.id}`}>
         <NImage
-          className={`h-40 w-64 object-cover object-center rounded-lg relative text-sm font-light ${className}`}
+          className={`object-cover object-center rounded-lg relative text-sm font-light ${className}`}
+          style={{paddingTop: '60%', width: '20rem'}}
           src={image}
         >
-          <h4 className="absolute bottom-0 right-0 left-0 px-3 py-2 v-gradient">
+          <h4 className="absolute bottom-0 right-0 left-0 px-3 pb-4 v-gradient-88 text-lg font-semibold">
             {title.name}
           </h4>
         </NImage>
@@ -46,49 +49,51 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     const title = data[0]
 
     return (
-      <div className="absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center p-3">
+      <div className="p-10 absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center">
         <div className="mr-2">
-          <Link to={`/title/${title.id}/${title.type === "m" ? "info" : ""}`}>
-            <h1 className="text-xl md:text-3xl font-bold leading-none">
-              {title?.name}
-            </h1>
+          <div className="flex items-center font-bold mb-1">
+            {title.rating && <p className="flex items-center mr-6">
+              <FaStar className="text-n-blue mr-1" fontSize=".55em"/>
+              {title.rating.toFixed(1)}
+            </p>}
+            {title.type === 's' ?
+              <p className="mr-6">{title.seasons?.length} Season{title.seasons?.length > 1 ? 's' : ''}</p> :
+              <p className="mr-6">{Math.floor(title.runtime / 60)} mins</p>}
+            <p>{new Date(title.released_at).getFullYear()}</p>
+          </div>
+          <Link to={`/title/${title.id}`}>
+            <h1 className="text-xl md:text-5xl font-bold mb-1 leading-none">{title?.name}</h1>
           </Link>
-          <div className="text-xs md:text-sm text-gray-500">
-            <p>{joinTopics(data[0]?.genres)}</p>
-            <div className="flex items-center">
-              <p className="mr-2">{data[0].rated}</p>
-              <p className="flex items-center mr-2">
-                <IoIosStar className="text-blue-600" fontSize=".55em" />
-                {title.rating}
-              </p>
-              <p>{new Date(title.released_at).getFullYear()}</p>
-            </div>
+          <p className="mb-1 opacity-75">{joinTopics(data[0]?.genres)}</p>
+          <div className="flex items-center text-sm md:text-base">
+            <p className="mr-6 opacity-75">{data[0].rated}</p>
+            <p className="flex items-center"><FaEye className="mr-2 text-xs text-n-blue" /><span className="opacity-75">{data[0].views}</span></p>
           </div>
         </div>
         <div className="flex items-center">
           <PrimaryButton
-            className="md:mr-4"
+            className="md:mr-8"
             to={
-              title.type === "m"
+              title.type === 'm'
                 ? `/movie/${title.id}/play`
                 : `/series/${title.id}/auto/auto/play`
             }
           >
-            <IoIosPlay size="1.5em" />
-            {t("play")}
+            <FaPlay className="mr-3" size="1.5em"/>
+            {t('play')}
           </PrimaryButton>
           <InfoIconButton
-            className="hidden md:flex mr-4"
-            icon={<IoIosAdd className="text-base" />}
+            className="hidden md:flex mr-8"
+            icon={<FaPlus className="text-xl"/>}
           >
-            {t("myList")}
+            {t('myList')}
           </InfoIconButton>
           <InfoIconButton
             className="hidden md:flex"
             to={`/title/${data[0].id}`}
-            icon={<IoIosInformationCircleOutline className="text-base" />}
+            icon={<FiInfo className="text-xl"/>}
           >
-            {t("info")}
+            {t('info')}
           </InfoIconButton>
         </div>
       </div>
@@ -96,19 +101,20 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   }
 
   const image = getImageUrl(data[0]?.images[0]?.url, ImageQuality.h900)
+
   return (
-    <div className="flex mb-5">
+    <div className="flex mb-10">
       <NImage
-        className="relative object-cover object-center h-64 md:h-auto flex-1 rounded-lg md:mr-4"
-        style={{ maxHeight: "40rem" }}
+        className="relative object-cover object-center h-64 md:h-auto flex-1 rounded-lg md:mr-8"
+        style={{paddingTop: '35%'}}
         src={image}
       >
-        <BottomInfo />
+        <BottomInfo/>
       </NImage>
       <div className="hidden md:block">
-        <FeaturedItem className="mb-4" title={data[1]} />
-        <FeaturedItem className="mb-4" title={data[2]} />
-        <FeaturedItem title={data[3]} />
+        <FeaturedItem className="mb-8" title={data[1]}/>
+        <FeaturedItem className="mb-8" title={data[2]}/>
+        <FeaturedItem title={data[3]}/>
       </div>
     </div>
   )

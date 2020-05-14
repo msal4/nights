@@ -2,7 +2,7 @@
 @import "./variables.scss";
 
 :root {
-  font-size: 1vw;
+  font-size: 1.1vw;
 }
 @media screen and (max-width: 600px) {
   :root {
@@ -33,6 +33,10 @@
   background: linear-gradient(transparent, black);
 }
 
+.v-gradient-88 {
+  background: linear-gradient(transparent, #00000088);
+}
+
 .v-gradient-inverse {
   background: linear-gradient(black, transparent);
 }
@@ -52,7 +56,7 @@
 .highlight-before {
   color: white !important;
   &::before {
-    background: $color-blue !important;
+    background: $color-red !important;
     box-sizing: border-box;
     height: 2px;
     left: 0 !important;
@@ -72,12 +76,11 @@
     left: 20px;
     right: 20px;
     height: 2px;
-    background: $color-red !important;
     transition: all ease-in-out 300ms;
   }
 }
 
 .carousel-row {
-  padding-top: 1.3vw;
+  padding-top: 1vw;
   padding-bottom: 2vw;
 }

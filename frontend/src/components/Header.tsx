@@ -51,7 +51,7 @@ export default () => {
       <div className="flex items-center justify-between">
         <Link className="select-none" to="/">
           <img
-            className="h-10 object-contain"
+            className="h-16 object-contain"
             src="/static/frontend/images/logo.png"
             alt="1001Nights"
           />

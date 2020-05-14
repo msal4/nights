@@ -18,7 +18,7 @@ const CWRow: FunctionComponent<TitleRowProps> = ({ row }) => {
       title={t("continueWatching")}
       responsive={{
         superLargeDesktop: {
-          breakpoint: { max: 4000, min: 3000 },
+          breakpoint: { max: 6000, min: 3000 },
           items: 3,
         },
         desktop: {
@@ -35,7 +35,7 @@ const CWRow: FunctionComponent<TitleRowProps> = ({ row }) => {
         },
       }}
     >
-      {row.map((hit) => (
+      {row.map(hit => (
         <CWCard key={hit.id} hit={hit} />
       ))}
     </CarouselRow>

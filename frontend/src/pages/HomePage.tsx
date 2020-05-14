@@ -1,46 +1,48 @@
-import React, { useState, useEffect } from "react"
+import React, {useState} from 'react'
 
-import Featured from "~components/Featured"
-import { HomeResults } from "~core/interfaces/home"
-import { PaginatedResults } from "~core/interfaces/paginated-results"
-import TitleRow from "~components/TitleRow"
-import CWRow from "~components/containers/CWRow"
-import { useTranslation } from "react-i18next"
-import Recommended from "~components/Recommended"
-import { getHome } from "~api/home"
-import { useAuth } from "~context/auth-context"
-import { ViewHit } from "~core/interfaces/view-hit"
-import { getHistory } from "~api/title"
-import { capitalizeFirst } from "~utils/common"
-import { useLocation } from "react-router-dom"
-import client from "~api/client"
-import { useDisposableEffect } from "~hooks"
-import LoadingIndicator from "~components/LoadingIndicator"
+import Featured from '~components/Featured'
+import {HomeResults} from '~core/interfaces/home'
+import {PaginatedResults} from '~core/interfaces/paginated-results'
+import TitleRow from '~components/TitleRow'
+import CWRow from '~components/containers/CWRow'
+import {useTranslation} from 'react-i18next'
+import Recommended from '~components/Recommended'
+import {getHome} from '~api/home'
+import {useAuth} from '~context/auth-context'
+import {ViewHit} from '~core/interfaces/view-hit'
+import {getHistory} from '~api/title'
+import {capitalizeFirst, getImageUrl} from '~utils/common'
+import {useLocation} from 'react-router-dom'
+import client from '~api/client'
+import {useDisposableEffect} from '~hooks'
+import LoadingIndicator from '~components/LoadingIndicator'
+import {useBackground} from '~context/background-context'
+import {ImageQuality} from '~core/interfaces/title'
 
-const HomePage = ({ filters = {} }: { filters?: {} }) => {
-  const { t } = useTranslation()
-  const { home, continueWatching, loading } = useHome(filters)
+const HomePage = ({filters = {}}: { filters?: {} }) => {
+  const {t} = useTranslation()
+  const {home, continueWatching, loading} = useHome(filters)
 
   return (
     <>
-      <LoadingIndicator show={loading} />
+      <LoadingIndicator show={loading}/>
       {home && (
         <>
-          <Featured data={home.results.featured} />
+          <Featured data={home.results.featured}/>
           {/* Continue watching */}
           {continueWatching && continueWatching.length > 0 && (
-            <CWRow row={continueWatching} />
+            <CWRow row={continueWatching}/>
           )}
           {/* Recently added */}
           {home.results.recently_added && (
             <TitleRow
               row={home.results.recently_added}
-              name={t("recentlyAdded")}
+              name={t('recentlyAdded')}
             />
           )}
           {/* Recommended featured */}
           {home.results.recommended && (
-            <Recommended title={home.results.recommended} />
+            <Recommended title={home.results.recommended}/>
           )}
           {/* Genre rows */}
           {home.results.rows.map(row => (
@@ -66,8 +68,9 @@ const useHome = (filters: {}) => {
   const [loading, setLoading] = useState(false)
   const [continueWatching, setContinueWatching] = useState<ViewHit[]>(null)
   const [error, setError] = useState<{}>(null)
-  const { token } = useAuth()
-  const { pathname } = useLocation()
+  const {setBackground} = useBackground()
+  const {token} = useAuth()
+  const {pathname} = useLocation()
 
   const getHomeRows = async (disposed: boolean) => {
     try {
@@ -87,6 +90,7 @@ const useHome = (filters: {}) => {
     setLoading(true)
     try {
       const result = await getHome(filters)
+      !disposed && setBackground(getImageUrl(result.results.featured[0]?.images[0]?.url, ImageQuality.h900))
       !disposed && setHome(result)
       if (token) {
         const history = await getHistory()
@@ -111,10 +115,10 @@ const useHome = (filters: {}) => {
       }
     }
 
-    window.addEventListener("scroll", listener)
+    window.addEventListener('scroll', listener)
 
     return () => {
-      window.removeEventListener("scroll", listener)
+      window.removeEventListener('scroll', listener)
     }
   }, [])
 

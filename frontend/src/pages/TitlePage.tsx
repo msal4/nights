@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useParams, Switch, Route, useRouteMatch } from "react-router-dom"
 import { IoIosPlay, IoIosAdd } from "react-icons/io"
 import { useTranslation } from "react-i18next"
 
-import { TitleDetail, ImageQuality } from "~core/interfaces/title"
+import {
+  TitleDetail,
+  ImageQuality,
+  Title as ITitle,
+} from "~core/interfaces/title"
 import { SimpleSeason } from "~core/interfaces/season"
 import { getImageUrl, joinTopics } from "~utils/common"
 import { getTitle } from "~api/title"
@@ -13,9 +17,20 @@ import TitleInfo from "~components/TitleInfo"
 import UnderlineLink from "~components/UnderlineLink"
 import Season from "~components/containers/Season"
 import SeasonDropdown from "~components/SeasonDropdown"
-import TitleRow from "~components/TitleRow"
 import { useDisposableEffect } from "~hooks"
 import LoadingIndicator from "~components/LoadingIndicator"
+import Title from "~components/Title"
+import {useBackground} from '~context/background-context'
+
+const Recommended = ({ titles }: { titles: ITitle[] }) => {
+  return (
+    <div className="flex flex-wrap">
+      {titles.map(title => (
+        <Title key={title.id} title={title} />
+      ))}
+    </div>
+  )
+}
 
 const useTitle = () => {
   const { id } = useParams()
@@ -24,6 +39,7 @@ const useTitle = () => {
   const [error, setError] = useState<{}>(null)
   const [loading, setLoading] = useState(true)
   const [selectedSeason, setSelectedSeason] = useState<SimpleSeason>(null)
+  const {setBackground} = useBackground()
 
   const getTitleDetail = async (disposed: boolean) => {
     !disposed && setLoading(true)
@@ -31,6 +47,7 @@ const useTitle = () => {
       const title = await getTitle(id)
       if (title.type === "s") setSelectedSeason(title.seasons[0])
       if (error && !disposed) setError(null)
+      !disposed && setBackground(getImageUrl(title.images[0]?.url, ImageQuality.h900))
       !disposed && setTitle(title)
     } catch (error) {
       !disposed && setError(error)
@@ -115,26 +132,31 @@ export default () => {
                 {t("episodes")}
               </UnderlineLink>
             )}
-            <UnderlineLink className="mr-4" to={`${url}/info`}>
+            <UnderlineLink
+              className="mr-4"
+              to={title.type == "m" ? url : `${url}/info`}
+            >
               {t("info")}
             </UnderlineLink>
             <UnderlineLink to={`${url}/recommended`}>
               {t("moreLikeThis")}
             </UnderlineLink>
           </div>
-          <Switch>
-            <Route path={`${path}/recommended`}>
-              <TitleRow row={title.recommended} name={""} />
-            </Route>
-            <Route path={`${path}/info`}>
-              <TitleInfo title={title} />
-            </Route>
-            {selectedSeason && (
-              <Route path={path}>
-                <Season seriesId={title.id} seasonId={selectedSeason.id} />
+          <div className="max-w-2xl">
+            <Switch>
+              <Route path={`${path}/recommended`}>
+                <Recommended titles={title.recommended} />
               </Route>
-            )}
-          </Switch>
+              <Route path={title.type === "m" ? path : `${path}/info`}>
+                <TitleInfo title={title} />
+              </Route>
+              {selectedSeason && (
+                <Route path={path}>
+                  <Season seriesId={title.id} seasonId={selectedSeason.id} />
+                </Route>
+              )}
+            </Switch>
+          </div>
         </div>
       )}
     </>

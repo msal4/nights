@@ -4,13 +4,28 @@
   transition: transform ease-in 200ms;
 
   .progress {
-    transition: transform ease-in-out 200ms;
+    transition: transform 200ms;
   }
   .play-icon {
     opacity: 0;
   }
 
+  .name {
+    margin-top: 1.2rem;
+  }
+
+  .secondary-info {
+    opacity: 0;
+  }
+
   &:hover {
+    .name {
+      margin-top: 0;
+    }
+
+    .secondary-info {
+      opacity: .75;
+    }
     transform: scale(0.9);
 
     .progress {

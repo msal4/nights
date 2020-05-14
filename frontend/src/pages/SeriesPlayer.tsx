@@ -32,7 +32,7 @@ const SeriesPlayer: FunctionComponent = () => {
 
   if (error) return <div>{error.message}</div>
   return (
-    <>
+    <div>
       <LoadingIndicator show={loading} />
       {episode && (
         <SeasonProvider
@@ -52,7 +52,7 @@ const SeriesPlayer: FunctionComponent = () => {
           />
         </SeasonProvider>
       )}
-    </>
+    </div>
   )
 }
 interface DataState {
