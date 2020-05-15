@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react"
-import { Title, ImageQuality } from "~core/interfaces/title"
+import { Title, ImageQuality, TitleDetail } from "~core/interfaces/title"
 import { joinTopics, getImageUrl } from "~utils/common"
 import {
   IoIosStar,
@@ -11,9 +11,13 @@ import { PrimaryButton, InfoIconButton } from "./common/Buttons"
 import { useTranslation } from "react-i18next"
 
 import NImage from "./NImage"
+import MyListButton from "./MyListButton"
+import { FiInfo } from "react-icons/fi"
+import { FaStar } from "react-icons/fa"
+import { Link } from "react-router-dom"
 
 export interface RecommendedProps {
-  title?: Title
+  title?: TitleDetail
 }
 
 const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
@@ -29,12 +33,13 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
         {t("pickedForYou")}
       </h3>
       <div className="flex flex-col md:flex-row">
-        <div
+        <Link
+          to={`/title/${title.id}`}
           className="relative rounded-lg mb-2 w-full flex-1 md:mr-4 md:h-full"
           style={{ paddingTop: "30%" }}
         >
           <NImage className="absolute inset-0" src={image} />
-        </div>
+        </Link>
         <div className="flex flex-col md:flex-1 md:justify-between md:mt-2">
           <div className="flex flex-col items-start">
             <div className="bg-green-600 text-black text-xss rounded-sm px-1 mb-2 self-start">
@@ -44,32 +49,51 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
                   : "New"
                 : ""}
             </div>
-            <h1 className="md:text-2xl md:font-thin mb-2 md:mb-4">
+            <Link
+              to={`/title/${title.id}`}
+              className="md:text-2xl md:font-thin mb-2 md:mb-4"
+            >
               {title.name}
-            </h1>
-            <div className="flex items-center text-xs md:text-sm mb-2 md:mb-4">
-              <p className="text-gray-500 mr-2">{joinTopics(title.genres)}</p>
-              <p className="flex items-center text-white font-semibold">
-                <IoIosStar className="text-blue-600 mr-1" size="1em" />
-                {title.rating}
-              </p>
+            </Link>
+            <p className="mb-4 opacity-75">{joinTopics(title.genres)}</p>
+            <div className="flex items-center font-bold mb-4">
+              {title.rating && (
+                <p className="flex items-center mr-6">
+                  <FaStar className="text-n-blue mr-1" fontSize=".55em" />
+                  {title.rating.toFixed(1)}
+                </p>
+              )}
+              {title.type === "s" ? (
+                <p className="mr-6">
+                  {title.seasons?.length} Season
+                  {title.seasons?.length > 1 ? "s" : ""}
+                </p>
+              ) : (
+                <p className="mr-6">{Math.floor(title.runtime / 60)} mins</p>
+              )}
+              <p>{new Date(title.released_at).getFullYear()}</p>
             </div>
+
+            <p className="opacity-50 text-sm mb-4">{title.plot}</p>
           </div>
-          <p className="opacity-50 text-sm">{title.plot}</p>
 
           <div className="flex items-center mb-2 md:mb-4">
-            <PrimaryButton className="mr-4" to="/series/play">
+            <PrimaryButton
+              className="mr-6"
+              to={
+                title.type === "m"
+                  ? `/movie/${title.id}/play`
+                  : `/series/${title.id}/auto/auto/play`
+              }
+            >
               <IoIosPlay size="1.5em" />
               {t("play")}
             </PrimaryButton>
+            <MyListButton className="mr-8" id={title.id} />
             <InfoIconButton
-              className="mr-4"
-              icon={<IoIosAdd className="text-base" />}
-            >
-              {t("myList")}
-            </InfoIconButton>
-            <InfoIconButton
-              icon={<IoIosInformationCircleOutline className="text-base" />}
+              className="hidden md:flex"
+              to={`/title/${title.id}`}
+              icon={<FiInfo className="text-xl" />}
             >
               {t("info")}
             </InfoIconButton>

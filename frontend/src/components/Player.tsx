@@ -53,59 +53,56 @@ const Player: FunctionComponent<PlayerProps> = ({
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const [showSidebar, setShowSidebar] = useState(false)
 
-  useDisposableEffect(
-    disposed => {
-      const player = videojs(videoNode.current, {
-        sources: videos.map(video => {
-          const { format, url } = getVideoUrl(video)
-          return {
-            src: url,
-            type: format === "mp4" ? "video/mp4" : "application/x-mpegURL",
-          }
-        }),
-        tracks: subtitles.map(subtitle => ({
-          kind: "captions",
-          src: swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")),
-          srcLang: subtitle.language,
-          label: subtitle.language === "ar" ? "العربية" : "English",
-          default: subtitle.language === "ar",
-        })),
-      })
+  useDisposableEffect(disposed => {
+    const player = videojs(videoNode.current, {
+      sources: videos.map(video => {
+        const { format, url } = getVideoUrl(video)
+        return {
+          src: url,
+          type: format === "mp4" ? "video/mp4" : "application/x-mpegURL",
+        }
+      }),
+      tracks: subtitles.map(subtitle => ({
+        kind: "captions",
+        src: swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")),
+        srcLang: subtitle.language,
+        label: subtitle.language === "ar" ? "العربية" : "English",
+        default: subtitle.language === "ar",
+      })),
+    })
 
-      // Set the current time from view hit
-      player.currentTime(position)
+    // Set the current time from view hit
+    player.currentTime(position)
 
-      // Update the position for the parent to handle it
-      player.on(
-        "timeupdate",
-        () => !disposed && handleTimeUpdate(player, position, onUpdatePosition)
-      )
+    // Update the position for the parent to handle it
+    player.on(
+      "timeupdate",
+      () => !disposed && handleTimeUpdate(player, position, onUpdatePosition)
+    )
 
-      // Toggle sidebar
-      player.on(
-        "togglesidebar",
-        () => !disposed && setShowSidebar(showSidebar => !showSidebar)
-      )
+    // Toggle sidebar
+    player.on(
+      "togglesidebar",
+      () => !disposed && setShowSidebar(showSidebar => !showSidebar)
+    )
 
-      // Add title bar
-      player.addChild("vjsTitleBar", {
-        title: name,
-        goBack: () => history.push("/"),
-        displaySidebar,
-      })
+    // Add title bar
+    player.addChild("vjsTitleBar", {
+      title: name,
+      goBack: () => history.push("/"),
+      displaySidebar,
+    })
 
-      const disposeFullscreenButton = replaceFullscreenButton(
-        videoContainerRef,
-        player
-      )
+    const disposeFullscreenButton = replaceFullscreenButton(
+      videoContainerRef,
+      player
+    )
 
-      return () => {
-        disposeFullscreenButton()
-        player.dispose()
-      }
-    },
-    [videos && videos[0]?.url]
-  )
+    return () => {
+      disposeFullscreenButton && disposeFullscreenButton()
+      player.dispose()
+    }
+  }, [])
 
   return (
     <div
@@ -156,6 +153,9 @@ const replaceFullscreenButton = (
   ref: React.MutableRefObject<HTMLDivElement>,
   player: VideoJsPlayer
 ) => {
+  const el = videojs.dom.$(".vjs-fullscreen-control")?.cloneNode(true)
+  if (!el) return
+
   let isFullscreen = false
 
   ref.current.onfullscreenchange = e => {
@@ -166,7 +166,6 @@ const replaceFullscreenButton = (
     if (isFullscreen) document.exitFullscreen()
     else ref.current.requestFullscreen()
   }
-  const el = videojs.dom.$(".vjs-fullscreen-control").cloneNode(true)
 
   videojs.dom.$(".vjs-fullscreen-control").replaceWith(el)
   el.addEventListener("click", toggleFullscreen)

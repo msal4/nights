@@ -19,8 +19,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
 }) => {
   const progress =
     episode.hits?.length &&
-    (episode.hits[0].playback_position / episode.hits[0].runtime) * 10
-  console.log(progress)
+    (episode.hits[0].playback_position / episode.hits[0].runtime) * 100
   return (
     <div
       // to={`/series/${seriesId}/${seasonId}/${episode.index}/play`}

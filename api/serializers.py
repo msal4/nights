@@ -152,7 +152,7 @@ class TitleListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'type', 'is_new', 'rated', 'rating', 'images',
+        fields = ('id', 'name', 'type', 'is_new', 'rated', 'rating', 'runtime', 'images',
                   'genres', 'released_at')
 
     # noinspection PyMethodMayBeStatic

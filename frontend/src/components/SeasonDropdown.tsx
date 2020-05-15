@@ -34,7 +34,10 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
         />
       </button>
       {menuOpened && (
-        <div className="mt-10 pt-2 absolute z-10 h-40 rounded bg-gray-900 overflow-auto">
+        <div
+          className="mt-10 pt-2 absolute z-10 rounded bg-gray-900 overflow-auto"
+          style={{ maxHeight: "10rem" }}
+        >
           {seasons
             .filter(season => season.id !== currentSeason.id)
             .map(season => (

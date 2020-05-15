@@ -44,14 +44,14 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
 
     def _get_recommended(self, hit, titles):
         title = titles.filter(genres__in=hit.topic.genres.all())[0]
-        return self._serialize(title, read_only=True)
+        return serializers.TitleSerializer(title, read_only=True).data
 
     def _get_featured(self, titles):
         # Featured titles
         two_days_ago = timezone.now() - timezone.timedelta(2)
         trending = Count('hits', filter=Q(hits__hit_date__gt=two_days_ago))
         featured = titles.annotate(trending=trending).order_by('-trending')[:4]
-        return self._serialize(featured, many=True, read_only=True)
+        return serializers.TitleSerializer(featured, many=True, read_only=True).data
 
     def _get_recently_added(self, titles):
         recent = titles.order_by('-updated_at')[:10]

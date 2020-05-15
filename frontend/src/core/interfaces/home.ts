@@ -6,7 +6,7 @@ export interface HomeResults {
   featured: TitleDetail[]
   recently_added: Title[]
   recently_watched?: ViewHit[]
-  recommended?: Title
+  recommended?: TitleDetail
 }
 
 export interface GenreRow {

@@ -12,7 +12,8 @@ import "../styles/Title.scss"
 import { addToMyList, removeFromMyList, checkMyList } from "~api/title"
 import { useAuth } from "~context/auth-context"
 
-import { FiCheck } from "react-icons/fi"
+import { FiCheck, FiInfo } from "react-icons/fi"
+import { FaCheck, FaPlus } from "react-icons/fa"
 
 export interface TitleProps {
   title: Title
@@ -31,7 +32,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
 
   return (
     <div
-      className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xss cursor-pointer select-none"
+      className="inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xs cursor-pointer select-none"
       onMouseEnter={async () => {
         if (!token) return
         try {
@@ -45,10 +46,10 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
     >
       <div className="hidden md:flex top-info mb-2 justify-end">
         {!inMyList ? (
-          <PlusIcon
-            className="mr-3 card-container-slide-reveal transition-500"
+          <FaPlus
+            className="mr-3 text-xss text-black card-container-slide-reveal transition-500"
             onClick={async () => {
-              !token && setRedirect(true)
+              if (!token) return setRedirect(true)
               try {
                 await addToMyList(title.id)
                 setInMyList(true)
@@ -58,11 +59,11 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
             }}
           />
         ) : (
-          <FiCheck
+          <FaCheck
             fontSize=".5rem"
-            className="text-black mr-3 card-container-slide-reveal transition-500"
+            className="text-black text-xss mr-3 card-container-slide-reveal transition-500"
             onClick={async () => {
-              !token && setRedirect(true)
+              if (!token) return setRedirect(true)
               try {
                 await removeFromMyList(title.id)
                 setInMyList(false)
@@ -73,7 +74,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
           />
         )}
         <Link to={`/title/${title.id}`}>
-          <InfoIcon className="card-container-slide-reveal transition-200" />
+          <FiInfo className="text-black text-xss card-container-slide-reveal transition-200" />
         </Link>
       </div>
       <Link

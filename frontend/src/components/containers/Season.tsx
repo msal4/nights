@@ -3,6 +3,7 @@ import React, { FunctionComponent, useEffect, useState } from "react"
 import EpisodeList from "~components/EpisodeList"
 import { getSeason } from "~api/title"
 import { Season } from "~core/interfaces/season"
+import LoadingIndicator from "~components/LoadingIndicator"
 
 export interface SeasonProps {
   seasonId: number
@@ -12,10 +13,12 @@ export interface SeasonProps {
 const Season: FunctionComponent<SeasonProps> = ({ seriesId, seasonId }) => {
   const { season, error } = useSeason(seasonId)
 
-  if (!season && !error) return <div>Loading...</div>
-  else if (error) return <div>error</div>
-
-  return <EpisodeList seriesId={seriesId} season={season} />
+  return (
+    <>
+      <LoadingIndicator show={!season && !error} />
+      {season && <EpisodeList seriesId={seriesId} season={season} />}
+    </>
+  )
 }
 
 const useSeason = (id: string | number) => {

@@ -20,7 +20,8 @@ import SeasonDropdown from "~components/SeasonDropdown"
 import { useDisposableEffect } from "~hooks"
 import LoadingIndicator from "~components/LoadingIndicator"
 import Title from "~components/Title"
-import {useBackground} from '~context/background-context'
+import { useBackground } from "~context/background-context"
+import MyListButton from "~components/MyListButton"
 
 const Recommended = ({ titles }: { titles: ITitle[] }) => {
   return (
@@ -39,7 +40,7 @@ const useTitle = () => {
   const [error, setError] = useState<{}>(null)
   const [loading, setLoading] = useState(true)
   const [selectedSeason, setSelectedSeason] = useState<SimpleSeason>(null)
-  const {setBackground} = useBackground()
+  const { background, setBackground } = useBackground()
 
   const getTitleDetail = async (disposed: boolean) => {
     !disposed && setLoading(true)
@@ -47,7 +48,8 @@ const useTitle = () => {
       const title = await getTitle(id)
       if (title.type === "s") setSelectedSeason(title.seasons[0])
       if (error && !disposed) setError(null)
-      !disposed && setBackground(getImageUrl(title.images[0]?.url, ImageQuality.h900))
+      const bg = getImageUrl(title.images[0]?.url, ImageQuality.h900)
+      !disposed && bg && bg !== background && setBackground(bg)
       !disposed && setTitle(title)
     } catch (error) {
       !disposed && setError(error)
@@ -101,7 +103,7 @@ export default () => {
               </div>
               <div className="flex items-center">
                 <PrimaryButton
-                  className="mr-4"
+                  className="mr-8"
                   to={
                     title.type === "m"
                       ? `/movie/${title.id}/play`
@@ -111,9 +113,7 @@ export default () => {
                   <IoIosPlay size="1.5em" />
                   {t("play")}
                 </PrimaryButton>
-                <InfoIconButton icon={<IoIosAdd className="text-base" />}>
-                  <span className="hidden md:block">{t("myList")}</span>
-                </InfoIconButton>
+                <MyListButton id={title.id} />
               </div>
             </div>
           </NImage>
