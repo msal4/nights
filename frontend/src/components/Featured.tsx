@@ -31,16 +31,16 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     className?: string
     title: TitleDetail
   }) => {
-    const image = getImageUrl(title.images[0]?.url, ImageQuality.h900)
+    const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900)
     return (
-      <Link to={`/title/${title.id}`}>
+      <Link to={`/title/${title?.id}`}>
         <NImage
           className={`object-cover object-center rounded-lg relative text-sm font-light ${className}`}
           style={{ paddingTop: "60%", width: "20rem" }}
           src={image}
         >
           <h4 className="absolute bottom-0 right-0 left-0 px-3 pb-4 v-gradient-88 text-lg font-semibold">
-            {title.name}
+            {title?.name}
           </h4>
         </NImage>
       </Link>
@@ -49,6 +49,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
 
   const BottomInfo = () => {
     const title = data[0]
+    if (!title) return null
 
     return (
       <div className="p-10 absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center">
@@ -88,15 +89,15 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           <PrimaryButton
             className="md:mr-8"
             to={
-              title.type === "m"
-                ? `/movie/${title.id}/play`
-                : `/series/${title.id}/auto/auto/play`
+              title?.type === "m"
+                ? `/movie/${title?.id}/play`
+                : `/series/${title?.id}/auto/auto/play`
             }
           >
             <FaPlay className="mr-3" size="1.5em" />
             {t("play")}
           </PrimaryButton>
-          <MyListButton className="mr-8" id={title.id} />
+          <MyListButton className="mr-8" id={title?.id} />
           <InfoIconButton
             className="hidden md:flex"
             to={`/title/${data[0].id}`}

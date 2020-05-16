@@ -10,7 +10,6 @@ autopep8 = "*"
 [packages]
 django = "*"
 djangorestframework = "*"
-psycopg2 = "*"
 coverage = "*"
 django-polymorphic = "*"
 django-filter = "*"
@@ -19,6 +18,8 @@ django-rest-polymorphic = "*"
 factory-boy = "*"
 faker = "*"
 django-cors-headers = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"
