@@ -74,7 +74,7 @@ i18n
         },
       },
     },
-    fallbackLng: "en",
+    fallbackLng: "ar",
     debug: true,
     ns: ["translations"],
     defaultNS: "translations",
