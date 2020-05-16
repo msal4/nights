@@ -91,3 +91,7 @@ frontend/static/frontend/public/
 
 storage/
 .env
+run/
+bin/
+logs/
+static/
