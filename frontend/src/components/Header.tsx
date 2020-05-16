@@ -52,7 +52,7 @@ export default () => {
         <Link className="select-none" to="/">
           <img
             className="h-16 object-contain"
-            src="/static/frontend/images/logo.png"
+            src="/static/frontend/images/logo.svg"
             alt="1001Nights"
           />
         </Link>

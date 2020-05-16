@@ -3,7 +3,7 @@
   "scripts": {
     "build-css": "postcss css/tailwind.css -o static/frontend/css/tailwind.css",
     "dev": "parcel watch ./src/index.tsx --out-dir ./static/frontend/public --public-url /static/frontend/public",
-    "prod": "parcel build ./src/index.tsx --out-dir ./static/frontend/public --public-url /static/frontend/public",
+    "prod": "parcel build ./src/index.tsx --out-dir ./static/frontend/public --public-url /static/frontend/public --experimental-scope-hoisting",
     "test": "jest",
     "test:watch": "jest --watch"
   },

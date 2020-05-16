@@ -9,7 +9,7 @@ const NImage: FunctionComponent<ImageProps> = ({
   style,
   ...props
 }) => {
-  const fallback = "/static/frontend/images/fallback.jpg"
+  const fallback = "/static/frontend/images/fallback.jpeg"
   return (
     <div
       className={`${className} overflow-hidden`}
