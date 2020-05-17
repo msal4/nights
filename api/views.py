@@ -4,18 +4,34 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
-from django_filters.rest_framework import DjangoFilterBackend
 from django.conf import settings
 from rest_framework import status, filters, mixins, generics
 from rest_framework import viewsets, views, parsers, permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from django_elasticsearch_dsl_drf.constants import (
+    LOOKUP_FILTER_RANGE,
+    LOOKUP_QUERY_IN,
+    LOOKUP_QUERY_GT,
+    LOOKUP_QUERY_GTE,
+    LOOKUP_QUERY_LT,
+    LOOKUP_QUERY_LTE,
+)
+from django_elasticsearch_dsl_drf.filter_backends import (
+    FilteringFilterBackend,
+    OrderingFilterBackend,
+    DefaultOrderingFilterBackend,
+    SearchFilterBackend,
+)
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit
 from .paginators import HomeViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
+from . import documents 
 
 
 class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
@@ -60,7 +76,7 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
     def get_queryset(self):
         return Genre.objects.order_by('-name')
 
-    @method_decorator(cache_page(60 * 60))
+    @method_decorator(cache_page(60 * 60 * 4))
     def get(self, request, *args, **kwargs):
         titles = self.filter_queryset(Title.objects.all())
         queryset = self.get_queryset()
@@ -87,7 +103,7 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         return self.get_paginated_response(data)
 
 
-# @method_decorator(cache_page(60 * 60))
+# @method_decorator(cache_page(60 * 60 * 4))
 class CastViewSet(viewsets.ModelViewSet):
     queryset = Cast.objects.all()
     serializer_class = serializers.CastSerializer
@@ -107,15 +123,38 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     serializer_action_classes = {
         'list': serializers.TitleListSerializer
     }
-    filter_backends = (
-        filters.SearchFilter,
-        filters.OrderingFilter,
-        DjangoFilterBackend
-    )
-    filterset_fields = ('type', 'genres', 'cast')
+    filter_backends = [
+        FilteringFilterBackend,
+        OrderingFilterBackend,
+        DefaultOrderingFilterBackend,
+        SearchFilterBackend,
+    ]
+    filter_fields = {
+        'id': {
+            'field': 'id',
+            'lookups': [
+                LOOKUP_FILTER_RANGE,
+                LOOKUP_QUERY_IN,
+                LOOKUP_QUERY_GT,
+                LOOKUP_QUERY_GTE,
+                LOOKUP_QUERY_LT,
+                LOOKUP_QUERY_LTE,
+            ],
+        },
+        'name': 'name.raw',
+        'plot': 'plot.raw',
+        'type': 'type',
+        'released_at': 'released_at',
+    }
+
     search_fields = ('name', 'plot')
-    ordering_fields = ('name', 'type', 'created_at')
-    ordering = ('-created_at',)
+    ordering_fields = {
+        'id': 'id',
+        'name': 'name.raw',
+        'type': 'type',
+        #'released_at': 'released_at',
+    }
+    #ordering = ('-released_at',)
 
     @method_decorator(cache_page(60 * 60))
     def dispatch(self, request, *args, **kwargs):
