@@ -7,7 +7,9 @@ from django.views.decorators.vary import vary_on_cookie
 from django.conf import settings
 from rest_framework import status, filters, mixins, generics
 from rest_framework import viewsets, views, parsers, permissions
+from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from django_elasticsearch_dsl_drf.constants import (
@@ -16,7 +18,7 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_QUERY_GT,
     LOOKUP_QUERY_GTE,
     LOOKUP_QUERY_LT,
-    LOOKUP_QUERY_LTE,
+    LOOKUP_QUERY_LTE, LOOKUP_FILTER_TERMS,
 )
 from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
@@ -24,14 +26,24 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     DefaultOrderingFilterBackend,
     SearchFilterBackend,
 )
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
 
+from .documents import TitleDocument
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit
 from .paginators import HomeViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import documents 
+
+
+@api_view(['GET'])
+def test_end(request, format=None):
+    result = TitleDocument.search().filter("term", name="game of thrones")
+    print(result.count())
+    for s in result:
+        print(s.name)
+    return Response("ok")
 
 
 class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
@@ -116,10 +128,13 @@ class GenreViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
 
-class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
+class TitleDocumentViewSet(GetSerializerClassMixin, BaseDocumentViewSet):
+    document = TitleDocument
+    serializer_class = serializers.TitleListSerializer
+    lookup_field = 'id'
     queryset = Title.objects.all()
-    serializer_class = serializers.TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = PageNumberPagination
     serializer_action_classes = {
         'list': serializers.TitleListSerializer
     }
@@ -129,6 +144,7 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     ]
+    search_fields = ('name', 'plot')
     filter_fields = {
         'id': {
             'field': 'id',
@@ -139,6 +155,7 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
                 LOOKUP_QUERY_GTE,
                 LOOKUP_QUERY_LT,
                 LOOKUP_QUERY_LTE,
+                LOOKUP_FILTER_TERMS,
             ],
         },
         'name': 'name.raw',
@@ -147,18 +164,31 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
         'released_at': 'released_at',
     }
 
-    search_fields = ('name', 'plot')
     ordering_fields = {
         'id': 'id',
         'name': 'name.raw',
         'type': 'type',
         #'released_at': 'released_at',
     }
-    #ordering = ('-released_at',)
 
-    @method_decorator(cache_page(60 * 60))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # for s in queryset:
+        filtered_queryset = Title.objects.filter(id__in=[s.id for s in queryset])
+        page = self.paginate_queryset(filtered_queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(filtered_queryset, many=True)
+        return Response(serializer.data)
+
+    # ordering = ('-released_at',)
+    #
+    # @method_decorator(cache_page(60 * 60))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
 
 
 class SeasonViewSet(viewsets.ModelViewSet):

@@ -8,7 +8,7 @@ from .views import FileUploadView
 router = DefaultRouter()
 router.register(r'cast', views.CastViewSet)
 router.register(r'genres', views.GenreViewSet)
-router.register(r'titles', views.TitleViewSet)
+router.register(r'titles', views.TitleDocumentViewSet)
 router.register(r'seasons', views.SeasonViewSet)
 router.register(r'episodes', views.EpisodeViewSet)
 router.register(r'my_list', views.MyListViewSet, basename='MyList')
@@ -20,6 +20,7 @@ urlpatterns = [
     # path('history/', views.WatchHistoryView.as_view(), name='history-list'),
     # path('history/<int:pk>/', views.WatchHistoryView.as_view(),
     #  name='history-detail'),
+    path('test/', views.test_end),
     path('home/', views.HomeView.as_view(), name='home'),
     path('upload/<str:directory>/<str:filename>/',
          FileUploadView.as_view(), name='fileupload'),

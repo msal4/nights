@@ -160,6 +160,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'elasticsearch:9200'
+        'hosts': 'localhost:9200'
     },
 }
