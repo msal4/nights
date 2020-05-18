@@ -6,12 +6,13 @@ import "video.js/src/css/video-js.scss"
 import "~styles/Player.scss"
 import { Video, Subtitle } from "~core/interfaces/topic"
 import { swapEpisodeUrlId } from "~utils/common"
-import { vjsComponent, vjsTitleBar } from "./vjs-components"
+import {vjsComponent, vjsForwardBackwardButtons, vjsTitleBar} from './vjs-components'
 import PlayerSidebar from "./PlayerSidebar"
 import { useDisposableEffect } from "~hooks"
 
 // Register videojs components
 vjsComponent.registerComponent("vjsTitleBar", vjsTitleBar)
+vjsComponent.registerComponent("vjsForwardBackwardButtons", vjsForwardBackwardButtons)
 
 const getVideoUrl = (video: Video) => {
   const format = video.formats.split(",")[0] || "mp4"
@@ -92,6 +93,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       goBack: () => history.push("/"),
       displaySidebar,
     })
+    player.getChild('vjs')
 
     const disposeFullscreenButton = replaceFullscreenButton(
       videoContainerRef,
