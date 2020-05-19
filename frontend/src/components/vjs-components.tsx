@@ -47,6 +47,45 @@ export class vjsTitleBar extends vjsComponent {
   }
 }
 
+export class vjsForwardBackwardButtons extends vjsComponent {
+  constructor(player: VideoJsPlayer, options: PlayerTitleBarOptions) {
+    super(player, options)
+
+    this.mount = this.mount.bind(this)
+
+    player.ready(() => {
+      this.mount()
+    })
+
+    this.on("dispose", () => {
+      ReactDOM.unmountComponentAtNode(this.el())
+    })
+  }
+
+  mount() {
+    ReactDOM.render(
+      <div className="vjs-forward-backward-buttons flex items-center"> <div onClick={() => {
+        let time = this.player().currentTime() - 15;
+
+        if (time < 0) {
+          time = 0;
+        }
+
+        this.player().currentTime(time);
+      }}>backward</div> <div onClick={() => {
+        let time = this.player().currentTime() + 15;
+
+        if (time < 0) {
+          time = 0;
+        }
+
+        this.player().currentTime(time);
+      }}>forward</div></div>,
+      this.el()
+    )
+  }
+}
+
 export const SidebarButton = ({ player }: { player: VideoJsPlayer }) => {
   const [visible, setVisible] = useState(false)
   const toggleVisible = () => setVisible(!visible)
