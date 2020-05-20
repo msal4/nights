@@ -13,8 +13,6 @@ import { Link, Redirect } from "react-router-dom"
 import { PrimaryButton, InfoIconButton } from "./common/Buttons"
 import { joinTopics, getImageUrl } from "~utils/common"
 import NImage from "./NImage"
-import { useAuth } from "~context/auth-context"
-import { addToMyList, removeFromMyList, checkMyList } from "~api/title"
 import MyListButton from "./MyListButton"
 
 export interface FeaturedProps {
@@ -23,17 +21,22 @@ export interface FeaturedProps {
 
 const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   const { t } = useTranslation()
+  const [titles, setTitles] = useState<TitleDetail[]>(data)
 
   const FeaturedItem = ({
     className = "",
+    index,
     title,
   }: {
     className?: string
+    index: number
     title: TitleDetail
   }) => {
     const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900)
     return (
-      <Link to={`/title/${title?.id}`}>
+      <div className="cursor-pointer" onClick={(e) => {
+        setTitles([title, ...titles.slice(1, index), titles[0], ...titles.slice(index + 1)])
+      }}>
         <NImage
           className={`object-cover object-center rounded-lg relative text-sm font-light ${className}`}
           style={{ paddingTop: "60%", width: "20rem" }}
@@ -43,12 +46,11 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
             {title?.name}
           </h4>
         </NImage>
-      </Link>
+      </div>
     )
   }
 
-  const BottomInfo = () => {
-    const title = data[0]
+  const BottomInfo = ({ title }: {title: TitleDetail}) => {
     if (!title) return null
 
     return (
@@ -72,7 +74,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
             <p>{new Date(title.released_at).getFullYear()}</p>
           </div>
           <Link to={`/title/${title.id}`}>
-            <h1 className="text-xl md:text-5xl font-bold mb-1 leading-none">
+            <h1 className="text-xl md:text-4xl font-bold mb-1 leading-none">
               {title?.name}
             </h1>
           </Link>
@@ -110,7 +112,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     )
   }
 
-  const image = getImageUrl(data[0]?.images[0]?.url, ImageQuality.h900)
+  const image = getImageUrl(titles[0]?.images[0]?.url, ImageQuality.h900)
 
   return (
     <div className="flex mb-10">
@@ -119,12 +121,12 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         style={{ paddingTop: "35%" }}
         src={image}
       >
-        <BottomInfo />
+        <BottomInfo title={titles[0]} />
       </NImage>
       <div className="hidden md:block">
-        <FeaturedItem className="mb-8" title={data[1]} />
-        <FeaturedItem className="mb-8" title={data[2]} />
-        <FeaturedItem title={data[3]} />
+        <FeaturedItem className="mb-8" index={1} title={titles[1]} />
+        <FeaturedItem className="mb-8" index={2} title={titles[2]} />
+        <FeaturedItem index={3} title={titles[3]} />
       </div>
     </div>
   )

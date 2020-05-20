@@ -1,7 +1,9 @@
 from pprint import pprint
 
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework import serializers
 
+from .documents import TitleDocument
 from .models import Title, Season, Episode, Topic, Genre, \
     Cast, ViewHit, Image, Media, Subtitle, Video, Trailer
 
@@ -160,6 +162,12 @@ class TitleListSerializer(serializers.ModelSerializer):
         serializer = ImageSerializer(instance.media.instance_of(Image),
                                      many=True, read_only=True)
         return serializer.data
+
+
+# class TitleDocumentSerializer(DocumentSerializer):
+#     class Meta:
+#         document = TitleDocument
+#         fields = ('id', 'name', 'released_at')
 
 
 class ViewHitSerializer(serializers.ModelSerializer):

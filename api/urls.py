@@ -20,6 +20,7 @@ urlpatterns = [
     # path('history/', views.WatchHistoryView.as_view(), name='history-list'),
     # path('history/<int:pk>/', views.WatchHistoryView.as_view(),
     #  name='history-detail'),
+    path('test/', views.test_end),
     path('home/', views.HomeView.as_view(), name='home'),
     path('upload/<str:directory>/<str:filename>/',
          FileUploadView.as_view(), name='fileupload'),
