@@ -16,13 +16,21 @@ const SearchPage: FunctionComponent = () => {
     return <div>No results found for "{queryParams?.search}"</div>
 
   return (
-    titles && (
-      <div className="flex items-center flex-wrap">
-        {titles.results.map(title => (
-          <Title key={title.id} title={title} />
-        ))}
+    <>
+      <h1 className="mb-10 text-6xl font-bold">Search</h1>
+      <div className="flex">
+        <div className="bg-blue-900 px-5 py-2 mr-10 rounded">
+          <h1 className="mb-10 text-4xl font-bold">Filters</h1>
+        </div>
+        {titles && (
+          <div className="flex items-center flex-wrap">
+            {titles.results.map(title => (
+              <Title key={title.id} title={title} />
+            ))}
+          </div>
+        )}
       </div>
-    )
+    </>
   )
 }
 

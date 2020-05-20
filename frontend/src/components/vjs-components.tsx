@@ -5,6 +5,7 @@ import { IoIosClose, IoIosAlbums } from "react-icons/io"
 import { FiSkipForward } from "react-icons/fi"
 import ForwardIcon from "~icons/ForwardIcon"
 import BackwardIcon from "~icons/BackwardIcon"
+import { useTranslation } from "react-i18next"
 
 export const vjsComponent = videojs.getComponent("Component")
 
@@ -56,6 +57,7 @@ export class vjsTitleBar extends vjsComponent {
 export const SidebarButton = ({ player }: { player: VideoJsPlayer }) => {
   const [visible, setVisible] = useState(false)
   const toggleVisible = () => setVisible(!visible)
+  const { t } = useTranslation()
 
   player.on("togglesidebar", toggleVisible)
 
@@ -67,7 +69,7 @@ export const SidebarButton = ({ player }: { player: VideoJsPlayer }) => {
       }}
     >
       <IoIosAlbums
-        className={`transition-color duration-500 text-3xl ${
+        className={`block transition-color duration-500 text-3xl ${
           visible ? "text-n-red" : ""
         }`}
       />

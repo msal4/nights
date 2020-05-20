@@ -1,21 +1,24 @@
 import React, { FunctionComponent, useState } from "react"
-import { SimpleSeason } from "~core/interfaces/season"
 import { IoIosArrowDown } from "react-icons/io"
 import { useTranslation } from "react-i18next"
 
-export interface DropdownMenuProps {
-  seasons: SimpleSeason[]
-  currentSeason: SimpleSeason
-  onChange: (season: SimpleSeason) => void
+export interface Item {
+  id: number | string
+  name: number | string
 }
 
-const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
-  seasons,
-  currentSeason,
+export interface DropdownMenuProps {
+  items: Item[]
+  currentItem: Item
+  onChange: (item: Item) => void
+}
+
+const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
+  items,
+  currentItem,
   onChange,
 }) => {
   const [menuOpened, setMenuOpened] = useState(false)
-  const { t } = useTranslation()
 
   return (
     <div className="relative flex flex-col items-center">
@@ -25,7 +28,7 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
         } text-white focus:outline-none hover:text-white`}
         onClick={() => setMenuOpened(!menuOpened)}
       >
-        {t("season")} {currentSeason.index + 1}
+        {currentItem.name}
         <IoIosArrowDown
           className={`ml-2 transition-transform duration-500 ease-in-out ${
             menuOpened ? "transform rotate-180" : ""
@@ -35,21 +38,21 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
       </button>
       {menuOpened && (
         <div
-          className="mt-10 pt-2 absolute z-10 rounded bg-gray-900 overflow-auto"
+          className="mt-10 pt-2 absolute z-10 rounded bg-blue-900 overflow-auto"
           style={{ maxHeight: "10rem" }}
         >
-          {seasons
-            .filter(season => season.id !== currentSeason.id)
-            .map(season => (
+          {items
+            .filter(item => item.id !== currentItem.id)
+            .map(item => (
               <button
                 className="block px-4 py-1 mb-2 text-white hover:bg-blue-500 hover:text-black"
-                key={season.id}
+                key={item.id}
                 onClick={() => {
-                  onChange(season)
+                  onChange(item)
                   setMenuOpened(false)
                 }}
               >
-                {t("season")} {season.index + 1}
+                {item.name}
               </button>
             ))}
         </div>
@@ -64,4 +67,4 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
   )
 }
 
-export default SeasonDropdown
+export default DropdownMenu

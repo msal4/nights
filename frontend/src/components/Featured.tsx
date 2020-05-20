@@ -88,12 +88,12 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
               {title?.name}
             </h1>
           </Link>
-          <p className="mb-1 opacity-75">{joinTopics(data[0]?.genres)}</p>
+          <p className="mb-1 opacity-75">{joinTopics(title?.genres)}</p>
           <div className="flex items-center text-sm md:text-base">
-            <p className="mr-6 opacity-75">{data[0].rated}</p>
+            <p className="mr-6 opacity-75">{title.rated}</p>
             <p className="flex items-center">
               <FaEye className="mr-2 text-xs text-n-blue" />
-              <span className="opacity-75">{data[0].views}</span>
+              <span className="opacity-75">{title.views}</span>
             </p>
           </div>
         </div>
@@ -112,7 +112,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           <MyListButton className="mr-8" id={title?.id} />
           <InfoIconButton
             className="hidden md:flex"
-            to={`/title/${data[0].id}`}
+            to={`/title/${title.id}`}
             icon={<FiInfo className="text-xl" />}
           >
             {t("info")}

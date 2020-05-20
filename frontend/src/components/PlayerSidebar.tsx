@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
 
-import SeasonDropdown from "./SeasonDropdown"
+import SeasonDropdown from "./containers/SeasonDropdown"
 import { useSeason } from "~context/season-context"
 import EpisodeList from "./EpisodeList"
 
