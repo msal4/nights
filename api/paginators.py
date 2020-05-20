@@ -5,5 +5,5 @@ class HomeViewPagination(PageNumberPagination):
     page_size = 3
 
 
-class TitleDocumentViewPagination(PageNumberPagination):
+class TitleViewPagination(PageNumberPagination):
     page_size = 50

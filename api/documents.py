@@ -20,6 +20,7 @@ class TitleDocument(Document):
         fields = [
             'id',
             'name',
+            'plot',
             'type',
             'released_at'
         ]

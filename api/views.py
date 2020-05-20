@@ -1,5 +1,5 @@
 from django.core.files.storage import default_storage
-from django.db.models import Q, Count
+from django.db.models import Q, Count, F
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -33,11 +33,10 @@ from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentV
 from .documents import TitleDocument
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit
-from .paginators import HomeViewPagination, TitleDocumentViewPagination
+from .paginators import HomeViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import documents
-
 
 
 @api_view(['GET'])
@@ -73,11 +72,13 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
     def _get_history(hits):
         return hits.filter(type='title').order_by('-hit_date')[:5]
 
-    def _get_recommended(self, hit, titles):
+    @staticmethod
+    def _get_recommended(hit, titles):
         title = titles.filter(genres__in=hit.topic.genres.all())[0]
         return serializers.TitleSerializer(title, read_only=True).data
 
-    def _get_featured(self, titles):
+    @staticmethod
+    def _get_featured(titles):
         # Featured titles
         two_days_ago = timezone.now() - timezone.timedelta(2)
         trending = Count('hits', filter=Q(hits__hit_date__gt=two_days_ago))
@@ -131,64 +132,98 @@ class GenreViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
 
-class TitleDocumentViewSet(BaseDocumentViewSet):
-    document = TitleDocument
-    serializer_class = serializers.TitleListSerializer
-    lookup_field = 'id'
+class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     queryset = Title.objects.all()
+    serializer_class = serializers.TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
-    pagination_class = PageNumberPagination
-    filter_backends = [
-        FilteringFilterBackend,
-        OrderingFilterBackend,
-        DefaultOrderingFilterBackend,
-        CompoundSearchFilterBackend
-    ]
+    serializer_action_classes = {
+        'list': serializers.TitleListSerializer
+    }
+    pagination_class = TitleViewPagination
+    filter_backends = (
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    )
+    filterset_fields = ('type', 'genres', 'cast')
     search_fields = ('name',)
-    filter_fields = {
-        'id': {
-            'field': 'id',
-            'lookups': [
-                LOOKUP_FILTER_RANGE,
-                LOOKUP_QUERY_IN,
-                LOOKUP_QUERY_GT,
-                LOOKUP_QUERY_GTE,
-                LOOKUP_QUERY_LT,
-                LOOKUP_QUERY_LTE,
-                LOOKUP_FILTER_TERMS,
-            ],
-        },
-        'name': 'name',
-        'type': 'type',
-        'released_at': 'released_at',
-    }
-
-    ordering_fields = {
-        'id': 'id',
-        'name': 'name.raw',
-        'type': 'type',
-        #'released_at': 'released_at',
-    }
+    ordering_fields = ('name', 'type', 'created_at')
+    ordering = ('-created_at',)
 
     def list(self, request, *args, **kwargs):
-        # Filter queryset
         queryset = self.filter_queryset(self.get_queryset())
-        # Get the ids from search queryset
-        ids = [s.id for s in queryset[:50]]
-        # Convert queryset to a list of titles
-        titles = list(Title.objects.filter(pk__in=ids))
-        # Sort by id
-        titles.sort(key=lambda t: ids.index(t.pk))
-        # Serialize the list
-        serializer = self.get_serializer(titles, many=True)
+
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(reversed(page), many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(reversed(queryset), many=True)
         return Response(serializer.data)
 
-    # ordering = ('-released_at',)
-    #
-    # @method_decorator(cache_page(60 * 60))
-    # def dispatch(self, request, *args, **kwargs):
-    #     return super().dispatch(request, *args, **kwargs)
-
+    @method_decorator(cache_page(60 * 60))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+#
+#
+# class TitleDocumentViewSet(BaseDocumentViewSet):
+#     document = TitleDocument
+#     serializer_class = serializers.TitleListSerializer
+#     queryset = Title.objects.all()
+#     permission_classes = [IsAdminOrReadOnly]
+#     pagination_class = PageNumberPagination
+#     filter_backends = [
+#         FilteringFilterBackend,
+#         OrderingFilterBackend,
+#         DefaultOrderingFilterBackend,
+#         CompoundSearchFilterBackend
+#     ]
+#     search_fields = ('name',)
+#     filter_fields = {
+#         'id': {
+#             'field': 'id',
+#             'lookups': [
+#                 LOOKUP_FILTER_RANGE,
+#                 LOOKUP_QUERY_IN,
+#                 LOOKUP_QUERY_GT,
+#                 LOOKUP_QUERY_GTE,
+#                 LOOKUP_QUERY_LT,
+#                 LOOKUP_QUERY_LTE,
+#                 LOOKUP_FILTER_TERMS,
+#             ],
+#         },
+#         'name': 'name',
+#         'type': 'type',
+#         'released_at': 'released_at',
+#     }
+#
+#     ordering_fields = {
+#         'id': 'id',
+#         'name': 'name',
+#         'type': 'type',
+#         'released_at': 'released_at',
+#     }
+#
+#     def list(self, request, *args, **kwargs):
+#         # Filter queryset
+#         queryset = self.filter_queryset(self.get_queryset())
+#         # Get the ids from search queryset
+#         ids = [s.id for s in queryset[:50]]
+#         # Convert queryset to a list of titles
+#         titles = list(Title.objects.filter(pk__in=ids))
+#         # Sort by id
+#         titles.sort(key=lambda t: ids.index(t.pk))
+#         # Serialize the list
+#         serializer = self.get_serializer(titles, many=True)
+#         return Response(serializer.data)
+#
+#     # ordering = ('-released_at',)
+#     #
+#     # @method_decorator(cache_page(60 * 60))
+#     # def dispatch(self, request, *args, **kwargs):
+#     #     return super().dispatch(request, *args, **kwargs)
+#
 
 class SeasonViewSet(viewsets.ModelViewSet):
     queryset = Season.objects.all()
@@ -280,6 +315,18 @@ class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
     def get_queryset(self):
         return self.request.user.viewhit_set.filter(
             type='title').order_by('-hit_date')
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset()).exclude(
+            playback_position=F('runtime'))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @staticmethod
     def put(request, topic_id, *args, **kwargs):

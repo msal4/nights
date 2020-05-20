@@ -8,7 +8,7 @@ from .views import FileUploadView
 router = DefaultRouter()
 router.register(r'cast', views.CastViewSet)
 router.register(r'genres', views.GenreViewSet)
-router.register(r'titles', views.TitleDocumentViewSet)
+router.register(r'titles', views.TitleViewSet)
 router.register(r'seasons', views.SeasonViewSet)
 router.register(r'episodes', views.EpisodeViewSet)
 router.register(r'my_list', views.MyListViewSet, basename='MyList')
