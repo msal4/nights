@@ -24,7 +24,9 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
     OrderingFilterBackend,
     DefaultOrderingFilterBackend,
-    SearchFilterBackend, CompoundSearchFilterBackend,
+    CompoundSearchFilterBackend,
+    MultiMatchSearchFilterBackend,
+    SearchFilterBackend
 )
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
 
@@ -34,7 +36,8 @@ from .models import Title, Episode, Season, Genre, Cast, ViewHit
 from .paginators import HomeViewPagination, TitleDocumentViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
-from . import documents 
+from . import documents
+
 
 
 @api_view(['GET'])
@@ -139,9 +142,9 @@ class TitleDocumentViewSet(BaseDocumentViewSet):
         FilteringFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
-        CompoundSearchFilterBackend,
+        CompoundSearchFilterBackend
     ]
-    search_fields = ('name', 'plot')
+    search_fields = ('name',)
     filter_fields = {
         'id': {
             'field': 'id',
@@ -155,7 +158,7 @@ class TitleDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_FILTER_TERMS,
             ],
         },
-        'name': 'name.raw',
+        'name': 'name',
         'type': 'type',
         'released_at': 'released_at',
     }
@@ -168,16 +171,15 @@ class TitleDocumentViewSet(BaseDocumentViewSet):
     }
 
     def list(self, request, *args, **kwargs):
+        # Filter queryset
         queryset = self.filter_queryset(self.get_queryset())
+        # Get the ids from search queryset
         ids = [s.id for s in queryset[:50]]
+        # Convert queryset to a list of titles
         titles = list(Title.objects.filter(pk__in=ids))
+        # Sort by id
         titles.sort(key=lambda t: ids.index(t.pk))
-
-        # page = self.paginate_queryset(filtered_queryset)
-        # if page is not None:
-        #     serializer = self.get_serializer(page, many=True)
-        #     return self.get_paginated_response(serializer.data)
-
+        # Serialize the list
         serializer = self.get_serializer(titles, many=True)
         return Response(serializer.data)
 
