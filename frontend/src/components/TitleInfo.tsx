@@ -27,10 +27,12 @@ const TitleInfo: FunctionComponent<TitleInfoProps> = ({ title }) => {
           {title.rating}
         </div>
       </div>
-      <div className="flex items-center">
-        <h4 className="mr-4 opacity-50">{t("runtime")}</h4>
-        <p>{title.runtime}</p>
-      </div>
+      {title.type === "m" && (
+        <div className="flex items-center">
+          <h4 className="mr-4 opacity-50">{t("runtime")}</h4>
+          <p>{Math.round(title.runtime / 60)} mins</p>
+        </div>
+      )}
     </div>
   )
 }

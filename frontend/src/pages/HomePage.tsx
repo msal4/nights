@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react"
+import { useLocation } from "react-router-dom"
 
 import Featured from "~components/Featured"
 import { HomeResults } from "~core/interfaces/home"
@@ -12,7 +13,6 @@ import { useAuth } from "~context/auth-context"
 import { ViewHit } from "~core/interfaces/view-hit"
 import { getHistory } from "~api/title"
 import { capitalizeFirst, getImageUrl } from "~utils/common"
-import { useLocation } from "react-router-dom"
 import client from "~api/client"
 import { useDisposableEffect } from "~hooks"
 import LoadingIndicator from "~components/LoadingIndicator"
@@ -65,7 +65,7 @@ const useHome = (filters: {}) => {
   const [loading, setLoading] = useState(false)
   const [continueWatching, setContinueWatching] = useState<ViewHit[]>(null)
   const [error, setError] = useState<{}>(null)
-  const { background, setBackground } = useBackground()
+  const { changeBackground } = useBackground()
   const { token } = useAuth()
   const { pathname } = useLocation()
 
@@ -88,18 +88,17 @@ const useHome = (filters: {}) => {
     setLoading(true)
     try {
       const result = await getHome(filters)
-      const bg = getImageUrl(
-        getImageUrl(
-          result.results.featured[0]?.images[0]?.url,
-          ImageQuality.h900
-        )
-      )
-      !disposed && bg && bg !== background && setBackground(bg)
-      !disposed && setHome(result)
+
+      if (!disposed) {
+        changeBackground(result.results.featured[0])
+        setHome(result)
+      }
+
       if (token) {
         const history = await getHistory()
         !disposed && setContinueWatching(history.results)
       }
+
       if (error && !disposed) setError(null)
     } catch (error) {
       !disposed && setError(error)

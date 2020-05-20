@@ -8,7 +8,7 @@ export default () => {
       className="absolute inset-0 transition-all duration-1000"
       style={{
         background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 38%, rgba(0,0,8,1) 49%, rgba(0,0,8,1) 100%), url(${background})`,
-        // filter: "blur(15px)",
+        filter: "blur(15px)",
         opacity: 0.5,
         zIndex: -1,
       }}

@@ -68,7 +68,7 @@
   }
 
   .vjs-modal-dialog.vjs-text-track-settings {
-    z-index: 1;
+    z-index: 2;
   }
 }
 
@@ -89,6 +89,32 @@ video {
   top: 0;
   right: -25vw;
   transition: right 500ms;
+}
+
+// Order buttons
+.video-js .vjs-control-bar {
+  .vjs-play-control {
+    order: 1;
+  }
+  .vjs-forward-backward-buttons {
+    order: 2;
+  }
+  .vjs-volume-panel {
+    order: 3;
+  }
+  .vjs-time-control {
+    order: 4;
+  }
+  .vjs-subs-caps-button {
+    order: 5;
+  }
+  .vjs-picture-in-picture-control {
+    order: 6;
+  }
+
+  .vjs-fullscreen-control {
+    order: 7;
+  }
 }
 
 .video-js .vjs-modal-dialog-content {

@@ -225,6 +225,7 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
 #     #     return super().dispatch(request, *args, **kwargs)
 #
 
+
 class SeasonViewSet(viewsets.ModelViewSet):
     queryset = Season.objects.all()
     serializer_class = serializers.SeasonSerializer
@@ -348,6 +349,10 @@ class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         user = request.user
 
         title = get_object_or_404(Title, pk=topic_id)
+
+        if not title.runtime and title.type == 'm' and runtime:
+            title.runtime = runtime
+            title.save()
 
         try:
             # Check if hit already exists

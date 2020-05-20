@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useParams, Switch, Route, useRouteMatch } from "react-router-dom"
-import { IoIosPlay, IoIosAdd } from "react-icons/io"
+import { IoIosPlay } from "react-icons/io"
 import { useTranslation } from "react-i18next"
 
 import {
@@ -22,6 +22,7 @@ import LoadingIndicator from "~components/LoadingIndicator"
 import Title from "~components/Title"
 import { useBackground } from "~context/background-context"
 import MyListButton from "~components/MyListButton"
+import Trailer from "~components/Trailer"
 
 const Recommended = ({ titles }: { titles: ITitle[] }) => {
   return (
@@ -40,7 +41,7 @@ const useTitle = () => {
   const [error, setError] = useState<{}>(null)
   const [loading, setLoading] = useState(true)
   const [selectedSeason, setSelectedSeason] = useState<SimpleSeason>(null)
-  const { background, setBackground } = useBackground()
+  const { changeBackground } = useBackground()
 
   const getTitleDetail = async (disposed: boolean) => {
     !disposed && setLoading(true)
@@ -48,8 +49,7 @@ const useTitle = () => {
       const title = await getTitle(id)
       if (title.type === "s") setSelectedSeason(title.seasons[0])
       if (error && !disposed) setError(null)
-      const bg = getImageUrl(title.images[0]?.url, ImageQuality.h900)
-      !disposed && bg && bg !== background && setBackground(bg)
+      !disposed && changeBackground(title)
       !disposed && setTitle(title)
     } catch (error) {
       !disposed && setError(error)
@@ -71,13 +71,7 @@ const useTitle = () => {
 export default () => {
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
-  const {
-    title,
-    error,
-    selectedSeason,
-    setSelectedSeason,
-    loading,
-  } = useTitle()
+  const { title, selectedSeason, setSelectedSeason, loading } = useTitle()
 
   return (
     <>
@@ -96,8 +90,10 @@ export default () => {
                     {title.type === "s" ? "New Episodes" : "New"}
                   </span>
                 )}
-                <h1 className="text-lg md:text-3xl font-bold">{title.name}</h1>
-                <div className="text-xs md:text-sm text-gray-500">
+                <h1 className="text-lg md:text-4xl font-bold mb-1">
+                  {title.name}
+                </h1>
+                <div className="text-xs md:text-sm opacity-75">
                   <p>{joinTopics(title.genres)}</p>
                 </div>
               </div>
@@ -125,37 +121,39 @@ export default () => {
               onChange={setSelectedSeason}
             />
           )}
-
-          <div className="mt-10 mb-10 flex">
-            {title.type === "s" && (
-              <UnderlineLink className="mr-2" to={url}>
-                {t("episodes")}
-              </UnderlineLink>
-            )}
-            <UnderlineLink
-              className="mr-4"
-              to={title.type == "m" ? url : `${url}/info`}
-            >
-              {t("info")}
-            </UnderlineLink>
-            <UnderlineLink to={`${url}/recommended`}>
-              {t("moreLikeThis")}
-            </UnderlineLink>
-          </div>
-          <div className="max-w-2xl">
-            <Switch>
-              <Route path={`${path}/recommended`}>
-                <Recommended titles={title.recommended} />
-              </Route>
-              <Route path={title.type === "m" ? path : `${path}/info`}>
-                <TitleInfo title={title} />
-              </Route>
-              {selectedSeason && (
-                <Route path={path}>
-                  <Season seriesId={title.id} seasonId={selectedSeason.id} />
+          <div className="flex w-full">
+            <div className="flex-1 mr-10">
+              <div className="title-page-nav relative my-10 flex">
+                {title.type === "s" && (
+                  <UnderlineLink className="mr-4" to={url}>
+                    {t("episodes")}
+                  </UnderlineLink>
+                )}
+                <UnderlineLink
+                  className="mr-4"
+                  to={title.type == "m" ? url : `${url}/info`}
+                >
+                  {t("info")}
+                </UnderlineLink>
+                <UnderlineLink to={`${url}/recommended`}>
+                  {t("moreLikeThis")}
+                </UnderlineLink>
+              </div>
+              <Switch>
+                <Route path={`${path}/recommended`}>
+                  <Recommended titles={title.recommended} />
                 </Route>
-              )}
-            </Switch>
+                <Route path={title.type === "m" ? path : `${path}/info`}>
+                  <TitleInfo title={title} />
+                </Route>
+                {selectedSeason && (
+                  <Route path={path}>
+                    <Season seriesId={title.id} seasonId={selectedSeason.id} />
+                  </Route>
+                )}
+              </Switch>
+            </div>
+            <Trailer className="hidden md:block flex-1" title={title} />
           </div>
         </div>
       )}

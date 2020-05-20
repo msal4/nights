@@ -37,6 +37,7 @@ i18n
           email: "Email",
           dontHaveAnAccount: "Don't have an account?",
           haveAnAccount: "Already have an account?",
+          trailer: "Trailer",
         },
       },
       ar: {
@@ -71,6 +72,7 @@ i18n
           email: "البرريد الالكتروني",
           dontHaveAnAccount: "ليس لديك حساب؟",
           haveAnAccount: "لديك حساب؟",
+          trailer: "تريلر",
         },
       },
     },

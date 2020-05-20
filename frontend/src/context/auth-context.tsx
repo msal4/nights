@@ -25,7 +25,7 @@ const useToken = () => {
   return { token, storeToken, removeToken }
 }
 
-const AuthProvider: FunctionComponent<{}> = (props) => {
+const AuthProvider: FunctionComponent<{}> = props => {
   const { token, storeToken, removeToken } = useToken()
 
   const register = async (

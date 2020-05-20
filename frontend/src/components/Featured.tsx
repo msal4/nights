@@ -8,12 +8,13 @@ import { FaStar, FaPlay, FaPlus, FaEye, FaCheck } from "react-icons/fa"
 import { FiInfo } from "react-icons/fi"
 
 import { useTranslation } from "react-i18next"
-import { Link, Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { PrimaryButton, InfoIconButton } from "./common/Buttons"
 import { joinTopics, getImageUrl } from "~utils/common"
 import NImage from "./NImage"
 import MyListButton from "./MyListButton"
+import { useBackground } from "~context/background-context"
 
 export interface FeaturedProps {
   data: TitleDetail[]
@@ -22,6 +23,7 @@ export interface FeaturedProps {
 const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   const { t } = useTranslation()
   const [titles, setTitles] = useState<TitleDetail[]>(data)
+  const { changeBackground } = useBackground()
 
   const FeaturedItem = ({
     className = "",
@@ -34,9 +36,17 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   }) => {
     const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900)
     return (
-      <div className="cursor-pointer" onClick={(e) => {
-        setTitles([title, ...titles.slice(1, index), titles[0], ...titles.slice(index + 1)])
-      }}>
+      <div
+        className="cursor-pointer"
+        onClick={e => {
+          setTitles([
+            title,
+            ...titles.slice(1, index),
+            titles[0],
+            ...titles.slice(index + 1),
+          ])
+        }}
+      >
         <NImage
           className={`object-cover object-center rounded-lg relative text-sm font-light ${className}`}
           style={{ paddingTop: "60%", width: "20rem" }}
@@ -50,7 +60,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     )
   }
 
-  const BottomInfo = ({ title }: {title: TitleDetail}) => {
+  const BottomInfo = ({ title }: { title: TitleDetail }) => {
     if (!title) return null
 
     return (
@@ -113,6 +123,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
   }
 
   const image = getImageUrl(titles[0]?.images[0]?.url, ImageQuality.h900)
+  changeBackground(titles[0])
 
   return (
     <div className="flex mb-10">
