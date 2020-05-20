@@ -24,14 +24,14 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
     OrderingFilterBackend,
     DefaultOrderingFilterBackend,
-    SearchFilterBackend,
+    SearchFilterBackend, CompoundSearchFilterBackend,
 )
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
 
 from .documents import TitleDocument
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit
-from .paginators import HomeViewPagination
+from .paginators import HomeViewPagination, TitleDocumentViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import documents 
@@ -128,21 +128,18 @@ class GenreViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
 
-class TitleDocumentViewSet(GetSerializerClassMixin, BaseDocumentViewSet):
+class TitleDocumentViewSet(BaseDocumentViewSet):
     document = TitleDocument
     serializer_class = serializers.TitleListSerializer
     lookup_field = 'id'
     queryset = Title.objects.all()
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = PageNumberPagination
-    serializer_action_classes = {
-        'list': serializers.TitleListSerializer
-    }
     filter_backends = [
         FilteringFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
-        SearchFilterBackend,
+        CompoundSearchFilterBackend,
     ]
     search_fields = ('name', 'plot')
     filter_fields = {
@@ -159,7 +156,6 @@ class TitleDocumentViewSet(GetSerializerClassMixin, BaseDocumentViewSet):
             ],
         },
         'name': 'name.raw',
-        'plot': 'plot.raw',
         'type': 'type',
         'released_at': 'released_at',
     }
@@ -173,15 +169,16 @@ class TitleDocumentViewSet(GetSerializerClassMixin, BaseDocumentViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
+        ids = [s.id for s in queryset[:50]]
+        titles = list(Title.objects.filter(pk__in=ids))
+        titles.sort(key=lambda t: ids.index(t.pk))
 
-        # for s in queryset:
-        filtered_queryset = Title.objects.filter(id__in=[s.id for s in queryset])
-        page = self.paginate_queryset(filtered_queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        # page = self.paginate_queryset(filtered_queryset)
+        # if page is not None:
+        #     serializer = self.get_serializer(page, many=True)
+        #     return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(filtered_queryset, many=True)
+        serializer = self.get_serializer(titles, many=True)
         return Response(serializer.data)
 
     # ordering = ('-released_at',)
