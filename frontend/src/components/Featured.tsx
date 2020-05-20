@@ -74,7 +74,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
             <p>{new Date(title.released_at).getFullYear()}</p>
           </div>
           <Link to={`/title/${title.id}`}>
-            <h1 className="text-xl md:text-5xl font-bold mb-1 leading-none">
+            <h1 className="text-xl md:text-4xl font-bold mb-1 leading-none">
               {title?.name}
             </h1>
           </Link>
