@@ -119,17 +119,27 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         return self.get_paginated_response(data)
 
 
-# @method_decorator(cache_page(60 * 60 * 4))
 class CastViewSet(viewsets.ModelViewSet):
     queryset = Cast.objects.all()
     serializer_class = serializers.CastSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    @method_decorator(cache_page(60 * 60 * 10))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = serializers.GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    def paginate_queryset(self, queryset, view=None):
+        return None
+
+    @method_decorator(cache_page(60 * 60 * 10))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
@@ -162,7 +172,7 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
         serializer = self.get_serializer(reversed(queryset), many=True)
         return Response(serializer.data)
 
-    @method_decorator(cache_page(60 * 60))
+    @method_decorator(cache_page(60 * 60 * 4))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 #

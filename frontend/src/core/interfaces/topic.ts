@@ -1,5 +1,5 @@
 export interface Topic {
-  id: number
+  id: number | string
   name: string
 }
 export interface Subtitle {

@@ -71,7 +71,4 @@ const useDebouncedSearch = (queryParams: any) => {
   return { searchText, setSearchText }
 }
 
-const useQuery = () => {
-  const queryParams = queryString.parse(useLocation().search)
-  return queryParams
-}
+const useQuery = () => queryString.parse(useLocation().search)

@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from "react"
 import { SimpleSeason } from "~core/interfaces/season"
 import { useTranslation } from "react-i18next"
-import DropdownMenu, { Item } from "../DropdownMenu"
+import DropdownMenu from "../DropdownMenu"
+import { Topic } from "~core/interfaces/topic"
 
 export interface DropdownMenuProps {
   seasons: SimpleSeason[]
@@ -18,7 +19,7 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
   const season = t("season")
 
   // Convert a Season to an Item
-  const convert = ({ id, index }: SimpleSeason): Item => ({
+  const convert = ({ id, index }: SimpleSeason): Topic => ({
     id,
     name: `${season} ${index + 1}`,
   })
@@ -28,8 +29,8 @@ const SeasonDropdown: FunctionComponent<DropdownMenuProps> = ({
 
   return (
     <DropdownMenu
-      items={items}
-      currentItem={currentItem}
+      topics={items}
+      currentTopic={currentItem}
       onChange={item => onChange(seasons.find(season => season.id === item.id))}
     />
   )
