@@ -46,6 +46,7 @@ i18n
           nameDesc: "Name Descending",
           releaseDateAsc: "Release Date Ascending",
           releaseDateDesc: "Release Date Descending",
+          cast: "Cast",
         },
       },
       ar: {
@@ -89,6 +90,7 @@ i18n
           nameDesc: "الاسم تنازليا",
           releaseDateAsc: "تاريخ النشر تصاعديا",
           releaseDateDesc: "تاريخ النشر تنازليا",
+          cast: "الممثلون",
         },
       },
     },
