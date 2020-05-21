@@ -1,3 +1,7 @@
+import "core-js/es/map"
+import "core-js/es/set"
+import "raf/polyfill"
+
 import React from "react"
 import ReactDom from "react-dom"
 import { I18nextProvider } from "react-i18next"

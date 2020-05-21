@@ -2,10 +2,11 @@ import { IoIosSearch } from "react-icons/io"
 import React, { useState } from "react"
 import { useTranslation } from "react-i18next"
 import queryString from "query-string"
-import { useLocation, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import useConstant from "use-constant"
 import AwesomeDebouncePromise from "awesome-debounce-promise"
 import { useAsync } from "react-async-hook"
+import { useQuery } from "~hooks/query"
 
 const useSearchFocusState = (value: boolean) => {
   const [searchFocused, setSearchFocused] = useState(value)
@@ -70,5 +71,3 @@ const useDebouncedSearch = (queryParams: any) => {
 
   return { searchText, setSearchText }
 }
-
-const useQuery = () => queryString.parse(useLocation().search)

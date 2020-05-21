@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react"
 import { TitleDetail } from "~core/interfaces/title"
 import { useTranslation } from "react-i18next"
 import { IoIosEye, IoIosStar } from "react-icons/io"
+import { Link } from "react-router-dom"
 
 export interface TitleInfoProps {
   title: TitleDetail
@@ -12,9 +13,9 @@ const TitleInfo: FunctionComponent<TitleInfoProps> = ({ title }) => {
 
   return (
     <div>
-      <h2 className="mb-2 font-bold">{t("plot")}</h2>
-      <p className="mb-2 opacity-50 text-sm">{title.plot}</p>
-      <div className="mb-4 flex items-center font-thin">
+      <h2 className="font-bold">{t("plot")}</h2>
+      <p className="mt-4 opacity-50 text-sm">{title.plot}</p>
+      <div className="mt-4 flex items-center font-thin">
         <span className="mr-4">{title.rated}</span>
         {title.type === "m" && (
           <div className="flex items-center mr-4">
@@ -28,11 +29,24 @@ const TitleInfo: FunctionComponent<TitleInfoProps> = ({ title }) => {
         </div>
       </div>
       {title.type === "m" && (
-        <div className="flex items-center">
+        <div className="mt-4 flex items-center">
           <h4 className="mr-4 opacity-50">{t("runtime")}</h4>
           <p>{Math.round(title.runtime / 60)} mins</p>
         </div>
       )}
+      <div className="mt-4 flex">
+        <h4 className="mr-4 opacity-50">{t("cast")}</h4>
+        <p>
+          {title.cast.map(actor => (
+            <Link
+              className="mr-4 hover:text-blue-500"
+              to={`/search?cast=${actor.id}`}
+            >
+              {actor.name}
+            </Link>
+          ))}
+        </p>
+      </div>
     </div>
   )
 }

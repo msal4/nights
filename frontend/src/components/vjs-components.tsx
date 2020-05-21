@@ -93,7 +93,7 @@ export class vjsForwardBackwardButtons extends vjsComponent {
   }
 
   mount() {
-    const seek = (seekTime = 30) => {
+    const seek = (seekTime = 10) => {
       let time = this.player().currentTime() + seekTime
 
       if (time < 0) {
@@ -106,7 +106,7 @@ export class vjsForwardBackwardButtons extends vjsComponent {
       <div className="flex items-center h-full">
         <button
           style={{ width: "3rem", height: "3rem", marginTop: "-.5rem" }}
-          onClick={() => seek(-30)}
+          onClick={() => seek(-10)}
         >
           <BackwardIcon width="1.8rem" height="1.8rem" />
         </button>
