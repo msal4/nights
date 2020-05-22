@@ -43,6 +43,7 @@ const SeriesPlayer: FunctionComponent = () => {
           <Player
             name={episode.name}
             history={history}
+            title={series}
             videos={episode.videos}
             subtitles={episode.subtitles || []}
             poster={getImageUrl(episode.images[0]?.url, ImageQuality.h900)}

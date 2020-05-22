@@ -4,8 +4,7 @@ import {Link, Redirect, useLocation} from 'react-router-dom'
 
 import InfoIcon from '~icons/InfoIcon'
 import PlusIcon from '~icons/PlusIcon'
-import PlayIcon from '~icons/PlayIcon'
-
+import PlayIcon from '~icons/PlayIcon' 
 import {Title} from '~core/interfaces/title'
 import {getImageUrl} from '~utils/common'
 import '../styles/Title.scss'

@@ -31,6 +31,7 @@ const MoviePlayer: FunctionComponent = () => {
         <Player
           name={title.name}
           history={history}
+          title={title}
           videos={title.videos}
           subtitles={title.subtitles || []}
           poster={getImageUrl(title.images[0]?.url, ImageQuality.h900)}

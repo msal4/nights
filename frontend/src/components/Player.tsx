@@ -5,6 +5,7 @@ import { History } from "history"
 import "video.js/src/css/video-js.scss"
 import "~styles/Player.scss"
 import { Video, Subtitle } from "~core/interfaces/topic"
+import { TitleDetail } from "~core/interfaces/title"
 import { swapEpisodeUrlId } from "~utils/common"
 import {
   vjsComponent,
@@ -38,6 +39,7 @@ type OnUpdatePositionCallback = (
 export interface PlayerProps {
   name: string
   history: History
+  title: TitleDetail,
   videos: Video[]
   subtitles: Subtitle[]
   poster: string
@@ -49,6 +51,7 @@ export interface PlayerProps {
 const Player: FunctionComponent<PlayerProps> = ({
   name,
   history,
+  title,
   videos,
   subtitles,
   poster,
@@ -97,7 +100,7 @@ const Player: FunctionComponent<PlayerProps> = ({
     // Add title bar
     player.addChild("vjsTitleBar", {
       title: name,
-      goBack: () => history.push("/"),
+      goBack: () => history.push(`/title/${title.id}`),
       displaySidebar,
     })
     player

@@ -142,9 +142,12 @@ class Availability(models.Model):
 
 
 class Media(PolymorphicModel):
-    topic = models.ForeignKey(Topic, related_name='media', on_delete=models.CASCADE)
-    provider = models.ForeignKey(Provider, null=True, on_delete=models.SET_NULL)
-    availability = models.ForeignKey(Availability, null=True, on_delete=models.SET_NULL)
+    topic = models.ForeignKey(
+        Topic, related_name='media', on_delete=models.CASCADE)
+    provider = models.ForeignKey(
+        Provider, null=True, on_delete=models.SET_NULL)
+    availability = models.ForeignKey(
+        Availability, null=True, on_delete=models.SET_NULL)
 
     language = models.CharField(max_length=10, blank=True, null=True)
     url = models.TextField()

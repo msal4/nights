@@ -40,48 +40,62 @@ const SearchPage: FunctionComponent = () => {
 
   return (
     <>
-      <h1 className="mb-10 text-6xl font-bold">Search</h1>
-      <div className="flex items-start">
-        <div className="bg-gray-900 px-10 py-5 mr-10 rounded">
-          <h1
-            className="mb-10 text-4xl font-bold"
-            style={{ minWidth: "17rem" }}
-          >
-            {t("filters")}
-          </h1>
-          {genres && (
-            <DropdownMenu
-              topics={genres}
-              currentTopic={currentGenre}
-              onChange={genre => pushWithParams({ genres: genre.id })}
-            />
-          )}
-          {types && (
-            <DropdownMenu
-              topics={types}
-              currentTopic={currentType}
-              onChange={type => pushWithParams({ type: type.id })}
-            />
-          )}
-          {orderings && (
-            <DropdownMenu
-              topics={orderings}
-              currentTopic={currentOrdering}
-              onChange={ordering => pushWithParams({ ordering: ordering.id })}
-            />
-          )}
+      <div className="mt-32 flex items-start">
+        <div className="mt-16 mr-10">
+          <div className="px-10 py-5 bg-gray-900" style={{ borderRadius: '1.5rem' }}>
+            <h1
+              className="mb-10 text-xl font-bold"
+              style={{ minWidth: "17rem" }}
+            >
+              {t("sort")}
+            </h1>
+            {orderings && (
+              <DropdownMenu
+                topics={orderings}
+                currentTopic={currentOrdering}
+                onChange={ordering => pushWithParams({ ordering: ordering.id })}
+              />
+            )}
+        </div>  
+          <div className="px-10 py-5 mt-10 bg-gray-900" style={{ borderRadius: '1.5rem' }}>
+            <h1
+              className="mb-10 text-xl font-bold"
+              style={{ minWidth: "17rem" }}
+            >
+              {t("filters")}
+            </h1>
+            {genres && (
+              <DropdownMenu
+                topics={genres}
+                currentTopic={currentGenre}
+                onChange={genre => pushWithParams({ genres: genre.id })}
+              />
+            )}
+            {types && (
+              <DropdownMenu
+                topics={types}
+                currentTopic={currentType}
+                onChange={type => pushWithParams({ type: type.id })}
+              />
+            )}
+          </div>  
         </div>
-        {titles ? (
-          titles.results.length === 0 ? (
-            <div>No results found for "{query?.search}"</div>
-          ) : (
-            <div className="flex items-center flex-wrap">
-              {titles.results.map(title => (
-                <Title key={title.id} title={title} />
-              ))}
-            </div>
-          )
-        ) : null}
+        <div>
+          <h1 className="ml-2 text-xl font-semibold">Search</h1>
+          <div>
+            {titles ? (
+              titles.results.length === 0 ? (
+                <div>No results found for "{query?.search}"</div>
+              ) : (
+                <div className="flex items-center flex-wrap">
+                  {titles.results.map(title => (
+                    <Title key={title.id} title={title} />
+                  ))}
+                </div>
+              )
+            ) : null}
+          </div>
+        </div>
       </div>
     </>
   )
@@ -119,17 +133,21 @@ const useTitles = (query: queryString.ParsedQuery<string>) => {
 const useFilters = (query: queryString.ParsedQuery<string>) => {
   const { t } = useTranslation()
   const [genres, setGenres] = useState<Topic[]>([
-    { id: null, name: t("genres") },
+    { id: null, name: `${t("genres")} - ${t("all")}` },
   ])
 
   const types = [
-    { id: null, name: t("all") },
+    { id: null, name: `${t("type")} - ${t("all")}` },
     { id: "m", name: t("movies") },
     { id: "s", name: t("series") },
   ]
   const orderings = [
     { id: "name", name: t("nameAsc") },
     { id: "-name", name: t("nameDesc") },
+    { id: "-views", name: `${t("popularity")} ${t('asc')}` },
+    { id: "views", name: `${t("popularity")} ${t('desc')}` },
+    { id: "rating", name: `${t("rating")} ${t('asc')}` },
+    { id: "-rating", name: `${t("rating")} ${t('desc')}` },
     { id: "created_at", name: t("releaseDateAsc") },
     { id: "-created_at", name: t("releaseDateDesc") },
   ]
@@ -156,7 +174,7 @@ const useFilters = (query: queryString.ParsedQuery<string>) => {
     currentType: types?.find(item => item.id === type) || types[0],
     orderings,
     currentOrdering:
-      orderings?.find(item => item.id === ordering) || orderings[3],
+      orderings?.find(item => item.id === ordering) || orderings[7],
   }
 }
 

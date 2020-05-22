@@ -19,6 +19,8 @@
   }
 
   &:hover {
+    transform: scale(0.9);
+
     .name {
       margin-top: 0;
     }
@@ -26,11 +28,11 @@
     .secondary-info {
       opacity: .75;
     }
-    transform: scale(0.9);
 
     .progress {
       transform: scaleY(2);
     }
+
     .play-icon {
       opacity: 1;
     }

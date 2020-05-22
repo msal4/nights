@@ -1,5 +1,7 @@
 import React, { FunctionComponent } from "react"
 import Carousel, { ResponsiveType } from "react-multi-carousel"
+import { Link } from 'react-router-dom'
+import { IoIosArrowForward } from 'react-icons/io'
 import "react-multi-carousel/lib/styles.css"
 
 export const defaultResponsive = {
@@ -19,6 +21,7 @@ export const defaultResponsive = {
 
 export interface CarouselRowProps {
   title: string
+  path: string
   className?: string
   responsive?: ResponsiveType
 }
@@ -26,14 +29,16 @@ export interface CarouselRowProps {
 const CarouselRow: FunctionComponent<CarouselRowProps> = ({
   title,
   children,
+  path,
   className = "",
   responsive = {},
 }) => {
   return (
     <div className={`relative ${className}`}>
-      <h3 className="ml-3 md:absolute md:text-lg text-sm font-semibold leading-none">
-        {title}
-      </h3>
+      <Link to={path} className="ml-3 z-10 w-full md:absolute md:text-lg text-sm font-semibold leading-none flex items-center justify-between">
+        <span>{title}</span>
+        {path && <span className="flex items-center font-thin text-sm mr-8 hover:text-red-500">See more <IoIosArrowForward className="text-xss" /></span>}
+      </Link>
       <Carousel
         className="carousel-row"
         responsive={{ ...defaultResponsive, ...responsive }}

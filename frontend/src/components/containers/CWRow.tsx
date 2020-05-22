@@ -16,6 +16,7 @@ const CWRow: FunctionComponent<TitleRowProps> = ({ row }) => {
     <CarouselRow
       className="pb-6"
       title={t("continueWatching")}
+      path=""
       responsive={{
         superLargeDesktop: {
           breakpoint: { max: 6000, min: 3000 },

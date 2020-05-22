@@ -59,28 +59,42 @@
 }
 
 .highlight-before {
-  color: white !important;
   &::before {
     background: $color-red !important;
     box-sizing: border-box;
+    opacity: 1 !important;
     height: 2px;
-    left: 0 !important;
-    right: 0 !important;
+  }
+  &::after {
+    border-top-color: $color-red !important;
   }
 }
 
 .underline-before {
   position: relative;
-  padding: 0 1rem 1rem 1rem;
-  color: white;
+  padding: 0 4rem .5rem 4rem;
 
   &::before {
     content: "";
+    background: white;
+    opacity: .5;
     position: absolute;
     bottom: 0;
-    left: 20px;
-    right: 20px;
+    left: 0;
+    right: 0;
     height: 2px;
+    transition: all ease-in-out 300ms;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    border-left: .7rem solid transparent;
+    border-right: .7rem solid transparent;
+    border-top: .5rem solid transparent;
+    transform: translate(-50%, 100%);
     transition: all ease-in-out 300ms;
   }
 }
@@ -88,6 +102,9 @@
 .carousel-row {
   padding-top: 1vw;
   padding-bottom: 2vw;
+  &:hover {
+    z-index: 40;
+  }
 }
 
 .title-page-nav::before {
@@ -98,7 +115,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 2px;
+  height: 1px;
 }
 
 .search-input {
@@ -107,3 +124,4 @@
     width: 20rem;
   }
 }
+

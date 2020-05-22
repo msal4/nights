@@ -28,7 +28,7 @@ const NavLink: FunctionComponent<NavLinkProps> = ({
 
   return (
     <Link
-      className={`opacity-50 py-2 px-3 rounded-full hover:bg-gray-900 hover:opacity-100 ${
+      className={`opacity-50 py-2 px-3 hover:opacity-100 ${
         match && "font-bold opacity-100"
       } ${className}`}
       to={to}

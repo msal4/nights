@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { useParams, Switch, Route, useRouteMatch } from "react-router-dom"
-import { IoIosPlay } from "react-icons/io"
+import { useParams, Switch, Link, Route, useRouteMatch } from "react-router-dom"
+import { IoIosPlay, IoIosArrowBack } from "react-icons/io"
 import { useTranslation } from "react-i18next"
 
 import {
@@ -83,7 +83,11 @@ export default () => {
             src={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
             style={{ width: "100%", paddingBottom: "40%" }}
           >
-            <div className="flex justify-between items-center p-3 absolute bottom-0 left-0 right-0 v-gradient ">
+            <Link className="absolute top-0 left-0 px-8 py-6 flex items-center font-thin text-sm hover:opacity-75" to="/">
+              <IoIosArrowBack className="mr-1" />
+              {t('back')}
+            </Link>
+            <div className="p-8 flex justify-between items-center absolute bottom-0 left-0 right-0 v-gradient">
               <div className="mr-2">
                 {title.is_new && (
                   <span className="px-1 bg-green-600 text-black text-xs">
@@ -113,24 +117,24 @@ export default () => {
               </div>
             </div>
           </NImage>
-
-          {title.seasons.length > 1 && (
-            <SeasonDropdown
-              seasons={title.seasons}
-              currentSeason={selectedSeason}
-              onChange={setSelectedSeason}
-            />
-          )}
+          <div className="mx-auto" style={{ maxWidth: "20rem" }}>
+            {title.seasons.length > 1 && (
+              <SeasonDropdown
+                seasons={title.seasons}
+                currentSeason={selectedSeason}
+                onChange={setSelectedSeason}
+              />
+            )}
+          </div>
           <div className="flex w-full">
-            <div className="flex-1 mr-10">
+            <div className="mr-10" style={{ flex: 2 }}>
               <div className="title-page-nav relative my-10 flex">
                 {title.type === "s" && (
-                  <UnderlineLink className="mr-4" to={url}>
+                  <UnderlineLink to={url}>
                     {t("episodes")}
                   </UnderlineLink>
                 )}
                 <UnderlineLink
-                  className="mr-4"
                   to={title.type == "m" ? url : `${url}/info`}
                 >
                   {t("info")}
@@ -153,7 +157,7 @@ export default () => {
                 )}
               </Switch>
             </div>
-            <Trailer className="hidden md:block flex-1" title={title} />
+            <Trailer className="mt-12 hidden md:block flex-1" title={title} />
           </div>
         </div>
       )}

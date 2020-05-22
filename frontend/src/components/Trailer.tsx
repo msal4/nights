@@ -33,8 +33,8 @@ const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
   }, [src])
 
   return (
-    <div className={`relative mt-8 ${className}`}>
-      <h2 className="mb-10 text-4xl font-bold">{t("trailer")}</h2>
+    <div className={`relative ${className}`}>
+      <h2 className="mb-5 text-xl font-semibold">{t("trailer")}</h2>
       <div
         data-vjs-player
         style={{

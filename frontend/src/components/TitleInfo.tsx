@@ -34,11 +34,16 @@ const TitleInfo: FunctionComponent<TitleInfoProps> = ({ title }) => {
           <p>{Math.round(title.runtime / 60)} mins</p>
         </div>
       )}
+      <div className="mt-4 flex items-center">
+        <h4 className="mr-4 opacity-50">{t("releaseDate")}</h4>
+        <p>{new Date(title.released_at).toLocaleDateString()}</p>
+      </div>
       <div className="mt-4 flex">
         <h4 className="mr-4 opacity-50">{t("cast")}</h4>
         <p>
           {title.cast.map(actor => (
             <Link
+              key={actor.id}
               className="mr-4 hover:text-blue-500"
               to={`/search?cast=${actor.id}`}
             >

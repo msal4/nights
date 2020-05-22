@@ -16,8 +16,8 @@ const UnderlineLink: FunctionComponent<UnderlineLinkProps> = ({
   const match = useRouteMatch({ path: to, exact: activeOnlyWhenExact })
   return (
     <Link
-      className={`underline-before text-xl ${
-        match ? "highlight-before" : ""
+      className={`underline-before text-base opacity-75 ${
+        match ? "opacity-100 text-n-red highlight-before" : ""
       } ${className}`}
       to={to}
     >

@@ -19,6 +19,7 @@ const CWCard: FunctionComponent<CWCardProps> = ({hit}) => {
           ? `/movie/${hit.topic.id}/play`
           : `/series/${hit.topic.id}/${hit.season}/${hit.episode?.index}/play`
       }
+      titlePath={`/title/${hit.topic.id}`}
       runtime={hit.runtime}
       playbackPosition={hit.playback_position}
     />

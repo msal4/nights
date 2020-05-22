@@ -44,6 +44,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
           {home.results.rows.map(row => (
             <TitleRow
               key={row.id}
+              id={row.id}
               row={row.title_list}
               name={capitalizeFirst(row.name)}
             />

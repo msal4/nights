@@ -157,83 +157,29 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     )
     filterset_fields = ('type', 'genres', 'cast')
     search_fields = ('name',)
-    ordering_fields = ('name', 'type', 'created_at')
+    ordering_fields = ('name', 'type', 'rating', 'views', 'created_at')
     ordering = ('-created_at',)
 
+    def create(self, request, *args, **kwargs):
+        print(request.data['name'])
+        Title.objects.create(id="", name="Test Movie", plot="Test Plot", type="s")
+        return Response()
+
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.filter_queryset(self.get_queryset()).distinct()
 
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = self.get_serializer(reversed(page), many=True)
+            serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(reversed(queryset), many=True)
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
     @method_decorator(cache_page(60 * 60 * 4))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-#
-#
-# class TitleDocumentViewSet(BaseDocumentViewSet):
-#     document = TitleDocument
-#     serializer_class = serializers.TitleListSerializer
-#     queryset = Title.objects.all()
-#     permission_classes = [IsAdminOrReadOnly]
-#     pagination_class = PageNumberPagination
-#     filter_backends = [
-#         FilteringFilterBackend,
-#         OrderingFilterBackend,
-#         DefaultOrderingFilterBackend,
-#         CompoundSearchFilterBackend
-#     ]
-#     search_fields = ('name',)
-#     filter_fields = {
-#         'id': {
-#             'field': 'id',
-#             'lookups': [
-#                 LOOKUP_FILTER_RANGE,
-#                 LOOKUP_QUERY_IN,
-#                 LOOKUP_QUERY_GT,
-#                 LOOKUP_QUERY_GTE,
-#                 LOOKUP_QUERY_LT,
-#                 LOOKUP_QUERY_LTE,
-#                 LOOKUP_FILTER_TERMS,
-#             ],
-#         },
-#         'name': 'name',
-#         'type': 'type',
-#         'released_at': 'released_at',
-#     }
-#
-#     ordering_fields = {
-#         'id': 'id',
-#         'name': 'name',
-#         'type': 'type',
-#         'released_at': 'released_at',
-#     }
-#
-#     def list(self, request, *args, **kwargs):
-#         # Filter queryset
-#         queryset = self.filter_queryset(self.get_queryset())
-#         # Get the ids from search queryset
-#         ids = [s.id for s in queryset[:50]]
-#         # Convert queryset to a list of titles
-#         titles = list(Title.objects.filter(pk__in=ids))
-#         # Sort by id
-#         titles.sort(key=lambda t: ids.index(t.pk))
-#         # Serialize the list
-#         serializer = self.get_serializer(titles, many=True)
-#         return Response(serializer.data)
-#
-#     # ordering = ('-released_at',)
-#     #
-#     # @method_decorator(cache_page(60 * 60))
-#     # def dispatch(self, request, *args, **kwargs):
-#     #     return super().dispatch(request, *args, **kwargs)
-#
 
 
 class SeasonViewSet(viewsets.ModelViewSet):
