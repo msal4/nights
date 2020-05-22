@@ -4,6 +4,7 @@
 :root {
   font-size: 1.1vw;
 }
+
 @media screen and (max-width: 600px) {
   :root {
     font-size: 3vw;
@@ -15,6 +16,10 @@
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
+
+    &:focus {
+        outline: none !important;
+    }
 }
 
 .text-xss {
@@ -94,4 +99,11 @@
   right: 0;
   bottom: 0;
   height: 2px;
+}
+
+.search-input {
+  width: 15rem;
+  &:focus {
+    width: 20rem;
+  }
 }

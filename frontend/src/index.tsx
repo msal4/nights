@@ -1,5 +1,4 @@
-import "core-js/es/map"
-import "core-js/es/set"
+import "core-js/es"
 import "raf/polyfill"
 
 import React from "react"

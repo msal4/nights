@@ -35,7 +35,7 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
       </button>
       {menuOpened && (
         <div
-          className="mt-10 pt-2 absolute z-20 rounded bg-blue-900 overflow-auto"
+          className="mt-10 pt-2 absolute z-20 rounded bg-gray-800 overflow-auto"
           style={{ maxHeight: "10rem" }}
         >
           {topics

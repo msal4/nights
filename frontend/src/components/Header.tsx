@@ -83,16 +83,19 @@ export default () => {
           </NavLink>
         </div>
         <div className="md:flex">
-          <Search className="md:mx-2 md:w-56" />
+          <Search className="md:mx-2" />
           <div className="mt-4 md:mt-0 md:ml-2 flex items-center justify-between">
             <Link
-              className="md:mr-1 lg:mr-6 flex items-center md:hidden lg:flex"
+              className="flex items-center md:hidden lg:flex hover:opacity-75"
               to="/my_list"
             >
               <IoIosAdd />
               {t("myList")}
             </Link>
-            <div className="md:mr-1 lg:mr-6">
+            <button className={`${i18n.language === 'en' ? 'mb-1': 'mt-1'} md:ml-1 lg:ml-6 hover:opacity-75`} onClick={toggleLanguage}>
+              {t("lang")}
+            </button>
+            <div className="md:ml-1 lg:ml-6">
               {token ? (
                 <button className="hover:text-red-600" onClick={logout}>
                   {t("logout")}
@@ -106,7 +109,6 @@ export default () => {
                 </Link>
               )}
             </div>
-            <button onClick={toggleLanguage}>{t("lang")}</button>
           </div>
         </div>
       </div>

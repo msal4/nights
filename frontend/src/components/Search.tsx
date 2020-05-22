@@ -3,23 +3,18 @@ import React, { useState } from "react"
 import { useTranslation } from "react-i18next"
 import queryString from "query-string"
 import { useHistory } from "react-router-dom"
+import { History } from "history"
+
 import useConstant from "use-constant"
 import AwesomeDebouncePromise from "awesome-debounce-promise"
 import { useAsync } from "react-async-hook"
 import { useQuery } from "~hooks/query"
 
-const useSearchFocusState = (value: boolean) => {
-  const [searchFocused, setSearchFocused] = useState(value)
-  const focusSearch = () => setSearchFocused(true)
-  const blurSearch = () => setSearchFocused(false)
-  return { searchFocused, focusSearch, blurSearch }
-}
-
 export default (props: { className?: string }) => {
-  const { searchFocused, focusSearch, blurSearch } = useSearchFocusState(false)
   const { t } = useTranslation()
   const queryParams = useQuery()
-  const { searchText, setSearchText } = useDebouncedSearch(queryParams)
+  const history = useHistory()
+  const { searchText, setSearchText, searchFocused, focusSearch, blurSearch } = useDebouncedSearch(queryParams, history)
 
   return (
     <div
@@ -49,9 +44,14 @@ export default (props: { className?: string }) => {
   )
 }
 
-const useDebouncedSearch = (queryParams: any) => {
+const useDebouncedSearch = (queryParams: any, history: History) => {
   const [searchText, setSearchText] = useState(queryParams?.search || "")
-  const history = useHistory()
+  const { searchFocused, focusSearch, blurSearch } = useSearchFocusState(
+    false,
+    queryParams,
+    history,
+    searchText
+  )
 
   const searchTitles = (search: string) => {
     if (search) {
@@ -69,5 +69,21 @@ const useDebouncedSearch = (queryParams: any) => {
     searchText,
   ])
 
-  return { searchText, setSearchText }
+  return { searchText, setSearchText, searchFocused, focusSearch, blurSearch }
+}
+
+const useSearchFocusState = (
+  value: boolean,
+  queryParams: any,
+  history: History,
+  searchText: String
+) => {
+  const [searchFocused, setSearchFocused] = useState(value)
+  const focusSearch = () => {
+    setSearchFocused(true)
+    const query = queryString.stringify({ ...queryParams, search: searchText })
+    history.push(`/search?${query}`)
+  }
+  const blurSearch = () => setSearchFocused(false)
+  return { searchFocused, focusSearch, blurSearch }
 }
