@@ -18,8 +18,9 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
   const [menuOpened, setMenuOpened] = useState(false)
 
   return (
-    <div className="relative flex flex-col items-center mb-5" 
-        style={{ minWidth: '20rem' }}
+    <div
+      className="relative flex flex-col items-center mb-5"
+      style={{ minWidth: "20rem" }}
     >
       <button
         className={`py-2 px-6 w-full flex items-center relative transition-all duration-200 bg-gray-800 ${
@@ -28,31 +29,32 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
         onClick={() => setMenuOpened(!menuOpened)}
       >
         {capitalizeFirst(currentTopic.name)}
-      <IoIosArrowDown
-        className={`ml-auto mt-1 transition-transform duration-500 ease-in-out ${
-          menuOpened ? "transform rotate-180" : ""
-        }`}
-        size="1em"
-      /> 
+        <IoIosArrowDown
+          className={`ml-auto mt-1 transition-transform duration-500 ease-in-out ${
+            menuOpened ? "transform rotate-180" : ""
+          }`}
+          size="1em"
+        />
       </button>
       {menuOpened && (
         <div
           className="mt-12 pt-2 w-full absolute z-20 rounded bg-gray-800 overflow-auto"
           style={{ maxHeight: "10rem" }}
         >
-          {topics
-            .map(topic => (
-              <button
-                className={`block text-left px-6 py-1 mb-2 w-full text-white ${topic.id === currentTopic.id ? 'font-bold' : ''} hover:bg-blue-500 hover:text-black`}
-                key={topic.id}
-                onClick={() => {
-                  onChange(topic)
-                  setMenuOpened(false)
-                }}
-              >
-                {capitalizeFirst(topic.name)}
-              </button>
-            ))}
+          {topics.map(topic => (
+            <button
+              className={`block text-left px-6 py-1 mb-2 w-full text-white ${
+                topic.id === currentTopic.id ? "font-bold" : ""
+              } hover:bg-white hover:text-black`}
+              key={topic.id}
+              onClick={() => {
+                onChange(topic)
+                setMenuOpened(false)
+              }}
+            >
+              {capitalizeFirst(topic.name)}
+            </button>
+          ))}
         </div>
       )}
       {menuOpened && (
