@@ -9,13 +9,13 @@ const MyListPage: FunctionComponent = () => {
   const { titles, error } = useMyList()
 
   return (
-    <>
+    <div>
       <h1 className="mb-10 text-6xl font-bold">My List</h1>
       <div className="flex flex-wrap">
         {titles && titles.map(title => <Title key={title.id} title={title} />)}
         {error && <div>{error.detail}</div>}
       </div>
-    </>
+    </div>
   )
 }
 

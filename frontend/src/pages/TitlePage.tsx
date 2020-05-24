@@ -30,6 +30,7 @@ import Title from "~components/Title"
 import { useBackground } from "~context/background-context"
 import MyListButton from "~components/MyListButton"
 import Trailer from "~components/Trailer"
+import ScrollToTopOnMount from '~components/ScrollToTopOnMount'
 
 const Recommended = ({ titles }: { titles: ITitle[] }) => {
   return (
@@ -82,7 +83,8 @@ export default () => {
   const { title, selectedSeason, setSelectedSeason, loading } = useTitle()
 
   return (
-    <>
+    <div>
+      {/*<ScrollToTopOnMount />*/}
       <LoadingIndicator show={loading} />
       {title && (
         <div className="pb-40">
@@ -168,6 +170,6 @@ export default () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

@@ -125,3 +125,11 @@
   }
 }
 
+.route-wrapper {
+  position: relative;
+
+  &> div {
+    position: relative;
+  }
+}
+

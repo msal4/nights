@@ -39,7 +39,7 @@ const SearchPage: FunctionComponent = () => {
   if (error) return <div>{error.detail}</div>
 
   return (
-    <>
+    <div>
       <div className="mt-32 flex items-start">
         <div className="mt-16 mr-10">
           <div className="px-10 py-5 bg-gray-900" style={{ borderRadius: '1.5rem' }}>
@@ -97,7 +97,7 @@ const SearchPage: FunctionComponent = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

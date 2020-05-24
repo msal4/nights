@@ -1,5 +1,9 @@
-import React, { FunctionComponent } from "react"
+import React from "react"
+
+import LandingSitePromo from '~/components/LandingSitePromo'
 
 export default () => {
-  return <div>Landing Page</div>
+  return <div>
+    <LandingSitePromo action={} image={} title={} />
+  </div>
 }

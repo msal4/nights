@@ -25,7 +25,7 @@ const MoviePlayer: FunctionComponent = () => {
   }
 
   return (
-    <>
+    <div>
       <LoadingIndicator show={loading} />
       {title && (
         <Player
@@ -39,7 +39,7 @@ const MoviePlayer: FunctionComponent = () => {
           position={hit?.playback_position || 0}
         />
       )}
-    </>
+    </div>
   )
 }
 

@@ -1,31 +1,31 @@
-import React, { useState, useRef } from "react"
-import { useLocation } from "react-router-dom"
+import React, {useState, useRef} from "react"
+import {useLocation} from "react-router-dom"
 
 import Featured from "~components/Featured"
-import { HomeResults } from "~core/interfaces/home"
-import { PaginatedResults } from "~core/interfaces/paginated-results"
+import {HomeResults} from "~core/interfaces/home"
+import {PaginatedResults} from "~core/interfaces/paginated-results"
 import TitleRow from "~components/TitleRow"
 import CWRow from "~components/containers/CWRow"
-import { useTranslation } from "react-i18next"
+import {useTranslation} from "react-i18next"
 import Recommended from "~components/Recommended"
-import { getHome } from "~api/home"
-import { useAuth } from "~context/auth-context"
-import { ViewHit } from "~core/interfaces/view-hit"
-import { getHistory } from "~api/title"
-import { capitalizeFirst, getImageUrl } from "~utils/common"
+import {getHome} from "~api/home"
+import {useAuth} from "~context/auth-context"
+import {ViewHit} from "~core/interfaces/view-hit"
+import {getHistory} from "~api/title"
+import {capitalizeFirst, getImageUrl} from "~utils/common"
 import client from "~api/client"
-import { useDisposableEffect } from "~hooks"
+import {useDisposableEffect} from "~hooks"
 import LoadingIndicator from "~components/LoadingIndicator"
-import { useBackground } from "~context/background-context"
-import { ImageQuality } from "~core/interfaces/title"
+import {useBackground} from "~context/background-context"
+import {ImageQuality} from "~core/interfaces/title"
 
-const HomePage = ({ filters = {} }: { filters?: {} }) => {
-  const { t } = useTranslation()
-  const { home, continueWatching, loading } = useHome(filters)
+const HomePage = ({filters = {}}: {filters?: {}}) => {
+  const {t} = useTranslation()
+  const {home, continueWatching, loading} = useHome(filters)
 
   return (
-    <>
-      <LoadingIndicator show={loading} />
+    <div>
+      {/*   <LoadingIndicator show={loading} />
       {home && (
         <>
           <Featured data={home.results.featured} />
@@ -52,7 +52,8 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
           ))}
         </>
       )}
-    </>
+        */}
+    </div>
   )
 }
 
@@ -67,9 +68,9 @@ const useHome = (filters: {}) => {
   const [loading, setLoading] = useState(false)
   const [continueWatching, setContinueWatching] = useState<ViewHit[]>(null)
   const [error, setError] = useState<{}>(null)
-  const { changeBackground } = useBackground()
-  const { token } = useAuth()
-  const { pathname } = useLocation()
+  const {changeBackground} = useBackground()
+  const {token} = useAuth()
+  const {pathname} = useLocation()
 
   const getHomeRows = async (disposed: boolean) => {
     try {
