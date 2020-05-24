@@ -1,33 +1,33 @@
-import React, {FunctionComponent, useState} from 'react'
-import {useTranslation} from 'react-i18next'
-import {Link, Redirect, useLocation} from 'react-router-dom'
+import React, { FunctionComponent, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { Link, Redirect, useLocation } from "react-router-dom"
 
-import InfoIcon from '~icons/InfoIcon'
-import PlusIcon from '~icons/PlusIcon'
-import PlayIcon from '~icons/PlayIcon' 
-import {Title} from '~core/interfaces/title'
-import {getImageUrl} from '~utils/common'
-import '../styles/Title.scss'
-import {addToMyList, removeFromMyList, checkMyList} from '~api/title'
-import {useAuth} from '~context/auth-context'
+import InfoIcon from "~icons/InfoIcon"
+import PlusIcon from "~icons/PlusIcon"
+import PlayIcon from "~icons/PlayIcon"
+import { Title } from "~core/interfaces/title"
+import { getImageUrl } from "~utils/common"
+import "../styles/Title.scss"
+import { addToMyList, removeFromMyList, checkMyList } from "~api/title"
+import { useAuth } from "~context/auth-context"
 
-import {FiCheck, FiInfo} from 'react-icons/fi'
-import {FaCheck, FaPlus} from 'react-icons/fa'
+import { FiCheck, FiInfo } from "react-icons/fi"
+import { FaCheck, FaPlus } from "react-icons/fa"
 
 export interface TitleProps {
   title: Title
 }
 
-const Title: FunctionComponent<TitleProps> = ({title}) => {
-  const {t} = useTranslation()
-  const {token} = useAuth()
+const Title: FunctionComponent<TitleProps> = ({ title }) => {
+  const { t } = useTranslation()
+  const { token } = useAuth()
   const [inMyList, setInMyList] = useState(false)
   const [redirect, setRedirect] = useState(false)
 
-  if (redirect) return <Redirect to="/login"/>
+  if (redirect) return <Redirect to="/login" />
 
   const image = getImageUrl(title.images[0]?.url)
-  const tmdbImage = image.replace('250v', '250tmdb')
+  const tmdbImage = image.replace("250v", "250tmdb")
 
   return (
     <div
@@ -46,7 +46,7 @@ const Title: FunctionComponent<TitleProps> = ({title}) => {
       <div className="hidden md:flex top-info mb-2 justify-end">
         {!inMyList ? (
           <FaPlus
-            style={{ zIndex: 2}}
+            style={{ zIndex: 2 }}
             className="mr-3 text-xss text-black card-container-slide-reveal transition-500"
             onClick={async () => {
               if (!token) return setRedirect(true)
@@ -60,7 +60,7 @@ const Title: FunctionComponent<TitleProps> = ({title}) => {
           />
         ) : (
           <FaCheck
-            style={{ zIndex: 2}}
+            style={{ zIndex: 2 }}
             fontSize=".5rem"
             className="text-black text-xss mr-3 card-container-slide-reveal transition-500"
             onClick={async () => {
@@ -75,33 +75,36 @@ const Title: FunctionComponent<TitleProps> = ({title}) => {
           />
         )}
         <Link to={`/title/${title.id}`}>
-          <FiInfo className="text-black text-xss card-container-slide-reveal transition-200"/>
+          <FiInfo className="text-black text-xss card-container-slide-reveal transition-200" />
         </Link>
       </div>
-      <Link className="absolute inset-0" to={`/title/${title.id}`} style={{ zIndex: 1}}/>
+      <Link
+        className="absolute inset-0"
+        to={`/title/${title.id}`}
+        style={{ zIndex: 1 }}
+      />
       <div
-
         className="title-poster block relative bg-black font-light"
         style={{
           backgroundImage: `url(${tmdbImage}), url(${image})`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
+          backgroundPosition: "center",
+          backgroundSize: "cover",
         }}
       >
         <span className="absolute inset-0 w-full h-full flex flex-col justify-between items-center">
           <span className="m-1 bg-green-600 text-black rounded-sm px-1 self-start">
-            {title.is_new && (title.type === 's' ? t('newEpisodes') : t('new'))}
+            {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
           </span>
           <Link
             draggable={false}
             to={
-              title.type === 's'
+              title.type === "s"
                 ? `/series/${title.id}/auto/auto/play`
                 : `/movie/${title.id}/play`
             }
             style={{ zIndex: 2 }}
           >
-            <PlayIcon className="hidden md:block card-container-reveal"/>
+            <PlayIcon className="hidden md:block card-container-reveal" />
           </Link>
           <div className="self-stretch v-gradient">
             <h4 className="card-container-reveal self-start font-medium md:text-xs pl-1">
@@ -110,7 +113,7 @@ const Title: FunctionComponent<TitleProps> = ({title}) => {
             <div className="p-1 flex justify-between items-center self-stretch">
               <span>
                 {title.runtime
-                  ? Math.floor(title.runtime / 60) + ' min'
+                  ? Math.floor(title.runtime / 60) + " min"
                   : title.rated}
               </span>
               <span>{title.rating}</span>
@@ -122,7 +125,7 @@ const Title: FunctionComponent<TitleProps> = ({title}) => {
         {title.genres
           .slice(0, 3)
           .map(g => g.name.charAt(0).toUpperCase() + g.name.slice(1))
-          .join(' • ')}
+          .join(" • ")}
       </div>
     </div>
   )

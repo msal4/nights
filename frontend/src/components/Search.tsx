@@ -14,7 +14,13 @@ export default (props: { className?: string }) => {
   const { t } = useTranslation()
   const queryParams = useQuery()
   const history = useHistory()
-  const { searchText, setSearchText, searchFocused, focusSearch, blurSearch } = useDebouncedSearch(queryParams, history)
+  const {
+    searchText,
+    setSearchText,
+    searchFocused,
+    focusSearch,
+    blurSearch,
+  } = useDebouncedSearch(queryParams, history)
 
   return (
     <div

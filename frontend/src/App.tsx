@@ -5,8 +5,8 @@ import { I18nextProvider } from "react-i18next"
 import "./styles/App.scss"
 import i18n from "../i18n"
 import { AuthProvider } from "~context/auth-context"
-import AppRouter from "~pages/Router"
 import { BackgroundProvider } from "~context/background-context"
+import AppRouter from "~pages/Router"
 
 export const App = () => {
   return (

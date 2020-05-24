@@ -49,7 +49,7 @@ export default () => {
   return (
     <nav className="mb-4 py-4 relative z-10 md:flex md:justify-between font-thin">
       <div className="flex items-center justify-between">
-        <Link className="select-none" to="/">
+        <Link className="select-none" to="/home">
           <img
             className="h-16 object-contain"
             src="/static/frontend/images/logo.svg"
@@ -71,7 +71,7 @@ export default () => {
         } md:block md:flex md:items-center md:mt-0 md:justify-between md:w-full`}
       >
         <div className="flex flex-col md:flex-row justify-between md:ml-6 md:text-sm lg:text-base">
-          <NavLink to="/">{t("home")}</NavLink>
+          <NavLink to="/home">{t("home")}</NavLink>
           <NavLink className="md:ml-2" to="/movies">
             {t("movies")}
           </NavLink>
@@ -92,7 +92,12 @@ export default () => {
               <IoIosAdd />
               {t("myList")}
             </Link>
-            <button className={`${i18n.language === 'en' ? 'mb-1': 'mt-1'} md:ml-1 lg:ml-6 hover:opacity-75`} onClick={toggleLanguage}>
+            <button
+              className={`${
+                i18n.language === "en" ? "mb-1" : "mt-1"
+              } md:ml-1 lg:ml-6 hover:opacity-75`}
+              onClick={toggleLanguage}
+            >
               {t("lang")}
             </button>
             <div className="md:ml-1 lg:ml-6">

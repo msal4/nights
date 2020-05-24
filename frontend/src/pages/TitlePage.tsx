@@ -1,5 +1,12 @@
 import React, { useState } from "react"
-import { useParams, Switch, Link, Route, useRouteMatch } from "react-router-dom"
+import {
+  useParams,
+  Switch,
+  Link,
+  Route,
+  useRouteMatch,
+  useHistory,
+} from "react-router-dom"
 import { IoIosPlay, IoIosArrowBack } from "react-icons/io"
 import { useTranslation } from "react-i18next"
 
@@ -69,6 +76,7 @@ const useTitle = () => {
 }
 
 export default () => {
+  const history = useHistory()
   const { path, url } = useRouteMatch()
   const { t } = useTranslation()
   const { title, selectedSeason, setSelectedSeason, loading } = useTitle()
@@ -83,10 +91,13 @@ export default () => {
             src={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
             style={{ width: "100%", paddingBottom: "40%" }}
           >
-            <Link className="absolute top-0 left-0 px-8 py-6 flex items-center font-thin text-sm hover:opacity-75" to="/">
+            <button
+              className="absolute top-0 left-0 px-8 py-6 flex items-center font-thin text-sm hover:opacity-75"
+              onClick={() => history.goBack()}
+            >
               <IoIosArrowBack className="mr-1" />
-              {t('back')}
-            </Link>
+              {t("back")}
+            </button>
             <div className="p-8 flex justify-between items-center absolute bottom-0 left-0 right-0 v-gradient">
               <div className="mr-2">
                 {title.is_new && (
@@ -130,13 +141,9 @@ export default () => {
             <div className="mr-10" style={{ flex: 2 }}>
               <div className="title-page-nav relative my-10 flex">
                 {title.type === "s" && (
-                  <UnderlineLink to={url}>
-                    {t("episodes")}
-                  </UnderlineLink>
+                  <UnderlineLink to={url}>{t("episodes")}</UnderlineLink>
                 )}
-                <UnderlineLink
-                  to={title.type == "m" ? url : `${url}/info`}
-                >
+                <UnderlineLink to={title.type == "m" ? url : `${url}/info`}>
                   {t("info")}
                 </UnderlineLink>
                 <UnderlineLink to={`${url}/recommended`}>

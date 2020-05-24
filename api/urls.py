@@ -17,9 +17,6 @@ router.register(r'history', views.WatchHistoryViewSet, basename='History')
 urlpatterns = [
     path('', include(router.urls)),
     path('auth', include('rest_framework.urls')),
-    # path('history/', views.WatchHistoryView.as_view(), name='history-list'),
-    # path('history/<int:pk>/', views.WatchHistoryView.as_view(),
-    #  name='history-detail'),
     path('test/', views.test_end),
     path('home/', views.HomeView.as_view(), name='home'),
     path('upload/<str:directory>/<str:filename>/',

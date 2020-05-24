@@ -3,7 +3,7 @@ from django.db.models import Q, Count, F
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.decorators.vary import vary_on_cookie
+from django.views.decorators.vary import vary_on_cookie, vary_on_headers
 from django.conf import settings
 from rest_framework import status, filters, mixins, generics
 from rest_framework import viewsets, views, parsers, permissions
@@ -162,7 +162,8 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         print(request.data['name'])
-        Title.objects.create(id="", name="Test Movie", plot="Test Plot", type="s")
+        Title.objects.create(id="", name="Test Movie",
+                             plot="Test Plot", type="s")
         return Response()
 
     def list(self, request, *args, **kwargs):
@@ -187,10 +188,10 @@ class SeasonViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.SeasonSerializer
     permission_classes = [IsAdminOrReadOnly]
 
-    # @method_decorator(cache_page(60))
-    # @vary_on_cookie
-    # def dispatch(self, request, *args, **kwargs):
-    #     return super().dispatch(request, *args, **kwargs)
+    @method_decorator(cache_page(60))
+    @vary_on_headers('Authorization')
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class EpisodeViewSet(viewsets.ModelViewSet):
