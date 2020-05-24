@@ -34,6 +34,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
           )}
           {home.results.recently_added && (
             <TitleRow
+              id=""
               row={home.results.recently_added}
               name={t("recentlyAdded")}
             />
