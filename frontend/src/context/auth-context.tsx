@@ -1,15 +1,17 @@
-import React, { FunctionComponent, useState } from "react"
+import React, {FunctionComponent, useState} from "react"
 
 import AuthToken from "~utils/auth-token"
-import { loginUser, registerUser } from "~api/user"
+import {loginUser, registerUser} from "~api/user"
 
 const AuthContext = React.createContext(null)
 
+type LoginFunction = (username: string, password: string) => Promise<void>
+
 export interface Auth {
   token: string
-  login: (username: string, password: string) => Promise<void>
+  login: LoginFunction
+  register: LoginFunction
   logout: VoidFunction
-  register: (email: string, username: string, password: string) => Promise<void>
 }
 
 const useToken = () => {
@@ -22,22 +24,18 @@ const useToken = () => {
     AuthToken.remove()
     setToken(null)
   }
-  return { token, storeToken, removeToken }
+  return {token, storeToken, removeToken}
 }
 
 const AuthProvider: FunctionComponent<{}> = props => {
-  const { token, storeToken, removeToken } = useToken()
+  const {token, storeToken, removeToken} = useToken()
 
-  const register = async (
-    email: string,
-    username: string,
-    password: string
-  ) => {
-    await registerUser(email, username, password)
+  const register: LoginFunction = async (username, password) => {
+    await registerUser("", username, password)
     await login(username, password)
   }
 
-  const login = async (username: string, password: string) => {
+  const login: LoginFunction = async (username, password) => {
     const data = await loginUser(username, password)
     storeToken(data.auth_token)
   }
@@ -46,7 +44,7 @@ const AuthProvider: FunctionComponent<{}> = props => {
 
   return (
     <AuthContext.Provider
-      value={{ token, login, logout, register }}
+      value={{token, login, logout, register}}
       {...props}
     />
   )
@@ -54,4 +52,4 @@ const AuthProvider: FunctionComponent<{}> = props => {
 
 const useAuth = () => React.useContext<Auth>(AuthContext)
 
-export { AuthProvider, useAuth }
+export {AuthProvider, useAuth}

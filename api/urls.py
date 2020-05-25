@@ -13,11 +13,12 @@ router.register(r'seasons', views.SeasonViewSet)
 router.register(r'episodes', views.EpisodeViewSet)
 router.register(r'my_list', views.MyListViewSet, basename='MyList')
 router.register(r'history', views.WatchHistoryViewSet, basename='History')
+router.register(r'landing_promos', views.LandingPromoViewSet, basename='LandingPromos')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('auth', include('rest_framework.urls')),
-    path('test/', views.test_end),
+    path('promos/', views.list_promos),
     path('home/', views.HomeView.as_view(), name='home'),
     path('upload/<str:directory>/<str:filename>/',
          FileUploadView.as_view(), name='fileupload'),

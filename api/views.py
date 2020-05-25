@@ -12,6 +12,8 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.parsers import FileUploadParser
+
 from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_FILTER_RANGE,
     LOOKUP_QUERY_IN,
@@ -30,22 +32,32 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 )
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
 
+
 from .documents import TitleDocument
+from .helpers import get_featured
 from .mixins import GetSerializerClassMixin
-from .models import Title, Episode, Season, Genre, Cast, ViewHit
+from .models import Title, Episode, Season, Genre, Cast, ViewHit, LandingPromo
 from .paginators import HomeViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import documents
 
 
+@cache_page(60 * 60 * 4)
 @api_view(['GET'])
-def test_end(request, format=None):
-    result = TitleDocument.search().filter("term", name="game of thrones")
-    print(result.count())
-    for s in result:
-        print(s.name)
-    return Response("ok")
+def list_promos(request, *args, **kwargs):
+    queryset = Title.objects.all()
+    params = request.query_params
+
+    # Filters
+    if 'type' in params and params['type']:
+        queryset = queryset.filter(type=params['type'])
+    if 'rated' in params and params['rated']:
+        queryset = queryset.filter(rated=params['rated'])
+    if 'limit' in params and params['limit']:
+        return Response(get_featured(queryset, limit=int(params['limit'])))
+
+    return Response(get_featured(queryset))
 
 
 class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
@@ -74,16 +86,8 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
 
     @staticmethod
     def _get_recommended(hit, titles):
-        title = titles.filter(genres__in=hit.topic.genres.all())[0]
-        return serializers.TitleSerializer(title, read_only=True).data
-
-    @staticmethod
-    def _get_featured(titles):
-        # Featured titles
-        two_days_ago = timezone.now() - timezone.timedelta(2)
-        trending = Count('hits', filter=Q(hits__hit_date__gt=two_days_ago))
-        featured = titles.annotate(trending=trending).order_by('-trending')[:4]
-        return serializers.TitleSerializer(featured, many=True, read_only=True).data
+        return get_featured(titles.filter(genres__in=hit.topic.genres.all()), limit=5, index=4)
+        # return serializers.TitleSerializer(title, read_only=True).data
 
     def _get_recently_added(self, titles):
         recent = titles.order_by('-updated_at')[:10]
@@ -106,7 +110,7 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
         if 'just_rows' in request.query_params:
             return self.get_paginated_response(data)
 
-        data['featured'] = self._get_featured(titles)
+        data['featured'] = get_featured(titles)
         data['recently_added'] = self._get_recently_added(titles)
 
         # Recently watched
@@ -353,3 +357,27 @@ class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                 type=topic_type, season=season, episode=episode)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# Landing
+class LandingPromoViewSet(viewsets.ModelViewSet):
+#    parser_classes = (FileUploadParser,)
+    queryset = LandingPromo.objects.all()
+    serializer_class = serializers.LandingPromoSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+#    def post(self, request, *args, **kwargs):
+#        serializer = serializers.LandingPromoSerializer(data=request.data)
+#
+#        if serializer.is_valid():
+#            serializer.save()
+#            return Response(serializer.data, status=status.HTTP_201_CREATED)
+#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def paginate_queryset(self, queryset, view=None):
+        return None
+
+    @method_decorator(cache_page(60 * 60 * 10))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+

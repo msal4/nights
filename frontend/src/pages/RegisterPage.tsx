@@ -1,15 +1,15 @@
-import React, { FunctionComponent, useRef, useState } from "react"
-import { useAuth } from "~context/auth-context"
-import { Redirect, Link } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import React, {FunctionComponent, useRef, useState} from "react"
+import {useAuth} from "~context/auth-context"
+import {Redirect, Link} from "react-router-dom"
+import {useTranslation} from "react-i18next"
 
 const RegisterPage: FunctionComponent = () => {
-  const { token, register } = useAuth()
+  const {token, register} = useAuth()
   const emailRef = useRef<HTMLInputElement>(null)
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const [error, setError] = useState(null)
 
   const onRegister = async (e: React.MouseEvent) => {
@@ -26,7 +26,7 @@ const RegisterPage: FunctionComponent = () => {
     }
   }
 
-  if (token) return <Redirect to="/" />
+  if (token) return <Redirect to="/landing" />
 
   return (
     <div className="pt-10">
@@ -38,13 +38,6 @@ const RegisterPage: FunctionComponent = () => {
           type="text"
           name="username"
           placeholder={t("username")}
-        />
-        <input
-          ref={emailRef}
-          className="py-4 px-6 block mt-4 rounded-full self-stretch transition-all duration-200 bg-gray-900 focus:shadow-outline"
-          type="text"
-          name="email"
-          placeholder={t("email")}
         />
         <input
           ref={passwordRef}
@@ -59,7 +52,7 @@ const RegisterPage: FunctionComponent = () => {
         >
           {t("register")}
         </button>
-        <Link className="mt-4" to="/login">
+        <Link className="mt-4" to="/landing/login">
           <span className="opacity-75">{t("haveAnAccount")}</span>{" "}
           <span className="text-blue-600">{t("login")}</span>
         </Link>

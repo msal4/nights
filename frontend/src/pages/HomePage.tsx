@@ -1,23 +1,22 @@
 import React, {useState, useRef} from "react"
 import {useLocation} from "react-router-dom"
+import {useTranslation} from "react-i18next"
 
 import Featured from "~components/Featured"
-import {HomeResults} from "~core/interfaces/home"
-import {PaginatedResults} from "~core/interfaces/paginated-results"
 import TitleRow from "~components/TitleRow"
 import CWRow from "~components/containers/CWRow"
-import {useTranslation} from "react-i18next"
 import Recommended from "~components/Recommended"
-import {getHome} from "~api/home"
-import {useAuth} from "~context/auth-context"
-import {ViewHit} from "~core/interfaces/view-hit"
-import {getHistory} from "~api/title"
-import {capitalizeFirst, getImageUrl} from "~utils/common"
-import client from "~api/client"
-import {useDisposableEffect} from "~hooks"
 import LoadingIndicator from "~components/LoadingIndicator"
+import {HomeResults} from "~core/interfaces/home"
+import {PaginatedResults} from "~core/interfaces/paginated-results"
+import {ViewHit} from "~core/interfaces/view-hit"
+import client from "~api/client"
+import {getHome} from "~api/home"
+import {getHistory} from "~api/title"
+import {useAuth} from "~context/auth-context"
 import {useBackground} from "~context/background-context"
-import {ImageQuality} from "~core/interfaces/title"
+import {useDisposableEffect} from "~hooks"
+import {capitalizeFirst} from "~utils/common"
 
 const HomePage = ({filters = {}}: {filters?: {}}) => {
   const {t} = useTranslation()
@@ -25,7 +24,7 @@ const HomePage = ({filters = {}}: {filters?: {}}) => {
 
   return (
     <div>
-      {/*   <LoadingIndicator show={loading} />
+      <LoadingIndicator show={loading} />
       {home && (
         <>
           <Featured data={home.results.featured} />
@@ -52,7 +51,6 @@ const HomePage = ({filters = {}}: {filters?: {}}) => {
           ))}
         </>
       )}
-        */}
     </div>
   )
 }

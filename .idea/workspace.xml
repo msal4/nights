@@ -2,11 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6e42863-a63e-4e4e-924d-1f75d3f6a8c9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/ScrollToTop.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/helpers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/.Search.tsx.swp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/typescript.vim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CinemaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CinemaPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LandingPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/MoviePlayer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/MoviePlayer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/MyListPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/MyListPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Router.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Router.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/SearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/SearchPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TitlePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TitlePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/styles/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/App.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +73,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="show.migrate.to.gradle.popup" value="false" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
@@ -205,6 +216,8 @@
       <workItem from="1589997911312" duration="108000" />
       <workItem from="1590049756104" duration="9000" />
       <workItem from="1590161215622" duration="1566000" />
+      <workItem from="1590339353361" duration="4072000" />
+      <workItem from="1590345628618" duration="211000" />
     </task>
     <servers />
   </component>
@@ -273,10 +286,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="308" y="200" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1587140109484" />
-    <state x="249" y="86" key="SettingsEditor" timestamp="1590161408407">
+    <state x="249" y="86" key="SettingsEditor" timestamp="1590339952192">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="249" y="86" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1590161408407" />
+    <state x="249" y="86" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1590339952192" />
     <state x="355" y="84" key="SettingsEditor/41.23.1399.877@41.23.1399.877" timestamp="1587038708281" />
     <state width="500" height="445" key="SwitcherDM" timestamp="1587145191097">
       <screen x="0" y="0" width="1440" height="900" />
@@ -292,10 +305,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="97" y="2" key="new project wizard/0.0.1440.900@0.0.1440.900" timestamp="1586618529094" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1589986725258">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1590345427338">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1589986725258" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1590345427338" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/40.23.1400.877@40.23.1400.877" timestamp="1589472041066" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/41.23.1399.877@41.23.1399.877" timestamp="1589454757156" />
   </component>

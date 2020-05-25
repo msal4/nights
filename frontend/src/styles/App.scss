@@ -34,6 +34,22 @@
   color: $color-blue !important;
 }
 
+.bg-n-red {
+  background-color: $color-red;
+}
+
+.bg-n-blue {
+  background-color: $color-blue;
+}
+
+.hover\:bg-n-red:hover {
+  background-color: $color-red;
+}
+
+.hover\:bg-n-blue:hover {
+  background-color: $color-blue;
+}
+
 .v-gradient {
   background: linear-gradient(transparent, black);
 }

@@ -1,5 +1,5 @@
 import React from "react"
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
+import {Switch, Route, BrowserRouter as Router} from "react-router-dom"
 
 import Header from "~components/Header"
 import Background from "~components/Background"
@@ -11,7 +11,7 @@ export default () => {
   return (
     <>
       <Router>
-        <ScrollToTop />
+        {/*        <ScrollToTop /> */}
         <Background />
         <Header />
         <Switch>

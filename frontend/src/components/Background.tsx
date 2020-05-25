@@ -1,8 +1,12 @@
-import { useBackground } from "~context/background-context"
+import {useBackground} from "~context/background-context"
 import React from "react"
+import {useRouteMatch} from "react-router-dom"
 
 export default () => {
-  const { background } = useBackground()
+  const {background} = useBackground()
+  const match = useRouteMatch({path: '/landing'})
+  if (match) return null
+
   return (
     <div
       className="absolute inset-0 transition-all duration-1000"

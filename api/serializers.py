@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from .documents import TitleDocument
 from .models import Title, Season, Episode, Topic, Genre, \
-    Cast, ViewHit, Image, Media, Subtitle, Video, Trailer
+    Cast, ViewHit, Image, Media, Subtitle, Video, Trailer, LandingPromo
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -199,3 +199,10 @@ class HomeGenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ('id', 'name', 'title_list')
+
+
+class LandingPromoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LandingPromo
+        fields = '__all__'
+

@@ -1,39 +1,39 @@
-import React, { FunctionComponent } from "react"
-import { useTranslation } from "react-i18next"
+import React, {FunctionComponent} from "react"
+import {useTranslation} from "react-i18next"
 
 import CarouselRow from "../CarouselRow"
-import { ViewHit } from "~core/interfaces/view-hit"
+import {ViewHit} from "~core/interfaces/view-hit"
 import CWCard from "~components/containers/CWCard"
+import {ResponsiveType} from "react-multi-carousel"
 
 export interface TitleRowProps {
   row: ViewHit[]
+  responsive?: ResponsiveType
+  showTitle?: boolean
 }
 
-const CWRow: FunctionComponent<TitleRowProps> = ({ row }) => {
-  const { t } = useTranslation()
+const CWRow: FunctionComponent<TitleRowProps> = ({row, responsive, showTitle = true}) => {
+  const {t} = useTranslation()
 
   return (
     <CarouselRow
       className="pb-6"
-      title={t("continueWatching")}
+      title={showTitle && t("continueWatching")}
       path=""
       responsive={{
-        superLargeDesktop: {
-          breakpoint: { max: 6000, min: 3000 },
-          items: 3,
-        },
         desktop: {
-          breakpoint: { max: 3000, min: 1024 },
+          breakpoint: {max: 6000, min: 464},
           items: 3,
         },
         tablet: {
-          breakpoint: { max: 1024, min: 464 },
+          breakpoint: {max: 1024, min: 464},
           items: 2,
         },
         mobile: {
-          breakpoint: { max: 464, min: 0 },
+          breakpoint: {max: 464, min: 0},
           items: 1,
         },
+        ...(responsive || {})
       }}
     >
       {row.map(hit => (

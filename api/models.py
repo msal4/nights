@@ -173,3 +173,13 @@ class Trailer(Media):
 
 class Subtitle(Media):
     pass
+
+
+class LandingPromo(models.Model):
+    title = models.CharField(max_length=60)
+    body = models.CharField(max_length=250)
+    image = models.ImageField(upload_to='landing_promos')
+    
+    def __str__(self):
+        return self.title
+    
