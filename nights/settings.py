@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'frontend_new.apps.FrontendNewConfig',
     'api.apps.ApiConfig',
     'frontend.apps.FrontendConfig',
     'django.contrib.admin',
@@ -150,8 +151,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-#        'rest_framework.authentication.BasicAuthentication',
-#        'rest_framework.authentication.SessionAuthentication',
+        #        'rest_framework.authentication.BasicAuthentication',
+        #        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
