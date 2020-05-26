@@ -60,7 +60,7 @@ i18n
           contactUsOnFacebook: "Contact Us on Facebook",
           copyright: "Copyright © 2020 1001Nights All rights reserved.",
           downloadYourEssentials: "Download Your Essentials",
-          pcSoftwareGames: "PC sofware, games and more...",
+          pcSoftwareGames: "PC software, games and more...",
           availableNowOnAllDevices: "Available Now on All Devices",
           enjoyAllYourFavoriteMedia: "Enjoy all your favorite media at one place, wherever and whenever you want.",
         },
