@@ -18,7 +18,7 @@ const CWPage: FunctionComponent = () => {
 
   return titles && <>
     <h1 className="text-xl font-semibold">{t('continueWatching')}</h1>
-    <div className="rounded-lg mt-4" style={{background: '#00000055'}}>
+    <div className="mt-4 px-8" style={{borderRadius: '3rem', background: '#00000033'}}>
       <CWRow responsive={{desktop: {breakpoint: {max: 6000, min: 464}, items: 2}}} showTitle={false} row={titles} />
     </div>
   </>

@@ -47,6 +47,7 @@ xmap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
 xmap af <Plug>(coc-funcobj-a)
 xmap gx <Plug>NetrwBrowseXVis
+smap gx <Plug>NetrwBrowseXVis
 nmap gx <Plug>NetrwBrowseX
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -59,18 +60,18 @@ omap if <Plug>(coc-funcobj-i)
 xmap if <Plug>(coc-funcobj-i)
 nnoremap j gj
 nnoremap k gk
-snoremap <C-R> "_c
-snoremap <silent> <C-H> c
-snoremap <silent> <Del> c
-snoremap <silent> <BS> c
-nnoremap <silent> <Plug>(Prettier) :Prettier
-nnoremap <silent> <Plug>(PrettierAsync) :PrettierAsync
-nnoremap <silent> <Plug>(PrettierFragment) :PrettierFragment
-nnoremap <silent> <Plug>(PrettierPartial) :PrettierPartial
-nnoremap <silent> <Plug>(PrettierVersion) :PrettierVersion
-nnoremap <silent> <Plug>(PrettierCli) :PrettierCli
-nnoremap <silent> <Plug>(PrettierCliVersion) :PrettierCliVersion
 nnoremap <silent> <Plug>(PrettierCliPath) :PrettierCliPath
+nnoremap <silent> <Plug>(PrettierCliVersion) :PrettierCliVersion
+nnoremap <silent> <Plug>(PrettierCli) :PrettierCli
+nnoremap <silent> <Plug>(PrettierVersion) :PrettierVersion
+nnoremap <silent> <Plug>(PrettierPartial) :PrettierPartial
+nnoremap <silent> <Plug>(PrettierFragment) :PrettierFragment
+nnoremap <silent> <Plug>(PrettierAsync) :PrettierAsync
+nnoremap <silent> <Plug>(Prettier) :Prettier
+snoremap <silent> <BS> c
+snoremap <silent> <Del> c
+snoremap <silent> <C-H> c
+snoremap <C-R> "_c
 vnoremap <silent> <Plug>NetrwBrowseXVis :call netrw#BrowseXVis()
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand((exists("g:netrw_gx")? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())
 onoremap <silent> <Plug>(coc-classobj-a) :call coc#rpc#request('selectSymbolRange', [v:false, '', ['Interface', 'Struct', 'Class']])
@@ -169,10 +170,6 @@ wincmd _ | wincmd |
 vsplit
 1wincmd h
 wincmd w
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
@@ -180,11 +177,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 89 + 89) / 178)
-exe '2resize ' . ((&lines * 24 + 24) / 49)
-exe 'vert 2resize ' . ((&columns * 88 + 89) / 178)
-exe '3resize ' . ((&lines * 21 + 24) / 49)
-exe 'vert 3resize ' . ((&columns * 88 + 89) / 178)
+exe 'vert 1resize ' . ((&columns * 133 + 102) / 204)
+exe 'vert 2resize ' . ((&columns * 70 + 102) / 204)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -312,28 +306,26 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
+13
+normal! zo
 16
 normal! zo
-22
+18
 normal! zo
-34
+26
 normal! zo
-41
+28
 normal! zo
-42
+37
 normal! zo
-55
+38
 normal! zo
-61
-normal! zo
-62
-normal! zo
-let s:l = 42 - ((21 * winheight(0) + 23) / 46)
+let s:l = 53 - ((38 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-42
-normal! 020|
+53
+normal! 010|
 wincmd w
 argglobal
 if bufexists("frontend/src/styles/LandingSitePromo.scss") | buffer frontend/src/styles/LandingSitePromo.scss | else | edit frontend/src/styles/LandingSitePromo.scss | endif
@@ -463,163 +455,33 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-11
+2
 normal! zo
-20
+17
 normal! zo
-27
+26
 normal! zo
-let s:l = 39 - ((16 * winheight(0) + 12) / 24)
+58
+normal! zo
+62
+normal! zo
+66
+normal! zo
+let s:l = 3 - ((2 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-39
-normal! 013|
+3
+normal! 034|
 wincmd w
-argglobal
-if bufexists("frontend/src/api/user.ts") | buffer frontend/src/api/user.ts | else | edit frontend/src/api/user.ts | endif
-setlocal keymap=
-setlocal noarabic
-setlocal autoindent
-setlocal backupcopy=
-setlocal balloonexpr=
-setlocal nobinary
-setlocal nobreakindent
-setlocal breakindentopt=
-setlocal bufhidden=
-setlocal buflisted
-setlocal buftype=
-setlocal nocindent
-setlocal cinkeys=0{,0},0),0],:,0#,!^F,o,O,e
-setlocal cinoptions=
-setlocal cinwords=if,else,while,do,for,switch
-setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
-setlocal commentstring=//\ %s
-setlocal complete=.,w,b,u,t,i
-setlocal concealcursor=
-setlocal conceallevel=0
-setlocal completefunc=
-setlocal nocopyindent
-setlocal cryptmethod=
-setlocal nocursorbind
-setlocal nocursorcolumn
-set cursorline
-setlocal cursorline
-setlocal cursorlineopt=both
-setlocal define=
-setlocal dictionary=
-setlocal nodiff
-setlocal equalprg=
-setlocal errorformat=%+A\ %#%f\ %#(%l\\,%c):\ %m,%C%m
-setlocal expandtab
-if &filetype != 'typescript'
-setlocal filetype=typescript
-endif
-setlocal fixendofline
-setlocal foldcolumn=0
-setlocal foldenable
-setlocal foldexpr=0
-setlocal foldignore=#
-setlocal foldlevel=10
-setlocal foldmarker={{{,}}}
-set foldmethod=indent
-setlocal foldmethod=indent
-setlocal foldminlines=1
-set foldnestmax=10
-setlocal foldnestmax=10
-setlocal foldtext=foldtext()
-setlocal formatexpr=CocAction('formatSelected')
-setlocal formatoptions=croql
-setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
-setlocal formatprg=
-setlocal grepprg=
-setlocal iminsert=0
-setlocal imsearch=-1
-setlocal include=
-setlocal includeexpr=
-setlocal indentexpr=GetTypescriptIndent()
-setlocal indentkeys=0{,0},0),0],:,0#,!^F,o,O,e,0],0)
-setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$
-setlocal keywordprg=
-setlocal nolinebreak
-setlocal nolisp
-setlocal lispwords=
-setlocal nolist
-setlocal makeencoding=
-setlocal makeprg=tsc\ \ $*\ %
-setlocal matchpairs=(:),{:},[:]
-setlocal modeline
-setlocal modifiable
-setlocal nrformats=bin,octal,hex
-set number
-setlocal number
-setlocal numberwidth=4
-setlocal omnifunc=
-setlocal path=
-setlocal nopreserveindent
-setlocal nopreviewwindow
-setlocal quoteescape=\\
-setlocal noreadonly
-setlocal norelativenumber
-setlocal norightleft
-setlocal rightleftcmd=search
-setlocal noscrollbind
-setlocal scrolloff=-1
-setlocal shiftwidth=2
-setlocal noshortname
-setlocal showbreak=
-setlocal sidescrolloff=-1
-set signcolumn=number
-setlocal signcolumn=number
-setlocal nosmartindent
-setlocal softtabstop=2
-setlocal nospell
-setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
-setlocal spellfile=
-setlocal spelllang=en
-setlocal statusline=%!airline#statusline(3)
-setlocal suffixesadd=.ts,.tsx
-setlocal swapfile
-setlocal synmaxcol=3000
-if &syntax != 'typescript'
-setlocal syntax=typescript
-endif
-setlocal tabstop=2
-setlocal tagcase=
-setlocal tagfunc=
-setlocal tags=
-setlocal termwinkey=
-setlocal termwinscroll=10000
-setlocal termwinsize=
-setlocal textwidth=0
-setlocal thesaurus=
-setlocal noundofile
-setlocal undolevels=-123456
-setlocal varsofttabstop=
-setlocal vartabstop=
-setlocal wincolor=
-setlocal nowinfixheight
-setlocal nowinfixwidth
-setlocal wrap
-setlocal wrapmargin=0
-let s:l = 11 - ((10 * winheight(0) + 10) / 21)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-11
-normal! 03|
-wincmd w
-exe 'vert 1resize ' . ((&columns * 89 + 89) / 178)
-exe '2resize ' . ((&lines * 24 + 24) / 49)
-exe 'vert 2resize ' . ((&columns * 88 + 89) / 178)
-exe '3resize ' . ((&lines * 21 + 24) / 49)
-exe 'vert 3resize ' . ((&columns * 88 + 89) / 178)
+exe 'vert 1resize ' . ((&columns * 133 + 102) / 204)
+exe 'vert 2resize ' . ((&columns * 70 + 102) / 204)
 tabnext 1
-badd +25 frontend/src/components/LandingSitePromo.tsx
+badd +37 frontend/src/pages/LandingPage.tsx
 badd +4 .gitignore
-badd +34 frontend/src/styles/LandingSitePromo.scss
+badd +39 frontend/src/styles/LandingSitePromo.scss
+badd +11 frontend/src/api/user.ts
+badd +28 frontend/src/components/LandingSitePromo.tsx
 badd +57 api/views.py
 badd +210 ~/.vim/vimrc
 badd +1 landing/views.py
@@ -643,20 +505,19 @@ badd +8 ~/.vim/coc-settings.json
 badd +16 api/urls.py
 badd +182 api/models.py
 badd +57 frontend/src/pages/HomePage.tsx
-badd +48 frontend/src/components/Header.tsx
+badd +118 frontend/src/components/Header.tsx
 badd +23 frontend/src/components/UnderlineLink.tsx
 badd +8 frontend/src/components/Background.tsx
 badd +23 frontend/src/pages/Router.tsx
 badd +5 frontend/src/components/ScrollToTop.tsx
 badd +1 frontend/static/frontend/fontawesome/svgs/solid/shield-alt.svg
 badd +25 api/helpers.py
-badd +12 frontend/src/pages/LandingPage.tsx
 badd +208 api/serializers.py
 badd +149 nights/settings.py
 badd +45 frontend/src/pages/LoginPage.tsx
 badd +10 frontend/src/pages/RegisterPage.tsx
-badd +11 frontend/src/api/user.ts
 badd +53 frontend/src/api/title.ts
+badd +53 frontend/src/pages/CWPage.tsx
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
 endif

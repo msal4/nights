@@ -102,7 +102,7 @@ export default () => {
             >
               {t("lang")}
             </button>
-            {!match && <div className="md:ml-1 lg:ml-6">
+            <div className="md:ml-1 lg:ml-6">
               {token ? (
                 <button className="hover:text-red-600" onClick={logout}>
                   {t("logout")}
@@ -110,12 +110,12 @@ export default () => {
               ) : (
                   <Link
                     className="rounded-full px-3 py-1 border-1 md:hover:bg-white md:hover:text-black"
-                    to="/login"
+                    to="/landing/login"
                   >
                     {t("signIn")}
                   </Link>
                 )}
-            </div>}
+            </div>
           </div>
         </div>
       </div>

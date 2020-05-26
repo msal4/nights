@@ -23,7 +23,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({title, clas
       <div className="landing-site-promo-container relative py-6 border-1 overflow-hidden" >
         <img draggable={false} className="landing-site-promo-background absolute inset-0 h-full w-full" style={{objectFit: 'cover'}} src={"/static/frontend/images/mulan.png"} />
         <img draggable={false} className="landing-site-promo-logo z-10" src={logo} />
-        <div className="mt-auto z-10">
+        <div className="action-btn-container mt-auto z-10">
           <button className="action-btn px-8 py-3 rounded-full text-sm font-semibold shadow-xl transition-background duration-200 bg-n-red hover:bg-red-800" onClick={action}>
             {t('watchNow'}
           </button>

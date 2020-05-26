@@ -1,3 +1,9 @@
+ #landing-page-container {
+  .scroll-down-arrow {
+    animation: opacity-animation 2s infinite;  
+  }
+ }
+
 .landing-site-promo-container-placeholder {
   display: flex;
   flex-direction: column;
@@ -19,14 +25,20 @@
   &:hover {
     height: 100%;
     box-shadow: none;
-
-    .action-btn {
-      opacity: 1;
+    
+    .action-btn-container {
+      bottom: 1.5rem;
     }
 
     .landing-site-promo-background {
       opacity: 1;
     }
+  }
+
+  .action-btn-container {
+    position: absolute;
+    bottom: -10rem;
+    transition: bottom .8s;
   }
 
   .landing-site-promo-background {
@@ -39,8 +51,19 @@
     width: 19rem;
   }
 
-  .action-btn {
+}
+
+
+@keyframes opacity-animation {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
     opacity: 0;
   }
 }
-
