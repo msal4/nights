@@ -177,8 +177,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 133 + 102) / 204)
-exe 'vert 2resize ' . ((&columns * 70 + 102) / 204)
+exe 'vert 1resize ' . ((&columns * 143 + 102) / 204)
+exe 'vert 2resize ' . ((&columns * 60 + 102) / 204)
 argglobal
 setlocal keymap=
 setlocal noarabic
@@ -306,26 +306,38 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-13
-normal! zo
-16
+14
 normal! zo
 18
 normal! zo
-26
+20
 normal! zo
 28
 normal! zo
-37
+30
 normal! zo
-38
+39
 normal! zo
-let s:l = 53 - ((38 * winheight(0) + 24) / 49)
+40
+normal! zo
+59
+normal! zo
+60
+normal! zo
+61
+normal! zo
+63
+normal! zo
+74
+normal! zo
+78
+normal! zo
+let s:l = 89 - ((37 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-53
-normal! 010|
+89
+normal! 059|
 wincmd w
 argglobal
 if bufexists("frontend/src/styles/LandingSitePromo.scss") | buffer frontend/src/styles/LandingSitePromo.scss | else | edit frontend/src/styles/LandingSitePromo.scss | endif
@@ -474,14 +486,14 @@ normal! zt
 3
 normal! 034|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 133 + 102) / 204)
-exe 'vert 2resize ' . ((&columns * 70 + 102) / 204)
+exe 'vert 1resize ' . ((&columns * 143 + 102) / 204)
+exe 'vert 2resize ' . ((&columns * 60 + 102) / 204)
 tabnext 1
-badd +37 frontend/src/pages/LandingPage.tsx
+badd +72 frontend/src/pages/LandingPage.tsx
 badd +4 .gitignore
 badd +39 frontend/src/styles/LandingSitePromo.scss
 badd +11 frontend/src/api/user.ts
-badd +28 frontend/src/components/LandingSitePromo.tsx
+badd +30 frontend/src/components/LandingSitePromo.tsx
 badd +57 api/views.py
 badd +210 ~/.vim/vimrc
 badd +1 landing/views.py
@@ -507,7 +519,7 @@ badd +182 api/models.py
 badd +57 frontend/src/pages/HomePage.tsx
 badd +118 frontend/src/components/Header.tsx
 badd +23 frontend/src/components/UnderlineLink.tsx
-badd +8 frontend/src/components/Background.tsx
+badd +14 frontend/src/components/Background.tsx
 badd +23 frontend/src/pages/Router.tsx
 badd +5 frontend/src/components/ScrollToTop.tsx
 badd +1 frontend/static/frontend/fontawesome/svgs/solid/shield-alt.svg

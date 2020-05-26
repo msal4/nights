@@ -7,6 +7,7 @@ import LoginPage from "./LoginPage"
 import CWPage from "./CWPage"
 import {IoIosArrowDown} from "react-icons/io"
 import {useTranslation} from "react-i18next"
+import SecondaryPromo from "~components/SecondaryPromo"
 
 
 
@@ -82,9 +83,29 @@ export default () => {
             {t('visitSite')}
           </a>
         </div>
-
       </div>
-
+      <SecondaryPromo
+        title={"Available Now On All Devices"}
+        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
+        image={"/static/frontend/images/secondary_promo.png"}
+      />
+      <SecondaryPromo
+        title={"Available Now On All Devices"}
+        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
+        image={"/static/frontend/images/secondary_promo.png"}
+        rtl
+      />
+      <SecondaryPromo
+        title={"Available Now On All Devices"}
+        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
+        image={"/static/frontend/images/secondary_promo.png"}
+      />
+      <SecondaryPromo
+        title={"Available Now On All Devices"}
+        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
+        image={"/static/frontend/images/secondary_promo.png"}
+        rtl
+      />
     </div>
 
   </div>
