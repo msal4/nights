@@ -5,6 +5,7 @@ i18n
   .use(LanguageDetector)
   .init({
     resources: {
+
       en: {
         translations: {
           lang: "عربي",
@@ -56,7 +57,14 @@ i18n
           back: "Back",
           visitSite: "Visit Site",
           watchNow: "Watch Now",
+          contactUsOnFacebook: "Contact Us on Facebook",
+          copyright: "Copyright © 2020 1001Nights All rights reserved.",
+          downloadYourEssentials: "Download Your Essentials",
+          pcSoftwareGames: "PC sofware, games and more...",
+          availableNowOnAllDevices: "Available Now on All Devices",
+          enjoyAllYourFavoriteMedia: "Enjoy all your favorite media at one place, wherever and whenever you want.",
         },
+
       },
       ar: {
         translations: {
@@ -109,7 +117,14 @@ i18n
           back: "الرجوع",
           visitSite: "اذهب الى الموقع",
           watchNow: "شاهد الان",
+          contactUsOnFacebook: "تواصل معنا على فيسبوك",
+          copyright: "جميع الحقوق محفوظة, مجموعة الف ليلة و ليلة © 2020",
+          downloadYourEssentials: "حمل اساسياتك",
+          pcSoftwareGames: "برامج، العاب و المزيد...",
+          availableNowOnAllDevices: "متوفر الان على جميع الاجهزة",
+          enjoyAllYourFavoriteMedia: "كل وسائلك الترفيهية في مكان واحد، اينما كنت وبأي وقت تريد.",
         },
+
       },
     },
     fallbackLng: "ar",

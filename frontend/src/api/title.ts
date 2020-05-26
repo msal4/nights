@@ -1,7 +1,6 @@
 import client from "./client"
 
 import {PaginatedResults} from "~core/interfaces/paginated-results"
-import {HomeResults} from "~core/interfaces/home"
 import {TitleDetail, Title} from "~core/interfaces/title"
 import {Season} from "~core/interfaces/season"
 import {Episode} from "~core/interfaces/episode"

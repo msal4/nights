@@ -1,19 +1,28 @@
-import React from "react"
+import React, {useState} from "react"
 
 import LandingSitePromo from '~/components/LandingSitePromo'
-import {Switch, Route, useRouteMatch} from "react-router-dom"
+import {Switch, Route, useRouteMatch, useHistory} from "react-router-dom"
 
 import LoginPage from "./LoginPage"
 import CWPage from "./CWPage"
 import {IoIosArrowDown} from "react-icons/io"
 import {useTranslation} from "react-i18next"
 import SecondaryPromo from "~components/SecondaryPromo"
+import {FaFacebookSquare} from "react-icons/fa"
+import {LandingPromo, ChannelPromo} from "~core/interfaces/promo"
+import {useDisposableEffect} from "~hooks"
+import {getLandingPromos, getChannelPromo} from "~api/promo"
+import {getPromos} from "~api/title"
+import {TitleDetail, ImageQuality} from "~core/interfaces/title"
+import {getImageUrl} from "~utils/common"
 
 
 
 export default () => {
+  const history = useHistory()
   const {url} = useRouteMatch()
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
+  const {landingPromos, nightsPromo, channelPromo} = usePromos()
 
   return <div id="landing-page-container">
     <div id="promo-main-section" style={{height: 'calc(100vh - 9.5rem)'}}>
@@ -27,12 +36,27 @@ export default () => {
       <div className="mx-auto max-w-5xl">
 
         <div className="mt-12 flex items-center justify-between">
+          {nightsPromo &&
+            <LandingSitePromo
+              onVisit={() => history.push('/home')}
+              onWatch={() => history.push(nightsPromo.type === 'm' ? `/movie/${nightsPromo.id}/play` : `/series/${nightsPromo.id}/auto/auto/play`)}
+              image={getImageUrl(nightsPromo.images[0].url, ImageQuality.h900)}
+              logo="/static/frontend/images/nights_logo_white.svg"
+            />
+          }
 
-          <LandingSitePromo
-            action={() => null} image={"/static/frontend/images/mulan.jpg"}
-            logo={"/static/frontend/images/nights_logo_white.svg"} title={"Play Now"} url={""} />
-
-          <LandingSitePromo action={() => null} logo={"/static/frontend/images/tv_logo_white.svg"} image={"/static/frontend/images/mulan.jpg"} title={"Watch Now"} url={""} />
+          {channelPromo &&
+            <LandingSitePromo
+              onVisit={() =>
+                window.location.href = `http://tv.sawadland.com`
+              }
+              onWatch={() =>
+                window.location.href = `http://tv.sawadland.com/channel/${channelPromo.channel_id}`
+              }
+              logo="/static/frontend/images/tv_logo_white.svg"
+              image={`http://tv.sawadland.com${channelPromo.promo_image}`}
+            />
+          }
 
         </div>
 
@@ -61,8 +85,8 @@ export default () => {
         <div className="flex items-center">
           <img src="/static/frontend/images/devices_promo.png" style={{width: '20rem'}} />
           <div className="ml-32 max-w-xs">
-            <h1 className="font-semibold text-lg">Available Now on All Devices</h1>
-            <p className="mt-2 text-sm font-thin">Enjoy all your favorite media at one place, wherever and whenever you want.</p>
+            <h1 className="font-semibold text-lg">{t('availableNowOnAllDevices')}</h1>
+            <p className="mt-2 text-sm font-thin">{t('enjoyAllYourFavoriteMedia')}</p>
             <div className="mt-6 flex items-center">
               <img className="w-32" src="/static/frontend/images/google_play_white.png" />
               <img className="ml-4 w-32" src="/static/frontend/images/ios_app_store_white.png" />
@@ -76,39 +100,54 @@ export default () => {
 
         <img className="h-30" src="/static/frontend/images/media_logo.svg" />
         <div className="ml-24 max-w-sm">
-          <h1 className="font-semibold text-lg">Download Your Essentials</h1>
-          <p className="mt-2 font-thin">PC software, games and more...</p>
+          <h1 className="font-semibold text-lg">{t('downloadYourEssentials')}</h1>
+          <p className="mt-2 font-thin">{t('pcSoftwareGames')}</p>
           <a className="mt-4 inline-block px-8 py-3 rounded-full text-sm font-semibold shadow-xl transition-background duration-200 text-black bg-white hover:bg-black hover:text-white"
             href="#">
             {t('visitSite')}
           </a>
         </div>
       </div>
-      <SecondaryPromo
-        title={"Available Now On All Devices"}
-        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
-        image={"/static/frontend/images/secondary_promo.png"}
-      />
-      <SecondaryPromo
-        title={"Available Now On All Devices"}
-        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
-        image={"/static/frontend/images/secondary_promo.png"}
-        rtl
-      />
-      <SecondaryPromo
-        title={"Available Now On All Devices"}
-        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
-        image={"/static/frontend/images/secondary_promo.png"}
-      />
-      <SecondaryPromo
-        title={"Available Now On All Devices"}
-        body={"Enjoy All your Favorite Media At One Place Wherever, Whenever You Want"}
-        image={"/static/frontend/images/secondary_promo.png"}
-        rtl
-      />
-    </div>
 
+      {landingPromos && landingPromos.map((promo, index) =>
+        <SecondaryPromo
+          key={promo.id}
+          title={i18n.language === "ar" ? promo.title_ar : promo.title}
+          body={i18n.language === "ar" ? promo.body_ar : promo.body}
+          image={promo.image}
+          rtl={index % 2 === 0}
+        />)}
+
+    </div>
   </div>
 }
 
 
+const usePromos = () => {
+  const [landingPromos, setLandingPromos] = useState<LandingPromo[]>(null)
+  const [nightsPromo, setNightsPromo] = useState<TitleDetail>(null)
+  const [channelPromo, setChannelPromo] = useState<ChannelPromo>(null)
+
+
+  const getData = async (disposed: boolean) => {
+    try {
+      const landingPromosRes = await getLandingPromos()
+      !disposed && setLandingPromos(landingPromosRes)
+
+      const nightsPromoRes = await getPromos(1)
+      !disposed && setNightsPromo(nightsPromoRes[0])
+
+      const channelPromoRes = await getChannelPromo()
+      !disposed && setChannelPromo(channelPromoRes)
+
+    } catch (error) {
+      console.log("😔", error)
+    }
+  }
+
+  useDisposableEffect((disposed) => {
+    getData(disposed)
+  }, [])
+
+  return {landingPromos, nightsPromo, channelPromo}
+}

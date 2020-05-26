@@ -359,20 +359,10 @@ class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# Landing
 class LandingPromoViewSet(viewsets.ModelViewSet):
-#    parser_classes = (FileUploadParser,)
     queryset = LandingPromo.objects.all()
     serializer_class = serializers.LandingPromoSerializer
     permission_classes = [IsAdminOrReadOnly]
-
-#    def post(self, request, *args, **kwargs):
-#        serializer = serializers.LandingPromoSerializer(data=request.data)
-#
-#        if serializer.is_valid():
-#            serializer.save()
-#            return Response(serializer.data, status=status.HTTP_201_CREATED)
-#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def paginate_queryset(self, queryset, view=None):
         return None

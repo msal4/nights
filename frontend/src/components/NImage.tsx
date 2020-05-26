@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, {FunctionComponent} from "react"
 
 type ImageProps = React.ComponentProps<"img">
 
@@ -12,7 +12,7 @@ const NImage: FunctionComponent<ImageProps> = ({
   const fallback = "/static/frontend/images/fallback.jpeg"
   return (
     <div
-      className={`${className} overflow-hidden`}
+      className={`overflow-hidden ${className}`}
       style={{
         backgroundImage: `url(${src}), url(${fallback})`,
         backgroundSize: "cover",
