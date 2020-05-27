@@ -3,11 +3,10 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.urls import path, include
 # TODO: remove from here
-from frontend_new import views
+from frontend import views
 
 urlpatterns = [
     path('api/', include('api.urls')),
-    # TODO: remove from here
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

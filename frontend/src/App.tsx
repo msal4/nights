@@ -11,7 +11,7 @@ import AppRouter from "./pages/Router"
 
 export default () => {
   return (
-    <div className="mx-5 my-3 md:mx-10 md:my-5 lg:mx-16 min-h-full">
+    <div className="mx-5 md:mx-10 lg:mx-16 min-h-full">
       <I18nextProvider i18n={i18n}>
         <AuthProvider>
           <BackgroundProvider>

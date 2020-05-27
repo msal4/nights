@@ -164,12 +164,6 @@ class TitleListSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-# class TitleDocumentSerializer(DocumentSerializer):
-#     class Meta:
-#         document = TitleDocument
-#         fields = ('id', 'name', 'released_at')
-
-
 class ViewHitSerializer(serializers.ModelSerializer):
     class Meta:
         model = ViewHit
@@ -193,7 +187,7 @@ class HistorySerializer(serializers.ModelSerializer):
                   'playback_position', 'runtime', 'hit_date')
 
 
-class HomeGenreSerializer(serializers.ModelSerializer):
+class TitleGenreSerializer(serializers.ModelSerializer):
     title_list = TitleListSerializer(many=True, read_only=True)
 
     class Meta:

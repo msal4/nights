@@ -47,8 +47,3 @@ export const addToMyList = (id: string | number): Promise<{ detail: string }> =>
 
 export const removeFromMyList = (id: string | number) =>
   client.delete(`/my_list/${id}/`)
-
-export const getPromos = (
-  limit: number = 4,
-  type?: string
-): Promise<TitleDetail[]> => client.get("/promos/", { data: { limit, type } })

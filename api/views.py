@@ -37,7 +37,7 @@ from .documents import TitleDocument
 from .helpers import get_featured
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit, LandingPromo
-from .paginators import HomeViewPagination, TitleViewPagination
+from .paginators import TitleGenreRowViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import documents
@@ -60,9 +60,22 @@ def list_promos(request, *args, **kwargs):
     return Response(get_featured(queryset))
 
 
-class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
-    serializer_class = serializers.HomeGenreSerializer
-    pagination_class = HomeViewPagination
+class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Title.objects.order_by('-updated_at')
+    serializer_class = serializers.TitleListSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('type', 'rated')
+
+    @method_decorator(cache_page(60 * 60))
+    def get(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+
+class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Genre.objects.order_by('-name')
+    serializer_class = serializers.TitleGenreSerializer
+    pagination_class = TitleGenreRowViewPagination
     filter_backends = (
         filters.OrderingFilter,
         DjangoFilterBackend
@@ -71,56 +84,17 @@ class HomeView(mixins.ListModelMixin, generics.GenericAPIView):
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
 
-    @staticmethod
-    def _serialize(obj, serializer=None, *args, **kwargs):
-        serializer = serializer or serializers.TitleListSerializer
-        return serializer(obj, *args, **kwargs).data
-
-    @staticmethod
-    def _serialize_history(hits):
-        return serializers.HistorySerializer(hits, many=True, read_only=True).data
-
-    @staticmethod
-    def _get_history(hits):
-        return hits.filter(type='title').order_by('-hit_date')[:5]
-
-    @staticmethod
-    def _get_recommended(hit, titles):
-        return get_featured(titles.filter(genres__in=hit.topic.genres.all()), limit=5, index=4)
-        # return serializers.TitleSerializer(title, read_only=True).data
-
-    def _get_recently_added(self, titles):
-        recent = titles.order_by('-updated_at')[:10]
-        return self._serialize(recent, many=True, read_only=True)
-
-    def get_queryset(self):
-        return Genre.objects.order_by('-name')
-
     @method_decorator(cache_page(60 * 60 * 4))
     def get(self, request, *args, **kwargs):
-        titles = self.filter_queryset(Title.objects.all())
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset) or queryset
-        # Genre rows with titles
+
         for genre in page:
             genre.title_list = self.filter_queryset(genre.titles.all())[:10]
 
-        data = {'rows': self.get_serializer(page, many=True).data}
+        serializer = self.get_serializer(page, many=True)
 
-        if 'just_rows' in request.query_params:
-            return self.get_paginated_response(data)
-
-        data['featured'] = get_featured(titles)
-        data['recently_added'] = self._get_recently_added(titles)
-
-        # Recently watched
-        if not request.user.is_anonymous:
-            recently_watched = self._get_history(request.user.viewhit_set)
-            if len(recently_watched):
-                data['recommended'] = self._get_recommended(
-                    recently_watched[0], titles)
-
-        return self.get_paginated_response(data)
+        return self.get_paginated_response(serializer.data)
 
 
 class CastViewSet(viewsets.ModelViewSet):

@@ -10,7 +10,7 @@ import SecondaryPromo from "../components/SecondaryPromo"
 import { LandingPromo, ChannelPromo } from "../core/interfaces/promo"
 import { useDisposableEffect } from "../hooks"
 import { getLandingPromos, getChannelPromo } from "../api/promo"
-import { getPromos } from "../api/title"
+import { getPromos } from "../api/home"
 import { TitleDetail, ImageQuality } from "../core/interfaces/title"
 import { getImageUrl } from "../utils/common"
 
@@ -172,7 +172,7 @@ const usePromos = () => {
       const landingPromosRes = await getLandingPromos()
       !disposed && setLandingPromos(landingPromosRes)
 
-      const nightsPromoRes = await getPromos(1)
+      const nightsPromoRes = await getPromos({ limit: 1 })
       !disposed && setNightsPromo(nightsPromoRes[0])
 
       const channelPromoRes = await getChannelPromo()
