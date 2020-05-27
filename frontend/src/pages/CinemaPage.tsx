@@ -11,6 +11,7 @@ import HomePage from "./HomePage"
 export default () => {
   return (
     <Switch>
+      <Route path="/login">{() => <Redirect to="/landing/login" />}</Route>
       <Route path="/series/:seriesId/:seasonId/:episodeIndex/play">
         <SeriesPlayer />
       </Route>
