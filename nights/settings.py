@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'frontend_new.apps.FrontendNewConfig',
     'api.apps.ApiConfig',
-    'frontend.apps.FrontendConfig',
+    #    'frontend.apps.FrontendConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
