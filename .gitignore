@@ -95,3 +95,5 @@ storage/
 /bin/
 /logs/
 /static/
+
+.env.ts

@@ -1,8 +1,10 @@
 import axios from "axios"
+
 import AuthToken from "../utils/auth-token"
+import { baseURL } from "./.env"
 
 const client = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL,
   timeout: 10000,
 })
 
