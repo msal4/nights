@@ -13,7 +13,7 @@ const CWPage: FunctionComponent = () => {
   const { titles } = useTitles(token)
   const { t } = useTranslation()
 
-  if (!token) return <Redirect to="/landing/login" />
+  if (!token) return <Redirect to="/landing/login_or_register" />
 
   return (
     titles && (

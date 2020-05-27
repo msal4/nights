@@ -13,6 +13,7 @@ import { getLandingPromos, getChannelPromo } from "../api/promo"
 import { getPromos } from "../api/home"
 import { TitleDetail, ImageQuality } from "../core/interfaces/title"
 import { getImageUrl } from "../utils/common"
+import LoginOrRegisterPage from "./LoginOrRegisterPage"
 
 export default () => {
   const history = useHistory()
@@ -22,7 +23,7 @@ export default () => {
 
   return (
     <div id="landing-page-container">
-      <div id="promo-main-section" style={{ height: "calc(100vh - 9.5rem)" }}>
+      <div id="promo-main-section" style={{ height: "calc(100vh - 8.2rem)" }}>
         <div
           className="absolute top-0 left-0 right-0 h-screen"
           style={{
@@ -68,6 +69,9 @@ export default () => {
 
           <div className="mt-4">
             <Switch>
+              <Route path={`${url}/login_or_register`}>
+                <LoginOrRegisterPage />
+              </Route>
               <Route path={`${url}/login`}>
                 <LoginPage type="login" />
               </Route>

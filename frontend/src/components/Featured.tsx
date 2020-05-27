@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
-import React, { FunctionComponent, useState } from "react"
+import React, { FunctionComponent, useState, useEffect } from "react"
 import { FaStar, FaPlay, FaEye } from "react-icons/fa"
 import { FiInfo } from "react-icons/fi"
 

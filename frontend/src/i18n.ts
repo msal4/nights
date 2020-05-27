@@ -5,7 +5,6 @@ i18n
   .use(LanguageDetector)
   .init({
     resources: {
-
       en: {
         translations: {
           lang: "عربي",
@@ -62,9 +61,12 @@ i18n
           downloadYourEssentials: "Download Your Essentials",
           pcSoftwareGames: "PC software, games and more...",
           availableNowOnAllDevices: "Available Now on All Devices",
-          enjoyAllYourFavoriteMedia: "Enjoy all your favorite media at one place, wherever and whenever you want.",
+          enjoyAllYourFavoriteMedia:
+            "Enjoy all your favorite media at one place, wherever and whenever you want.",
+          signUpNowToEnjoy:
+            "Sign Up Now to Enjoy the Full 1001 Nights Experience",
+          createAccount: "Create Account",
         },
-
       },
       ar: {
         translations: {
@@ -122,9 +124,11 @@ i18n
           downloadYourEssentials: "حمل اساسياتك",
           pcSoftwareGames: "برامج، العاب و المزيد...",
           availableNowOnAllDevices: "متوفر الان على جميع الاجهزة",
-          enjoyAllYourFavoriteMedia: "كل وسائلك الترفيهية في مكان واحد، اينما كنت وبأي وقت تريد.",
+          enjoyAllYourFavoriteMedia:
+            "كل وسائلك الترفيهية في مكان واحد، اينما كنت وبأي وقت تريد.",
+          signUpNowToEnjoy: "سجل حساب الان وانظم الى عائلة الف ليلة وليلة",
+          createAccount: "انشاء حساب",
         },
-
       },
     },
     fallbackLng: "ar",

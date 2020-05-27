@@ -98,7 +98,7 @@ const useHome = (filters: {}) => {
     try {
       const promos = await getPromos({ ...filters, limit: 5 })
       if (!disposed) {
-        changeBackground(promos[0])
+        setHome({ ...home, promos: null })
         setHome(state => ({ ...state, promos }))
       }
 
