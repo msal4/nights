@@ -8,7 +8,7 @@ import { AuthProvider } from "~context/auth-context"
 import { BackgroundProvider } from "~context/background-context"
 import AppRouter from "~pages/Router"
 
-export const App = () => {
+export default () => {
   return (
     <div className="mx-5 my-3 md:mx-10 md:my-5 lg:mx-16 min-h-full">
       <I18nextProvider i18n={i18n}>

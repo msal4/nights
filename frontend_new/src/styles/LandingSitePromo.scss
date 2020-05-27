@@ -1,0 +1,69 @@
+ #landing-page-container {
+  .scroll-down-arrow {
+    animation: opacity-animation 2s infinite;  
+  }
+ }
+
+.landing-site-promo-container-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30rem;
+  height: 20rem;
+}
+
+.landing-site-promo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 7rem;
+  width: 100%;
+  border-radius: 4rem;
+  transition: all .5s;
+
+  &:hover {
+    height: 100%;
+    box-shadow: none;
+    
+    .action-btn-container {
+      bottom: 1.5rem;
+    }
+
+    .landing-site-promo-background {
+      opacity: 1;
+    }
+  }
+
+  .action-btn-container {
+    position: absolute;
+    bottom: -10rem;
+    transition: bottom .8s;
+  }
+
+  .landing-site-promo-background {
+    opacity: 0;
+    transition: opacity .8s;
+  }
+
+  .landing-site-promo-logo {
+    height: 4rem;
+    width: 19rem;
+  }
+
+}
+
+
+@keyframes opacity-animation {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
