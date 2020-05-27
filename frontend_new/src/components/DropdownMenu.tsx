@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
-import { useTranslation } from "react-i18next"
 import { Topic } from "../core/interfaces/topic"
 import { capitalizeFirst } from "../utils/common"
 

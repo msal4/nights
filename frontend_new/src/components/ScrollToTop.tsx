@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react'
-import {useLocation} from 'react-router-dom'
+import { useEffect, FunctionComponent } from "react"
+import { useLocation } from "react-router-dom"
 
-export default (): React.ReactElement => {
-  const {pathname} = useLocation()
+const ScrollToTop: FunctionComponent = () => {
+  const { pathname } = useLocation()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -10,3 +10,5 @@ export default (): React.ReactElement => {
 
   return null
 }
+
+export default ScrollToTop

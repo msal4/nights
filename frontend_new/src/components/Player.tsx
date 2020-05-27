@@ -71,15 +71,18 @@ const Player: FunctionComponent<PlayerProps> = ({
         return {
           src: url,
           type: format === "mp4" ? "video/mp4" : "application/x-mpegURL",
-        }
+        } as videojs.Tech.SourceObject
       }),
-      tracks: subtitles.map(subtitle => ({
-        kind: "captions",
-        src: swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")),
-        srcLang: subtitle.language,
-        label: subtitle.language === "ar" ? "العربية" : "English",
-        default: subtitle.language === "ar",
-      })),
+      tracks: subtitles.map(
+        subtitle =>
+          ({
+            kind: "captions",
+            src: swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")),
+            srcLang: subtitle.language,
+            label: subtitle.language === "ar" ? "العربية" : "English",
+            default: subtitle.language === "ar",
+          } as videojs.Tech.SourceObject)
+      ),
     })
 
     // Set the current time from view hit
@@ -88,7 +91,10 @@ const Player: FunctionComponent<PlayerProps> = ({
     // Update the position for the parent to handle it
     player.on(
       "timeupdate",
-      () => !disposed && handleTimeUpdate(player, position, onUpdatePosition)
+      () =>
+        !disposed &&
+        onUpdatePosition &&
+        handleTimeUpdate(player, position, onUpdatePosition)
     )
 
     // Toggle sidebar
@@ -105,7 +111,7 @@ const Player: FunctionComponent<PlayerProps> = ({
     })
     player
       .getChild("ControlBar")
-      .addChild("vjsForwardBackwardButtons")
+      ?.addChild("vjsForwardBackwardButtons")
       .addClass("vjs-forward-backward-buttons")
 
     const disposeFullscreenButton = replaceFullscreenButton(
@@ -165,7 +171,7 @@ const handleTimeUpdate = (
 }
 
 const replaceFullscreenButton = (
-  ref: React.MutableRefObject<HTMLDivElement>,
+  ref: React.RefObject<HTMLDivElement> | null,
   player: VideoJsPlayer
 ) => {
   const el = videojs.dom.$(".vjs-fullscreen-control")?.cloneNode(true)
@@ -173,13 +179,14 @@ const replaceFullscreenButton = (
 
   let isFullscreen = false
 
-  ref.current.onfullscreenchange = e => {
-    isFullscreen = !isFullscreen
-  }
+  if (ref && ref.current)
+    ref.current.onfullscreenchange = e => {
+      isFullscreen = !isFullscreen
+    }
 
   const toggleFullscreen = () => {
     if (isFullscreen) document.exitFullscreen()
-    else ref.current.requestFullscreen()
+    else ref?.current?.requestFullscreen()
   }
 
   videojs.dom.$(".vjs-fullscreen-control").replaceWith(el)

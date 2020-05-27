@@ -2,7 +2,6 @@ import React, { FunctionComponent } from "react"
 
 import { Episode } from "../core/interfaces/episode"
 import NImage from "./NImage"
-import { Link } from "react-router-dom"
 import PlayIcon from "../icons/PlayIcon"
 import "../styles/EpisodeCard.scss"
 

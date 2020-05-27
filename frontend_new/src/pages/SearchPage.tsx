@@ -35,7 +35,7 @@ const SearchPage: FunctionComponent = () => {
     history.push(`/search?${queryStr}`)
   }
 
-  if (error) return <div>{error.detail}</div>
+  if (error) return <div>{(error as any)?.detail}</div>
 
   return (
     <div>
@@ -109,7 +109,7 @@ const SearchPage: FunctionComponent = () => {
 const useTitles = (query: queryString.ParsedQuery<string>) => {
   const { search } = useLocation()
 
-  const [titles, setTitles] = useState<PaginatedResults<ITitle[]>>(null)
+  const [titles, setTitles] = useState<PaginatedResults<ITitle[]> | null>(null)
   const [error, setError] = useState(null)
 
   useDisposableEffect(
@@ -138,15 +138,15 @@ const useTitles = (query: queryString.ParsedQuery<string>) => {
 const useFilters = (query: queryString.ParsedQuery<string>) => {
   const { t } = useTranslation()
   const [genres, setGenres] = useState<Topic[]>([
-    { id: null, name: `${t("genres")} - ${t("all")}` },
+    { id: "", name: `${t("genres")} - ${t("all")}` },
   ])
 
-  const types = [
-    { id: null, name: `${t("type")} - ${t("all")}` },
+  const types: Topic[] = [
+    { id: "", name: `${t("type")} - ${t("all")}` },
     { id: "m", name: t("movies") },
     { id: "s", name: t("series") },
   ]
-  const orderings = [
+  const orderings: Topic[] = [
     { id: "name", name: t("nameAsc") },
     { id: "-name", name: t("nameDesc") },
     { id: "-views", name: `${t("popularity")} ${t("asc")}` },

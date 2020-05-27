@@ -44,10 +44,10 @@ export default () => {
                       : `/series/${nightsPromo.id}/auto/auto/play`
                   )
                 }
-                image={getImageUrl(
-                  nightsPromo.images[0].url,
-                  ImageQuality.h900
-                )}
+                image={
+                  getImageUrl(nightsPromo.images[0].url, ImageQuality.h900) ||
+                  ""
+                }
                 logo="/static/frontend/images/nights_logo_white.svg"
               />
             )}
@@ -100,6 +100,7 @@ export default () => {
             <img
               src="/static/frontend/images/devices_promo.png"
               style={{ width: "20rem" }}
+              alt=""
             />
             <div className="ml-32 max-w-xs">
               <h1 className="font-semibold text-lg">
@@ -145,7 +146,7 @@ export default () => {
         </div>
 
         {landingPromos &&
-          landingPromos.map((promo, index) => (
+          landingPromos.map((promo: LandingPromo, index: number) => (
             <SecondaryPromo
               key={promo.id}
               title={i18n.language === "ar" ? promo.title_ar : promo.title}
@@ -160,9 +161,11 @@ export default () => {
 }
 
 const usePromos = () => {
-  const [landingPromos, setLandingPromos] = useState<LandingPromo[]>(null)
-  const [nightsPromo, setNightsPromo] = useState<TitleDetail>(null)
-  const [channelPromo, setChannelPromo] = useState<ChannelPromo>(null)
+  const [landingPromos, setLandingPromos] = useState<LandingPromo[] | null>(
+    null
+  )
+  const [nightsPromo, setNightsPromo] = useState<TitleDetail | null>(null)
+  const [channelPromo, setChannelPromo] = useState<ChannelPromo | null>(null)
 
   const getData = async (disposed: boolean) => {
     try {

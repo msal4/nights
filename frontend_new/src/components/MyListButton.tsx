@@ -4,7 +4,7 @@ import { Redirect } from "react-router"
 
 import { InfoIconButton } from "./common/Buttons"
 import { FaCheck, FaPlus } from "react-icons/fa"
-import { checkMyList, removeFromMyList, addToMyList } from "../api/title"
+import { removeFromMyList, addToMyList } from "../api/title"
 import { useAuth } from "../context/auth-context"
 import { useTranslation } from "react-i18next"
 
@@ -16,8 +16,7 @@ export interface MyListButtonProps {
 export default ({ id, className }: MyListButtonProps) => {
   const { t } = useTranslation()
 
-  const [loading, setLoading] = useState(false)
-  const [inMyList, setInMyList] = useState(null)
+  const [inMyList, setInMyList] = useState<boolean>(false)
   const [redirect, setRedirect] = useState(false)
 
   const { token } = useAuth()

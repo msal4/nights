@@ -4,8 +4,6 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import SeriesPlayer from "./SeriesPlayer"
 import MoviePlayer from "./MoviePlayer"
 import TitlePage from "./TitlePage"
-import RegisterPage from "./RegisterPage"
-import LoginPage from "./LoginPage"
 import MyListPage from "./MyListPage"
 import SearchPage from "./SearchPage"
 import HomePage from "./HomePage"
@@ -21,12 +19,6 @@ export default () => {
       </Route>
       <Route path="/title/:id">
         <TitlePage />
-      </Route>
-      <Route path="/register">
-        <RegisterPage />
-      </Route>
-      <Route path="/login">
-        <LoginPage />
       </Route>
       <Route path="/my_list">
         <MyListPage />

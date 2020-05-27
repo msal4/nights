@@ -16,7 +16,7 @@ export interface PlayerTitleBarOptions extends VideoJsPlayerOptions {
 }
 
 export class vjsTitleBar extends vjsComponent {
-  goBack: () => void = null
+  goBack: () => void
   title: string
   displaySidebar: boolean = false
 

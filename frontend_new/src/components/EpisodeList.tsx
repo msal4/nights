@@ -4,8 +4,8 @@ import { Season } from "../core/interfaces/season"
 import EpisodeCard from "./EpisodeCard"
 
 export interface EpisodeListProps {
-  season: Season
-  seriesId: string | number
+  season: Season | null
+  seriesId?: string | number | null
 }
 
 const EpisodeList: FunctionComponent<EpisodeListProps> = ({
@@ -14,10 +14,10 @@ const EpisodeList: FunctionComponent<EpisodeListProps> = ({
 }) => {
   return (
     <div>
-      {season.episodes.map(episode => (
+      {season?.episodes.map(episode => (
         <EpisodeCard
           key={episode.id}
-          seriesId={seriesId}
+          seriesId={seriesId || ""}
           seasonId={season.id}
           episode={episode}
         />

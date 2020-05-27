@@ -1,21 +1,18 @@
 import React, { FunctionComponent, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, Redirect, useLocation } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
+import { FiInfo } from "react-icons/fi"
+import { FaCheck, FaPlus } from "react-icons/fa"
 
-import InfoIcon from "../icons/InfoIcon"
-import PlusIcon from "../icons/PlusIcon"
-import PlayIcon from "../icons/PlayIcon"
-import { Title } from "../core/interfaces/title"
-import { getImageUrl } from "../utils/common"
 import "../styles/Title.scss"
+import PlayIcon from "../icons/PlayIcon"
+import { Title as ITitle } from "../core/interfaces/title"
+import { getImageUrl } from "../utils/common"
 import { addToMyList, removeFromMyList, checkMyList } from "../api/title"
 import { useAuth } from "../context/auth-context"
 
-import { FiCheck, FiInfo } from "react-icons/fi"
-import { FaCheck, FaPlus } from "react-icons/fa"
-
 export interface TitleProps {
-  title: Title
+  title: ITitle
 }
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
@@ -27,7 +24,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
   if (redirect) return <Redirect to="/login" />
 
   const image = getImageUrl(title.images[0]?.url)
-  const tmdbImage = image.replace("250v", "250tmdb")
+  const tmdbImage = image?.replace("250v", "250tmdb")
 
   return (
     <div

@@ -18,7 +18,7 @@ export interface RecommendedProps {
 const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
   const { t } = useTranslation()
 
-  const image = getImageUrl(title.images[0]?.url, ImageQuality.h900)
+  const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900)
   return (
     <div className="mb-8 mx-3">
       <h3
@@ -29,7 +29,7 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
       </h3>
       <div className="flex flex-col md:flex-row">
         <Link
-          to={`/title/${title.id}`}
+          to={`/title/${title?.id}`}
           className="relative rounded-lg mb-2 w-full flex-1 md:mr-4 md:h-full"
           style={{ paddingTop: "30%" }}
         >
@@ -38,56 +38,57 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
         <div className="flex flex-col md:flex-1 md:justify-between md:mt-2">
           <div className="flex flex-col items-start">
             <div className="bg-green-600 text-black text-xss rounded-sm px-1 mb-2 self-start">
-              {title.is_new
+              {title?.is_new
                 ? title.type === "s"
                   ? "New Episodes"
                   : "New"
                 : ""}
             </div>
             <Link
-              to={`/title/${title.id}`}
+              to={`/title/${title?.id}`}
               className="md:text-2xl md:font-thin mb-2 md:mb-4"
             >
-              {title.name}
+              {title?.name}
             </Link>
-            <p className="mb-4 opacity-75">{joinTopics(title.genres)}</p>
+            <p className="mb-4 opacity-75">{joinTopics(title?.genres)}</p>
             <div className="flex items-center font-bold mb-4">
-              {title.rating && (
+              {title?.rating && (
                 <p className="flex items-center mr-6">
                   <FaStar className="text-n-blue mr-1" fontSize=".55em" />
-                  {title.rating.toFixed(1)}
+                  {title?.rating.toFixed(1)}
                 </p>
               )}
-              {title.type === "s" ? (
-                <p className="mr-6">
-                  {title.seasons?.length} Season
-                  {title.seasons?.length > 1 ? "s" : ""}
-                </p>
-              ) : (
-                <p className="mr-6">{Math.floor(title.runtime / 60)} mins</p>
-              )}
-              <p>{new Date(title.released_at).getFullYear()}</p>
+              {title &&
+                (title?.type === "s" ? (
+                  <p className="mr-6">
+                    {title.seasons?.length} Season
+                    {title.seasons?.length > 1 ? "s" : ""}
+                  </p>
+                ) : (
+                  <p className="mr-6">{Math.floor(title.runtime / 60)} mins</p>
+                ))}
+              {title && <p>{new Date(title.released_at).getFullYear()}</p>}
             </div>
 
-            <p className="opacity-50 text-sm mb-4">{title.plot}</p>
+            <p className="opacity-50 text-sm mb-4">{title?.plot}</p>
           </div>
 
           <div className="flex items-center mb-2 md:mb-4">
             <PrimaryButton
               className="mr-6"
               to={
-                title.type === "m"
+                title?.type === "m"
                   ? `/movie/${title.id}/play`
-                  : `/series/${title.id}/auto/auto/play`
+                  : `/series/${title?.id}/auto/auto/play`
               }
             >
               <IoIosPlay size="1.5em" />
               {t("play")}
             </PrimaryButton>
-            <MyListButton className="mr-8" id={title.id} />
+            <MyListButton className="mr-8" id={title?.id || ""} />
             <InfoIconButton
               className="hidden md:flex"
-              to={`/title/${title.id}`}
+              to={`/title/${title?.id}`}
               icon={<FiInfo className="text-xl" />}
             >
               {t("info")}

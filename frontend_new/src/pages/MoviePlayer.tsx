@@ -13,11 +13,11 @@ const MoviePlayer: FunctionComponent = () => {
   const { id } = useParams()
   const history = useHistory()
   const { token } = useAuth()
-  const { title, hit, error, loading } = useTitle(id, token)
+  const { title, hit, loading } = useTitle(id, token || "")
 
   const onUpdatePosition = async (position: number, duration: number) => {
     if (token) {
-      await hitTopic(title.id, {
+      await hitTopic(title?.id || "", {
         playback_position: position,
         runtime: duration,
       })
@@ -34,7 +34,7 @@ const MoviePlayer: FunctionComponent = () => {
           title={title}
           videos={title.videos}
           subtitles={title.subtitles || []}
-          poster={getImageUrl(title.images[0]?.url, ImageQuality.h900)}
+          poster={getImageUrl(title.images[0]?.url, ImageQuality.h900) || ""}
           onUpdatePosition={onUpdatePosition}
           position={hit?.playback_position || 0}
         />
@@ -44,10 +44,10 @@ const MoviePlayer: FunctionComponent = () => {
 }
 
 const useTitle = (id: string | number, token: string) => {
-  const [title, setTitle] = useState<TitleDetail>(null)
+  const [title, setTitle] = useState<TitleDetail | null>(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [hit, setHit] = useState<ViewHit>(null)
+  const [hit, setHit] = useState<ViewHit | null>(null)
 
   const getTitleDetail = async () => {
     setLoading(true)

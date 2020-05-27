@@ -1,9 +1,8 @@
 import axios from "axios"
 import AuthToken from "../utils/auth-token"
-import { useAuth } from "../context/auth-context"
 
 const client = axios.create({
-  baseURL: "/api",
+  baseURL: "http://localhost:8000/api",
   timeout: 10000,
 })
 

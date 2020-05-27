@@ -2,7 +2,10 @@ import React, { FunctionComponent, useState } from "react"
 import { getImageUrl } from "../utils/common"
 import { ImageQuality, TitleDetail } from "../core/interfaces/title"
 
-const BackgroundContext = React.createContext(null)
+const BackgroundContext = React.createContext<Background>({
+  background: "",
+  changeBackground: () => {},
+})
 
 export interface Background {
   background: string

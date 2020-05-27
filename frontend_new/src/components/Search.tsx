@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next"
 import queryString from "query-string"
 import { useHistory } from "react-router-dom"
 import { History } from "history"
-
 import useConstant from "use-constant"
 import AwesomeDebouncePromise from "awesome-debounce-promise"
 import { useAsync } from "react-async-hook"
-import { useQuery } from "~hooks/query"
+
+import { useQuery } from "../hooks/query"
 
 export default (props: { className?: string }) => {
   const { t } = useTranslation()

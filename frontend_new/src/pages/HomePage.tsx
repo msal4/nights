@@ -7,7 +7,7 @@ import TitleRow from "../components/TitleRow"
 import CWRow from "../components/containers/CWRow"
 import Recommended from "../components/Recommended"
 import LoadingIndicator from "../components/LoadingIndicator"
-import { HomeResults } from "../core/interfaces/home"
+import { HomeResults, GenreRow } from "../core/interfaces/home"
 import { PaginatedResults } from "../core/interfaces/paginated-results"
 import { ViewHit } from "../core/interfaces/view-hit"
 import client from "../api/client"
@@ -41,7 +41,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
           {home.results.recommended && (
             <Recommended title={home.results.recommended} />
           )}
-          {home.results.rows.map(row => (
+          {home.results.rows.map((row: GenreRow) => (
             <TitleRow
               key={row.id}
               id={row.id}
@@ -61,19 +61,22 @@ const threshold = 200
 
 const useHome = (filters: {}) => {
   const urlRef = useRef<string>(null)
-  const [home, setHome] = useState<Home>(null)
+  const [home, setHome] = useState<Home | null>(null)
   const [loadMore, setLoadMore] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [continueWatching, setContinueWatching] = useState<ViewHit[]>(null)
-  const [error, setError] = useState<{}>(null)
+  const [continueWatching, setContinueWatching] = useState<ViewHit[] | null>(
+    null
+  )
+  const [error, setError] = useState(null)
   const { changeBackground } = useBackground()
   const { token } = useAuth()
   const { pathname } = useLocation()
 
   const getHomeRows = async (disposed: boolean) => {
     try {
-      if (home.next && urlRef.current !== home.next) {
-        urlRef.current = home.next
+      if (home?.next && urlRef.current !== home.next) {
+        ;(urlRef as any).current = home.next
+
         const result: Home = await client.get(home.next)
         result.results.rows = [...home.results.rows, ...result.results.rows]
         !disposed && setHome(result)

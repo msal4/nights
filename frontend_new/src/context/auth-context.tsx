@@ -3,19 +3,24 @@ import React, { FunctionComponent, useState } from "react"
 import AuthToken from "../utils/auth-token"
 import { loginUser, registerUser } from "../api/user"
 
-const AuthContext = React.createContext(null)
+const AuthContext = React.createContext<Auth>({
+  token: null,
+  login: async () => console.log("Login not implemented"),
+  logout: async () => console.log("Logout not implemented"),
+  register: async () => console.log("Register not implemented"),
+})
 
 type LoginFunction = (username: string, password: string) => Promise<void>
 
 export interface Auth {
-  token: string
+  token: string | null
   login: LoginFunction
   register: LoginFunction
   logout: VoidFunction
 }
 
 const useToken = () => {
-  const [token, setToken] = useState<string>(AuthToken.get())
+  const [token, setToken] = useState<string | null>(AuthToken.get())
   const storeToken = (token: string) => {
     AuthToken.store(token)
     setToken(token)

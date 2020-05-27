@@ -11,6 +11,7 @@ import { getImageUrl } from "../utils/common"
 import { SeasonProvider } from "../context/season-context"
 import { useDisposableEffect } from "../hooks"
 import LoadingIndicator from "../components/LoadingIndicator"
+import { ViewHit } from "../core/interfaces/view-hit"
 
 const SeriesPlayer: FunctionComponent = () => {
   const history = useHistory()
@@ -21,22 +22,22 @@ const SeriesPlayer: FunctionComponent = () => {
 
   const onUpdatePosition = async (position: number, duration: number) => {
     if (token) {
-      await hitTopic(series.id, {
+      await hitTopic(series?.id || "", {
         playback_position: position,
         runtime: duration,
-        season: season.id,
-        episode: episode.id,
+        season: season?.id,
+        episode: episode?.id,
       })
     }
   }
 
-  if (error) return <div>{error.message}</div>
+  if (error) return <div>{(error as any).message}</div>
   return (
     <div>
       <LoadingIndicator show={loading} />
-      {episode && (
+      {episode && series && (
         <SeasonProvider
-          seasonId={season.id}
+          seasonId={season?.id || ""}
           series={series}
           defaultSeason={season}
         >
@@ -46,7 +47,9 @@ const SeriesPlayer: FunctionComponent = () => {
             title={series}
             videos={episode.videos}
             subtitles={episode.subtitles || []}
-            poster={getImageUrl(episode.images[0]?.url, ImageQuality.h900)}
+            poster={
+              getImageUrl(episode.images[0]?.url, ImageQuality.h900) || ""
+            }
             position={episode.hits && episode.hits[0]?.playback_position | 0}
             onUpdatePosition={onUpdatePosition}
             displaySidebar
@@ -57,12 +60,12 @@ const SeriesPlayer: FunctionComponent = () => {
   )
 }
 interface DataState {
-  series: TitleDetail
-  season: Season
-  episode: Episode
+  series: TitleDetail | null
+  season: Season | null
+  episode: Episode | null
 }
 
-const useEpisode = (token: string) => {
+const useEpisode = (token?: string | null) => {
   let { seriesId, seasonId, episodeIndex } = useParams()
 
   const [data, setData] = useState<DataState>({
@@ -87,7 +90,7 @@ const useEpisode = (token: string) => {
         seriesId === data.series?.id.toString() &&
         seasonId === data.season?.id.toString()
       ) {
-        const episode = getEpisode(data.season, episodeIndex)
+        const episode = data.season && getEpisode(data.season, episodeIndex)
         setData({ ...data, episode })
       }
 
@@ -95,7 +98,7 @@ const useEpisode = (token: string) => {
 
       if (seasonId === "auto" && episodeIndex === "auto") {
         try {
-          const hit = token && (await getHit(seriesId))
+          const hit: ViewHit | null = token ? await getHit(seriesId) : null
           seasonId = hit?.season?.toString() || series.seasons[0].id.toString()
           episodeIndex = hit?.episode?.index.toString()
         } catch (error) {

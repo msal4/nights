@@ -1,6 +1,6 @@
 class AuthToken {
   static tokenKey = "auth_token"
-  static token: string = null
+  static token: string | null = null
 
   static get = () => {
     if (AuthToken.token) return AuthToken.token

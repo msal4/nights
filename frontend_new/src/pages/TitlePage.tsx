@@ -18,7 +18,7 @@ import {
 import { SimpleSeason } from "../core/interfaces/season"
 import { getImageUrl, joinTopics } from "../utils/common"
 import { getTitle } from "../api/title"
-import { PrimaryButton, InfoIconButton } from "../components/common/Buttons"
+import { PrimaryButton } from "../components/common/Buttons"
 import NImage from "../components/NImage"
 import TitleInfo from "../components/TitleInfo"
 import UnderlineLink from "../components/UnderlineLink"
@@ -44,10 +44,12 @@ const Recommended = ({ titles }: { titles: ITitle[] }) => {
 const useTitle = () => {
   const { id } = useParams()
 
-  const [title, setTitle] = useState<TitleDetail>(null)
-  const [error, setError] = useState<{}>(null)
+  const [title, setTitle] = useState<TitleDetail | null>(null)
+  const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [selectedSeason, setSelectedSeason] = useState<SimpleSeason>(null)
+  const [selectedSeason, setSelectedSeason] = useState<SimpleSeason | null>(
+    null
+  )
   const { changeBackground } = useBackground()
 
   const getTitleDetail = async (disposed: boolean) => {
@@ -130,7 +132,7 @@ export default () => {
             </div>
           </NImage>
           <div className="mx-auto" style={{ maxWidth: "20rem" }}>
-            {title.seasons.length > 1 && (
+            {selectedSeason && title.seasons.length > 1 && (
               <SeasonDropdown
                 seasons={title.seasons}
                 currentSeason={selectedSeason}

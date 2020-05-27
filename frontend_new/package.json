@@ -6,10 +6,12 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/history": "^4.7.6",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "autoprefixer": "^9.8.0",
     "awesome-debounce-promise": "^2.1.0",
     "axios": "^0.19.2",
     "i18next": "^19.4.2",
@@ -25,13 +27,15 @@
     "react-multi-carousel": "^2.5.5",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "tailwindcss": "^1.2.0",
+    "tailwindcss": "^1.4.6",
     "typescript": "~3.7.2",
     "use-constant": "^1.0.0",
-    "videojs": "^1.0.0"
+    "video.js": "^7.7.5"
   },
   "devDependencies": {
     "@types/brainhubeu__react-carousel": "^1.13.0",
+    "@types/react-router": "^5.1.7",
+    "@types/react-router-dom": "^5.1.5",
     "@types/video.js": "^7.3.8"
   },
   "scripts": {

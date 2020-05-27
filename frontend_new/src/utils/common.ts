@@ -1,16 +1,20 @@
-import { Topic } from "~core/interfaces/topic"
-import { ImageQuality } from "~core/interfaces/title"
-import { Episode } from "~core/interfaces/episode"
-import { SimpleSeason } from "~core/interfaces/season"
+import { Topic } from "../core/interfaces/topic"
+import { ImageQuality } from "../core/interfaces/title"
+import { Episode } from "../core/interfaces/episode"
+import { SimpleSeason } from "../core/interfaces/season"
 
 export const capitalizeFirst = (str: string) =>
   str?.charAt(0).toUpperCase() + str.slice(1)
 
-export const joinTopics = (topics: Topic[], sep = " • ") =>
+export const joinTopics = (topics?: Topic[], sep = " • ") =>
   topics?.map(g => capitalizeFirst(g.name)).join(sep)
 
-export const getImageUrl = (url: string, quality = ImageQuality.v250) =>
-  url && url.replace('static.1001nights.fun', 'static.1001nights.fun:1001').replace("{q}v", quality).replace("{f}", "jpg")
+export const getImageUrl = (url?: string, quality = ImageQuality.v250) =>
+  url &&
+  url
+    .replace("static.1001nights.fun", "static.1001nights.fun:1001")
+    .replace("{q}v", quality)
+    .replace("{f}", "jpg")
 
 export const swapEpisodeUrlId = (url: string) => {
   if (!url) return null

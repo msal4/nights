@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useRef } from "react"
 import { TitleDetail, ImageQuality } from "../core/interfaces/title"
 import videojs from "video.js"
+
 import { getImageUrl } from "../utils/common"
 import { useTranslation } from "react-i18next"
 

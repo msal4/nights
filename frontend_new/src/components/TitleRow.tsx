@@ -11,7 +11,7 @@ export interface TitleRowProps {
 }
 
 const TitleRow: FunctionComponent<TitleRowProps> = ({ row, name, id }) => (
-  <CarouselRow title={name} path={id && `/search?genres=${id}`}>
+  <CarouselRow title={name} path={id ? `/search?genres=${id}` : ""}>
     {row.map(title => (
       <Title key={title.id} title={title} />
     ))}

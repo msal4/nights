@@ -36,8 +36,8 @@ const CWPage: FunctionComponent = () => {
   )
 }
 
-const useTitles = (token: string) => {
-  const [titles, setTitles] = useState<ViewHit[]>(null)
+const useTitles = (token?: string | null) => {
+  const [titles, setTitles] = useState<ViewHit[] | null>(null)
   const [error, setError] = useState(null)
 
   const getTitles = async (disposed: boolean) => {

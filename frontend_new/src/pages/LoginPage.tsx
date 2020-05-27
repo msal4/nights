@@ -4,7 +4,7 @@ import { Redirect, Link } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 export interface LoginPageProps {
-  type: "login" | "register"
+  type?: "login" | "register"
 }
 
 const LoginPage: FunctionComponent<LoginPageProps> = ({ type }) => {
@@ -19,8 +19,8 @@ const LoginPage: FunctionComponent<LoginPageProps> = ({ type }) => {
     const username = usernameRef?.current?.value
     const password = passwordRef?.current?.value
     try {
-      if (type === "login") await login(username, password)
-      else await register(username, password)
+      if (type === "login") await login(username || "", password || "")
+      else await register(username || "", password || "")
       error && setError(null)
     } catch (error) {
       setError(error)

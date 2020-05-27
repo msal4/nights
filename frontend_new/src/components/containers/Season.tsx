@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from "react"
 
-import EpisodeList from "~components/EpisodeList"
-import { getSeason } from "~api/title"
-import { Season } from "~core/interfaces/season"
-import LoadingIndicator from "~components/LoadingIndicator"
+import EpisodeList from "../../components/EpisodeList"
+import { getSeason } from "../../api/title"
+import { Season as ISeason } from "../../core/interfaces/season"
+import LoadingIndicator from "../../components/LoadingIndicator"
 
 export interface SeasonProps {
   seasonId: number
@@ -22,7 +22,7 @@ const Season: FunctionComponent<SeasonProps> = ({ seriesId, seasonId }) => {
 }
 
 const useSeason = (id: string | number) => {
-  const [season, setSeason] = useState<Season>(null)
+  const [season, setSeason] = useState<ISeason>()
   const [error, setError] = useState(null)
 
   const getSeasonDetail = async () => {
