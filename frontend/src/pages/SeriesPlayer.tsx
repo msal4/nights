@@ -53,6 +53,20 @@ const SeriesPlayer: FunctionComponent = () => {
             position={episode.hits && episode.hits[0]?.playback_position | 0}
             onUpdatePosition={onUpdatePosition}
             displaySidebar
+            onFinish={() => {
+              const index =
+                data.episode &&
+                data.season?.episodes
+                  .map(episode => episode.index)
+                  .indexOf(data.episode.index)
+
+              if (index) {
+                const nextEpisode = data.season?.episodes[index + 1]
+                if (nextEpisode) {
+                  window.location.href = `/series/${data.series?.id}/${data.season?.id}/${nextEpisode.index}/play`
+                }
+              }
+            }}
           />
         </SeasonProvider>
       )}

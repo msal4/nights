@@ -46,6 +46,7 @@ export interface PlayerProps {
   position: number
   onUpdatePosition?: OnUpdatePositionCallback
   displaySidebar?: boolean
+  onFinish?: VoidFunction
 }
 
 const Player: FunctionComponent<PlayerProps> = ({
@@ -58,6 +59,7 @@ const Player: FunctionComponent<PlayerProps> = ({
   onUpdatePosition,
   position = 0,
   displaySidebar = false,
+  onFinish,
 }) => {
   const videoNode = useRef<HTMLVideoElement>(null)
   const seasonRef = useRef<HTMLDivElement>(null)
@@ -102,6 +104,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       "togglesidebar",
       () => !disposed && setShowSidebar(showSidebar => !showSidebar)
     )
+    onFinish && player.on("ended", onFinish)
 
     // Add title bar
     player.addChild("vjsTitleBar", {
@@ -141,7 +144,7 @@ const Player: FunctionComponent<PlayerProps> = ({
           playsInline
         />
       </div>
-      {displaySidebar && (
+      {/* {displaySidebar && (
         <div
           ref={seasonRef}
           className="season-container bg-gray-900 overflow-auto"
@@ -149,7 +152,7 @@ const Player: FunctionComponent<PlayerProps> = ({
         >
           <PlayerSidebar />
         </div>
-      )}
+      )} */}
     </div>
   )
 }
