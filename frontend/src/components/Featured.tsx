@@ -10,6 +10,7 @@ import { joinTopics, getImageUrl } from "../utils/common"
 import NImage from "./NImage"
 import MyListButton from "./MyListButton"
 import { useBackground } from "../context/background-context"
+import PlayButton from "./PlayButton"
 
 export interface FeaturedProps {
   data: TitleDetail[]
@@ -93,17 +94,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           </div>
         </div>
         <div className="flex items-center">
-          <PrimaryButton
-            className="md:mr-8"
-            to={
-              title?.type === "m"
-                ? `/movie/${title?.id}/play`
-                : `/series/${title?.id}/auto/auto/play`
-            }
-          >
-            <FaPlay className="mr-3" size="1.5em" />
-            {t("play")}
-          </PrimaryButton>
+          <PlayButton title={title} />
           <MyListButton className="mr-8" id={title?.id} />
           <InfoIconButton
             className="hidden md:flex"

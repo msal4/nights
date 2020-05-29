@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useState } from "react"
 import { TitleDetail } from "../core/interfaces/title"
 import { useTranslation } from "react-i18next"
 import { IoIosEye, IoIosStar } from "react-icons/io"
@@ -10,6 +10,7 @@ export interface TitleInfoProps {
 
 const TitleInfo: FunctionComponent<TitleInfoProps> = ({ title }) => {
   const { t } = useTranslation()
+  const [showAll, setShowAll] = useState(false)
 
   return (
     <div>
@@ -41,15 +42,33 @@ const TitleInfo: FunctionComponent<TitleInfoProps> = ({ title }) => {
       <div className="mt-4 flex">
         <h4 className="mr-4 opacity-50">{t("cast")}</h4>
         <p>
-          {title.cast.map(actor => (
-            <Link
-              key={actor.id}
-              className="mr-4 hover:text-blue-500"
-              to={`/search?cast=${actor.id}`}
-            >
-              {actor.name}
-            </Link>
-          ))}
+          {title.cast.length > 4 && !showAll
+            ? [
+                ...title.cast.slice(0, 4).map(actor => (
+                  <Link
+                    key={actor.id}
+                    className="mr-4 hover:text-n-red"
+                    to={`/search?cast=${actor.id}`}
+                  >
+                    {actor.name}
+                  </Link>
+                )),
+                <button
+                  className="border-btn text-xs"
+                  onClick={() => setShowAll(true)}
+                >
+                  {t("seeMore")}
+                </button>,
+              ]
+            : title.cast.map(actor => (
+                <Link
+                  key={actor.id}
+                  className="mr-4 hover:text-n-red"
+                  to={`/search?cast=${actor.id}`}
+                >
+                  {actor.name}
+                </Link>
+              ))}
         </p>
       </div>
     </div>

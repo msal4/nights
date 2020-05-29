@@ -12,8 +12,9 @@ export default () => {
     <div
       className="absolute inset-0 transition-all duration-1000"
       style={{
-        background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 38%, rgba(0,0,8,1) 49%, rgba(0,0,8,1) 100%), url(${background})`,
-        filter: "blur(15px)",
+        // background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 38%, rgba(0,0,8,1) 49%, rgba(0,0,8,1) 100%), url(${background})`,
+        background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 50%, rgba(0,0,8,1) 90%, rgba(0,0,8,1) 100%), center/100% 100% no-repeat url(${background})`,
+        filter: "blur(13px)",
         opacity: 0.5,
         zIndex: -1,
       }}

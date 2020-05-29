@@ -67,6 +67,7 @@ i18n
             "Sign Up Now to Enjoy the Full 1001 Nights Experience",
           createAccount: "Create Account",
           loadMore: "Load More",
+          seeMore: "See more",
         },
       },
       ar: {
@@ -130,6 +131,7 @@ i18n
           signUpNowToEnjoy: "سجل حساب الان وانظم الى عائلة الف ليلة وليلة",
           createAccount: "انشاء حساب",
           loadMore: "المزيد",
+          seeMore: "المزيد",
         },
       },
     },

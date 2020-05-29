@@ -10,6 +10,7 @@ import { joinTopics, getImageUrl } from "../utils/common"
 import NImage from "./NImage"
 import { PrimaryButton, InfoIconButton } from "./common/Buttons"
 import MyListButton from "./MyListButton"
+import PlayButton from "./PlayButton"
 
 export interface RecommendedProps {
   title?: TitleDetail
@@ -46,7 +47,7 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
             </div>
             <Link
               to={`/title/${title?.id}`}
-              className="md:text-2xl md:font-thin mb-2 md:mb-4"
+              className="md:text-4xl md:font-bold"
             >
               {title?.name}
             </Link>
@@ -70,21 +71,11 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
               {title && <p>{new Date(title.released_at).getFullYear()}</p>}
             </div>
 
-            <p className="opacity-50 text-sm mb-4">{title?.plot}</p>
+            <p className="opacity-50 text-sm mb-4 max-w-lg">{title?.plot}</p>
           </div>
 
           <div className="flex items-center mb-2 md:mb-4">
-            <PrimaryButton
-              className="mr-6"
-              to={
-                title?.type === "m"
-                  ? `/movie/${title.id}/play`
-                  : `/series/${title?.id}/auto/auto/play`
-              }
-            >
-              <IoIosPlay size="1.5em" />
-              {t("play")}
-            </PrimaryButton>
+            {title && <PlayButton title={title} />}
             <MyListButton className="mr-8" id={title?.id || ""} />
             <InfoIconButton
               className="hidden md:flex"

@@ -32,26 +32,22 @@ html {
   font-size: 0.6rem;
 }
 
-.text-n-red {
+.text-n-red,
+.hover\:text-n-red:hover {
   color: $color-red !important;
 }
 
-.text-n-blue {
+.text-n-blue,
+.hover\:text-n-blue:hover {
   color: $color-blue !important;
 }
 
-.bg-n-red {
-  background-color: $color-red;
-}
-
-.bg-n-blue {
-  background-color: $color-blue;
-}
-
+.bg-n-red,
 .hover\:bg-n-red:hover {
   background-color: $color-red;
 }
 
+.bg-n-blue,
 .hover\:bg-n-blue:hover {
   background-color: $color-blue;
 }
@@ -152,5 +148,17 @@ html {
 
   & > div {
     position: relative;
+  }
+}
+
+.border-btn {
+  border: 1px solid white;
+  padding: 0.2rem 1rem;
+  border-radius: 9999px;
+  transition: background 200ms;
+
+  &:hover {
+    background: white;
+    color: black;
   }
 }

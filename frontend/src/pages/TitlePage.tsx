@@ -30,6 +30,7 @@ import Title from "../components/Title"
 import { useBackground } from "../context/background-context"
 import MyListButton from "../components/MyListButton"
 import Trailer from "../components/Trailer"
+import PlayButton from "../components/PlayButton"
 
 const Recommended = ({ titles }: { titles: ITitle[] }) => {
   return (
@@ -116,17 +117,7 @@ export default () => {
                 </div>
               </div>
               <div className="flex items-center">
-                <PrimaryButton
-                  className="mr-8"
-                  to={
-                    title.type === "m"
-                      ? `/movie/${title.id}/play`
-                      : `/series/${title.id}/auto/auto/play`
-                  }
-                >
-                  <IoIosPlay size="1.5em" />
-                  {t("play")}
-                </PrimaryButton>
+                <PlayButton title={title} />
                 <MyListButton id={title.id} />
               </div>
             </div>
