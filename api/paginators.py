@@ -6,4 +6,4 @@ class TitleGenreRowViewPagination(PageNumberPagination):
 
 
 class TitleViewPagination(PageNumberPagination):
-    page_size = 30
+    page_size = 36

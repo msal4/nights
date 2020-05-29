@@ -104,7 +104,7 @@ const SearchPage: FunctionComponent = () => {
                   <div className="mt-10 mb-8" style={{ minHeight: "4rem" }}>
                     {!loading && titles.next && (
                       <button
-                        className="py-2 px-8 hover:bg-white hover:text-black"
+                        className="py-2 px-8 rounded-full transition-all duration-200 hover:bg-white hover:text-black"
                         onClick={loadMore}
                         style={{ border: "1px solid white" }}
                       >
