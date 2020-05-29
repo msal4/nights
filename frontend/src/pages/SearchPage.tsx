@@ -12,10 +12,12 @@ import DropdownMenu from "../components/DropdownMenu"
 import { getGenres } from "../api/genre"
 import { Topic } from "../core/interfaces/topic"
 import { useQuery } from "../hooks/query"
+import client from "../api/client"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 const SearchPage: FunctionComponent = () => {
   const query = useQuery()
-  const { titles, error } = useTitles(query)
+  const { titles, loadMore, loading, error } = useTitles(query)
   const {
     genres,
     currentGenre,
@@ -39,6 +41,7 @@ const SearchPage: FunctionComponent = () => {
 
   return (
     <div>
+      <LoadingIndicator show={loading} />
       <div className="mt-32 flex items-start">
         <div className="mt-16 mr-10">
           <div
@@ -92,10 +95,23 @@ const SearchPage: FunctionComponent = () => {
               titles.results.length === 0 ? (
                 <div>No results found for "{query?.search}"</div>
               ) : (
-                <div className="flex items-center flex-wrap">
-                  {titles.results.map(title => (
-                    <Title key={title.id} title={title} />
-                  ))}
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center flex-wrap">
+                    {titles.results.map((title: ITitle) => (
+                      <Title key={title.id} title={title} />
+                    ))}
+                  </div>
+                  <div className="mt-10 mb-8" style={{ minHeight: "4rem" }}>
+                    {!loading && titles.next && (
+                      <button
+                        className="py-2 px-8 hover:bg-white hover:text-black"
+                        onClick={loadMore}
+                        style={{ border: "1px solid white" }}
+                      >
+                        {t("loadMore")}
+                      </button>
+                    )}
+                  </div>
                 </div>
               )
             ) : null}
@@ -110,6 +126,7 @@ const useTitles = (query: queryString.ParsedQuery<string>) => {
   const { search } = useLocation()
 
   const [titles, setTitles] = useState<PaginatedResults<ITitle[]> | null>(null)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
   useDisposableEffect(
@@ -120,6 +137,7 @@ const useTitles = (query: queryString.ParsedQuery<string>) => {
   )
 
   const getResults = async (disposed: boolean) => {
+    setLoading(true)
     try {
       const titles = await getTitles(query)
 
@@ -129,10 +147,27 @@ const useTitles = (query: queryString.ParsedQuery<string>) => {
       }
     } catch (error) {
       !disposed && setError(error)
+    } finally {
+      setLoading(false)
     }
   }
 
-  return { titles, error }
+  const loadMore = async () => {
+    if (titles?.next) {
+      setLoading(true)
+      try {
+        const res: PaginatedResults<ITitle[]> = await client.get(titles.next)
+        res.results = [...titles.results, ...res.results]
+        setTitles(res)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  return { titles, loadMore, loading, error }
 }
 
 const useFilters = (query: queryString.ParsedQuery<string>) => {
