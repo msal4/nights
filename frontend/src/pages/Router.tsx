@@ -7,6 +7,7 @@ import Header from "../components/Header"
 import Background from "../components/Background"
 import LandingPage from "./LandingPage"
 import CinemaPage from "./CinemaPage"
+import AbstractPlayerPage from "./AbstractPlayerPage"
 
 export default () => {
   const { t } = useTranslation()
@@ -20,6 +21,9 @@ export default () => {
           <Switch>
             <Route path="/landing">
               <LandingPage />
+            </Route>
+            <Route path="/player/:type">
+              <AbstractPlayerPage />
             </Route>
             <Route path="/">
               <CinemaPage />

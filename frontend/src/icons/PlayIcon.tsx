@@ -1,5 +1,5 @@
 import React from "react"
-import SvgContainer, { SvgContainerProps } from "./SvgContainer"
+import { SvgContainerProps } from "./SvgContainer"
 import { FaPlay } from "react-icons/fa"
 
 export default (props: SvgContainerProps) => (
@@ -10,6 +10,7 @@ export default (props: SvgContainerProps) => (
   >
     <FaPlay
       style={{
+        fontSize: ".8rem",
         position: "absolute",
         left: "53%",
         top: "50%",
