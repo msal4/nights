@@ -1,18 +1,18 @@
-import React, { FunctionComponent, useEffect, useRef } from "react"
-import { TitleDetail, ImageQuality } from "../core/interfaces/title"
+import React, {FunctionComponent, useEffect, useRef} from "react"
+import {TitleDetail, ImageQuality} from "../core/interfaces/title"
 import videojs from "video.js"
 
-import { getImageUrl } from "../utils/common"
-import { useTranslation } from "react-i18next"
+import {getImageUrl} from "../utils/common"
+import {useTranslation} from "react-i18next"
 
 interface TrailerProps {
   title: TitleDetail
   className?: string
 }
 
-const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
+const Trailer: FunctionComponent<TrailerProps> = ({title, className}) => {
   const videoNode = useRef<HTMLVideoElement>(null)
-  const { t } = useTranslation()
+  const {t} = useTranslation()
 
   const src = title?.trailers[0]?.url.replace("{f}", "mp4")
   const poster = getImageUrl(title.images[0]?.url, ImageQuality.h900)
@@ -34,7 +34,7 @@ const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
   }, [src])
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`${className}`}>
       <h2 className="mb-5 text-xl font-semibold">{t("trailer")}</h2>
       <div
         data-vjs-player
@@ -46,7 +46,7 @@ const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
       >
         <video
           ref={videoNode}
-          className="video-js absolute inset-0"
+          className="video-js relative inset-0"
           controls
           playsInline
         />
