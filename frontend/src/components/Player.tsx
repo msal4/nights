@@ -1,19 +1,19 @@
-import React, { FunctionComponent, useRef, useState } from "react"
-import videojs, { VideoJsPlayer } from "video.js"
-import { History } from "history"
+import React, {FunctionComponent, useRef, useState} from "react"
+import videojs, {VideoJsPlayer} from "video.js"
+import {History} from "history"
 
 import "video.js/src/css/video-js.scss"
 import "../styles/Player.scss"
-import { Video, Subtitle } from "../core/interfaces/topic"
-import { TitleDetail } from "../core/interfaces/title"
-import { swapEpisodeUrlId } from "../utils/common"
+import {Video, Subtitle} from "../core/interfaces/topic"
+import {TitleDetail} from "../core/interfaces/title"
+import {swapEpisodeUrlId} from "../utils/common"
 import {
   vjsComponent,
   vjsTitleBar,
   vjsForwardBackwardButtons,
 } from "./vjs-components"
 import PlayerSidebar from "./PlayerSidebar"
-import { useDisposableEffect } from "../hooks"
+import {useDisposableEffect} from "../hooks"
 
 // Register videojs components
 vjsComponent.registerComponent("vjsTitleBar", vjsTitleBar)
@@ -28,7 +28,7 @@ const getVideoUrl = (video: Video) => {
   const url = swapEpisodeUrlId(
     video.url.replace("{q}", "720").replace("{f}", format)
   )
-  return { url, format }
+  return {url, format}
 }
 
 type OnUpdatePositionCallback = (
@@ -62,14 +62,13 @@ const Player: FunctionComponent<PlayerProps> = ({
   onFinish,
 }) => {
   const videoNode = useRef<HTMLVideoElement>(null)
-  const seasonRef = useRef<HTMLDivElement>(null)
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const [showSidebar, setShowSidebar] = useState(false)
 
   useDisposableEffect(disposed => {
     const player = videojs(videoNode.current, {
       sources: videos.map(video => {
-        const { format, url } = getVideoUrl(video)
+        const {format, url} = getVideoUrl(video)
         return {
           src: url,
           type: format === "mp4" ? "video/mp4" : "application/x-mpegURL",
@@ -87,44 +86,49 @@ const Player: FunctionComponent<PlayerProps> = ({
       ),
     })
 
-    // Set the current time from view hit
-    player.currentTime(position)
+    try {
+      // Set the current time from view hit
+      player.currentTime(position)
 
-    // Update the position for the parent to handle it
-    player.on(
-      "timeupdate",
-      () =>
-        !disposed &&
-        onUpdatePosition &&
-        handleTimeUpdate(player, position, onUpdatePosition)
-    )
+      // Update the position for the parent to handle it
+      player.on(
+        "timeupdate",
+        () =>
+          !disposed &&
+          onUpdatePosition &&
+          handleTimeUpdate(player, position, onUpdatePosition)
+      )
 
-    // Toggle sidebar
-    player.on(
-      "togglesidebar",
-      () => !disposed && setShowSidebar(showSidebar => !showSidebar)
-    )
-    onFinish && player.on("ended", onFinish)
+      // Toggle sidebar
+      player.on(
+        "togglesidebar",
+        () => !disposed && setShowSidebar(showSidebar => !showSidebar)
+      )
+      onFinish && player.on("ended", onFinish)
 
-    // Add title bar
-    player.addChild("vjsTitleBar", {
-      title: name,
-      goBack: () => history.push(`/title/${title.id}`),
-      displaySidebar,
-    })
-    player
-      .getChild("ControlBar")
-      ?.addChild("vjsForwardBackwardButtons")
-      .addClass("vjs-forward-backward-buttons")
-
-    const disposeFullscreenButton = replaceFullscreenButton(
-      videoContainerRef,
+      // Add title bar
+      player.addChild("vjsTitleBar", {
+        title: name,
+        goBack: () => history.push(`/title/${title.id}`),
+        displaySidebar,
+      })
       player
-    )
+        .getChild("ControlBar")
+        ?.addChild("vjsForwardBackwardButtons")
+        .addClass("vjs-forward-backward-buttons")
 
-    return () => {
-      disposeFullscreenButton && disposeFullscreenButton()
-      player.dispose()
+      const disposeFullscreenButton = replaceFullscreenButton(
+        videoContainerRef,
+        player
+      )
+
+      return () => {
+        disposeFullscreenButton && disposeFullscreenButton()
+        player.dispose()
+      }
+    } catch (err) {
+      console.log(err)
+      return () => player.dispose()
     }
   }, [])
 
@@ -133,7 +137,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       ref={videoContainerRef}
       className="absolute inset-0 z-10 overflow-hidden player text-black"
     >
-      <div data-vjs-player style={{ width: showSidebar ? "75vw" : "100vw" }}>
+      <div data-vjs-player style={{width: showSidebar ? "75vw" : "100vw"}}>
         <video
           ref={videoNode}
           id="video-js-player"
@@ -195,7 +199,7 @@ const replaceFullscreenButton = (
   videojs.dom.$(".vjs-fullscreen-control").replaceWith(el)
   el.addEventListener("click", toggleFullscreen)
   player.ready(function () {
-    ;(player as any).tech_.off("dblclick")
+    ; (player as any).tech_.off("dblclick")
   })
 
   player.on("dblclick", toggleFullscreen)
