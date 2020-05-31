@@ -148,15 +148,15 @@ const Player: FunctionComponent<PlayerProps> = ({
           playsInline
         />
       </div>
-      {/* {displaySidebar && (
+      {displaySidebar && (
         <div
           ref={seasonRef}
           className="season-container bg-gray-900 overflow-auto"
-          style={{ right: showSidebar ? "0" : "-25vw" }}
+          style={{right: showSidebar ? "0" : "-25vw"}}
         >
           <PlayerSidebar />
         </div>
-      )} */}
+      )}
     </div>
   )
 }
