@@ -62,6 +62,7 @@ const Player: FunctionComponent<PlayerProps> = ({
   onFinish,
 }) => {
   const videoNode = useRef<HTMLVideoElement>(null)
+  const seasonRef = useRef<HTMLDivElement>(null)
   const videoContainerRef = useRef<HTMLDivElement>(null)
   const [showSidebar, setShowSidebar] = useState(false)
 
