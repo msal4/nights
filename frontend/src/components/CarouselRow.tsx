@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react"
-import Carousel, { ResponsiveType } from "react-multi-carousel"
-import { Link } from 'react-router-dom'
-import { IoIosArrowForward } from 'react-icons/io'
-import "react-multi-carousel/lib/styles.css"
+import React, { FunctionComponent } from "react";
+import Carousel, { ResponsiveType } from "react-multi-carousel";
+import { Link } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
+import "react-multi-carousel/lib/styles.css";
 
 export const defaultResponsive = {
   desktop: {
@@ -17,13 +17,13 @@ export const defaultResponsive = {
     breakpoint: { max: 600, min: 0 },
     items: 3,
   },
-}
+};
 
 export interface CarouselRowProps {
-  title: string
-  path: string
-  className?: string
-  responsive?: ResponsiveType
+  title: string;
+  path: string;
+  className?: string;
+  responsive?: ResponsiveType;
 }
 
 const CarouselRow: FunctionComponent<CarouselRowProps> = ({
@@ -35,9 +35,16 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
 }) => {
   return (
     <div className={`relative ${className}`}>
-      <Link to={path} className="ml-3 z-10 w-full md:absolute md:text-lg text-sm font-semibold leading-none flex items-center justify-between">
+      <Link
+        to={path}
+        className="md:pb-10 ml-3 z-10 w-full md:absolute md:text-lg text-sm font-semibold leading-none flex items-center justify-between"
+      >
         <span>{title}</span>
-        {path && <span className="flex items-center font-thin text-sm mr-8 hover:text-red-500">See more <IoIosArrowForward className="text-xss" /></span>}
+        {path && (
+          <span className="flex items-center font-thin text-sm mr-8 hover:text-n-red">
+            See more <IoIosArrowForward className="text-xss text-n-red" />
+          </span>
+        )}
       </Link>
       <Carousel
         className="carousel-row"
@@ -46,7 +53,7 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
         {children}
       </Carousel>
     </div>
-  )
-}
+  );
+};
 
-export default CarouselRow
+export default CarouselRow;

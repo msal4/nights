@@ -27,7 +27,7 @@
     }
   }
   .vjs-control-bar {
-    height: 3.5rem;
+    height: 4rem;
     background: linear-gradient(transparent, black);
   }
 
@@ -35,6 +35,29 @@
     position: absolute;
     width: 100%;
     bottom: 100%;
+    
+    &:hover .vjs-progress-holder {
+      height: .6rem;
+    }
+
+    &:hover .vjs-play-progress::before {
+      font-size: 1.2rem;
+      color: white;
+    }
+  }
+
+  .vjs-progress-holder {
+    border-radius: 9999px;
+    height: .4rem;
+  }
+
+  .vjs-play-progress {
+    background: linear-gradient(90deg, $color-blue, $color-red);
+    border-radius: 9999px;
+    &::before {
+      font-size: .9rem;
+      color: $color-red;
+    }
   }
 
   .vjs-time-control {
@@ -94,6 +117,7 @@ video {
 // Order buttons
 .video-js .vjs-control-bar {
   .vjs-play-control {
+    margin-right: 1rem;
     order: 1;
   }
   .vjs-forward-backward-buttons {
@@ -139,4 +163,18 @@ video {
 
 .vjs-paused.vjs-has-started .vjs-big-play-button {
   display: block;
+}
+
+.vjs-big-play-button {
+  background: $color-red !important;
+  box-shadow: 0 0 15px $color-red;
+
+  &:hover {
+    background: $gradient-rainbow !important;
+    box-shadow: 0 0 40px $color-blue;
+  }
+}
+
+.vjs-forward-backward-button:hover {
+    transform: scale(1.2);
 }

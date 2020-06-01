@@ -3,19 +3,19 @@ import queryString from "query-string";
 import { useLocation, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { useDisposableEffect } from "../hooks";
-import { getTitles } from "../api/title";
 import { PaginatedResults } from "../core/interfaces/paginated-results";
 import { Title as ITitle } from "../core/interfaces/title";
+import { Topic } from "../core/interfaces/topic";
+import { getTitles } from "../api/title";
+import { getGenres } from "../api/genre";
+import client from "../api/client";
+import { cleanObjectProperties } from "../utils/common";
+import { useDisposableEffect } from "../hooks";
+import { useQuery } from "../hooks/query";
 import Title from "../components/Title";
 import DropdownMenu from "../components/DropdownMenu";
-import { getGenres } from "../api/genre";
-import { Topic } from "../core/interfaces/topic";
-import { useQuery } from "../hooks/query";
-import client from "../api/client";
 import LoadingIndicator from "../components/LoadingIndicator";
 import ScrollToTop from "../components/ScrollToTop";
-import { cleanObjectProperties } from "../utils/common";
 
 const SearchPage: FunctionComponent = () => {
   const query = useQuery();
@@ -47,8 +47,8 @@ const SearchPage: FunctionComponent = () => {
     <div>
       <ScrollToTop />
       <LoadingIndicator show={loading} />
-      <div className="mt-32 flex items-start">
-        <div className="mt-16 mr-10">
+      <div className="flex mt-32 items-start">
+        <div className="hidden md:block mt-16 mr-10">
           <div
             className="px-10 py-5 bg-gray-900"
             style={{ borderRadius: "1.5rem" }}

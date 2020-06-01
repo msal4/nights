@@ -106,6 +106,7 @@ const Player: FunctionComponent<PlayerProps> = ({
         "togglesidebar",
         () => !disposed && setShowSidebar((showSidebar) => !showSidebar)
       );
+
       onFinish && player.on("ended", onFinish);
 
       // Add title bar
@@ -201,6 +202,7 @@ const replaceFullscreenButton = (
 
   videojs.dom.$(".vjs-fullscreen-control").replaceWith(el);
   el.addEventListener("click", toggleFullscreen);
+
   player.ready(function () {
     (player as any).tech_.off("dblclick");
   });

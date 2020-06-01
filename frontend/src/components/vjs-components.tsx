@@ -1,40 +1,40 @@
-import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
-import React, { useState } from "react"
-import ReactDOM from "react-dom"
-import { IoIosClose, IoIosAlbums } from "react-icons/io"
-import { FiSkipForward } from "react-icons/fi"
-import ForwardIcon from "../icons/ForwardIcon"
-import BackwardIcon from "../icons/BackwardIcon"
-import { useTranslation } from "react-i18next"
+import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import { IoIosClose, IoIosAlbums } from "react-icons/io";
+import { FiSkipForward } from "react-icons/fi";
+import ForwardIcon from "../icons/ForwardIcon";
+import BackwardIcon from "../icons/BackwardIcon";
+import { useTranslation } from "react-i18next";
 
-export const vjsComponent = videojs.getComponent("Component")
+export const vjsComponent = videojs.getComponent("Component");
 
 export interface PlayerTitleBarOptions extends VideoJsPlayerOptions {
-  goBack: () => void
-  title: string
-  displaySidebar: boolean
+  goBack: () => void;
+  title: string;
+  displaySidebar: boolean;
 }
 
 export class vjsTitleBar extends vjsComponent {
-  goBack: () => void
-  title: string
-  displaySidebar: boolean = false
+  goBack: () => void;
+  title: string;
+  displaySidebar: boolean = false;
 
   constructor(player: VideoJsPlayer, options: PlayerTitleBarOptions) {
-    super(player, options)
+    super(player, options);
 
-    this.mount = this.mount.bind(this)
-    this.goBack = options.goBack
-    this.title = options.title
-    this.displaySidebar = options.displaySidebar
+    this.mount = this.mount.bind(this);
+    this.goBack = options.goBack;
+    this.title = options.title;
+    this.displaySidebar = options.displaySidebar;
 
     player.ready(() => {
-      this.mount()
-    })
+      this.mount();
+    });
 
     this.on("dispose", () => {
-      ReactDOM.unmountComponentAtNode(this.el())
-    })
+      ReactDOM.unmountComponentAtNode(this.el());
+    });
   }
 
   mount() {
@@ -50,22 +50,22 @@ export class vjsTitleBar extends vjsComponent {
         )}
       </div>,
       this.el()
-    )
+    );
   }
 }
 
 export const SidebarButton = ({ player }: { player: VideoJsPlayer }) => {
-  const [visible, setVisible] = useState(false)
-  const toggleVisible = () => setVisible(!visible)
-  const { t } = useTranslation()
+  const [visible, setVisible] = useState(false);
+  const toggleVisible = () => setVisible(!visible);
+  const { t } = useTranslation();
 
-  player.on("togglesidebar", toggleVisible)
+  player.on("togglesidebar", toggleVisible);
 
   return (
     <button
       className="opacity-0 w-0 md:opacity-100 md:w-auto"
       onClick={() => {
-        player.trigger("togglesidebar")
+        player.trigger("togglesidebar");
       }}
     >
       <IoIosAlbums
@@ -74,51 +74,62 @@ export const SidebarButton = ({ player }: { player: VideoJsPlayer }) => {
         }`}
       />
     </button>
-  )
-}
+  );
+};
 
 export class vjsForwardBackwardButtons extends vjsComponent {
   constructor(player: VideoJsPlayer, options: PlayerTitleBarOptions) {
-    super(player, options)
+    super(player, options);
 
-    this.mount = this.mount.bind(this)
+    this.mount = this.mount.bind(this);
 
     player.ready(() => {
-      this.mount()
-    })
+      this.mount();
+    });
 
     this.on("dispose", () => {
-      ReactDOM.unmountComponentAtNode(this.el())
-    })
+      ReactDOM.unmountComponentAtNode(this.el());
+    });
   }
 
   mount() {
     const seek = (seekTime = 10) => {
-      let time = this.player().currentTime() + seekTime
+      let time = this.player().currentTime() + seekTime;
 
       if (time < 0) {
-        time = 0
+        time = 0;
       }
 
-      this.player().currentTime(time)
-    }
+      this.player().currentTime(time);
+    };
     ReactDOM.render(
       <div className="flex items-center h-full">
         <button
-          style={{ width: "3rem", height: "3rem", marginTop: "-.5rem" }}
+          className="vjs-forward-backward-button"
+          style={{
+            width: "3rem",
+            height: "3rem",
+            marginRight: "1rem",
+            marginTop: "-1rem",
+          }}
           onClick={() => seek(-10)}
         >
           <BackwardIcon width="1.8rem" height="1.8rem" />
         </button>
         <button
-          style={{ width: "3rem", height: "3rem", marginTop: "-.5rem" }}
+          className="vjs-forward-backward-button"
+          style={{
+            width: "3rem",
+            height: "3rem",
+            marginTop: "-1rem",
+          }}
           onClick={() => seek()}
         >
           <ForwardIcon width="1.8rem" height="1.8rem" />
         </button>
       </div>,
       this.el()
-    )
+    );
   }
 }
 
@@ -126,4 +137,4 @@ export const CloseButton = ({ onClick }: { onClick: () => void }) => (
   <button onClick={onClick}>
     <IoIosClose className="text-5xl" />
   </button>
-)
+);

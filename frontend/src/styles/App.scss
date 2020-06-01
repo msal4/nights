@@ -28,6 +28,16 @@ html {
   }
 }
 
+#app-footer {
+  margin: 0 -1.2rem;
+}
+
+@media screen and (min-width: 800px) {
+  #app-footer {
+    margin: 0 -4rem;
+  }
+}
+
 .text-xss {
   font-size: 0.6rem;
 }
@@ -65,7 +75,7 @@ html {
 }
 
 .h-rainbow {
-  background: linear-gradient(90deg, $color-blue, $color-red);
+  background: $gradient-rainbow;
 }
 
 .border-1 {
