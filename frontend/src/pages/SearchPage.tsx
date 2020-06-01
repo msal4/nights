@@ -1,23 +1,25 @@
-import React, { FunctionComponent, useState } from "react"
-import queryString from "query-string"
-import { useLocation, useHistory } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import React, { FunctionComponent, useState } from "react";
+import queryString from "query-string";
+import { useLocation, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-import { useDisposableEffect } from "../hooks"
-import { getTitles } from "../api/title"
-import { PaginatedResults } from "../core/interfaces/paginated-results"
-import { Title as ITitle } from "../core/interfaces/title"
-import Title from "../components/Title"
-import DropdownMenu from "../components/DropdownMenu"
-import { getGenres } from "../api/genre"
-import { Topic } from "../core/interfaces/topic"
-import { useQuery } from "../hooks/query"
-import client from "../api/client"
-import LoadingIndicator from "../components/LoadingIndicator"
+import { useDisposableEffect } from "../hooks";
+import { getTitles } from "../api/title";
+import { PaginatedResults } from "../core/interfaces/paginated-results";
+import { Title as ITitle } from "../core/interfaces/title";
+import Title from "../components/Title";
+import DropdownMenu from "../components/DropdownMenu";
+import { getGenres } from "../api/genre";
+import { Topic } from "../core/interfaces/topic";
+import { useQuery } from "../hooks/query";
+import client from "../api/client";
+import LoadingIndicator from "../components/LoadingIndicator";
+import ScrollToTop from "../components/ScrollToTop";
+import { cleanObjectProperties } from "../utils/common";
 
 const SearchPage: FunctionComponent = () => {
-  const query = useQuery()
-  const { titles, loadMore, loading, error } = useTitles(query)
+  const query = useQuery();
+  const { titles, loadMore, loading, error } = useTitles(query);
   const {
     genres,
     currentGenre,
@@ -25,22 +27,25 @@ const SearchPage: FunctionComponent = () => {
     currentOrdering,
     types,
     currentType,
-  } = useFilters(query)
-  const { t } = useTranslation()
-  const history = useHistory()
+  } = useFilters(query);
+  const { t } = useTranslation();
+  const history = useHistory();
 
   const pushWithParams = (params: {}) => {
-    const queryStr = queryString.stringify({
+    const newParams = cleanObjectProperties({
       ...query,
       ...params,
-    })
-    history.push(`/search?${queryStr}`)
-  }
+    });
 
-  if (error) return <div>{(error as any)?.detail}</div>
+    const queryStr = queryString.stringify(newParams);
+    history.push(`/search?${queryStr}`);
+  };
+
+  if (error) return <div>{(error as any)?.detail}</div>;
 
   return (
     <div>
+      <ScrollToTop />
       <LoadingIndicator show={loading} />
       <div className="mt-32 flex items-start">
         <div className="mt-16 mr-10">
@@ -58,7 +63,9 @@ const SearchPage: FunctionComponent = () => {
               <DropdownMenu
                 topics={orderings}
                 currentTopic={currentOrdering}
-                onChange={ordering => pushWithParams({ ordering: ordering.id })}
+                onChange={(ordering) =>
+                  pushWithParams({ ordering: ordering.id })
+                }
               />
             )}
           </div>
@@ -76,14 +83,14 @@ const SearchPage: FunctionComponent = () => {
               <DropdownMenu
                 topics={genres}
                 currentTopic={currentGenre}
-                onChange={genre => pushWithParams({ genres: genre.id })}
+                onChange={(genre) => pushWithParams({ genres: genre.id })}
               />
             )}
             {types && (
               <DropdownMenu
                 topics={types}
                 currentTopic={currentType}
-                onChange={type => pushWithParams({ type: type.id })}
+                onChange={(type) => pushWithParams({ type: type.id })}
               />
             )}
           </div>
@@ -119,68 +126,68 @@ const SearchPage: FunctionComponent = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const useTitles = (query: queryString.ParsedQuery<string>) => {
-  const { search } = useLocation()
+  const { search } = useLocation();
 
-  const [titles, setTitles] = useState<PaginatedResults<ITitle[]> | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [titles, setTitles] = useState<PaginatedResults<ITitle[]> | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useDisposableEffect(
-    disposed => {
-      getResults(disposed)
+    (disposed) => {
+      getResults(disposed);
     },
     [search]
-  )
+  );
 
   const getResults = async (disposed: boolean) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const titles = await getTitles(query)
+      const titles = await getTitles(query);
 
       if (!disposed) {
-        error && setError(null)
-        setTitles(titles)
+        error && setError(null);
+        setTitles(titles);
       }
     } catch (error) {
-      !disposed && setError(error)
+      !disposed && setError(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const loadMore = async () => {
     if (titles?.next) {
-      setLoading(true)
+      setLoading(true);
       try {
-        const res: PaginatedResults<ITitle[]> = await client.get(titles.next)
-        res.results = [...titles.results, ...res.results]
-        setTitles(res)
+        const res: PaginatedResults<ITitle[]> = await client.get(titles.next);
+        res.results = [...titles.results, ...res.results];
+        setTitles(res);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-  }
+  };
 
-  return { titles, loadMore, loading, error }
-}
+  return { titles, loadMore, loading, error };
+};
 
 const useFilters = (query: queryString.ParsedQuery<string>) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [genres, setGenres] = useState<Topic[]>([
     { id: "", name: `${t("genres")} - ${t("all")}` },
-  ])
+  ]);
 
   const types: Topic[] = [
     { id: "", name: `${t("type")} - ${t("all")}` },
     { id: "m", name: t("movies") },
     { id: "s", name: t("series") },
-  ]
+  ];
   const orderings: Topic[] = [
     { id: "name", name: t("nameAsc") },
     { id: "-name", name: t("nameDesc") },
@@ -190,32 +197,32 @@ const useFilters = (query: queryString.ParsedQuery<string>) => {
     { id: "-rating", name: `${t("rating")} ${t("desc")}` },
     { id: "created_at", name: t("releaseDateAsc") },
     { id: "-created_at", name: t("releaseDateDesc") },
-  ]
-  const { genres: genreId, type, ordering } = query
+  ];
+  const { genres: genreId, type, ordering } = query;
 
-  useDisposableEffect(disposed => {
-    getFilters()
-  }, [])
+  useDisposableEffect((disposed) => {
+    getFilters(disposed);
+  }, []);
 
-  const getFilters = async () => {
+  const getFilters = async (disposed: boolean) => {
     try {
-      const result = await getGenres()
-      setGenres([...genres, ...result])
+      const result = await getGenres();
+      !disposed && setGenres([...genres, ...result]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return {
     genres,
     currentGenre:
-      genres?.find(genre => genre.id?.toString() === genreId) || genres[0],
+      genres?.find((genre) => genre.id?.toString() === genreId) || genres[0],
     types,
-    currentType: types?.find(item => item.id === type) || types[0],
+    currentType: types?.find((item) => item.id === type) || types[0],
     orderings,
     currentOrdering:
-      orderings?.find(item => item.id === ordering) || orderings[7],
-  }
-}
+      orderings?.find((item) => item.id === ordering) || orderings[7],
+  };
+};
 
-export default SearchPage
+export default SearchPage;

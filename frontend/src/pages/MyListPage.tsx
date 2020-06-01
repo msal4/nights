@@ -1,50 +1,58 @@
-import React, { FunctionComponent, useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import { useHistory } from "react-router-dom";
 
-import { useAuth } from "../context/auth-context"
-import { Title as ITitle } from "../core/interfaces/title"
-import { getMyList } from "../api/title"
-import Title from "../components/Title"
+import { useAuth } from "../context/auth-context";
+import { Title as ITitle } from "../core/interfaces/title";
+import { getMyList } from "../api/title";
+import Title from "../components/Title";
+import ScrollToTop from "../components/ScrollToTop";
 
 const MyListPage: FunctionComponent = () => {
-  const { titles, error } = useMyList()
+  const { titles } = useMyList();
 
   return (
     <div>
+      <ScrollToTop />
       <h1 className="mb-10 text-6xl font-bold">My List</h1>
       <div className="flex flex-wrap">
         {titles &&
           titles.map((title: ITitle) => <Title key={title.id} title={title} />)}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const useMyList = () => {
-  const { token } = useAuth()
-  const history = useHistory()
-  const [titles, setTitles] = useState<ITitle[] | null>(null)
-  const [error, setError] = useState(null)
+  const { token } = useAuth();
+  const history = useHistory();
+  const [titles, setTitles] = useState<ITitle[] | null>(null);
+  const [error, setError] = useState(null);
 
-  if (!token) history.push("/login")
+  if (!token) history.push("/login");
 
-  const getTitles = async () => {
+  const getTitles = useCallback(async () => {
     try {
-      const data = await getMyList()
-      setTitles(data.results)
+      const data = await getMyList();
+      setTitles(data.results);
 
       // Cleanup
-      error && setError(null)
+      error && setError(null);
     } catch (err) {
-      setError(err)
+      console.log("error");
+      setError(err);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    getTitles()
-  }, [token])
+    getTitles();
+  }, [token, getTitles]);
 
-  return { titles, error }
-}
+  return { titles, error };
+};
 
-export default MyListPage
+export default MyListPage;

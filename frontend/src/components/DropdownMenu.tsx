@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useState } from "react"
-import { IoIosArrowDown } from "react-icons/io"
-import { Topic } from "../core/interfaces/topic"
-import { capitalizeFirst } from "../utils/common"
+import React, { FunctionComponent, useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { Topic } from "../core/interfaces/topic";
+import { capitalizeFirst } from "../utils/common";
 
 export interface DropdownMenuProps {
-  topics: Topic[]
-  currentTopic: Topic
-  onChange: (topic: Topic) => void
+  topics: Topic[];
+  currentTopic: Topic;
+  onChange: (topic: Topic) => void;
 }
 
 const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
@@ -14,7 +14,7 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
   currentTopic,
   onChange,
 }) => {
-  const [menuOpened, setMenuOpened] = useState(false)
+  const [menuOpened, setMenuOpened] = useState(false);
 
   return (
     <div
@@ -40,15 +40,15 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
           className="mt-12 pt-2 w-full absolute z-20 rounded bg-gray-800 overflow-auto"
           style={{ maxHeight: "10rem" }}
         >
-          {topics.map(topic => (
+          {topics.map((topic) => (
             <button
               className={`block text-left px-6 py-1 mb-2 w-full text-white ${
                 topic.id === currentTopic.id ? "font-bold" : ""
               } hover:bg-white hover:text-black`}
               key={topic.id}
               onClick={() => {
-                onChange(topic)
-                setMenuOpened(false)
+                onChange(topic);
+                setMenuOpened(false);
               }}
             >
               {capitalizeFirst(topic.name)}
@@ -63,7 +63,7 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default DropdownMenu
+export default DropdownMenu;

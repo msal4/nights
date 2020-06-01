@@ -1,92 +1,91 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import {
   useParams,
   Switch,
-  Link,
   Route,
   useRouteMatch,
   useHistory,
-} from "react-router-dom"
-import { IoIosPlay, IoIosArrowBack } from "react-icons/io"
-import { useTranslation } from "react-i18next"
+} from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
 import {
   TitleDetail,
   ImageQuality,
   Title as ITitle,
-} from "../core/interfaces/title"
-import { SimpleSeason } from "../core/interfaces/season"
-import { getImageUrl, joinTopics } from "../utils/common"
-import { getTitle } from "../api/title"
-import { PrimaryButton } from "../components/common/Buttons"
-import NImage from "../components/NImage"
-import TitleInfo from "../components/TitleInfo"
-import UnderlineLink from "../components/UnderlineLink"
-import Season from "../components/containers/Season"
-import SeasonDropdown from "../components/containers/SeasonDropdown"
-import { useDisposableEffect } from "../hooks"
-import LoadingIndicator from "../components/LoadingIndicator"
-import Title from "../components/Title"
-import { useBackground } from "../context/background-context"
-import MyListButton from "../components/MyListButton"
-import Trailer from "../components/Trailer"
-import PlayButton from "../components/PlayButton"
+} from "../core/interfaces/title";
+import { SimpleSeason } from "../core/interfaces/season";
+import { getImageUrl, joinTopics } from "../utils/common";
+import { getTitle } from "../api/title";
+import NImage from "../components/NImage";
+import TitleInfo from "../components/TitleInfo";
+import UnderlineLink from "../components/UnderlineLink";
+import Season from "../components/containers/Season";
+import SeasonDropdown from "../components/containers/SeasonDropdown";
+import { useDisposableEffect } from "../hooks";
+import LoadingIndicator from "../components/LoadingIndicator";
+import Title from "../components/Title";
+import { useBackground } from "../context/background-context";
+import MyListButton from "../components/MyListButton";
+import Trailer from "../components/Trailer";
+import PlayButton from "../components/PlayButton";
+import ScrollToTop from "../components/ScrollToTop";
 
 const Recommended = ({ titles }: { titles: ITitle[] }) => {
   return (
     <div className="flex flex-wrap">
-      {titles.map(title => (
+      {titles.map((title) => (
         <Title key={title.id} title={title} />
       ))}
     </div>
-  )
-}
+  );
+};
 
 const useTitle = () => {
-  const { id } = useParams()
+  const { id } = useParams();
 
-  const [title, setTitle] = useState<TitleDetail | null>(null)
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [title, setTitle] = useState<TitleDetail | null>(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selectedSeason, setSelectedSeason] = useState<SimpleSeason | null>(
     null
-  )
-  const { changeBackground } = useBackground()
+  );
+  const { changeBackground } = useBackground();
 
   const getTitleDetail = async (disposed: boolean) => {
-    !disposed && setLoading(true)
+    !disposed && setLoading(true);
     try {
-      const title = await getTitle(id)
-      if (title.type === "s") setSelectedSeason(title.seasons[0])
-      if (error && !disposed) setError(null)
-      !disposed && changeBackground(title)
-      !disposed && setTitle(title)
+      const title = await getTitle(id);
+      if (title.type === "s") setSelectedSeason(title.seasons[0]);
+      if (error && !disposed) setError(null);
+      !disposed && changeBackground(title);
+      !disposed && setTitle(title);
     } catch (error) {
-      !disposed && setError(error)
+      !disposed && setError(error);
     } finally {
-      !disposed && setLoading(false)
+      !disposed && setLoading(false);
     }
-  }
+  };
 
   useDisposableEffect(
-    disposed => {
-      getTitleDetail(disposed)
+    (disposed) => {
+      getTitleDetail(disposed);
     },
     [id]
-  )
+  );
 
-  return { title, error, loading, selectedSeason, setSelectedSeason }
-}
+  return { title, error, loading, selectedSeason, setSelectedSeason };
+};
 
 export default () => {
-  const history = useHistory()
-  const { path, url } = useRouteMatch()
-  const { t } = useTranslation()
-  const { title, selectedSeason, setSelectedSeason, loading } = useTitle()
+  const history = useHistory();
+  const { path, url } = useRouteMatch();
+  const { t } = useTranslation();
+  const { title, selectedSeason, setSelectedSeason, loading } = useTitle();
 
   return (
     <div>
-      {/*<ScrollToTopOnMount />*/}
+      <ScrollToTop />
       <LoadingIndicator show={loading} />
       {title && (
         <div className="pb-40">
@@ -163,5 +162,5 @@ export default () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

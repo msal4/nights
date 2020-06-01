@@ -1,4 +1,6 @@
-import { useLocation } from "react-router-dom"
-import queryString from "query-string"
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
+import { cleanObjectProperties } from "../utils/common";
 
-export const useQuery = () => queryString.parse(useLocation().search)
+export const useQuery = () =>
+  cleanObjectProperties(queryString.parse(useLocation().search));
