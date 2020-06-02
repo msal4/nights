@@ -130,14 +130,14 @@ export default () => {
         </div>
 
         <div
-          className="p-4 md:p-16 flex flex-col md:flex-row items-center justify-center"
+          className="p-8 md:p-16 flex flex-col md:flex-row items-center justify-center"
           style={{
             background:
               "linear-gradient(270deg, #00000000 -10%, #18001F 60%) 0% 0% no-repeat padding-box, url(/static/frontend/images/media_promo.png)",
           }}
         >
           <img
-            className="h-30"
+            className="h-16"
             src="/static/frontend/images/media_logo.svg"
             alt=""
           />
