@@ -1,66 +1,64 @@
-import React, { FunctionComponent, useState } from "react"
+import React, { FunctionComponent, useState } from "react";
 
-import CWRow from "../components/containers/CWRow"
-import { ViewHit } from "../core/interfaces/view-hit"
-import { getHistory } from "../api/title"
-import { useDisposableEffect } from "../hooks"
-import { useAuth } from "../context/auth-context"
-import { Redirect } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import CWRow from "../components/containers/CWRow";
+import { ViewHit } from "../core/interfaces/view-hit";
+import { getHistory } from "../api/title";
+import { useDisposableEffect } from "../hooks";
+import { useAuth } from "../context/auth-context";
+import { Redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const CWPage: FunctionComponent = () => {
-  const { token } = useAuth()
-  const { titles } = useTitles(token)
-  const { t } = useTranslation()
+  const { token } = useAuth();
+  const { titles } = useTitles(token);
+  const { t } = useTranslation();
 
-  if (!token) return <Redirect to="/landing/login_or_register" />
+  if (!token) return <Redirect to="/landing/login_or_register" />;
 
-  return (
-    titles && (
-      <>
-        <h1 className="text-xl font-semibold">{t("continueWatching")}</h1>
-        <div
-          className="mt-4 px-8"
-          style={{ borderRadius: "3rem", background: "#00000033" }}
-        >
-          <CWRow
-            responsive={{
-              desktop: { breakpoint: { max: 6000, min: 464 }, items: 2 },
-            }}
-            showTitle={false}
-            row={titles}
-          />
-        </div>
-      </>
-    )
-  )
-}
+  return titles && titles.length > 0 ? (
+    <>
+      <h1 className="text-xl font-semibold">{t("continueWatching")}</h1>
+      <div
+        className="mt-4 px-8"
+        style={{ borderRadius: "3rem", background: "#00000033" }}
+      >
+        <CWRow
+          responsive={{
+            desktop: { breakpoint: { max: 6000, min: 464 }, items: 2 },
+          }}
+          showTitle={false}
+          row={titles}
+        />
+      </div>
+    </>
+  ) : null;
+};
 
 const useTitles = (token?: string | null) => {
-  const [titles, setTitles] = useState<ViewHit[] | null>(null)
-  const [error, setError] = useState(null)
+  const [titles, setTitles] = useState<ViewHit[] | null>(null);
+  const [error, setError] = useState(null);
 
   const getTitles = async (disposed: boolean) => {
     try {
-      const res = await getHistory()
+      const res = await getHistory();
       if (!disposed) {
-        setTitles(res.results)
-        error && setError(null)
+        setTitles(res.results);
+        error && setError(null);
       }
     } catch (error) {
-      setError(error)
-      console.error("unlucky 😔", error)
+      setError(error);
+      console.error("unlucky 😔", error);
     }
-  }
+  };
 
   useDisposableEffect(
-    disposed => {
-      getTitles(disposed)
+    (disposed) => {
+      getTitles(disposed);
     },
     [token]
-  )
+  );
 
-  return { titles, error }
-}
+  return { titles, error };
+};
 
-export default CWPage
+export default CWPage;
