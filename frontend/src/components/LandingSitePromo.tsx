@@ -1,16 +1,16 @@
-import { FunctionComponent } from "react"
-import React from "react"
+import { FunctionComponent } from "react";
+import React from "react";
 
-import "../styles/LandingSitePromo.scss"
-import { useTranslation } from "react-i18next"
-import NImage from "./NImage"
+import "../styles/LandingSitePromo.scss";
+import { useTranslation } from "react-i18next";
+import NImage from "./NImage";
 
 export interface LandingSitePromoProps {
-  onWatch: VoidFunction
-  onVisit: VoidFunction
-  logo: string
-  image: string
-  className?: string
+  onWatch: VoidFunction;
+  onVisit: VoidFunction;
+  logo: string;
+  image: string;
+  className?: string;
 }
 
 const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
@@ -20,7 +20,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
   logo,
   image,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <div
@@ -35,6 +35,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
           draggable={false}
           className="landing-site-promo-logo z-10"
           src={logo}
+          alt=""
         />
         <div className="action-btn-container mt-auto z-10">
           <button
@@ -52,7 +53,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LandingSitePromo
+export default LandingSitePromo;
