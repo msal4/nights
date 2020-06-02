@@ -1,29 +1,32 @@
-import React, { FunctionComponent } from "react"
-import { useTranslation } from "react-i18next"
-import { ResponsiveType } from "react-multi-carousel"
+import React, { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
+import { ResponsiveType } from "react-multi-carousel";
 
-import CarouselRow from "../CarouselRow"
-import { ViewHit } from "../../core/interfaces/view-hit"
-import CWCard from "../../components/containers/CWCard"
+import CarouselRow from "../CarouselRow";
+import { ViewHit } from "../../core/interfaces/view-hit";
+import CWCard from "../../components/containers/CWCard";
 
 export interface TitleRowProps {
-  row: ViewHit[]
-  responsive?: ResponsiveType
-  showTitle?: boolean
+  row: ViewHit[];
+  responsive?: ResponsiveType;
+  showTitle?: boolean;
+  showX?: boolean;
 }
 
 const CWRow: FunctionComponent<TitleRowProps> = ({
   row,
   responsive,
   showTitle = true,
+  showX = true,
 }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <CarouselRow
       className="pb-6"
       title={showTitle ? t("continueWatching") : ""}
       path=""
+      showX={showX}
       responsive={{
         desktop: {
           breakpoint: { max: 6000, min: 464 },
@@ -40,11 +43,11 @@ const CWRow: FunctionComponent<TitleRowProps> = ({
         ...(responsive || {}),
       }}
     >
-      {row.map(hit => (
+      {row.map((hit) => (
         <CWCard key={hit.id} hit={hit} />
       ))}
     </CarouselRow>
-  )
-}
+  );
+};
 
-export default CWRow
+export default CWRow;

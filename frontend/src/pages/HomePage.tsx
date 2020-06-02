@@ -30,7 +30,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
       <LoadingIndicator show={loading} />
       {home.promos && <Featured data={home.promos} />}
       {home.continueWatching && home.continueWatching.length > 0 && (
-        <CWRow row={home.continueWatching} />
+        <CWRow row={home.continueWatching} showX />
       )}
       {home.recentlyAdded && (
         <TitleRow
