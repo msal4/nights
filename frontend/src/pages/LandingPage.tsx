@@ -113,7 +113,7 @@ export default () => {
               <p className="mt-2 text-sm font-thin">
                 {t("enjoyAllYourFavoriteMedia")}
               </p>
-              <div className="mt-6 flex items-center">
+              <div className="mt-6 flex items-center justify-center">
                 <img
                   className="w-32"
                   src="/static/frontend/images/google_play_white.png"
