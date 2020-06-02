@@ -31,14 +31,15 @@ export default () => {
         </div>
         <div className="mx--1 text-xs md:text-base md:h-24 px-4 py-2 md:px-8 md:py-4 flex items-center justify-between h-rainbow">
           <img
-            className="w-16"
+            className="w-32 md:w-40"
             src="/static/frontend/images/nights_logo_white.svg"
-            style={{ maxWidth: "12rem", minWidth: "12rem" }}
+            alt=""
           />
           <span className="font-thin opacity-75 mx-2">{t("copyright")}</span>
           <a
             className="flex items-center font-thin"
             href="https://fb.com/1001nights.fun"
+            rel="noopener noreferrer"
             target="_blank"
           >
             <FaFacebookSquare className="mr-2" />
