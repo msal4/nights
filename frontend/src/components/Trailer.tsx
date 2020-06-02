@@ -1,21 +1,22 @@
-import React, {FunctionComponent, useEffect, useRef} from "react"
-import {TitleDetail, ImageQuality} from "../core/interfaces/title"
-import videojs from "video.js"
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import { TitleDetail, ImageQuality } from "../core/interfaces/title";
+import videojs from "video.js";
 
-import {getImageUrl} from "../utils/common"
-import {useTranslation} from "react-i18next"
+import { getImageUrl } from "../utils/common";
+import { useTranslation } from "react-i18next";
 
 interface TrailerProps {
-  title: TitleDetail
-  className?: string
+  title: TitleDetail;
+  className?: string;
 }
 
-const Trailer: FunctionComponent<TrailerProps> = ({title, className}) => {
-  const videoNode = useRef<HTMLVideoElement>(null)
-  const {t} = useTranslation()
+const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
+  const videoNode = useRef<HTMLVideoElement>(null);
+  const { t } = useTranslation();
+  const [error, setError] = useState(false);
 
-  const src = title?.trailers[0]?.url.replace("{f}", "mp4")
-  const poster = getImageUrl(title.images[0]?.url, ImageQuality.h900)
+  const src = title?.trailers[0]?.url.replace("{f}", "mp4");
+  const poster = getImageUrl(title.images[0]?.url, ImageQuality.h900);
 
   useEffect(() => {
     const player = videojs(videoNode.current, {
@@ -26,14 +27,18 @@ const Trailer: FunctionComponent<TrailerProps> = ({title, className}) => {
         },
       ],
       poster,
-    })
+    });
+
+    player.on("error", () => {
+      setError(true);
+    });
 
     return () => {
-      player.dispose()
-    }
-  }, [src])
+      player.dispose();
+    };
+  }, [src]);
 
-  return (
+  return !error ? (
     <div className={`${className}`}>
       <h2 className="mb-5 text-xl font-semibold">{t("trailer")}</h2>
       <div
@@ -52,7 +57,7 @@ const Trailer: FunctionComponent<TrailerProps> = ({title, className}) => {
         />
       </div>
     </div>
-  )
-}
+  ) : null;
+};
 
-export default Trailer
+export default Trailer;

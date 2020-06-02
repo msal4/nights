@@ -1,5 +1,5 @@
-import i18n from "i18next"
-import LanguageDetector from "i18next-browser-languagedetector"
+import i18n from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 i18n
   .use(LanguageDetector)
@@ -68,6 +68,7 @@ i18n
           createAccount: "Create Account",
           loadMore: "Load More",
           seeMore: "See more",
+          recommended: "Recommended",
         },
       },
       ar: {
@@ -132,6 +133,7 @@ i18n
           createAccount: "انشاء حساب",
           loadMore: "المزيد",
           seeMore: "المزيد",
+          recommended: "مشابه",
         },
       },
     },
@@ -148,6 +150,6 @@ i18n
       wait: true,
     },
   })
-  .then(() => console.log("Translations loaded."))
+  .then(() => console.log("Translations loaded."));
 
-export default i18n
+export default i18n;

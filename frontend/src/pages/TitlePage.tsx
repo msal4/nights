@@ -121,6 +121,10 @@ export default () => {
               </div>
             </div>
           </NImage>
+          <Trailer
+            className="my-12 block md:hidden flex-1 text-center"
+            title={title}
+          />
           <div className="mx-auto" style={{ maxWidth: "20rem" }}>
             {selectedSeason && title.seasons.length > 1 && (
               <SeasonDropdown
@@ -131,7 +135,7 @@ export default () => {
             )}
           </div>
           <div className="flex w-full">
-            <div className="mr-10" style={{ flex: 2 }}>
+            <div className="md:mr-10" style={{ flex: 2 }}>
               <div className="title-page-nav relative my-10 flex">
                 {title.type === "s" && (
                   <UnderlineLink to={url}>{t("episodes")}</UnderlineLink>

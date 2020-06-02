@@ -127,6 +127,12 @@ html {
   }
 }
 
+@media screen and (max-width: 800px) {
+  .underline-before {
+    padding: 0 2rem .5rem 2rem;
+  }
+}
+
 .carousel-row {
   padding-top: 1vw;
   padding-bottom: 2vw;
