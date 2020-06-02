@@ -130,7 +130,7 @@ export default () => {
         </div>
 
         <div
-          className="h-56 flex items-center justify-center"
+          className="p-4 md:p-16 flex flex-col md:flex-row items-center justify-center"
           style={{
             background:
               "linear-gradient(270deg, #00000000 -10%, #18001F 60%) 0% 0% no-repeat padding-box, url(/static/frontend/images/media_promo.png)",
@@ -141,7 +141,7 @@ export default () => {
             src="/static/frontend/images/media_logo.svg"
             alt=""
           />
-          <div className="ml-24 max-w-sm">
+          <div className="text-center md:text-left mt-10 md:ml-24 max-w-sm">
             <h1 className="font-semibold text-lg">
               {t("downloadYourEssentials")}
             </h1>
