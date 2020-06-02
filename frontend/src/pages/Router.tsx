@@ -29,10 +29,7 @@ export default () => {
             </Route>
           </Switch>
         </div>
-        <div
-          id="app-footer"
-          className="text-xs md:text-base md:h-24 px-4 py-2 md:px-8 md:py-4 flex items-center justify-between h-rainbow"
-        >
+        <div className="mx--1 text-xs md:text-base md:h-24 px-4 py-2 md:px-8 md:py-4 flex items-center justify-between h-rainbow">
           <img
             className="w-16"
             src="/static/frontend/images/nights_logo_white.svg"

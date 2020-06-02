@@ -1,0 +1,9 @@
+.promo-img {
+  width: 35rem;
+}
+
+@media screen and (max-width: 800px) {
+  .promo-img {
+    width: 18rem;
+  }
+}

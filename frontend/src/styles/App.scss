@@ -28,12 +28,12 @@ html {
   }
 }
 
-#app-footer {
+.mx--1 {
   margin: 0 -1.2rem;
 }
 
 @media screen and (min-width: 800px) {
-  #app-footer {
+  .mx--1 {
     margin: 0 -4rem;
   }
 }

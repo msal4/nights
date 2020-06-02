@@ -1,25 +1,25 @@
-import React, { useState } from "react"
-import { IoIosArrowDown } from "react-icons/io"
-import { useTranslation } from "react-i18next"
+import React, { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
-import LandingSitePromo from "../components/LandingSitePromo"
-import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom"
-import LoginPage from "./LoginPage"
-import CWPage from "./CWPage"
-import SecondaryPromo from "../components/SecondaryPromo"
-import { LandingPromo, ChannelPromo } from "../core/interfaces/promo"
-import { useDisposableEffect } from "../hooks"
-import { getLandingPromos, getChannelPromo } from "../api/promo"
-import { getPromos } from "../api/home"
-import { TitleDetail, ImageQuality } from "../core/interfaces/title"
-import { getImageUrl } from "../utils/common"
-import LoginOrRegisterPage from "./LoginOrRegisterPage"
+import LandingSitePromo from "../components/LandingSitePromo";
+import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
+import LoginPage from "./LoginPage";
+import CWPage from "./CWPage";
+import SecondaryPromo from "../components/SecondaryPromo";
+import { LandingPromo, ChannelPromo } from "../core/interfaces/promo";
+import { useDisposableEffect } from "../hooks";
+import { getLandingPromos, getChannelPromo } from "../api/promo";
+import { getPromos } from "../api/home";
+import { TitleDetail, ImageQuality } from "../core/interfaces/title";
+import { getImageUrl } from "../utils/common";
+import LoginOrRegisterPage from "./LoginOrRegisterPage";
 
 export default () => {
-  const history = useHistory()
-  const { url } = useRouteMatch()
-  const { t, i18n } = useTranslation()
-  const { landingPromos, nightsPromo, channelPromo } = usePromos()
+  const history = useHistory();
+  const { url } = useRouteMatch();
+  const { t, i18n } = useTranslation();
+  const { landingPromos, nightsPromo, channelPromo } = usePromos();
 
   return (
     <div id="landing-page-container">
@@ -34,7 +34,7 @@ export default () => {
         />
 
         <div className="mx-auto max-w-5xl">
-          <div className="mt-12 flex items-center justify-between">
+          <div className="mt-12 flex flex-col md:flex-row items-center justify-between">
             {nightsPromo && (
               <LandingSitePromo
                 onVisit={() => history.push("/home")}
@@ -95,18 +95,18 @@ export default () => {
         </div>
       </div>
 
-      <div style={{ margin: "0 -4rem" }}>
+      <div className="mx--1">
         <div
           className="relative flex flex-column items-center justify-center bg-white text-black"
           style={{ zIndex: 1000, height: "30rem" }}
         >
-          <div className="flex items-center">
+          <div className="flex flex-col md:flex-row items-center">
             <img
               src="/static/frontend/images/devices_promo.png"
               style={{ width: "20rem" }}
               alt=""
             />
-            <div className="ml-32 max-w-xs">
+            <div className="text-center md:text-left mt-10 md:ml-32 max-w-xs">
               <h1 className="font-semibold text-lg">
                 {t("availableNowOnAllDevices")}
               </h1>
@@ -117,10 +117,12 @@ export default () => {
                 <img
                   className="w-32"
                   src="/static/frontend/images/google_play_white.png"
+                  alt=""
                 />
                 <img
                   className="ml-4 w-32"
                   src="/static/frontend/images/ios_app_store_white.png"
+                  alt=""
                 />
               </div>
             </div>
@@ -134,7 +136,11 @@ export default () => {
               "linear-gradient(270deg, #00000000 -10%, #18001F 60%) 0% 0% no-repeat padding-box, url(/static/frontend/images/media_promo.png)",
           }}
         >
-          <img className="h-30" src="/static/frontend/images/media_logo.svg" />
+          <img
+            className="h-30"
+            src="/static/frontend/images/media_logo.svg"
+            alt=""
+          />
           <div className="ml-24 max-w-sm">
             <h1 className="font-semibold text-lg">
               {t("downloadYourEssentials")}
@@ -142,7 +148,9 @@ export default () => {
             <p className="mt-2 font-thin">{t("pcSoftwareGames")}</p>
             <a
               className="mt-4 inline-block px-8 py-3 rounded-full text-sm font-semibold shadow-xl transition-background duration-200 text-black bg-white hover:bg-black hover:text-white"
-              href="#"
+              href="http://172.18.0.196"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               {t("visitSite")}
             </a>
@@ -161,34 +169,35 @@ export default () => {
           ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const usePromos = () => {
   const [landingPromos, setLandingPromos] = useState<LandingPromo[] | null>(
     null
-  )
-  const [nightsPromo, setNightsPromo] = useState<TitleDetail | null>(null)
-  const [channelPromo, setChannelPromo] = useState<ChannelPromo | null>(null)
+  );
+  const [nightsPromo, setNightsPromo] = useState<TitleDetail | null>(null);
+  const [channelPromo, setChannelPromo] = useState<ChannelPromo | null>(null);
 
   const getData = async (disposed: boolean) => {
     try {
-      const landingPromosRes = await getLandingPromos()
-      !disposed && setLandingPromos(landingPromosRes)
+      const landingPromosRes = await getLandingPromos();
+      !disposed && setLandingPromos(landingPromosRes);
 
-      const nightsPromoRes = await getPromos({ limit: 1 })
-      !disposed && setNightsPromo(nightsPromoRes[0])
+      const nightsPromoRes = await getPromos({ limit: 1 });
+      !disposed && setNightsPromo(nightsPromoRes[0]);
 
-      const channelPromoRes = await getChannelPromo()
-      !disposed && setChannelPromo(channelPromoRes)
+      const channelPromoRes = await getChannelPromo();
+      !disposed && setChannelPromo(channelPromoRes);
     } catch (error) {
-      console.log("😔", error)
+      console.log("😔", error);
     }
-  }
+  };
 
-  useDisposableEffect(disposed => {
-    getData(disposed)
-  }, [])
+  useDisposableEffect((disposed) => {
+    getData(disposed);
+  }, []);
 
-  return { landingPromos, nightsPromo, channelPromo }
-}
+  return { landingPromos, nightsPromo, channelPromo };
+};
+

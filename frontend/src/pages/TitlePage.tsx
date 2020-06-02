@@ -136,7 +136,7 @@ export default () => {
                 {title.type === "s" && (
                   <UnderlineLink to={url}>{t("episodes")}</UnderlineLink>
                 )}
-                <UnderlineLink to={title.type == "m" ? url : `${url}/info`}>
+                <UnderlineLink to={title.type === "m" ? url : `${url}/info`}>
                   {t("info")}
                 </UnderlineLink>
                 <UnderlineLink to={`${url}/recommended`}>
