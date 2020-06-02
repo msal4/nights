@@ -47,8 +47,8 @@ const SearchPage: FunctionComponent = () => {
     <div>
       <ScrollToTop />
       <LoadingIndicator show={loading} />
-      <div className="flex mt-32 items-start">
-        <div className="hidden md:block mt-16 mr-10">
+      <div className="flex flex-col md:flex-row md:mt-32 items-center md:items-start">
+        <div className="w-full md:w-auto mb-10 md:mt-16 md:mr-10">
           <div
             className="px-10 py-5 bg-gray-900"
             style={{ borderRadius: "1.5rem" }}
