@@ -121,8 +121,8 @@ const Player: FunctionComponent<PlayerProps> = ({
         .addClass("vjs-forward-backward-buttons");
 
       // Check if the device is running ios
-      if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
-        throw Error("iOS Fullcreen is not supported.");
+      //     if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
+      // throw Error("iOS Fullcreen is not supported.");
 
       const disposeFullscreenButton = replaceFullscreenButton(
         videoContainerRef,
