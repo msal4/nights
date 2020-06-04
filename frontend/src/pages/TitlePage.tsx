@@ -96,7 +96,7 @@ export default () => {
           >
             <button
               className="absolute top-0 left-0 px-8 py-6 flex items-center font-thin text-sm hover:opacity-75"
-              onClick={() => history.goBack()}
+              onClick={() => history.push("/home")}
             >
               <IoIosArrowBack className="mr-1" />
               {t("back")}
