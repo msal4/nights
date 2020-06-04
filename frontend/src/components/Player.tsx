@@ -121,8 +121,8 @@ const Player: FunctionComponent<PlayerProps> = ({
         .addClass("vjs-forward-backward-buttons");
 
       // Check if the device is running ios
-      //     if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
-      // throw Error("iOS Fullcreen is not supported.");
+      if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
+        throw Error("iOS Fullcreen is not supported.");
 
       const disposeFullscreenButton = replaceFullscreenButton(
         videoContainerRef,
@@ -151,9 +151,10 @@ const Player: FunctionComponent<PlayerProps> = ({
           id="video-js-player"
           className="video-js"
           poster={poster}
+          crossOrigin="anonymous"
+          playsInline
           autoPlay
           controls
-          playsInline
         />
       </div>
       {displaySidebar && (
