@@ -138,11 +138,10 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     ordering_fields = ('name', 'type', 'rating', 'views', 'created_at')
     ordering = ('-created_at',)
 
-    def create(self, request, *args, **kwargs):
-        print(request.data['name'])
-        Title.objects.create(id="", name="Test Movie",
-                             plot="Test Plot", type="s")
-        return Response()
+#    def create(self, request, *args, **kwargs):
+#        Title.objects.create(name="Test Movie",
+#                             plot="Test Plot", type="s")
+#        return Response()
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset()).distinct()

@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'django_filters',
     'djoser',
     'corsheaders',
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
 ]
 
 MIDDLEWARE = [
@@ -163,8 +161,3 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'localhost:9200'
-    },
-}
