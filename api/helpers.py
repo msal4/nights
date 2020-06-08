@@ -1,10 +1,10 @@
 import random
 
-from django.db.models import Model
 from rest_framework.serializers import Serializer
 from django.utils import timezone
 from django.db.models import Count, Q
-from .serializers import  TitleSerializer
+from .serializers import TitleSerializer
+from .models import Genre
 
 
 def get_random_object(queryset):
@@ -21,5 +21,15 @@ def get_featured(titles, limit=4, index=None):
     featured = titles.annotate(trending=trending).order_by('-trending')[:limit]
     if index != None and index >= 0 and index < limit:
         return TitleSerializer(featured[index], read_only=True).data
-        
+
     return TitleSerializer(featured, many=True, read_only=True).data
+
+
+def get_or_create(queryset, **attributes):
+    try:
+        instance, created = queryset.get_or_create(**attributes)
+    except queryset.model.MultipleObjectsReturned:
+        instance = queryset.filter(**attributes)[0]
+
+    return instance
+

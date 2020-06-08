@@ -2,6 +2,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from polymorphic.models import PolymorphicModel
+from datetime import datetime
+
+
+def get_year():
+    return str(datetime.now().year)
 
 
 class Topic(PolymorphicModel):
@@ -9,7 +14,7 @@ class Topic(PolymorphicModel):
                                    through_fields=('topic', 'user'))
 
     name = models.CharField(max_length=200, blank=True)
-    released_at = models.DateTimeField(auto_now_add=True, blank=True)
+    released_at = models.CharField(max_length=4, default=get_year, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
@@ -145,7 +150,7 @@ class Media(PolymorphicModel):
     topic = models.ForeignKey(
         Topic, related_name='media', on_delete=models.CASCADE)
     provider = models.ForeignKey(
-        Provider, null=True, on_delete=models.SET_NULL)
+        Provider, blank=True, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(
         Availability, null=True, on_delete=models.SET_NULL)
 
@@ -156,7 +161,7 @@ class Media(PolymorphicModel):
     type = models.IntegerField()
 
     def __str__(self):
-        return self.content
+        return self.url
 
 
 class Image(Media):
@@ -181,7 +186,6 @@ class LandingPromo(models.Model):
     body = models.CharField(max_length=250)
     body_ar = models.CharField(max_length=250)
     image = models.ImageField(upload_to='landing_promos')
-    
+
     def __str__(self):
         return self.title
-    

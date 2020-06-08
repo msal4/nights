@@ -4,8 +4,10 @@ from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework import serializers
 
 from .documents import TitleDocument
-from .models import Title, Season, Episode, Topic, Genre, \
-    Cast, ViewHit, Image, Media, Subtitle, Video, Trailer, LandingPromo
+from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
+    Image, Media, Subtitle, Video, Trailer, LandingPromo, Provider
+from .types import media_types
+from . import helpers
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -85,7 +87,7 @@ class EpisodeSerializer(serializers.ModelSerializer):
 
 
 class SeasonSerializer(serializers.ModelSerializer):
-    episodes = EpisodeSerializer(many=True, read_only=True)
+    episodes = EpisodeSerializer(many=True)
 
     class Meta:
         model = Season
@@ -98,10 +100,32 @@ class SeasonListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'index', 'released_at')
 
 
+class ProviderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Provider
+        fields = "__all__"
+
+
+class TopicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = "__all__"
+
+
+class MediaSerializer(serializers.ModelSerializer):
+    topic = TopicSerializer(read_only=True)
+    provider = ProviderSerializer(read_only=True)
+
+    class Meta:
+        model = Media
+        fields = "__all__"
+
+
 class TitleSerializer(serializers.ModelSerializer):
-    seasons = SeasonListSerializer(many=True, read_only=True)
-    genres = GenreSerializer(many=True, read_only=True)
-    cast = CastSerializer(many=True, read_only=True)
+    seasons = SeasonListSerializer(many=True)
+    genres = GenreSerializer(many=True)
+    cast = CastSerializer(many=True)
+    media = MediaSerializer(write_only=True, many=True)
     views = serializers.SerializerMethodField()
     recommended = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
@@ -109,10 +133,42 @@ class TitleSerializer(serializers.ModelSerializer):
     subtitles = serializers.SerializerMethodField()
     trailers = serializers.SerializerMethodField()
 
+    def create(self, validated_data, instance=None):
+        seasons = validated_data.pop("seasons")
+        genres_data = validated_data.pop("genres")
+        cast_data = validated_data.pop("cast")
+        media = validated_data.pop("media")
+        title = instance or Title.objects.create(**validated_data)
+
+        title.genres.set([helpers.get_or_create(Genre.objects.all(), **item)
+                          for item in genres_data])
+
+        for item in media:
+            if item["type"] in media_types:
+                MediaType = media_types[item["type"]]
+                title.media.add(helpers.get_or_create(
+                    MediaType.objects.all(), topic=title, **item))
+
+        title.cast.set([helpers.get_or_create(title.cast, **item)
+                        for item in cast_data])
+
+        for season_data in seasons:
+            season = helpers.get_or_create(title.seasons, **season_data)
+            if "episodes" in season_data:
+                episodes = season_data.pop('episodes')
+                for episode_data in episodes:
+                    episode = helpers.get_or_create(
+                        season.episodes, **episode_data)
+
+        return title
+
+    def update(self, instance, validated_data):
+        return self.create(validated_data=validated_data, instance=instance)
+
     class Meta:
         model = Title
         fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated', 'images',
-                  'videos', 'subtitles', 'trailers', 'type', 'is_new', 'views', 'seasons',
+                  'videos', 'subtitles', 'trailers', 'media', 'type', 'is_new', 'views', 'seasons',
                   'genres', 'cast', 'recommended', 'released_at', 'created_at', 'updated_at')
 
     # noinspection PyMethodMayBeStatic
@@ -124,7 +180,7 @@ class TitleSerializer(serializers.ModelSerializer):
         genres = title.genres.all()
         titles = Title.objects.filter(genres__in=genres)
         ordered_titles = titles.order_by(
-            '-created_at').exclude(pk=title.id).distinct()[:5]
+            '-created_at').exclude(pk=title.id).distinct()[: 5]
         serializer = TitleListSerializer(
             ordered_titles, many=True, read_only=True)
         return serializer.data
@@ -199,4 +255,3 @@ class LandingPromoSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandingPromo
         fields = '__all__'
-
