@@ -81,9 +81,12 @@ class Season(Topic):
         blank=True, default=0, help_text='Season number')
 
     def save(self, *args, **kwargs):
-        if not self.name:
-            self.name = '%s S%02d' % (
-                self.series.name if self.series else '', self.index)
+        try:
+            if not self.name:
+                self.name = '%s S%02d' % (self.series.name, self.index)
+        except:
+            self.name = ""
+
         super().save(*args, **kwargs)
 
 

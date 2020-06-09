@@ -46,7 +46,14 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+class MediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Media
+        fields = ('id', 'url', 'type', 'formats', 'qualities', 'language')
+
+
 class EpisodeSerializer(serializers.ModelSerializer):
+    media = MediaSerializer(many=True, write_only=True)
     views = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     videos = serializers.SerializerMethodField()
@@ -56,9 +63,10 @@ class EpisodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Episode
         fields = ('id', 'name', 'plot', 'runtime', 'images', 'videos',
-                  'subtitles', 'hits', 'index', 'views')
+                  'media', 'subtitles', 'hits', 'index', 'views')
 
     # noinspection PyMethodMayBeStatic
+
     def get_views(self, title):
         return title.hits.count()
 
@@ -109,15 +117,6 @@ class ProviderSerializer(serializers.ModelSerializer):
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
-        fields = "__all__"
-
-
-class MediaSerializer(serializers.ModelSerializer):
-    topic = TopicSerializer(read_only=True)
-    provider = ProviderSerializer(read_only=True)
-
-    class Meta:
-        model = Media
         fields = "__all__"
 
 
@@ -173,14 +172,17 @@ class TitleCreateSerializer(serializers.ModelSerializer):
             season_index = season_data.pop("index")
             # Get or create
             season = helpers.get_or_create(
-                title.seasons.order_by("-created_at"), index=season_index)
+                title.seasons.order_by("-created_at"), index=season_index,
+                series=title)
             # Update
             helpers.update_object(season, **season_data)
 
             for episode_data in episodes:
                 episode_index = episode_data.pop("index")
                 episode = helpers.get_or_create(
-                    season.episodes.order_by("-created_at"), index=episode_index)
+                    season.episodes.order_by("-created_at"),
+                    index=episode_index, episode_season=season,
+                    episode_series=title)
                 helpers.update_object(episode, **episode_data)
 
         return title

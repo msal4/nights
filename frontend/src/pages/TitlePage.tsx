@@ -83,6 +83,8 @@ export default () => {
   const { t } = useTranslation();
   const { title, selectedSeason, setSelectedSeason, loading } = useTitle();
 
+  console.log(title && getImageUrl(title.images[0]?.url));
+
   return (
     <div>
       <ScrollToTop />
