@@ -71,7 +71,6 @@ class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
         return super().list(request, *args, **kwargs)
 
 
-
 class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Genre.objects.order_by('-name')
     serializer_class = serializers.TitleGenreSerializer
@@ -125,7 +124,9 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     serializer_class = serializers.TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     serializer_action_classes = {
-        'list': serializers.TitleListSerializer
+        'list': serializers.TitleListSerializer,
+        'create': serializers.TitleCreateSerializer,
+        'update': serializers.TitleCreateSerializer,
     }
     pagination_class = TitleViewPagination
     filter_backends = (
@@ -343,4 +344,3 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     @method_decorator(cache_page(60 * 60 * 10))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-

@@ -121,44 +121,67 @@ class MediaSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class TitleSerializer(serializers.ModelSerializer):
-    seasons = SeasonListSerializer(many=True)
+class TitleCreateSerializer(serializers.ModelSerializer):
+    seasons = SeasonSerializer(write_only=True, many=True)
     genres = GenreSerializer(many=True)
     cast = CastSerializer(many=True)
-    media = MediaSerializer(write_only=True, many=True)
-    views = serializers.SerializerMethodField()
-    recommended = serializers.SerializerMethodField()
-    images = serializers.SerializerMethodField()
-    videos = serializers.SerializerMethodField()
-    subtitles = serializers.SerializerMethodField()
-    trailers = serializers.SerializerMethodField()
+    media = MediaSerializer(many=True)
 
     def create(self, validated_data, instance=None):
-        seasons = validated_data.pop("seasons")
+        seasons_data = validated_data.pop("seasons")
         genres_data = validated_data.pop("genres")
         cast_data = validated_data.pop("cast")
-        media = validated_data.pop("media")
-        title = instance or Title.objects.create(**validated_data)
+        media_data = validated_data.pop("media")
+        name = validated_data.pop("name")
+        released_at = validated_data.pop(
+            "released_at") if "released_at" in validated_data else None
 
-        title.genres.set([helpers.get_or_create(Genre.objects.all(), **item)
+        # Create or get the title instance
+        queryset = Title.objects.order_by("-created_at")
+        if not instance:
+            print('no instance')
+            if not released_at:
+                print('no released_at')
+                title = helpers.get_or_create(queryset, name=name)
+            else:
+                print('name and released_at')
+                title = helpers.get_or_create(queryset, name=name,
+                                              released_at=released_at)
+        else:
+            title = instance
+
+        # Update title
+        helpers.update_object(title, **validated_data)
+
+        title.genres.set([helpers.get_or_create(Genre.objects.order_by("-created_at"), **item)
                           for item in genres_data])
 
-        for item in media:
+        # Update the media with their respective types
+        for item in media_data:
             if item["type"] in media_types:
                 MediaType = media_types[item["type"]]
                 title.media.add(helpers.get_or_create(
-                    MediaType.objects.all(), topic=title, **item))
+                    MediaType.objects.order_by("-created_at"), topic=title, **item))
 
-        title.cast.set([helpers.get_or_create(title.cast, **item)
+        title.cast.set([helpers.get_or_create(title.cast.order_by("-created_at"), **item)
                         for item in cast_data])
 
-        for season_data in seasons:
-            season = helpers.get_or_create(title.seasons, **season_data)
-            if "episodes" in season_data:
-                episodes = season_data.pop('episodes')
-                for episode_data in episodes:
-                    episode = helpers.get_or_create(
-                        season.episodes, **episode_data)
+        # Update or add seasons and episodes
+        for season_data in seasons_data:
+            episodes = season_data.pop(
+                'episodes') if 'episodes' in season_data else []
+            season_index = season_data.pop("index")
+            # Get or create
+            season = helpers.get_or_create(
+                title.seasons.order_by("-created_at"), index=season_index)
+            # Update
+            helpers.update_object(season, **season_data)
+
+            for episode_data in episodes:
+                episode_index = episode_data.pop("index")
+                episode = helpers.get_or_create(
+                    season.episodes.order_by("-created_at"), index=episode_index)
+                helpers.update_object(episode, **episode_data)
 
         return title
 
@@ -167,8 +190,26 @@ class TitleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
+        fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated',
+                  'type', 'seasons', 'genres', 'cast', 'media', 'released_at',
+                  'created_at', 'updated_at')
+
+
+class TitleSerializer(serializers.ModelSerializer):
+    seasons = SeasonListSerializer(many=True)
+    genres = GenreSerializer(many=True)
+    cast = CastSerializer(many=True)
+    views = serializers.SerializerMethodField()
+    recommended = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
+    videos = serializers.SerializerMethodField()
+    subtitles = serializers.SerializerMethodField()
+    trailers = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Title
         fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated', 'images',
-                  'videos', 'subtitles', 'trailers', 'media', 'type', 'is_new', 'views', 'seasons',
+                  'videos', 'subtitles', 'trailers', 'type', 'is_new', 'views', 'seasons',
                   'genres', 'cast', 'recommended', 'released_at', 'created_at', 'updated_at')
 
     # noinspection PyMethodMayBeStatic
