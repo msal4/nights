@@ -43,6 +43,26 @@ from . import serializers
 from . import documents
 
 
+@api_view(['DELETE'])
+def delete_title(request, *args, **kwargs):
+    params = request.query_params
+    print(params)
+    print(Title.objects.filter(name=params['name']))
+
+    if 'name' in params and 'released_at' in params:
+        queryset = Title.objects.filter(
+            name=params['name'], released_at=params['released_at']).delete()
+       # if len(queryset):
+       #     title = queryset[0]
+       #     title.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        # return Response({'detail': 'not found'},
+        #                status = status.HTTP_404_NOT_FOUND)
+
+    return Response({"detail": "name and released_at are required."},
+                    status=status.HTTP_400_BAD_REQUEST)
+
+
 @cache_page(60 * 60 * 4)
 @api_view(['GET'])
 def list_promos(request, *args, **kwargs):

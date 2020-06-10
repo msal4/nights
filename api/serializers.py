@@ -6,7 +6,7 @@ from rest_framework import serializers
 from .documents import TitleDocument
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
     Image, Media, Subtitle, Video, Trailer, LandingPromo, Provider
-from .types import media_types
+from .types import media_types, media_types_model
 from . import helpers
 
 
@@ -71,19 +71,18 @@ class EpisodeSerializer(serializers.ModelSerializer):
         return title.hits.count()
 
     @staticmethod
-    def get_media(serializer, model, instance):
-        serializer = serializer(instance.media.instance_of(model),
-                                many=True, read_only=True)
-        return serializer.data
+    def get_media(serializer, type, instance):
+        return serializer(instance.media.filter(type=type),
+                          many=True, read_only=True).data
 
     def get_images(self, instance):
-        return self.get_media(ImageSerializer, Image, instance)
+        return self.get_media(ImageSerializer, media_types_model[Image], instance)
 
     def get_videos(self, instance):
-        return self.get_media(VideoSerializer, Video, instance)
+        return self.get_media(VideoSerializer, media_types_model[Video], instance)
 
     def get_subtitles(self, instance):
-        return self.get_media(SubtitleSerializer, Subtitle, instance)
+        return self.get_media(SubtitleSerializer, media_types_model[Subtitle], instance)
 
     def get_hits(self, instance):
         user = self.context['request'].user
@@ -179,10 +178,15 @@ class TitleCreateSerializer(serializers.ModelSerializer):
 
             for episode_data in episodes:
                 episode_index = episode_data.pop("index")
+                media_data = episode_data.pop('media')
                 episode = helpers.get_or_create(
                     season.episodes.order_by("-created_at"),
                     index=episode_index, episode_season=season,
                     episode_series=title)
+
+                media = [helpers.get_or_create(
+                    episode.media, **m) for m in media_data]
+                episode.media.set(media)
                 helpers.update_object(episode, **episode_data)
 
         return title
@@ -229,22 +233,21 @@ class TitleSerializer(serializers.ModelSerializer):
         return serializer.data
 
     @staticmethod
-    def get_media(serializer, model, instance):
-        serializer = serializer(instance.media.instance_of(model),
-                                many=True, read_only=True)
-        return serializer.data
+    def get_media(serializer, t, instance):
+        return serializer(instance.media.filter(type=t),
+                          many=True, read_only=True).data
 
     def get_images(self, instance):
-        return self.get_media(ImageSerializer, Image, instance)
+        return self.get_media(ImageSerializer, media_types_model[Image], instance)
 
     def get_videos(self, instance):
-        return self.get_media(VideoSerializer, Video, instance)
+        return self.get_media(VideoSerializer, media_types_model[Video], instance)
 
     def get_subtitles(self, instance):
-        return self.get_media(SubtitleSerializer, Subtitle, instance)
+        return self.get_media(SubtitleSerializer, media_types_model[Subtitle], instance)
 
     def get_trailers(self, instance):
-        return self.get_media(TrailerSerializer, Trailer, instance)
+        return self.get_media(TrailerSerializer, media_types_model[Trailer], instance)
 
 
 class TitleListSerializer(serializers.ModelSerializer):

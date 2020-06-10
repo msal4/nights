@@ -6,3 +6,10 @@ media_types = {
     4: Image,
     7: Subtitle
 }
+
+media_types_model = {
+    Video: 2,
+    Trailer: 3,
+    Image: 4,
+    Subtitle: 7
+}

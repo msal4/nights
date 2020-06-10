@@ -37,6 +37,7 @@ def get_or_create(queryset, **kwargs):
 
 def update_object(obj, **kwargs):
     for (key, value) in kwargs.items():
+        print('---------key:', key, '-------value:', value, '\n\n\n')
         setattr(obj, key, value)
     obj.save()
 
