@@ -1,15 +1,20 @@
-from .models import Video, Subtitle, Image, Trailer
-
 media_types = {
-    2: Video,
-    3: Trailer,
-    4: Image,
-    7: Subtitle
+    2: 'video',
+    3: 'trailer',
+    4: 'image',
+    7: 'subtitle'
 }
 
-media_types_model = {
-    Video: 2,
-    Trailer: 3,
-    Image: 4,
-    Subtitle: 7
-}
+
+def media_types_model(type):
+    types = {
+        'video': 2,
+        'trailer': 3,
+        'image': 4,
+        'subtitle': 7
+    }
+
+    if type in types:
+        return types[type]
+
+    return 'media'

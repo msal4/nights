@@ -61,17 +61,7 @@ class Title(Topic):
         choices=(('m', 'Movie'), ('s', 'Series')),
         default='m'
     )
-    rated = models.CharField(
-        max_length=10,
-        choices=[
-            ('G', 'G - General Audiences'),
-            ('PG', 'PG - Parental Guidance Suggested'),
-            ('PG-13', 'PG-13 - Parents Strongly Cautioned'),
-            ('R', 'R - Restricted'),
-            ('NC-17', 'NC-17 - Adults Only')
-        ],
-        default='G'
-    )
+    rated = models.IntegerField(null=True, blank=True)
 
 
 class Season(Topic):
@@ -149,9 +139,11 @@ class Availability(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
 
 
-class Media(PolymorphicModel):
+class Media(models.Model):
     topic = models.ForeignKey(
         Topic, related_name='media', on_delete=models.CASCADE)
+    parent = models.ForeignKey(
+        'self', related_name="children", blank=True, null=True, on_delete=models.CASCADE)
     provider = models.ForeignKey(
         Provider, blank=True, null=True, on_delete=models.SET_NULL)
     availability = models.ForeignKey(
@@ -161,26 +153,10 @@ class Media(PolymorphicModel):
     url = models.TextField()
     formats = models.CharField(max_length=255)
     qualities = models.CharField(max_length=255, null=True, blank=True)
-    type = models.IntegerField()
+    type = models.CharField(max_length=20)
 
     def __str__(self):
         return self.url
-
-
-class Image(Media):
-    pass
-
-
-class Video(Media):
-    pass
-
-
-class Trailer(Media):
-    pass
-
-
-class Subtitle(Media):
-    pass
 
 
 class LandingPromo(models.Model):
@@ -192,3 +168,4 @@ class LandingPromo(models.Model):
 
     def __str__(self):
         return self.title
+

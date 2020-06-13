@@ -364,3 +364,4 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     @method_decorator(cache_page(60 * 60 * 10))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
