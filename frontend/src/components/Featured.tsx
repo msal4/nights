@@ -1,46 +1,46 @@
-import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
-import React, { FunctionComponent, useState, useEffect } from "react"
-import { FaStar, FaPlay, FaEye } from "react-icons/fa"
-import { FiInfo } from "react-icons/fi"
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import React, { FunctionComponent, useState, useEffect } from "react";
+import { FaStar, FaPlay, FaEye } from "react-icons/fa";
+import { FiInfo } from "react-icons/fi";
 
-import { ImageQuality, TitleDetail } from "../core/interfaces/title"
-import { PrimaryButton, InfoIconButton } from "./common/Buttons"
-import { joinTopics, getImageUrl } from "../utils/common"
-import NImage from "./NImage"
-import MyListButton from "./MyListButton"
-import { useBackground } from "../context/background-context"
-import PlayButton from "./PlayButton"
+import { ImageQuality, TitleDetail } from "../core/interfaces/title";
+import { PrimaryButton, InfoIconButton } from "./common/Buttons";
+import { joinTopics, getImageUrl } from "../utils/common";
+import NImage from "./NImage";
+import MyListButton from "./MyListButton";
+import { useBackground } from "../context/background-context";
+import PlayButton from "./PlayButton";
 
 export interface FeaturedProps {
-  data: TitleDetail[]
+  data: TitleDetail[];
 }
 
 const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
-  const { t } = useTranslation()
-  const [titles, setTitles] = useState<TitleDetail[]>(data)
-  const { changeBackground } = useBackground()
+  const { t } = useTranslation();
+  const [titles, setTitles] = useState<TitleDetail[]>(data);
+  const { changeBackground } = useBackground();
 
   const FeaturedItem = ({
     className = "",
     index,
     title,
   }: {
-    className?: string
-    index: number
-    title: TitleDetail
+    className?: string;
+    index: number;
+    title: TitleDetail;
   }) => {
-    const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900)
+    const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900);
     return (
       <div
         className="cursor-pointer"
-        onClick={e => {
+        onClick={(e) => {
           setTitles([
             title,
             ...titles.slice(1, index),
             titles[0],
             ...titles.slice(index + 1),
-          ])
+          ]);
         }}
       >
         <NImage
@@ -53,15 +53,18 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           </h4>
         </NImage>
       </div>
-    )
-  }
+    );
+  };
 
   const BottomInfo = ({ title }: { title: TitleDetail }) => {
-    if (!title) return null
+    if (!title) return null;
 
     return (
       <div className="p-10 absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center">
         <div className="mr-2">
+          <span className="bg-green-600 text-xs text-black rounded-sm px-1">
+            {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
+          </span>
           <div className="flex items-center font-bold mb-1">
             {title.rating && (
               <p className="flex items-center mr-6">
@@ -105,11 +108,11 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
           </InfoIconButton>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
-  const image = getImageUrl(titles[0]?.images[0]?.url, ImageQuality.h900)
-  changeBackground(titles[0])
+  const image = getImageUrl(titles[0]?.images[0]?.url, ImageQuality.h900);
+  changeBackground(titles[0]);
 
   return (
     <div className="flex mb-10">
@@ -126,7 +129,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         <FeaturedItem index={3} title={titles[3]} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Featured
+export default Featured;
