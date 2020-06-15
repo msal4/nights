@@ -91,7 +91,7 @@ class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Title.objects.order_by('-updated_at')
     serializer_class = serializers.TitleListSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('type')
+    filterset_fields = ('type',)
 
     @method_decorator(cache_page(60 * 60))
     def get(self, request, *args, **kwargs):
@@ -376,6 +376,7 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     def paginate_queryset(self, queryset, view=None):
         return None
 
-    @method_decorator(cache_page(60 * 60 * 10))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    # @method_decorator(cache_page(60 * 60 * 10))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
+
