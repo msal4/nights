@@ -1,12 +1,12 @@
-import React from "react"
-import { Route, Switch, Redirect } from "react-router-dom"
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import SeriesPlayer from "./SeriesPlayer"
-import MoviePlayer from "./MoviePlayer"
-import TitlePage from "./TitlePage"
-import MyListPage from "./MyListPage"
-import SearchPage from "./SearchPage"
-import HomePage from "./HomePage"
+import SeriesPlayer from "./SeriesPlayer";
+import MoviePlayer from "./MoviePlayer";
+import TitlePage from "./TitlePage";
+import MyListPage from "./MyListPage";
+import SearchPage from "./SearchPage";
+import HomePage from "./HomePage";
 
 export default () => {
   return (
@@ -43,5 +43,5 @@ export default () => {
         () => <Redirect to="/landing" />
       </Route>
     </Switch>
-  )
-}
+  );
+};

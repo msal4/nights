@@ -63,6 +63,14 @@ def delete_title(request, *args, **kwargs):
                     status=status.HTTP_400_BAD_REQUEST)
 
 
+def rate_query(request, queryset):
+    params = request.query_params
+    if 'rated' in params and params['rated']:
+        if params['rated'] == 'G':
+            queryset = queryset.filter(rated__range=(1, 12))
+    return queryset
+
+
 @cache_page(60 * 60 * 4)
 @api_view(['GET'])
 def list_promos(request, *args, **kwargs):
@@ -70,10 +78,9 @@ def list_promos(request, *args, **kwargs):
     params = request.query_params
 
     # Filters
+    queryset = rate_query(request, queryset)
     if 'type' in params and params['type']:
         queryset = queryset.filter(type=params['type'])
-    if 'rated' in params and params['rated']:
-        queryset = queryset.filter(rated=params['rated'])
     if 'limit' in params and params['limit']:
         return Response(get_featured(queryset, limit=int(params['limit'])))
 
@@ -84,11 +91,16 @@ class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Title.objects.order_by('-updated_at')
     serializer_class = serializers.TitleListSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('type', 'rated')
+    filterset_fields = ('type')
 
     @method_decorator(cache_page(60 * 60))
     def get(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+        queryset = rate_query(request, self.get_queryset())
+        page = self.paginate_queryset(queryset) or queryset
+
+        serializer = self.get_serializer(page, many=True)
+
+        return self.get_paginated_response(serializer.data)
 
 
 class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
@@ -99,7 +111,7 @@ class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
         filters.OrderingFilter,
         DjangoFilterBackend
     )
-    filterset_fields = ('type', 'rated')
+    filterset_fields = ('type',)
     ordering_fields = ('name', 'type', 'created_at')
     ordering = ('-created_at',)
 
@@ -109,7 +121,9 @@ class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
         page = self.paginate_queryset(queryset) or queryset
 
         for genre in page:
-            genre.title_list = self.filter_queryset(genre.titles.all())[:10]
+            titles = genre.titles.all()
+            titles = rate_query(request, titles)
+            genre.title_list = self.filter_queryset(titles)[:10]
 
         serializer = self.get_serializer(page, many=True)
 
@@ -364,4 +378,3 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     @method_decorator(cache_page(60 * 60 * 10))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-

@@ -6,7 +6,6 @@ from rest_framework import serializers
 from .documents import TitleDocument
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
     Media, LandingPromo, Provider
-from .types import media_types, media_types_model
 from . import helpers
 
 
@@ -76,13 +75,13 @@ class EpisodeSerializer(serializers.ModelSerializer):
                           many=True, read_only=True).data
 
     def get_images(self, instance):
-        return self.get_media(ImageSerializer, media_types_model('image'), instance)
+        return self.get_media(ImageSerializer, 'image', instance)
 
     def get_videos(self, instance):
-        return self.get_media(VideoSerializer, media_types_model('video'), instance)
+        return self.get_media(VideoSerializer, 'video', instance)
 
     def get_subtitles(self, instance):
-        return self.get_media(SubtitleSerializer, media_types_model('subtitle'), instance)
+        return self.get_media(SubtitleSerializer, 'subtitle', instance)
 
     def get_hits(self, instance):
         user = self.context['request'].user
@@ -156,9 +155,7 @@ class TitleCreateSerializer(serializers.ModelSerializer):
 
         # Update the media with their respective types
         for item in media_data:
-            if item["type"] in media_types:
-                type = media_types[item["type"]]
-                helpers.get_or_create(title.media, topic=title, **item)
+            helpers.get_or_create(title.media, topic=title, **item)
 
         title.cast.set([helpers.get_or_create(title.cast.order_by("-created_at"), **item)
                         for item in cast_data])
@@ -237,16 +234,16 @@ class TitleSerializer(serializers.ModelSerializer):
                           many=True, read_only=True).data
 
     def get_images(self, instance):
-        return self.get_media(ImageSerializer, media_types_model('image'), instance)
+        return self.get_media(ImageSerializer, 'image', instance)
 
     def get_videos(self, instance):
-        return self.get_media(VideoSerializer, media_types_model('video'), instance)
+        return self.get_media(VideoSerializer, 'video', instance)
 
     def get_subtitles(self, instance):
-        return self.get_media(SubtitleSerializer, media_types_model('subtitle'), instance)
+        return self.get_media(SubtitleSerializer, 'subtitle', instance)
 
     def get_trailers(self, instance):
-        return self.get_media(TrailerSerializer, media_types_model('trailer'), instance)
+        return self.get_media(TrailerSerializer, 'trailer', instance)
 
 
 class TitleListSerializer(serializers.ModelSerializer):
@@ -260,9 +257,11 @@ class TitleListSerializer(serializers.ModelSerializer):
 
     # noinspection PyMethodMayBeStatic
     def get_images(self, instance):
-        serializer = ImageSerializer(instance.media.instance_of(Image),
-                                     many=True, read_only=True)
-        return serializer.data
+        return ImageSerializer(
+            instance.media.filter(type='image'),
+            many=True,
+            read_only=True
+        ).data
 
 
 class ViewHitSerializer(serializers.ModelSerializer):

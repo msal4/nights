@@ -46,7 +46,7 @@ export default () => {
                   )
                 }
                 image={
-                  getImageUrl(nightsPromo.images[0].url, ImageQuality.h900) ||
+                  getImageUrl(nightsPromo.images[0]?.url, ImageQuality.h900) ||
                   ""
                 }
                 logo="/static/frontend/images/nights_logo_white.svg"
