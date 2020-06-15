@@ -95,7 +95,8 @@ class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
 
     @method_decorator(cache_page(60 * 60))
     def get(self, request, *args, **kwargs):
-        queryset = rate_query(request, self.get_queryset())
+        queryset = self.filter_queryset(
+            rate_query(request, self.get_queryset()))
         page = self.paginate_queryset(queryset) or queryset
 
         serializer = self.get_serializer(page, many=True)
