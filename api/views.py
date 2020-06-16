@@ -1,3 +1,4 @@
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.core.files.storage import default_storage
 from django.db.models import Q, Count, F
 from django.utils import timezone
@@ -379,4 +380,3 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     # @method_decorator(cache_page(60 * 60 * 10))
     # def dispatch(self, request, *args, **kwargs):
     #     return super().dispatch(request, *args, **kwargs)
-
