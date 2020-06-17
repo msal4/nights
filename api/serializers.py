@@ -222,7 +222,7 @@ class TitleSerializer(serializers.ModelSerializer):
     def get_rated(self, title):
         if title.rated:
             return str(title.rated) + '+'
-        return None
+        return '+'
 
     # noinspection PyMethodMayBeStatic
     def get_recommended(self, title):
@@ -273,7 +273,7 @@ class TitleListSerializer(serializers.ModelSerializer):
     def get_rated(self, instance):
         if instance.rated:
             return str(instance.rated) + '+'
-        return None
+        return '+'
 
 
 class ViewHitSerializer(serializers.ModelSerializer):
