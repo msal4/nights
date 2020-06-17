@@ -33,7 +33,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 )
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
 from django.core.cache import cache
-
+from rest_framework.decorators import permission_classes
 from .documents import TitleDocument
 from .helpers import get_featured
 from .mixins import GetSerializerClassMixin
@@ -44,6 +44,7 @@ from . import serializers
 from . import documents
 
 
+@permission_classes(permissions.IsAdminUser)
 @api_view(['DELETE'])
 def forget_cache(request, *args, **kwargs):
     cache.clear()
