@@ -32,7 +32,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     SearchFilterBackend
 )
 from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
-
+from django.core.cache import cache
 
 from .documents import TitleDocument
 from .helpers import get_featured
@@ -42,6 +42,12 @@ from .paginators import TitleGenreRowViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import documents
+
+
+@api_view(['DELETE'])
+def forget_cache(request, *args, **kwargs):
+    cache.clear()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['DELETE'])
