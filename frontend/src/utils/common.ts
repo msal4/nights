@@ -17,19 +17,17 @@ export const getImageUrl = (url?: string, quality = ImageQuality.v250) =>
     .replace("{f}", "jpg");
 
 export const swapEpisodeUrlId = (url: string) => {
-  return url;
+  if (!url) return null;
 
-  // if (!url) return null;
+  const arr = url.split("/");
 
-  // const arr = url.split("/");
-
-  // const fourth = arr[4];
-  // const fifth = arr[5];
-  // const sixth = arr[6];
-  // arr[4] = sixth;
-  // arr[5] = fourth;
-  // arr[6] = fifth;
-  // return arr.join("/");
+  const fourth = arr[4];
+  const fifth = arr[5];
+  const sixth = arr[6];
+  arr[4] = sixth;
+  arr[5] = fourth;
+  arr[6] = fifth;
+  return arr.join("/");
 };
 
 export const sortTopics = (
