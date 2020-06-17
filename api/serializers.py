@@ -220,7 +220,7 @@ class TitleSerializer(serializers.ModelSerializer):
         return title.hits.count()
 
     def get_rated(self, title):
-        if title.rated:
+        if hasattr(title, "rated") and title.rated:
             return str(title.rated) + '+'
         return '+'
 
@@ -271,7 +271,7 @@ class TitleListSerializer(serializers.ModelSerializer):
         ).data
 
     def get_rated(self, instance):
-        if instance.rated:
+        if hasattr(title, "rated") and title.rated:
             return str(instance.rated) + '+'
         return '+'
 
