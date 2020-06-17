@@ -13,7 +13,6 @@ import { ViewHit } from "../core/interfaces/view-hit";
 import client from "../api/client";
 import { getHistory } from "../api/title";
 import { useAuth } from "../context/auth-context";
-import { useBackground } from "../context/background-context";
 import { useDisposableEffect } from "../hooks";
 import { capitalizeFirst } from "../utils/common";
 import { Title, TitleDetail } from "../core/interfaces/title";
@@ -30,7 +29,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
       <LoadingIndicator show={loading} />
       {home.promos && <Featured data={home.promos} />}
       {home.continueWatching && home.continueWatching.length > 0 && (
-        <CWRow row={home.continueWatching} showX />
+        <CWRow row={home.continueWatching} />
       )}
       {home.recentlyAdded && (
         <TitleRow
@@ -75,7 +74,6 @@ const useHome = (filters: {}) => {
   const [loadMore, setLoadMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { changeBackground } = useBackground();
   const { token } = useAuth();
   const { pathname } = useLocation();
 
@@ -126,7 +124,7 @@ const useHome = (filters: {}) => {
     }
   };
 
-  useDisposableEffect((disposed) => {
+  useDisposableEffect((_) => {
     const listener = () => {
       const didHitBottom =
         window.scrollY + window.innerHeight + threshold >=

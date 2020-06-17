@@ -1,22 +1,22 @@
-import React, { useState, FunctionComponent } from "react"
-import { IoIosAdd, IoIosMenu, IoMdClose } from "react-icons/io"
-import { Link, useRouteMatch } from "react-router-dom"
-import { useTranslation } from "react-i18next"
+import React, { useState, FunctionComponent } from "react";
+import { IoIosAdd, IoIosMenu, IoMdClose } from "react-icons/io";
+import { Link, useRouteMatch } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-import "../styles/Header.scss"
-import Search from "../components/Search"
-import { useAuth } from "../context/auth-context"
+import "../styles/Header.scss";
+import Search from "../components/Search";
+import { useAuth } from "../context/auth-context";
 
 const useMenuOpenedState = (value: boolean) => {
-  const [menuOpened, setMenuOpened] = useState(value)
-  const openMenu = () => setMenuOpened(true)
-  const closeMenu = () => setMenuOpened(false)
-  return { menuOpened, openMenu, closeMenu }
-}
+  const [menuOpened, setMenuOpened] = useState(value);
+  const openMenu = () => setMenuOpened(true);
+  const closeMenu = () => setMenuOpened(false);
+  return { menuOpened, openMenu, closeMenu };
+};
 
 interface NavLinkProps {
-  className?: string
-  to: string
+  className?: string;
+  to: string;
 }
 
 const NavLink: FunctionComponent<NavLinkProps> = ({
@@ -24,7 +24,7 @@ const NavLink: FunctionComponent<NavLinkProps> = ({
   className,
   children,
 }) => {
-  const match = useRouteMatch({ path: to, exact: true })
+  const match = useRouteMatch({ path: to, exact: true });
 
   return (
     <Link
@@ -35,22 +35,23 @@ const NavLink: FunctionComponent<NavLinkProps> = ({
     >
       {children}
     </Link>
-  )
-}
+  );
+};
 
 export default () => {
-  const { menuOpened, openMenu, closeMenu } = useMenuOpenedState(false)
-  const { t, i18n } = useTranslation()
-  const { token, logout } = useAuth()
-  const match = useRouteMatch({ path: "/landing" })
+  const { menuOpened, openMenu, closeMenu } = useMenuOpenedState(false);
+  const { t, i18n } = useTranslation();
+  const { token, logout } = useAuth();
+  const match = useRouteMatch({ path: "/landing" });
+  const homeMatch = useRouteMatch({ path: "/home" });
 
   const toggleLanguage = () =>
-    i18n.changeLanguage(i18n.language == "ar" ? "en" : "ar")
+    i18n.changeLanguage(i18n.language === "ar" ? "en" : "ar");
 
   return (
     <nav className="mb-8 pt-10 pb-4 relative z-10 md:flex md:justify-between font-thin">
       <div className="flex items-center justify-between">
-        <Link className="select-none" to="/home">
+        <Link className="select-none" to={homeMatch ? "/landing" : "/home"}>
           <img
             className="object-contain"
             style={{ maxWidth: "12rem", minWidth: "12rem" }}
@@ -126,5 +127,5 @@ export default () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
