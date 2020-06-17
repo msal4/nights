@@ -221,7 +221,7 @@ class TitleSerializer(serializers.ModelSerializer):
 
     def get_rated(self, title):
         if title.rated:
-            return title.rated + '+'
+            return str(title.rated) + '+'
         return None
 
     # noinspection PyMethodMayBeStatic
@@ -272,7 +272,7 @@ class TitleListSerializer(serializers.ModelSerializer):
 
     def get_rated(self, instance):
         if instance.rated:
-            return instance.rated + '+'
+            return str(instance.rated) + '+'
         return None
 
 
