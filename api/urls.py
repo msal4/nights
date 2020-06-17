@@ -18,6 +18,7 @@ router.register(r'landing_promos', views.LandingPromoViewSet,
 urlpatterns = [
     path('', include(router.urls)),
     path('fuzzytitles/', views.delete_title),
+    path('cache/', views.forget_cache),
     path('auth', include('rest_framework.urls')),
     path('promos/', views.list_promos),
     path('recently_added/', views.RecentlyAddedView.as_view(), name='recently_added'),
