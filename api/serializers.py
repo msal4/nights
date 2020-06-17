@@ -207,6 +207,7 @@ class TitleSerializer(serializers.ModelSerializer):
     videos = serializers.SerializerMethodField()
     subtitles = serializers.SerializerMethodField()
     trailers = serializers.SerializerMethodField()
+    rated = serializers.SerializerMethodField()
 
     class Meta:
         model = Title
@@ -217,6 +218,11 @@ class TitleSerializer(serializers.ModelSerializer):
     # noinspection PyMethodMayBeStatic
     def get_views(self, title):
         return title.hits.count()
+
+    def get_rated(self, title):
+        if title.rated:
+            return title.rated + '+'
+        return None
 
     # noinspection PyMethodMayBeStatic
     def get_recommended(self, title):
@@ -249,6 +255,7 @@ class TitleSerializer(serializers.ModelSerializer):
 class TitleListSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     images = serializers.SerializerMethodField()
+    rated = serializers.SerializerMethodField()
 
     class Meta:
         model = Title
@@ -262,6 +269,11 @@ class TitleListSerializer(serializers.ModelSerializer):
             many=True,
             read_only=True
         ).data
+
+    def get_rated(self, instance):
+        if instance.rated:
+            return instance.rated + '+'
+        return None
 
 
 class ViewHitSerializer(serializers.ModelSerializer):
