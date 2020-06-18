@@ -193,7 +193,7 @@ class TitleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Title
         fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated',
-                  'type', 'seasons', 'genres', 'cast', 'media', 'released_at',
+                  'type', 'seasons', 'genres', 'featured', 'is_slide', 'cast', 'media', 'released_at',
                   'created_at', 'updated_at')
 
 
