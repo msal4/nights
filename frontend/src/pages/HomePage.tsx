@@ -36,15 +36,15 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
       {home.continueWatching && home.continueWatching.length > 0 && (
         <CWRow row={home.continueWatching} />
       )}
+      {home.trending && (
+        <TitleRow id="" row={home.trending.results} name={t("trending")} />
+      )}
       {home.recentlyAdded && (
         <TitleRow
           id=""
           row={home.recentlyAdded.results}
           name={t("recentlyAdded")}
         />
-      )}
-      {home.trending && (
-        <TitleRow id="" row={home.trending.results} name={t("trending")} />
       )}
       {home.promos && home.promos[4] && <Recommended title={home.promos[4]} />}
       {home.rows &&

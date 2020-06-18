@@ -1,41 +1,41 @@
-import React, { FunctionComponent, useState } from "react"
-import { useTranslation } from "react-i18next"
-import { Link, Redirect } from "react-router-dom"
-import { FiInfo } from "react-icons/fi"
-import { FaCheck, FaPlus } from "react-icons/fa"
+import React, { FunctionComponent, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, Redirect } from "react-router-dom";
+import { FiInfo } from "react-icons/fi";
+import { FaCheck, FaPlus } from "react-icons/fa";
 
-import "../styles/Title.scss"
-import PlayIcon from "../icons/PlayIcon"
-import { Title as ITitle } from "../core/interfaces/title"
-import { getImageUrl } from "../utils/common"
-import { addToMyList, removeFromMyList, checkMyList } from "../api/title"
-import { useAuth } from "../context/auth-context"
+import "../styles/Title.scss";
+import PlayIcon from "../icons/PlayIcon";
+import { Title as ITitle } from "../core/interfaces/title";
+import { getImageUrl } from "../utils/common";
+import { addToMyList, removeFromMyList, checkMyList } from "../api/title";
+import { useAuth } from "../context/auth-context";
 
 export interface TitleProps {
-  title: ITitle
+  title: ITitle;
 }
 
 const Title: FunctionComponent<TitleProps> = ({ title }) => {
-  const { t } = useTranslation()
-  const { token } = useAuth()
-  const [inMyList, setInMyList] = useState(false)
-  const [redirect, setRedirect] = useState(false)
+  const { t } = useTranslation();
+  const { token } = useAuth();
+  const [inMyList, setInMyList] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
-  if (redirect) return <Redirect to="/login" />
+  if (redirect) return <Redirect to="/login" />;
 
-  const image = getImageUrl(title.images[0]?.url)
-  const tmdbImage = image?.replace("250v", "250tmdb")
+  const image = getImageUrl(title.images[0]?.url);
+  const tmdbImage = image?.replace("250v", "250tmdb");
 
   return (
     <div
       className="relative inline-block card-container px-1 ml-2 py-2 md:hover:bg-white text-xs cursor-pointer select-none"
       onMouseEnter={async () => {
-        if (!token) return
+        if (!token) return;
         try {
-          await checkMyList(title.id)
-          setInMyList(true)
+          await checkMyList(title.id);
+          setInMyList(true);
         } catch (err) {
-          setInMyList(false)
+          setInMyList(false);
         }
       }}
       // onMouseLeave={}
@@ -46,12 +46,12 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
             style={{ zIndex: 2 }}
             className="mr-3 text-xss text-black card-container-slide-reveal transition-500"
             onClick={async () => {
-              if (!token) return setRedirect(true)
+              if (!token) return setRedirect(true);
               try {
-                await addToMyList(title.id)
-                setInMyList(true)
+                await addToMyList(title.id);
+                setInMyList(true);
               } catch (err) {
-                console.log(err)
+                console.log(err);
               }
             }}
           />
@@ -61,12 +61,12 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
             fontSize=".5rem"
             className="text-black text-xss mr-3 card-container-slide-reveal transition-500"
             onClick={async () => {
-              if (!token) return setRedirect(true)
+              if (!token) return setRedirect(true);
               try {
-                await removeFromMyList(title.id)
-                setInMyList(false)
+                await removeFromMyList(title.id);
+                setInMyList(false);
               } catch (err) {
-                console.log(err)
+                console.log(err);
               }
             }}
           />
@@ -103,8 +103,8 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
           >
             <PlayIcon className="hidden md:block card-container-reveal" />
           </Link>
-          <div className="self-stretch v-gradient">
-            <h4 className="card-container-reveal self-start font-medium md:text-xs pl-1">
+          <div className="self-stretch v-gradient pt-4">
+            <h4 className="card-container-reveal self-start font-medium md:text-sm pl-1">
               {title.name}
             </h4>
             <div className="p-1 flex justify-between items-center self-stretch">
@@ -121,11 +121,11 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
       <div className="hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin">
         {title.genres
           .slice(0, 3)
-          .map(g => g.name.charAt(0).toUpperCase() + g.name.slice(1))
+          .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
           .join(" • ")}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Title
+export default Title;
