@@ -93,7 +93,7 @@ def list_promos(request, *args, **kwargs):
     if len(queryset):
         queryset = queryset[0]
 
-    return Response(serializers.TitleListSerializer(queryset).data)
+    return Response(serializers.TitleListSerializer([]).data)
 
 
 class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
