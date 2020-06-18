@@ -88,7 +88,8 @@ def list_promos(request, *args, **kwargs):
     if 'type' in params and params['type']:
         queryset = queryset.filter(type=params['type'])
     if 'limit' in params and params['limit']:
-        return Response(serializers.TitleListSerializer(queryset[:params['limit']], many=True).data)
+        limit = int(params['limit'])
+        return Response(serializers.TitleListSerializer(queryset[:limit], many=True).data)
 
     if len(queryset):
         queryset = queryset[0]
