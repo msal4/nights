@@ -84,7 +84,8 @@ def list_promos(request, *args, **kwargs):
     params = request.query_params
 
     # Filters
-    queryset = rate_query(request, queryset).filter(is_slide=True)
+    queryset = rate_query(request, queryset).filter(
+        is_slide=True).order_by("-updated_at")
     if 'type' in params and params['type']:
         queryset = queryset.filter(type=params['type'])
     if 'limit' in params and params['limit']:

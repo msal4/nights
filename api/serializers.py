@@ -2,6 +2,7 @@ from pprint import pprint
 
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework import serializers
+from django.utils import timezone
 
 from .documents import TitleDocument
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
@@ -148,7 +149,8 @@ class TitleCreateSerializer(serializers.ModelSerializer):
             title = instance
 
         # Update title
-        helpers.update_object(title, **validated_data)
+        helpers.update_object(title, **validated_data,
+                              updated_at=timezone.now())
 
         title.genres.set([helpers.get_or_create(Genre.objects.order_by("-created_at"), **item)
                           for item in genres_data])
