@@ -69,6 +69,7 @@ i18n
           loadMore: "Load More",
           seeMore: "See more",
           recommended: "Recommended",
+          trending: "Trending",
         },
       },
       ar: {
@@ -134,6 +135,7 @@ i18n
           loadMore: "المزيد",
           seeMore: "المزيد",
           recommended: "مشابه",
+          trending: "الاكثر رواجاً",
         },
       },
     },
