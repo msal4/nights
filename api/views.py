@@ -74,6 +74,9 @@ def rate_query(request, queryset):
     if 'rated' in params and params['rated']:
         if params['rated'] == 'G':
             queryset = queryset.filter(rated__range=(1, 11))
+    else:
+        queryset = queryset.exclude(rated_range=(1, 11))
+
     return queryset
 
 
