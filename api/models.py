@@ -51,6 +51,7 @@ class Title(Topic):
     users = models.ManyToManyField(User, blank=True, related_name='my_list',
                                    through='MyList', through_fields=('title', 'user'))
 
+    is_slide = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     plot = models.TextField(null=True)
     runtime = models.IntegerField(

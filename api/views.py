@@ -54,8 +54,6 @@ def forget_cache(request, *args, **kwargs):
 @api_view(['DELETE'])
 def delete_title(request, *args, **kwargs):
     params = request.query_params
-    print(params)
-    print(Title.objects.filter(name=params['name']))
 
     if 'name' in params and 'released_at' in params:
         queryset = Title.objects.filter(
@@ -86,7 +84,7 @@ def list_promos(request, *args, **kwargs):
     params = request.query_params
 
     # Filters
-    queryset = rate_query(request, queryset).filter(featured=True)
+    queryset = rate_query(request, queryset).filter(is_slide=True)
     if 'type' in params and params['type']:
         queryset = queryset.filter(type=params['type'])
     if 'limit' in params and params['limit']:
