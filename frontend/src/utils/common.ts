@@ -24,6 +24,9 @@ export const swapEpisodeUrlId = (url: string) => {
   const fourth = arr[4];
   const fifth = arr[5];
   const sixth = arr[6];
+
+  if (fifth.length < 4 && sixth.length < 4) return url;
+
   arr[4] = sixth;
   arr[5] = fourth;
   arr[6] = fifth;

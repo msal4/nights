@@ -1,25 +1,25 @@
-import React, { FunctionComponent } from "react"
-import { IoIosPlay } from "react-icons/io"
-import { useTranslation } from "react-i18next"
-import { FiInfo } from "react-icons/fi"
-import { FaStar } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import React, { FunctionComponent } from "react";
+import { IoIosPlay } from "react-icons/io";
+import { useTranslation } from "react-i18next";
+import { FiInfo } from "react-icons/fi";
+import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-import { ImageQuality, TitleDetail } from "../core/interfaces/title"
-import { joinTopics, getImageUrl } from "../utils/common"
-import NImage from "./NImage"
-import { PrimaryButton, InfoIconButton } from "./common/Buttons"
-import MyListButton from "./MyListButton"
-import PlayButton from "./PlayButton"
+import { ImageQuality, TitleDetail } from "../core/interfaces/title";
+import { joinTopics, getImageUrl } from "../utils/common";
+import NImage from "./NImage";
+import { PrimaryButton, InfoIconButton } from "./common/Buttons";
+import MyListButton from "./MyListButton";
+import PlayButton from "./PlayButton";
 
 export interface RecommendedProps {
-  title?: TitleDetail
+  title?: TitleDetail;
 }
 
 const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900)
+  const image = getImageUrl(title?.images[0]?.url, ImageQuality.h900);
   return (
     <div className="mb-8 mx-3">
       <h3
@@ -38,11 +38,11 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
         </Link>
         <div className="flex flex-col md:flex-1 md:justify-between md:mt-2">
           <div className="flex flex-col items-start">
-            <div className="bg-green-600 text-black text-xss rounded-sm px-1 mb-2 self-start">
+            <div className="bg-green-600 text-black text-xs rounded-sm px-1 mb-2 self-start">
               {title?.is_new
                 ? title.type === "s"
-                  ? "New Episodes"
-                  : "New"
+                  ? t("newEpisodes")
+                  : t("new")
                 : ""}
             </div>
             <Link
@@ -88,7 +88,7 @@ const Recommended: FunctionComponent<RecommendedProps> = ({ title }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Recommended
+export default Recommended;

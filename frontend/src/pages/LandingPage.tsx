@@ -61,8 +61,8 @@ export default () => {
                 onWatch={() =>
                   (window.location.href = `http://tv.sawadland.com/channel/${channelPromo.channel_id}`)
                 }
-                logo="/static/frontend/images/tv_logo_white.svg"
                 image={`http://tv.sawadland.com${channelPromo.promo_image}`}
+                logo="/static/frontend/images/tv_logo_white.svg"
               />
             )}
           </div>

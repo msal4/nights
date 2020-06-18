@@ -21,7 +21,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
   image,
 }) => {
   const { t } = useTranslation();
-
+  console.log(image);
   return (
     <div
       className={`landing-site-promo-container-placeholder ${className || ""}`}
