@@ -22,6 +22,7 @@ urlpatterns = [
     path('auth', include('rest_framework.urls')),
     path('promos/', views.list_promos),
     path('recently_added/', views.RecentlyAddedView.as_view(), name='recently_added'),
+    path('trending/', views.TrendingView.as_view(), name='trending'),
     path('genre_rows/', views.TitleGenreRowView.as_view(), name='genre_rows'),
     path('upload/<str:directory>/<str:filename>/',
          views.FileUploadView.as_view(), name='fileupload'),

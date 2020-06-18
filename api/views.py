@@ -86,13 +86,33 @@ def list_promos(request, *args, **kwargs):
     params = request.query_params
 
     # Filters
-    queryset = rate_query(request, queryset)
+    queryset = rate_query(request, queryset).filter(featured=True)
     if 'type' in params and params['type']:
         queryset = queryset.filter(type=params['type'])
     if 'limit' in params and params['limit']:
-        return Response(get_featured(queryset, limit=int(params['limit'])))
+        return Response(serializers.TitleListSerializer(queryset[:params['limit']], many=True).data)
 
-    return Response(get_featured(queryset))
+    if len(queryset):
+        queryset = queryset[0]
+
+    return Response(serializers.TitleListSerializer(queryset).data)
+
+
+class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Title.objects.order_by('-updated_at')
+    serializer_class = serializers.TitleListSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ('type',)
+
+    @method_decorator(cache_page(60 * 60))
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(
+            rate_query(request, self.get_queryset())).filter(featured=True)
+        page = self.paginate_queryset(queryset) or queryset
+
+        serializer = self.get_serializer(page, many=True)
+
+        return self.get_paginated_response(serializer.data)
 
 
 class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):

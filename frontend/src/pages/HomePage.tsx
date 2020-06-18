@@ -16,7 +16,12 @@ import { useAuth } from "../context/auth-context";
 import { useDisposableEffect } from "../hooks";
 import { capitalizeFirst } from "../utils/common";
 import { Title, TitleDetail } from "../core/interfaces/title";
-import { getGenreRows, getPromos, getRecentlyAdded } from "../api/home";
+import {
+  getGenreRows,
+  getPromos,
+  getRecentlyAdded,
+  getTrending,
+} from "../api/home";
 import ScrollToTop from "../components/ScrollToTop";
 
 const HomePage = ({ filters = {} }: { filters?: {} }) => {
@@ -38,6 +43,9 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
           name={t("recentlyAdded")}
         />
       )}
+      {home.trending && (
+        <TitleRow id="" row={home.trending.results} name={t("trending")} />
+      )}
       {home.promos && home.promos[4] && <Recommended title={home.promos[4]} />}
       {home.rows &&
         home.rows.results
@@ -56,6 +64,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
 
 interface Home {
   recentlyAdded?: PaginatedResults<Title[]> | null;
+  trending?: PaginatedResults<Title[]> | null;
   continueWatching?: ViewHit[] | null;
   promos?: TitleDetail[] | null;
   rows?: PaginatedResults<GenreRow[]> | null;
@@ -67,6 +76,7 @@ const useHome = (filters: {}) => {
   const urlRef = useRef<string>(null);
   const [home, setHome] = useState<Home>({
     recentlyAdded: null,
+    trending: null,
     continueWatching: null,
     promos: null,
     rows: null,
@@ -109,6 +119,9 @@ const useHome = (filters: {}) => {
 
       const recentlyAdded = await getRecentlyAdded(filters);
       !disposed && setHome((state) => ({ ...state, recentlyAdded }));
+
+      const trending = await getTrending(filters);
+      !disposed && setHome((state) => ({ ...state, trending }));
 
       if (token) {
         const { results } = await getHistory();
