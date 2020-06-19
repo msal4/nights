@@ -1,8 +1,12 @@
+import os
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from polymorphic.models import PolymorphicModel
 from datetime import datetime
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 
 def get_year():
@@ -82,9 +86,14 @@ class Season(Topic):
         super().save(*args, **kwargs)
 
 
+class OverwriteStorage(FileSystemStorage):
+    def get_available_name(self, name, *args, **kwargs):
+        if self.exists(name):
+            os.remove(os.path.join(settings.MEDIA_ROOT, name))
+        return name
+
+
 class Episode(Topic):
-    episode_series = models.ForeignKey(
-        Title, blank=True, null=True, related_name='episodes', on_delete=models.CASCADE)
     episode_season = models.ForeignKey(
         Season, related_name='episodes', on_delete=models.CASCADE)
 
@@ -93,14 +102,13 @@ class Episode(Topic):
         null=True, blank=True, help_text='In minutes')
     index = models.IntegerField(
         blank=True, default=0, help_text='Episode number')
+    image = models.ImageField(
+        upload_to='episodes_images', storage=OverwriteStorage(), blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if not self.episode_series:
-            self.episode_series = self.episode_season.series
-
         if not self.name:
             self.name = '%s S%02dE%02d' % (
-                self.episode_series.name, self.episode_season.index, self.index)
+                self.episode_season.series.name, self.episode_season.index, self.index)
         super().save(*args, **kwargs)
 
 
@@ -170,4 +178,3 @@ class LandingPromo(models.Model):
 
     def __str__(self):
         return self.title
-

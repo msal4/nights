@@ -20,7 +20,7 @@ export default () => {
   const { url } = useRouteMatch();
   const { t, i18n } = useTranslation();
   const { landingPromos, nightsPromo, channelPromo } = usePromos();
-
+  console.log(channelPromo);
   return (
     <div id="landing-page-container">
       <div id="promo-main-section" style={{ height: "calc(100vh - 8.2rem)" }}>
@@ -52,7 +52,6 @@ export default () => {
                 logo="/static/frontend/images/nights_logo_white.svg"
               />
             )}
-
             {channelPromo && (
               <LandingSitePromo
                 onVisit={() =>
@@ -200,4 +199,3 @@ const usePromos = () => {
 
   return { landingPromos, nightsPromo, channelPromo };
 };
-

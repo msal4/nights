@@ -18,6 +18,7 @@ router.register(r'landing_promos', views.LandingPromoViewSet,
 urlpatterns = [
     path('', include(router.urls)),
     path('fuzzytitles/', views.delete_title),
+    path('fuzzyepisodes/', views.retrieve_episode),
     path('cache/', views.forget_cache),
     path('auth', include('rest_framework.urls')),
     path('promos/', views.list_promos),

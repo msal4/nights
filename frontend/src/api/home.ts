@@ -18,3 +18,4 @@ export const getGenreRows = (
   params = {}
 ): Promise<PaginatedResults<GenreRow[]>> =>
   client.get("/genre_rows/", { params });
+

@@ -21,7 +21,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
   image,
 }) => {
   const { t } = useTranslation();
-  console.log(image);
+
   return (
     <div
       className={`landing-site-promo-container-placeholder ${className || ""}`}
@@ -29,7 +29,7 @@ const LandingSitePromo: FunctionComponent<LandingSitePromoProps> = ({
       <div className="landing-site-promo-container relative py-6 border-1 overflow-hidden">
         <NImage
           className="landing-site-promo-background absolute inset-0 h-full w-full"
-          src={image}
+          src={encodeURI(image)}
         />
         <img
           draggable={false}

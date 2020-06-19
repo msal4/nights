@@ -15,33 +15,14 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import FileUploadParser
 
-from django_elasticsearch_dsl_drf.constants import (
-    LOOKUP_FILTER_RANGE,
-    LOOKUP_QUERY_IN,
-    LOOKUP_QUERY_GT,
-    LOOKUP_QUERY_GTE,
-    LOOKUP_QUERY_LT,
-    LOOKUP_QUERY_LTE, LOOKUP_FILTER_TERMS,
-)
-from django_elasticsearch_dsl_drf.filter_backends import (
-    FilteringFilterBackend,
-    OrderingFilterBackend,
-    DefaultOrderingFilterBackend,
-    CompoundSearchFilterBackend,
-    MultiMatchSearchFilterBackend,
-    SearchFilterBackend
-)
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet, BaseDocumentViewSet
 from django.core.cache import cache
 from rest_framework.decorators import permission_classes
-from .documents import TitleDocument
-from .helpers import get_featured
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit, LandingPromo
 from .paginators import TitleGenreRowViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
-from . import documents
+from . import helpers
 
 
 @permission_classes(permissions.IsAdminUser)
@@ -56,17 +37,40 @@ def delete_title(request, *args, **kwargs):
     params = request.query_params
 
     if 'name' in params and 'released_at' in params:
-        queryset = Title.objects.filter(
-            name=params['name'], released_at=params['released_at']).delete()
-       # if len(queryset):
-       #     title = queryset[0]
-       #     title.delete()
+        Title.objects.filter(
+            name=params['name'],
+            released_at=params['released_at']
+        ).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        # return Response({'detail': 'not found'},
-        #                status = status.HTTP_404_NOT_FOUND)
 
     return Response({"detail": "name and released_at are required."},
                     status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def retrieve_episode(request, *args, **kwargs):
+    params = request.query_params
+
+    if 'name' in params and 'released_at' in params:
+        titles = Title.objects.filter(
+            name=params['name'],
+            released_at=params['released_at']
+        )
+
+        if len(titles):
+            title = titles[0]
+            if 'season_index' in params and 'episode_index' in params:
+                seasons = title.seasons.filter(
+                    index=int(params['season_index']))
+                if len(seasons):
+                    season = seasons[0]
+                    episodes = season.episodes.filter(
+                        index=params['episode_index'])
+                    if len(episodes):
+                        episode = episodes[0]
+                        return Response(serializers.EpisodeSerializer(episode).data)
+
+    return Response({'detail': 'No Episode Found with these details'}, status=status.HTTP_404_NOT_FOUND)
 
 
 def rate_query(request, queryset):
@@ -256,6 +260,25 @@ class EpisodeViewSet(viewsets.ModelViewSet):
             pass
 
         return super().create(request, *args, **kwargs)
+
+    def update(self, request, pk=None, *args, **kwargs):
+        print('this is called')
+        episode = Episode.objects.filter(id=pk)[0]
+
+        if 'image' in request.data:
+            image = request.data.pop('image')
+            if len(image) > 0:
+                i = image[0]
+                episode.image.save(str(pk) + '.jpg', i, save=True)
+
+        if 'name' in request.data:
+            episode.name = request.data['name']
+
+        if 'plot' in request.data:
+            episode.plot = request.data['plot']
+
+        episode.save()
+        return Response(serializers.SimpleEpisodeSerializer(episode).data, status=status.HTTP_200_OK)
 
 
 class FileUploadView(views.APIView):

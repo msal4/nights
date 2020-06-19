@@ -1,10 +1,8 @@
 from pprint import pprint
 
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from rest_framework import serializers
 from django.utils import timezone
 
-from .documents import TitleDocument
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
     Media, LandingPromo, Provider
 from . import helpers
@@ -62,13 +60,12 @@ class EpisodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Episode
-        fields = ('id', 'name', 'plot', 'runtime', 'images', 'videos',
+        fields = ('id', 'name', 'plot', 'image', 'runtime', 'images', 'videos',
                   'media', 'subtitles', 'hits', 'index', 'views')
 
     # noinspection PyMethodMayBeStatic
-
-    def get_views(self, title):
-        return title.hits.count()
+    def get_views(self, instance):
+        return instance.hits.count()
 
     @staticmethod
     def get_media(serializer, type, instance):
@@ -85,11 +82,12 @@ class EpisodeSerializer(serializers.ModelSerializer):
         return self.get_media(SubtitleSerializer, 'subtitle', instance)
 
     def get_hits(self, instance):
-        user = self.context['request'].user
-        if not user.is_anonymous:
-            hits = user.viewhit_set.filter(topic_id=instance.id)
-            print(hits)
-            return HistorySerializer(hits, many=True, read_only=True).data
+        if 'request' in self.context:
+            user = self.context['request'].user
+            if not user.is_anonymous:
+                hits = user.viewhit_set.filter(topic_id=instance.id)
+                print(hits)
+                return HistorySerializer(hits, many=True, read_only=True).data
         return None
 
 
@@ -287,8 +285,8 @@ class ViewHitSerializer(serializers.ModelSerializer):
 
 class SimpleEpisodeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Season
-        fields = ('id', 'name', 'index')
+        model = Episode
+        fields = ('id', 'name', 'plot', 'index', 'image')
 
 
 class HistorySerializer(serializers.ModelSerializer):
