@@ -62,9 +62,11 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     return (
       <div className="p-10 absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center">
         <div className="mr-2">
-          <span className="bg-green-600 text-xs text-black rounded-sm px-1">
-            {title.is_new && (title.type === "s" ? t("newEpisodes") : t("new"))}
-          </span>
+          {title.is_new && (
+            <span className="bg-green-600 text-xs text-black rounded-sm px-1">
+              (title.type === "s" ? t("newEpisodes") : t("new"))
+            </span>
+          )}
           <div className="flex items-center font-bold mb-1">
             {title.rating && (
               <p className="flex items-center mr-6">
