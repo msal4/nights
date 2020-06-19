@@ -55,8 +55,8 @@ class Title(Topic):
     users = models.ManyToManyField(User, blank=True, related_name='my_list',
                                    through='MyList', through_fields=('title', 'user'))
 
-    is_slide = models.BooleanField(default=False)
-    featured = models.BooleanField(default=False)
+    promoted_at = models.DateTimeField(null=True, blank=True)
+    featured_at = models.DateTimeField(null=True, blank=True)
     plot = models.TextField(null=True)
     runtime = models.IntegerField(
         null=True, blank=True, help_text='In minutes')

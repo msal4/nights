@@ -92,7 +92,7 @@ def list_promos(request, *args, **kwargs):
 
     # Filters
     queryset = rate_query(request, queryset).filter(
-        is_slide=True).order_by("-updated_at")
+        promoted_at__isnull=False).order_by("-promoted_at")
     if 'type' in params and params['type']:
         queryset = queryset.filter(type=params['type'])
     if 'limit' in params and params['limit']:
@@ -114,7 +114,7 @@ class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
     @method_decorator(cache_page(60 * 60))
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(
-            rate_query(request, self.get_queryset())).filter(featured=True)
+            rate_query(request, self.get_queryset())).filter(featured_at__isnull=False)
         page = self.paginate_queryset(queryset) or queryset
 
         serializer = self.get_serializer(page, many=True)

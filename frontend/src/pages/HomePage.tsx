@@ -37,11 +37,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
         <CWRow row={home.continueWatching} />
       )}
       {home.trending && (
-        <TitleRow
-          path="/search?featured=true"
-          row={home.trending.results}
-          name={t("trending")}
-        />
+        <TitleRow path="" row={home.trending.results} name={t("trending")} />
       )}
       {home.recentlyAdded && (
         <TitleRow
