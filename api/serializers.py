@@ -147,8 +147,7 @@ class TitleCreateSerializer(serializers.ModelSerializer):
             title = instance
 
         # Update title
-        helpers.update_object(title, **validated_data,
-                              updated_at=timezone.now())
+        helpers.update_object(title, **validated_data)
 
         title.genres.set([helpers.get_or_create(Genre.objects.order_by("-created_at"), **item)
                           for item in genres_data])
@@ -171,6 +170,9 @@ class TitleCreateSerializer(serializers.ModelSerializer):
                 series=title)
             # Update
             helpers.update_object(season, **season_data)
+
+            if season.episodes.count() > len(episodes):
+                title.updated_at = timezone.now()
 
             for episode_data in episodes:
                 episode_index = episode_data.pop("index")
