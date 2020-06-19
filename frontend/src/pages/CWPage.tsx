@@ -28,7 +28,6 @@ const CWPage: FunctionComponent = () => {
           }}
           showTitle={false}
           row={titles}
-          showX={false}
         />
       </div>
     </>

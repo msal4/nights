@@ -10,14 +10,12 @@ export interface TitleRowProps {
   row: ViewHit[];
   responsive?: ResponsiveType;
   showTitle?: boolean;
-  showX?: boolean;
 }
 
 const CWRow: FunctionComponent<TitleRowProps> = ({
   row,
   responsive,
   showTitle = true,
-  showX = true,
 }) => {
   const { t } = useTranslation();
 
@@ -26,7 +24,6 @@ const CWRow: FunctionComponent<TitleRowProps> = ({
       className="pb-6"
       title={showTitle ? t("continueWatching") : ""}
       path=""
-      showX={showX}
       responsive={{
         desktop: {
           breakpoint: { max: 6000, min: 464 },

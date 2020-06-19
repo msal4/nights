@@ -24,7 +24,7 @@ class Topic(PolymorphicModel):
 
     @property
     def is_new(self):
-        return self.updated_at >= timezone.now() - timezone.timedelta(5)
+        return self.updated_at >= timezone.now() - timezone.timedelta(1)
 
     def save(self, *args, **kwargs):
         if not self.name:

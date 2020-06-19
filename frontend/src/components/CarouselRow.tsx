@@ -3,6 +3,7 @@ import Carousel, { ResponsiveType } from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward, IoIosClose } from "react-icons/io";
 import "react-multi-carousel/lib/styles.css";
+import { useTranslation } from "react-i18next";
 
 export const defaultResponsive = {
   desktop: {
@@ -22,7 +23,6 @@ export const defaultResponsive = {
 export interface CarouselRowProps {
   title: string;
   path: string;
-  showX?: boolean;
   className?: string;
   responsive?: ResponsiveType;
 }
@@ -31,28 +31,22 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
   title,
   children,
   path,
-  showX = false,
   className = "",
   responsive = {},
 }) => {
-  const [hidden, setHidden] = useState(false);
-
-  return !hidden ? (
+  const { t } = useTranslation();
+  return (
     <div className={`relative ${className}`}>
       <div className="md:pb-10 ml-3 z-10 w-full md:absolute md:text-lg text-sm font-semibold leading-none flex items-center justify-between">
-        <Link to={path}>{title}</Link>
-        {path ? (
+        {path ? <Link to={path}>{title}</Link> : <span>{title}</span>}
+        {path && (
           <Link
             to={path}
             className="flex items-center font-thin text-sm mr-8 hover:text-n-red"
           >
-            See more <IoIosArrowForward className="text-xss text-n-red" />
+            {t("seeMore")} <IoIosArrowForward className="text-xss text-n-red" />
           </Link>
-        ) : showX ? (
-          <button className="hover:text-n-red" onClick={() => setHidden(true)}>
-            <IoIosClose />
-          </button>
-        ) : null}
+        )}
       </div>
       <Carousel
         className="carousel-row"
@@ -61,7 +55,7 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
         {children}
       </Carousel>
     </div>
-  ) : null;
+  );
 };
 
 export default CarouselRow;

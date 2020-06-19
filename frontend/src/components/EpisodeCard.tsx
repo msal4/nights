@@ -26,8 +26,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
       onClick={() =>
         (window.location.pathname = `/series/${seriesId}/${seasonId}/${episode.index}/play`)
       }
-      className="episode-card-container flex items-start mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
-      style={{ maxHeight: "8rem", overflow: "hidden" }}
+      className="episode-card-container flex items-center mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
     >
       <NImage
         className="relative h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center"
@@ -41,7 +40,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
           <div className="h-full h-rainbow" style={{ width: `${progress}%` }} />
         </div>
       </NImage>
-      <div>
+      <div style={{ maxHeight: "8rem", overflow: "hidden" }}>
         <div className="flex">
           <h4 className="text-base md:text-xl text-n-red">
             {episode.index + 1}

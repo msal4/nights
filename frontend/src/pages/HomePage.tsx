@@ -37,11 +37,15 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
         <CWRow row={home.continueWatching} />
       )}
       {home.trending && (
-        <TitleRow id="" row={home.trending.results} name={t("trending")} />
+        <TitleRow
+          path="/search?featured=true"
+          row={home.trending.results}
+          name={t("trending")}
+        />
       )}
       {home.recentlyAdded && (
         <TitleRow
-          id=""
+          path="/search"
           row={home.recentlyAdded.results}
           name={t("recentlyAdded")}
         />
@@ -53,7 +57,7 @@ const HomePage = ({ filters = {} }: { filters?: {} }) => {
           .map((row: GenreRow) => (
             <TitleRow
               key={row.id}
-              id={row.id}
+              path={`/search?genres=${row.id}`}
               row={row.title_list}
               name={capitalizeFirst(row.name)}
             />
