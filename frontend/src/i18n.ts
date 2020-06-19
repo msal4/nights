@@ -8,6 +8,7 @@ i18n
       en: {
         translations: {
           lang: "عربي",
+          results: "Results",
           home: "Home",
           movies: "Movies",
           series: "Series",
@@ -75,6 +76,7 @@ i18n
       ar: {
         translations: {
           lang: "English",
+          results: "النتائج",
           home: "الصفحة الرئيسية",
           movies: "الافلام",
           series: "المسلسلات",

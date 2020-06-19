@@ -96,7 +96,7 @@ const SearchPage: FunctionComponent = () => {
           </div>
         </div>
         <div>
-          <h1 className="ml-2 text-xl font-semibold">Search</h1>
+          <h1 className="ml-2 text-xl font-semibold">{t("results")}</h1>
           <div>
             {titles ? (
               titles.results.length === 0 ? (
