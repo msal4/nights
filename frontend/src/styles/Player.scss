@@ -41,7 +41,7 @@
     }
 
     &:hover .vjs-play-progress::before {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       color: white;
     }
   }
@@ -55,7 +55,7 @@
     background: linear-gradient(90deg, $color-blue, $color-red);
     border-radius: 9999px;
     &::before {
-      font-size: .9rem;
+      font-size: 1.1rem;
       color: $color-red;
     }
   }

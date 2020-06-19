@@ -97,12 +97,12 @@ def list_promos(request, *args, **kwargs):
         queryset = queryset.filter(type=params['type'])
     if 'limit' in params and params['limit']:
         limit = int(params['limit'])
-        return Response(serializers.TitleListSerializer(queryset[:limit], many=True).data)
+        return Response(serializers.TitleSerializer(queryset[:limit], many=True).data)
 
     if len(queryset):
         queryset = queryset[0]
 
-    return Response(serializers.TitleListSerializer([]).data)
+    return Response(serializers.TitleSerializer([]).data)
 
 
 class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):

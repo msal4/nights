@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import React, { FunctionComponent, useState, useEffect } from "react";
-import { FaStar, FaPlay, FaEye } from "react-icons/fa";
+import React, { FunctionComponent, useState } from "react";
+import { FaStar, FaEye } from "react-icons/fa";
 import { FiInfo } from "react-icons/fi";
 
 import { ImageQuality, TitleDetail } from "../core/interfaces/title";
-import { PrimaryButton, InfoIconButton } from "./common/Buttons";
+import { InfoIconButton } from "./common/Buttons";
 import { joinTopics, getImageUrl } from "../utils/common";
 import NImage from "./NImage";
 import MyListButton from "./MyListButton";
