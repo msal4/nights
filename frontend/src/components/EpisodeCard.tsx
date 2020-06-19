@@ -27,9 +27,11 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
         (window.location.pathname = `/series/${seriesId}/${seasonId}/${episode.index}/play`)
       }
       className="episode-card-container flex items-start mb-4 p-2 rounded-lg md:mb-6 hover:bg-gray-900"
+      style={{ maxHeight: "8rem", overflow: "hidden" }}
     >
       <NImage
         className="relative h-20 w-32 mr-2 md:mr-4 md:h-32 md:w-48 flex items-center justify-center"
+        style={{ minWidth: "12rem" }}
         src={episode.image}
       >
         <div className="episode-play-icon bg-white rounded-full">
@@ -40,11 +42,15 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
         </div>
       </NImage>
       <div>
-        <h4 className="mb-1 text-base md:text-xl text-n-red">
-          {episode.index + 1}
-        </h4>
-        <h4 className="mb-1 text-xs md:text-lg">{episode.name}</h4>
-        <p className="text-xs font-thin md:text-sm">{episode.plot}</p>
+        <div className="flex">
+          <h4 className="text-base md:text-xl text-n-red">
+            {episode.index + 1}
+          </h4>
+          <h4 className="ml-2 text-xs md:text-lg">{episode.name}</h4>
+        </div>
+        <p className="mt-1 text-xs font-thin opacity-75 md:text-xs">
+          {episode.plot}
+        </p>
       </div>
     </div>
   );
