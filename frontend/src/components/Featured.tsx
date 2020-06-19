@@ -64,7 +64,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
         <div className="mr-2">
           {title.is_new && (
             <span className="bg-green-600 text-xs text-black rounded-sm px-1">
-              (title.type === "s" ? t("newEpisodes") : t("new"))
+              {title.type === "s" ? t("newEpisodes") : t("new")}
             </span>
           )}
           <div className="flex items-center font-bold mb-1">
