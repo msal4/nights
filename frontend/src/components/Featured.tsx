@@ -60,7 +60,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
     if (!title) return null;
 
     return (
-      <div className="p-10 absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center">
+      <div className="p-3 md:p-10 absolute bottom-0 left-0 right-0 v-gradient flex justify-between items-center">
         <div className="mr-2">
           {title.is_new && (
             <span className="bg-green-600 text-xs text-black rounded-sm px-1">
@@ -75,7 +75,7 @@ const Featured: FunctionComponent<FeaturedProps> = ({ data }) => {
               </p>
             )}
             {title.type === "s" ? (
-              <p className="mr-6">
+              <p className="hidden md:block mr-6">
                 {title.seasons?.length} Season
                 {title.seasons?.length > 1 ? "s" : ""}
               </p>
