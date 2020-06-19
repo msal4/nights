@@ -106,7 +106,7 @@ i18n
           email: "البريد الالكتروني",
           dontHaveAnAccount: "ليس لديك حساب؟",
           haveAnAccount: "لديك حساب؟",
-          trailer: "اعلان",
+          trailer: "الاعلان",
           filter: "فرز",
           filters: "فرز",
           genres: "الفئات",

@@ -8,9 +8,14 @@ import { useTranslation } from "react-i18next";
 interface TrailerProps {
   title: TitleDetail;
   className?: string;
+  style?: {};
 }
 
-const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
+const Trailer: FunctionComponent<TrailerProps> = ({
+  title,
+  className,
+  style,
+}) => {
   const videoNode = useRef<HTMLVideoElement>(null);
   const { t } = useTranslation();
   const [error, setError] = useState(false);
@@ -39,7 +44,7 @@ const Trailer: FunctionComponent<TrailerProps> = ({ title, className }) => {
   }, [src]);
 
   return !error ? (
-    <div className={`${className}`}>
+    <div className={`${className}`} style={style}>
       <h2 className="mb-5 text-xl font-semibold">{t("trailer")}</h2>
       <div
         data-vjs-player

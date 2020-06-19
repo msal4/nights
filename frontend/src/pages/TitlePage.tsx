@@ -124,7 +124,8 @@ export default () => {
             </div>
           </NImage>
           <Trailer
-            className="my-12 block md:hidden flex-1 text-center"
+            className="my-12 mx-auto block md:hidden flex-1 text-center"
+            style={{ maxWidth: "20rem" }}
             title={title}
           />
           <div className="mx-auto" style={{ maxWidth: "20rem" }}>

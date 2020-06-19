@@ -51,6 +51,7 @@ const CarouselRow: FunctionComponent<CarouselRowProps> = ({
       <Carousel
         className="carousel-row"
         responsive={{ ...defaultResponsive, ...responsive }}
+        infinite
       >
         {children}
       </Carousel>

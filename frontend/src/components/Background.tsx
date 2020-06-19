@@ -1,12 +1,12 @@
-import React from "react"
-import { useRouteMatch } from "react-router-dom"
+import React from "react";
+import { useRouteMatch } from "react-router-dom";
 
-import { useBackground } from "../context/background-context"
+import { useBackground } from "../context/background-context";
 
 export default () => {
-  const { background } = useBackground()
-  const match = useRouteMatch({ path: "/landing" })
-  if (match) return null
+  const { background } = useBackground();
+  const match = useRouteMatch({ path: "/landing" });
+  if (match) return null;
 
   return (
     <div
@@ -14,10 +14,10 @@ export default () => {
       style={{
         // background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 38%, rgba(0,0,8,1) 49%, rgba(0,0,8,1) 100%), url(${background})`,
         background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 50%, rgba(0,0,8,1) 90%, rgba(0,0,8,1) 100%), center/100% 100% no-repeat url(${background})`,
-        filter: "blur(13px)",
-        opacity: 0.5,
+        filter: "blur(10px)",
+        opacity: 0.75,
         zIndex: -1,
       }}
     />
-  )
-}
+  );
+};
