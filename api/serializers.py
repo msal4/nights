@@ -179,8 +179,7 @@ class TitleCreateSerializer(serializers.ModelSerializer):
                 media_data = episode_data.pop('media')
                 episode = helpers.get_or_create(
                     season.episodes.order_by("-created_at"),
-                    index=episode_index, episode_season=season,
-                    episode_series=title)
+                    index=episode_index, episode_season=season)
 
                 media = [helpers.get_or_create(
                     episode.media, **m) for m in media_data]
