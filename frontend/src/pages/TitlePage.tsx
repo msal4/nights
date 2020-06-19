@@ -107,7 +107,7 @@ export default () => {
               <div className="mr-2">
                 {title.is_new && (
                   <span className="px-1 bg-green-600 text-black text-xs">
-                    {title.type === "s" ? "New Episodes" : "New"}
+                    {title.type === "s" ? t("newEpisodes") : t("new")}
                   </span>
                 )}
                 <h1 className="text-lg md:text-4xl font-bold mb-1">

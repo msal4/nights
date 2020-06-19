@@ -141,7 +141,7 @@ class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Genre.objects.order_by('-name')
+    queryset = Genre.objects.order_by('name')
     serializer_class = serializers.TitleGenreSerializer
     pagination_class = TitleGenreRowViewPagination
     filter_backends = (
