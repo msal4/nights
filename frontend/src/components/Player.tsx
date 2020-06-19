@@ -76,16 +76,6 @@ const Player: FunctionComponent<PlayerProps> = ({
           type: format === "mp4" ? "video/mp4" : "application/x-mpegURL",
         } as videojs.Tech.SourceObject;
       }),
-      tracks: subtitles.map(
-        (subtitle) =>
-          ({
-            kind: "captions",
-            src: swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")),
-            srcLang: subtitle.language,
-            label: subtitle.language === "ar" ? "العربية" : "English",
-            default: subtitle.language === "ar",
-          } as videojs.Tech.SourceObject)
-      ),
     });
 
     try {
@@ -155,7 +145,17 @@ const Player: FunctionComponent<PlayerProps> = ({
           playsInline
           autoPlay
           controls
-        />
+        >
+          {subtitles.map((subtitle) => (
+            <track
+              kind="captions"
+              src={swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")) || ""}
+              srcLang={subtitle.language}
+              label={subtitle.language === "ar" ? "العربية" : "English"}
+              default={subtitle.language === "ar"}
+            />
+          ))}
+        </video>
       </div>
       {displaySidebar && (
         <div
