@@ -106,7 +106,8 @@ def list_promos(request, *args, **kwargs):
 
 
 class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Title.objects.order_by('-updated_at')
+    queryset = Title.objects.filter(
+        featured_at__isnull=False).order_by('-featured_at')
     serializer_class = serializers.TitleListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('type',)
@@ -114,7 +115,7 @@ class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
     @method_decorator(cache_page(60 * 60))
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(
-            rate_query(request, self.get_queryset())).filter(featured_at__isnull=False)
+            rate_query(request, self.get_queryset()))
         page = self.paginate_queryset(queryset) or queryset
 
         serializer = self.get_serializer(page, many=True)
