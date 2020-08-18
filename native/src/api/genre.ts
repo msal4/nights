@@ -1,4 +1,4 @@
-import { Topic } from "../core/interfaces/topic"
-import client from "./client"
+import {Topic} from '../core/interfaces/topic';
+import client from './client';
 
-export const getGenres = (): Promise<Topic[]> => client.get("/genres/")
+export const getGenres = (): Promise<Topic[]> => client.get('/genres/');

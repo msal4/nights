@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
+import {HomePromo} from '../components/HomePromo';
 
 export const HomeScreen: React.FC = () => {
   return (
     <View>
-      <Text>Hi boy</Text>
+      <HomePromo />
     </View>
   );
 };

@@ -1,27 +1,27 @@
-import axios from "axios"
+import axios from 'axios';
 
-import AuthToken from "../utils/auth-token"
-import { baseURL } from "./.env"
+import AuthToken from '../utils/auth-token';
+import {baseURL} from './.env';
 
 const client = axios.create({
   baseURL,
   timeout: 10000,
-})
+});
 
-client.interceptors.request.use(config => ({
+client.interceptors.request.use(async (config) => ({
   ...config,
-  headers: AuthToken.get() && {
+  headers: (await AuthToken.get()) && {
     Authorization: `Token ${AuthToken.token}`,
   },
-}))
+}));
 
 client.interceptors.response.use(
-  response => {
-    return response.data
+  (response) => {
+    return response.data;
   },
-  error => {
-    return Promise.reject(error)
-  }
-)
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
-export default client
+export default client;
