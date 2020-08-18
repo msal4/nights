@@ -22,12 +22,3 @@ target 'NightsNative' do
     flipper_post_install(installer)
   end
 end
-
-target 'NightsNative-tvOS' do
-  # Pods for NightsNative-tvOS
-
-  target 'NightsNative-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-end

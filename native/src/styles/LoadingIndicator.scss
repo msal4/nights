@@ -1,0 +1,25 @@
+@import "variables.scss";
+
+.loading-indicator {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, $color-blue, $color-red);
+  background-size: 200% 200%;
+  animation: gradient-animation 2s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
