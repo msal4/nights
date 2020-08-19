@@ -1,13 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {Image} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {getPromos} from '../api/home';
 import {TitleDetail} from '../core/interfaces/title';
+import {getImageUrl} from '../utils/common';
 
 export const HomePromo: React.FC = () => {
-  const {} = usePromo();
+  const {promo} = usePromo();
   // TODO: Implement HomePromo
-  return <View />;
+  return (
+    <Image source={{uri: getImageUrl(promo?.images[0].url)}} style={{height: 500}}>
+      <LinearGradient colors={['#00000055', '#00000000', '#000']} style={{height: 500}} />
+    </Image>
+  );
 };
 
 const usePromo = () => {
@@ -17,7 +23,7 @@ const usePromo = () => {
   const getTitle = async () => {
     try {
       const promos = await getPromos({limit: 1});
-      console.log(promos);
+      console.log(JSON.stringify(promos, null, 2));
       setPromo(promos[0]);
       setError(null);
     } catch (err) {

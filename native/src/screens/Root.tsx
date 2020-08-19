@@ -1,6 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeScreen} from './HomeScreen';
+import {HomeScreen} from './Home';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors} from '../constants/style';
 
@@ -12,7 +12,7 @@ function tabBarIcon(name: string, {color, size, focused}: {focused: boolean; col
 
 export const RootScreen: React.FC = () => {
   return (
-    <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray}, activeTintColor: colors.red}}>
+    <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray}}}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
