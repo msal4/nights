@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {ScrollView, View, Dimensions} from 'react-native';
 import {Input} from 'react-native-elements';
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
+import useConstant from 'use-constant';
+import {useAsync} from 'react-async-hook';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {colors, CARD_WIDTH} from '../constants/style';
 import {getTitles} from '../api/title';
 import Title from '../components/Title';
-import AwesomeDebouncePromise from 'awesome-debounce-promise';
-import useConstant from 'use-constant';
-import {useAsync} from 'react-async-hook';
 
 export const SearchScreen: React.FC = () => {
   const {setQuery, searchResults: result} = useSearch();
