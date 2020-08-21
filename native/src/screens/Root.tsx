@@ -1,8 +1,10 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeScreen} from './Home';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import {HomeScreen} from './Home';
 import {colors} from '../constants/style';
+import {SearchScreen} from './Search';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +22,7 @@ export const RootScreen: React.FC = () => {
       />
       <Tab.Screen
         name="Search"
-        component={HomeScreen}
+        component={SearchScreen}
         options={{tabBarIcon: (props) => tabBarIcon('search', props)}}
       />
       <Tab.Screen

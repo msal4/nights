@@ -18,7 +18,7 @@ const TitleRow: FunctionComponent<TitleRowProps> = ({row, name}) => {
   }
 
   return (
-    <View style={{marginTop: 22}}>
+    <>
       <Text style={{fontSize: 22, marginBottom: 10, marginHorizontal: 10}}>{capitalizeFirst(name)}</Text>
       <FlatList
         data={row}
@@ -27,7 +27,7 @@ const TitleRow: FunctionComponent<TitleRowProps> = ({row, name}) => {
         horizontal
         contentContainerStyle={{marginHorizontal: 10}}
       />
-    </View>
+    </>
   );
 };
 

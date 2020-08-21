@@ -15,16 +15,20 @@
     "@react-navigation/bottom-tabs": "^5.8.0",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
+    "awesome-debounce-promise": "^2.1.0",
     "axios": "^0.19.2",
     "react": "16.13.1",
+    "react-async-hook": "^3.6.1",
     "react-native": "0.63.2",
+    "react-native-dropdown-picker": "^3.1.11",
     "react-native-elements": "^2.2.1",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-reanimated": "^1.13.0",
     "react-native-safe-area-context": "^3.1.4",
     "react-native-screens": "^2.10.1",
-    "react-native-vector-icons": "^7.0.0"
+    "react-native-vector-icons": "^7.0.0",
+    "use-constant": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
