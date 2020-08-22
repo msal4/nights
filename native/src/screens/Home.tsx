@@ -7,8 +7,10 @@ import {GenreRow} from '../core/interfaces/home';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import client from '../api/client';
 import TitleRow from '../components/TitleRow';
+import {createStackNavigator} from '@react-navigation/stack';
+import {DetailScreen} from './Detail';
 
-export const HomeScreen: React.FC = () => {
+const Home = () => {
   const {rows} = useRows();
 
   return (
@@ -16,6 +18,17 @@ export const HomeScreen: React.FC = () => {
       <HomePromo />
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
     </ScrollView>
+  );
+};
+
+const Stack = createStackNavigator();
+
+export const HomeScreen: React.FC = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
+    </Stack.Navigator>
   );
 };
 

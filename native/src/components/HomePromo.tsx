@@ -9,16 +9,17 @@ import {getPromos} from '../api/home';
 import {TitleDetail, ImageQuality} from '../core/interfaces/title';
 import {getImageUrl, joinTopics} from '../utils/common';
 import {PROMO_HEIGHT, colors} from '../constants/style';
+import {useNavigation} from '@react-navigation/native';
 
 export const HomePromo: React.FC = () => {
   const {promo} = usePromo();
-
+  const navigation = useNavigation();
   return (
     <>
       <Image
         source={{uri: getImageUrl(promo?.images[0].url, ImageQuality.h900)}}
         style={{height: PROMO_HEIGHT}}>
-        <LinearGradient colors={['#00000055', '#00000000', '#000']} style={{height: PROMO_HEIGHT}}>
+        <LinearGradient colors={['#00000055', '#00000000', '#000']} style={{height: '100%'}}>
           <View style={{flex: 1, justifyContent: 'space-between', marginHorizontal: 50}}>
             <View />
             <View style={{alignItems: 'center'}}>
@@ -44,7 +45,14 @@ export const HomePromo: React.FC = () => {
                   onPress={() => {}}>
                   <Icon name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
                 </TouchableOpacity>
-                <Icon name="information-circle-outline" size={50} color={colors.blue} onPress={() => {}} />
+                <Icon
+                  name="information-circle-outline"
+                  size={50}
+                  color={colors.blue}
+                  onPress={() => {
+                    navigation.navigate('Detail', promo);
+                  }}
+                />
               </View>
             </View>
           </View>

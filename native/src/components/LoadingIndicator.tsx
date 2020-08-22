@@ -1,5 +1,12 @@
-import React from "react"
-import "../styles/LoadingIndicator.scss"
+import React from 'react';
+import {StyleSheet, ActivityIndicator, View} from 'react-native';
 
-export default ({ show }: { show: boolean }) =>
-  show ? <div className="h-1 loading-indicator" /> : null
+export default () => (
+  <View style={styles.container}>
+    <ActivityIndicator />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  container: {flex: 1, justifyContent: 'center'},
+});

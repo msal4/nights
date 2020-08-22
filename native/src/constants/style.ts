@@ -5,6 +5,7 @@ export const colors = {
   red: '#EA1437',
   white: '#fff',
   blue: '#0D87FD',
+  green: '#1ca611',
 };
 
 export const CARD_HEIGHT = 200;

@@ -9,8 +9,10 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {colors, CARD_WIDTH} from '../constants/style';
 import {getTitles} from '../api/title';
 import Title from '../components/Title';
+import {createStackNavigator} from '@react-navigation/stack';
+import {DetailScreen} from './Detail';
 
-export const SearchScreen: React.FC = () => {
+const Search: React.FC = () => {
   const {setQuery, searchResults: result} = useSearch();
   const {width} = Dimensions.get('window');
   const numCards = Math.round(width / CARD_WIDTH);
@@ -49,4 +51,14 @@ const useSearch = () => {
   }, [debouncedSearchFunction, query]);
 
   return {setQuery, searchResults};
+};
+
+const Stack = createStackNavigator();
+export const SearchScreen = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
+    </Stack.Navigator>
+  );
 };
