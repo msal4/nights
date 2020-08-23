@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {HomeScreen} from './Home';
 import {colors} from '../constants/style';
 import {SearchScreen} from './Search';
+import {TVScreen} from './TV';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,11 +26,7 @@ export const RootScreen: React.FC = () => {
         component={SearchScreen}
         options={{tabBarIcon: (props) => tabBarIcon('search', props)}}
       />
-      <Tab.Screen
-        name="TV"
-        component={HomeScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('tv', props)}}
-      />
+      <Tab.Screen name="TV" component={TVScreen} options={{tabBarIcon: (props) => tabBarIcon('tv', props)}} />
       <Tab.Screen
         name="Downloads"
         component={HomeScreen}

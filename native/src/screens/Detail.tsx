@@ -12,7 +12,7 @@ import {getTitle} from '../api/title';
 import {colors} from '../constants/style';
 import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
-import {EpisodesScreen} from './Seasons';
+import {EpisodesScreen} from './Episodes';
 
 const Tab = createMaterialTopTabNavigator();
 

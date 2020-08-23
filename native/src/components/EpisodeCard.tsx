@@ -31,9 +31,9 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode}) => {
         </View>
       </Image>
       <View style={{overflow: 'hidden', flex: 1}}>
-        <View>
-          <Text style={{fontSize: 17, color: colors.red}}>{episode.index + 1}</Text>
-          <Text style={{fontSize: 13}}>{episode.name}</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 13, color: colors.red, marginRight: 5}}>{episode.index + 1}</Text>
+          <Text style={{fontSize: 11}}>{episode.name}</Text>
         </View>
         <View style={{flexDirection: 'row', flex: 1}}>
           <Text style={{opacity: 0.75, flex: 1, flexWrap: 'wrap', fontSize: 10}}>{episode.plot}</Text>
