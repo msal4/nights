@@ -3,15 +3,22 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {View, ScrollView, TouchableOpacity} from 'react-native';
 import {Image, Icon, Text} from 'react-native-elements';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
 import {getTitle} from '../api/title';
 import {colors} from '../constants/style';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {TrailerScreen} from './Trailer';
+import {InfoScreen} from './Info';
+import {EpisodesScreen} from './Seasons';
+
+const Tab = createMaterialTopTabNavigator();
 
 export const DetailScreen: React.FC = () => {
   const {params} = useRoute();
+
   const navigation = useNavigation();
   const {title} = useTitle((params as any).id);
 
@@ -78,16 +85,32 @@ export const DetailScreen: React.FC = () => {
           </SafeAreaView>
         </LinearGradient>
       </Image>
+      {title && (
+        <Tab.Navigator
+          tabBarOptions={{
+            labelStyle: {color: colors.white},
+            style: {backgroundColor: colors.black},
+          }}>
+          {title?.type === 's' ? (
+            <Tab.Screen name="Episodes" initialParams={{title}} component={EpisodesScreen} />
+          ) : null}
+          {title?.trailers.length ? (
+            <Tab.Screen name="Trailers" initialParams={{title}} component={TrailerScreen} />
+          ) : null}
+          <Tab.Screen name="Info" initialParams={{title}} component={InfoScreen} />
+        </Tab.Navigator>
+      )}
     </ScrollView>
   );
 };
 
 const useTitle = (id: number | string) => {
-  const [title, setTitle] = useState<TitleDetail>();
+  const [title, setTitle] = useState<TitleDetail | null>();
   const [error, setError] = useState<Error | null>();
 
   const getInfo = useCallback(async () => {
     try {
+      setTitle(null);
       const data = await getTitle(id);
       setTitle(data);
       setError(null);
