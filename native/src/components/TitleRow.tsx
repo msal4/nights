@@ -3,7 +3,6 @@ import React, {FunctionComponent} from 'react';
 import Title from '../components/Title';
 import {Title as ITitle} from '../core/interfaces/title';
 import {FlatList} from 'react-native-gesture-handler';
-import {View} from 'react-native';
 import {Text} from 'react-native-elements';
 import {capitalizeFirst} from '../utils/common';
 

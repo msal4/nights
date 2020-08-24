@@ -22,6 +22,9 @@ const navigationTheme: Theme = {
 };
 
 const elementsTheme: ElementsTheme = {
+  colors: {
+    primary: colors.red,
+  },
   Text: {
     style: {
       color: colors.white,
