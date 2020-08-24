@@ -6,6 +6,7 @@ import {HomeScreen} from './Home';
 import {colors} from '../constants/style';
 import {SearchScreen} from './Search';
 import {TVScreen} from './TV';
+import {useLanguage} from '../utils/lang';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,28 +15,33 @@ function tabBarIcon(name: string, {color, size, focused}: {focused: boolean; col
 }
 
 export const RootScreen: React.FC = () => {
+  const {t} = useLanguage();
   return (
     <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray}}}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('home', props)}}
+        options={{tabBarIcon: (props) => tabBarIcon('home', props), title: t('home')}}
       />
       <Tab.Screen
         name="Search"
         component={SearchScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('search', props)}}
+        options={{tabBarIcon: (props) => tabBarIcon('search', props), title: t('search')}}
       />
-      <Tab.Screen name="TV" component={TVScreen} options={{tabBarIcon: (props) => tabBarIcon('tv', props)}} />
+      <Tab.Screen
+        name="TV"
+        component={TVScreen}
+        options={{tabBarIcon: (props) => tabBarIcon('tv', props), title: t('tv')}}
+      />
       <Tab.Screen
         name="Downloads"
         component={HomeScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('download', props)}}
+        options={{tabBarIcon: (props) => tabBarIcon('download', props), title: t('downloads')}}
       />
       <Tab.Screen
         name="More"
         component={HomeScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('menu', props)}}
+        options={{tabBarIcon: (props) => tabBarIcon('menu', props), title: t('more')}}
       />
     </Tab.Navigator>
   );

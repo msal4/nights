@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
+import {LanguageProvider} from './src/utils/lang';
 
 Ionicons.loadFont();
 
@@ -37,11 +38,13 @@ export default () => {
     <>
       <StatusBar barStyle="light-content" />
       <ThemeProvider theme={elementsTheme}>
-        <NavigationContainer theme={navigationTheme}>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Root" component={RootScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <LanguageProvider>
+          <NavigationContainer theme={navigationTheme}>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+              <Stack.Screen name="Root" component={RootScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </LanguageProvider>
       </ThemeProvider>
     </>
   );

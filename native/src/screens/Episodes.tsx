@@ -8,6 +8,7 @@ import {Season} from '../core/interfaces/season';
 import {getSeason} from '../api/title';
 import {colors} from '../constants/style';
 import EpisodeCard from '../components/EpisodeCard';
+import {useLanguage} from '../utils/lang';
 
 interface SeasonsParams {
   title: TitleDetail;
@@ -16,6 +17,7 @@ interface SeasonsParams {
 export const EpisodesScreen: FunctionComponent = () => {
   const params: SeasonsParams = useRoute().params as any;
   const {title} = params;
+  const {t} = useLanguage();
 
   const [season, setSeason] = useState(title.seasons[0]);
 
@@ -24,10 +26,10 @@ export const EpisodesScreen: FunctionComponent = () => {
   return (
     <View style={{padding: 10}}>
       <DropDownPicker
-        items={title.seasons.map((value) => ({label: `Season ${value.index + 1}`, value}))}
+        items={title.seasons.map((value) => ({label: `${t('season')} ${value.index + 1}`, value}))}
         defaultValue={season}
-        searchable
-        searchablePlaceholder="Search..."
+        searchable={title.seasons.length > 3}
+        searchablePlaceholder={t('search')}
         searchablePlaceholderTextColor={colors.white + 'cc'}
         searchableStyle={{flex: 1, textAlign: 'center', color: colors.white}}
         containerStyle={{height: 40}}

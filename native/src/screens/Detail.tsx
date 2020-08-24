@@ -13,6 +13,7 @@ import {colors} from '../constants/style';
 import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
+import {useLanguage} from '../utils/lang';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,6 +22,8 @@ export const DetailScreen: React.FC = () => {
 
   const navigation = useNavigation();
   const {title} = useTitle((params as any).id);
+
+  const {t} = useLanguage();
 
   if (title && title.genres.length > 3) {
     title.genres.length = 3;
@@ -69,7 +72,7 @@ export const DetailScreen: React.FC = () => {
                 <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
                   {title?.type === 'm'
                     ? Math.round((title?.runtime ?? 0) / 60) + ' min'
-                    : title?.seasons.length + ' Seasons'}
+                    : title?.seasons.length + ' ' + t('seasons')}
                 </Text>
                 <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
               </View>
@@ -92,12 +95,27 @@ export const DetailScreen: React.FC = () => {
             style: {backgroundColor: colors.black},
           }}>
           {title?.type === 's' ? (
-            <Tab.Screen name="Episodes" initialParams={{title}} component={EpisodesScreen} />
+            <Tab.Screen
+              name="Episodes"
+              initialParams={{title}}
+              component={EpisodesScreen}
+              options={{title: t('episodes')}}
+            />
           ) : null}
           {title?.trailers.length ? (
-            <Tab.Screen name="Trailers" initialParams={{title}} component={TrailerScreen} />
+            <Tab.Screen
+              name="Trailer"
+              initialParams={{title}}
+              component={TrailerScreen}
+              options={{title: t('trailer')}}
+            />
           ) : null}
-          <Tab.Screen name="Info" initialParams={{title}} component={InfoScreen} />
+          <Tab.Screen
+            name="Info"
+            initialParams={{title}}
+            component={InfoScreen}
+            options={{title: t('info')}}
+          />
         </Tab.Navigator>
       )}
     </ScrollView>

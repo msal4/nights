@@ -8,10 +8,13 @@ import {PROMO_HEIGHT} from '../constants/style';
 import {Promo, Category, Channel} from '../core/interfaces/channel';
 import {tvBaseURL} from '../constants/const';
 import ChannelRow from '../components/ChannelRow';
+import {useLanguage} from '../utils/lang';
 
 export const TVScreen: React.FC = () => {
   const {categories} = useRows();
   const {promo} = usePromo();
+  const {t, lang} = useLanguage();
+
   return (
     <FlatList
       keyExtractor={(item) => item.id.toString()}
@@ -26,11 +29,13 @@ export const TVScreen: React.FC = () => {
                 <View
                   style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginHorizontal: 50}}>
                   <Button
-                    title="Watch Now"
+                    title={t('watchNow')}
                     buttonStyle={{borderRadius: 9999, paddingHorizontal: 40}}
                     onPress={() => {}}
                   />
-                  <Text style={{marginTop: 10, fontSize: 17}}>{promo?.title}</Text>
+                  <Text style={{marginTop: 10, fontSize: 17}}>
+                    {promo && (promo as any)['title' + (lang === 'en' ? '' : '_ar')]}
+                  </Text>
                 </View>
               </LinearGradient>
             </Image>

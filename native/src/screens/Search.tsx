@@ -11,18 +11,20 @@ import {getTitles} from '../api/title';
 import Title from '../components/Title';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DetailScreen} from './Detail';
+import {useLanguage} from '../utils/lang';
 
 const Search: React.FC = () => {
   const {setQuery, searchResults: result} = useSearch();
   const {width} = Dimensions.get('window');
   const numCards = Math.round(width / CARD_WIDTH);
   const cardWidth = width / numCards - 15;
+  const {t} = useLanguage();
 
   return (
     <SafeAreaView edges={['top']} style={{flex: 1}}>
       <ScrollView>
         <Input
-          placeholder="Search"
+          placeholder={t('search')}
           placeholderTextColor={colors.lightGray}
           inputStyle={{color: colors.white}}
           leftIcon={{type: 'ionicon', name: 'search', color: colors.lightGray}}
