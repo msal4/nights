@@ -8,6 +8,7 @@ import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import {LanguageProvider} from './src/utils/lang';
+import {AuthProvider} from './src/context/auth-context';
 
 Ionicons.loadFont();
 
@@ -38,13 +39,15 @@ export default () => {
     <>
       <StatusBar barStyle="light-content" />
       <ThemeProvider theme={elementsTheme}>
-        <LanguageProvider>
-          <NavigationContainer theme={navigationTheme}>
-            <Stack.Navigator screenOptions={{headerShown: false}}>
-              <Stack.Screen name="Root" component={RootScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </LanguageProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <NavigationContainer theme={navigationTheme}>
+              <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="Root" component={RootScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </LanguageProvider>
+        </AuthProvider>
       </ThemeProvider>
     </>
   );

@@ -72,7 +72,7 @@ export const DetailScreen: React.FC = () => {
                 <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
                   {title?.type === 'm'
                     ? Math.round((title?.runtime ?? 0) / 60) + ' min'
-                    : title?.seasons.length + ' ' + t('seasons')}
+                    : (title?.seasons.length ?? '') + ' ' + t('seasons')}
                 </Text>
                 <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
               </View>

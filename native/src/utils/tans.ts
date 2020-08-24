@@ -1,6 +1,6 @@
 export const trans = {
   en: {
-    lang: 'عربي',
+    lang: 'English',
     results: 'Results',
     home: 'Home',
     tv: 'TV',
@@ -67,9 +67,11 @@ export const trans = {
     more: 'More',
     seasons: 'Seasons',
     similar: 'Similar',
+    settings: 'Settings',
+    language: 'Language',
   },
   ar: {
-    lang: 'English',
+    lang: 'عربي',
     tv: 'التلفاز',
     results: 'النتائج',
     home: 'الرئيسية',
@@ -136,5 +138,7 @@ export const trans = {
     trending: 'الاكثر رواجاً',
     downloads: 'التنزيلات',
     similar: 'مشابه',
+    settings: 'الاعدادات',
+    language: 'اللغة',
   },
 };
