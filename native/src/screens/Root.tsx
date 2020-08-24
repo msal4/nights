@@ -7,6 +7,7 @@ import {colors} from '../constants/style';
 import {SearchScreen} from './Search';
 import {TVScreen} from './TV';
 import {useLanguage} from '../utils/lang';
+import {MoreScreen} from './More';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ export const RootScreen: React.FC = () => {
       />
       <Tab.Screen
         name="More"
-        component={HomeScreen}
+        component={MoreScreen}
         options={{tabBarIcon: (props) => tabBarIcon('menu', props), title: t('more')}}
       />
     </Tab.Navigator>
