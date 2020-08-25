@@ -6,6 +6,7 @@ import {Title as ITitle} from '../core/interfaces/title';
 import {getImageUrl} from '../utils/common';
 import {CARD_WIDTH, colors} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
+import {useLanguage} from '../utils/lang';
 
 export interface TitleProps {
   title: ITitle;
@@ -16,6 +17,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
   const uri = getImageUrl(title.images[0]?.url);
   const cardWidth = width ?? CARD_WIDTH;
   const cardHeight = cardWidth * 1.6;
+  const {t, lang} = useLanguage();
 
   const navigation = useNavigation();
   return (
@@ -33,8 +35,9 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
               left: 2,
               top: 5,
               paddingHorizontal: 5,
+              paddingBottom: lang === 'ar' ? 3 : 1,
             }}>
-            <Text style={{fontSize: 12}}>{title.type === 's' ? 'New Episodes' : 'New'}</Text>
+            <Text style={{fontSize: 12}}>{title.type === 's' ? t('newEpisodes') : t('new')}</Text>
           </View>
         ) : null}
       </Image>

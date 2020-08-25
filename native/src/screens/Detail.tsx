@@ -8,7 +8,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
-import {getTitle} from '../api/title';
+import {getTitle, checkMyList, removeFromMyList, addToMyList} from '../api/title';
 import {colors} from '../constants/style';
 import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
@@ -21,7 +21,7 @@ export const DetailScreen: React.FC = () => {
   const {params} = useRoute();
 
   const navigation = useNavigation();
-  const {title} = useTitle((params as any).id);
+  const {title, inMyList, setInMyList} = useTitle((params as any).id);
 
   const {t} = useLanguage();
 
@@ -46,7 +46,28 @@ export const DetailScreen: React.FC = () => {
                   navigation.goBack();
                 }}
               />
-              <Icon type="ionicon" size={50} color={colors.white} name="add" />
+              <Icon
+                type="ionicon"
+                size={50}
+                color={colors.white}
+                name={inMyList ? 'checkmark' : 'add'}
+                onPress={async () => {
+                  if (!title) {
+                    return;
+                  }
+                  if (inMyList) {
+                    try {
+                      await removeFromMyList(title.id);
+                      setInMyList(false);
+                    } catch {}
+                  } else {
+                    try {
+                      await addToMyList(title.id);
+                      setInMyList(true);
+                    } catch {}
+                  }
+                }}
+              />
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <TouchableOpacity
@@ -125,14 +146,18 @@ export const DetailScreen: React.FC = () => {
 const useTitle = (id: number | string) => {
   const [title, setTitle] = useState<TitleDetail | null>();
   const [error, setError] = useState<Error | null>();
+  const [inMyList, setInMyList] = useState(false);
 
   const getInfo = useCallback(async () => {
     try {
       setTitle(null);
       const data = await getTitle(id);
       setTitle(data);
+      await checkMyList(data.id);
+      setInMyList(true);
       setError(null);
     } catch (err) {
+      setInMyList(false);
       setError(err);
     }
   }, [id]);
@@ -141,5 +166,5 @@ const useTitle = (id: number | string) => {
     getInfo();
   }, [getInfo]);
 
-  return {title, error, getTitle: getInfo};
+  return {title, error, getTitle: getInfo, inMyList, setInMyList};
 };

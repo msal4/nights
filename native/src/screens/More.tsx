@@ -19,15 +19,6 @@ const More: React.FC = () => {
   return (
     <ScrollView contentContainerStyle={{marginTop: 20}}>
       <ListItem
-        title={t('language')}
-        containerStyle={{backgroundColor: '#00000000'}}
-        leftIcon={{name: 'language-outline', type: 'ionicon', color: colors.white}}
-        rightElement={<Text style={{fontWeight: 'bold'}}>{t('lang')}</Text>}
-        bottomDivider
-        onPress={toggleLang}
-        children={{}}
-      />
-      <ListItem
         title={token ? t('logout') : t('login')}
         containerStyle={{backgroundColor: '#00000000'}}
         leftIcon={{name: 'person' + (!token ? '-outline' : ''), type: 'ionicon', color: colors.white}}
@@ -44,6 +35,15 @@ const More: React.FC = () => {
           }
           navigation.navigate('Login');
         }}
+      />
+      <ListItem
+        title={t('language')}
+        containerStyle={{backgroundColor: '#00000000'}}
+        leftIcon={{name: 'language-outline', type: 'ionicon', color: colors.white}}
+        rightElement={<Text style={{fontWeight: 'bold'}}>{t('lang')}</Text>}
+        bottomDivider
+        onPress={toggleLang}
+        children={{}}
       />
       <ListItem
         title={t('myList')}
