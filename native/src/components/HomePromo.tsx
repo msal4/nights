@@ -22,59 +22,63 @@ export const HomePromo: React.FC = () => {
         source={{uri: getImageUrl(promo?.images[0].url, ImageQuality.h900)}}
         style={{height: PROMO_HEIGHT}}>
         <LinearGradient colors={['#00000055', '#00000000', '#000']} style={{height: '100%'}}>
-          <View style={{flex: 1, justifyContent: 'space-between', marginHorizontal: 50}}>
+          <View style={{flex: 1, justifyContent: 'space-between'}}>
             <View />
             <View style={{alignItems: 'center'}}>
               <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{promo?.name}</Text>
-              <Text style={{marginBottom: 15, color: colors.lightGray}}>{joinTopics(promo?.genres)}</Text>
-              <View
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                }}>
-                <Icon
-                  name={inMyList ? 'checkmark' : 'add'}
-                  size={50}
-                  color={colors.blue}
-                  onPress={async () => {
-                    if (!promo) {
-                      return;
-                    }
-                    if (inMyList) {
-                      try {
-                        await removeFromMyList(promo.id);
-                        setInMyList(false);
-                      } catch {}
-                    } else {
-                      try {
-                        await addToMyList(promo.id);
-                        setInMyList(true);
-                      } catch {}
-                    }
-                  }}
-                />
-                <TouchableOpacity
+              <Text style={{marginBottom: 15, color: colors.lightGray, marginHorizontal: 10}}>
+                {joinTopics(promo?.genres)}
+              </Text>
+              <View style={{marginHorizontal: 50}}>
+                <View
                   style={{
-                    width: 80,
-                    height: 80,
-                    backgroundColor: colors.red,
-                    justifyContent: 'center',
+                    width: '100%',
+                    flexDirection: 'row',
                     alignItems: 'center',
-                    borderRadius: 40,
-                  }}
-                  onPress={() => {}}>
-                  <Icon name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
-                </TouchableOpacity>
-                <Icon
-                  name="information-circle-outline"
-                  size={50}
-                  color={colors.blue}
-                  onPress={() => {
-                    navigation.navigate('Detail', promo);
-                  }}
-                />
+                    justifyContent: 'space-around',
+                  }}>
+                  <Icon
+                    name={inMyList ? 'checkmark' : 'add'}
+                    size={50}
+                    color={colors.blue}
+                    onPress={async () => {
+                      if (!promo) {
+                        return;
+                      }
+                      if (inMyList) {
+                        try {
+                          await removeFromMyList(promo.id);
+                          setInMyList(false);
+                        } catch {}
+                      } else {
+                        try {
+                          await addToMyList(promo.id);
+                          setInMyList(true);
+                        } catch {}
+                      }
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: colors.red,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 40,
+                    }}
+                    onPress={() => {}}>
+                    <Icon name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
+                  </TouchableOpacity>
+                  <Icon
+                    name="information-circle-outline"
+                    size={50}
+                    color={colors.blue}
+                    onPress={() => {
+                      navigation.navigate('Detail', promo);
+                    }}
+                  />
+                </View>
               </View>
             </View>
           </View>
