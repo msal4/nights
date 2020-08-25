@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {trans} from './tans';
+import {trans} from './trans';
 
 const LanguageContext = React.createContext({
   lang: 'ar',
