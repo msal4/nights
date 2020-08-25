@@ -14,29 +14,41 @@ import {TitleDetail, ImageQuality} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
 import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {View, TouchableOpacity, SafeAreaView} from 'react-native';
+import {View, TouchableOpacity, SafeAreaView, NativeScrollEvent} from 'react-native';
 import {colors, PROMO_HEIGHT} from '../constants/style';
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
 
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
+  const paddingToBottom = 20;
+  return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
+};
+
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList} = usePromo(params);
-  const {rows} = useRows(params);
+  const {rows, getRows} = useRows(params);
   const {t} = useLanguage();
   const {history} = useHistory();
 
   const navigation = useNavigation();
 
   return (
-    <ScrollView>
+    <ScrollView
+      scrollEventThrottle={100}
+      onScroll={({nativeEvent}) => {
+        if (isCloseToBottom(nativeEvent)) {
+          console.log('isCloseToBottom');
+          getRows(false);
+        }
+      }}>
       <Image
         source={{uri: getImageUrl(promo?.images[0].url, ImageQuality.h900)}}
         style={{height: PROMO_HEIGHT}}>
         <LinearGradient colors={['#000000', '#00000000', '#000']} style={{height: '100%'}}>
-          <View style={{flex: 1, justifyContent: 'space-between'}}>
-            <SafeAreaView
+          <SafeAreaView style={{flex: 1, justifyContent: 'space-between'}}>
+            <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -78,7 +90,7 @@ const Home = () => {
                   {t('kids')}
                 </Text>
               </TouchableOpacity>
-            </SafeAreaView>
+            </View>
             <View style={{alignItems: 'center'}}>
               <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{promo?.name}</Text>
               <Text style={{marginBottom: 15, color: colors.lightGray, marginHorizontal: 10}}>
@@ -138,7 +150,7 @@ const Home = () => {
                 </View>
               </View>
             </View>
-          </View>
+          </SafeAreaView>
         </LinearGradient>
       </Image>
       {/* end of promo */}
@@ -213,29 +225,39 @@ const usePromo = (params: Params) => {
 const useRows = (params: Params) => {
   const [rows, setRows] = useState<PaginatedResults<GenreRow[]>>();
   const [error, setError] = useState<Error | null>();
+  const [loading, setLoading] = useState(false);
 
-  const getRows = useCallback(
-    async (refresh = true, p?: Params) => {
-      try {
-        if (!refresh && rows) {
-          const res = (await client.get(rows.next)) as PaginatedResults<GenreRow[]>;
-          setRows({...res, results: [...rows.results, ...res.results]});
+  const getRows = async (refresh = true, p?: Params) => {
+    try {
+      if (!refresh && rows) {
+        if (loading) {
           return;
         }
-        const data = await getGenreRows({...params, ...(p || {})} as Params);
-        setRows(data);
-        setError(null);
-      } catch (err) {
-        setError(err);
+        setLoading(true);
+        console.log('fetching...');
+        console.log(rows.next);
+        const res = (await client.get(rows.next)) as PaginatedResults<GenreRow[]>;
+        console.log(res);
+        setRows({...res, results: [...rows.results, ...res.results]});
+        setLoading(false);
+        return;
       }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [params],
-  );
+      setLoading(true);
+      const data = await getGenreRows({...params, ...(p || {})} as Params);
+      setRows(data);
+      setError(null);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setError(err);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getRows();
-  }, [getRows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params]);
 
   return {rows, error, getRows};
 };
