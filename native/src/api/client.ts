@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import AuthToken from '../utils/auth-token';
-import {baseURL} from './.env';
+import {baseURL} from '../constants/const';
 
 const client = axios.create({
   baseURL,
