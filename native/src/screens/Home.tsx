@@ -11,18 +11,22 @@ import {DetailScreen} from './Detail';
 import {useLanguage} from '../utils/lang';
 import {useNavigation} from '@react-navigation/native';
 import {TitleDetail, ImageQuality} from '../core/interfaces/title';
-import {checkMyList, addToMyList, removeFromMyList} from '../api/title';
+import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
 import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {View, TouchableOpacity, SafeAreaView} from 'react-native';
 import {colors, PROMO_HEIGHT} from '../constants/style';
 import {getImageUrl, joinTopics} from '../utils/common';
+import {ViewHit} from '../core/interfaces/view-hit';
+import {HistoryRow} from '../components/HistoryRow';
 
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList} = usePromo(params);
   const {rows} = useRows(params);
   const {t} = useLanguage();
+  const {history} = useHistory();
+
   const navigation = useNavigation();
 
   return (
@@ -137,6 +141,9 @@ const Home = () => {
           </View>
         </LinearGradient>
       </Image>
+      {/* end of promo */}
+      {history && <HistoryRow row={history} />}
+      {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
     </ScrollView>
   );
@@ -158,6 +165,23 @@ interface Params {
   rated?: string;
   type?: string;
 }
+
+const useHistory = () => {
+  const [history, setHistory] = useState<ViewHit[]>();
+
+  const getHits = useCallback(async () => {
+    try {
+      const data = await getHistory();
+      setHistory(data.results);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    getHits();
+  }, [getHits]);
+
+  return {history};
+};
 
 const usePromo = (params: Params) => {
   const [promo, setPromo] = useState<TitleDetail>();
