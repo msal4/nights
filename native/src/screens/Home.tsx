@@ -19,6 +19,7 @@ import {colors, PROMO_HEIGHT} from '../constants/style';
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
+import {useAuth} from '../context/auth-context';
 
 const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
   const paddingToBottom = 20;
@@ -39,7 +40,6 @@ const Home = () => {
       scrollEventThrottle={100}
       onScroll={({nativeEvent}) => {
         if (isCloseToBottom(nativeEvent)) {
-          console.log('isCloseToBottom');
           getRows(false);
         }
       }}>
@@ -179,14 +179,18 @@ interface Params {
 }
 
 const useHistory = () => {
-  const [history, setHistory] = useState<ViewHit[]>();
+  const [history, setHistory] = useState<ViewHit[] | null>();
+  const {token} = useAuth();
 
   const getHits = useCallback(async () => {
     try {
       const data = await getHistory();
       setHistory(data.results);
-    } catch {}
-  }, []);
+    } catch {
+      setHistory(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   useEffect(() => {
     getHits();
@@ -211,7 +215,6 @@ const usePromo = (params: Params) => {
     } catch (err) {
       setError(err);
       setInMyList(false);
-      console.log(err);
     }
   };
   useEffect(() => {
@@ -234,10 +237,7 @@ const useRows = (params: Params) => {
           return;
         }
         setLoading(true);
-        console.log('fetching...');
-        console.log(rows.next);
         const res = (await client.get(rows.next)) as PaginatedResults<GenreRow[]>;
-        console.log(res);
         setRows({...res, results: [...rows.results, ...res.results]});
         setLoading(false);
         return;
@@ -248,7 +248,6 @@ const useRows = (params: Params) => {
       setError(null);
       setLoading(false);
     } catch (err) {
-      console.log(err);
       setError(err);
       setLoading(false);
     }
