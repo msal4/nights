@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import Video from 'react-native-video';
-import {useRoute} from '@react-navigation/native';
+import VideoPlayer from 'react-native-video-controls';
+import {useRoute, useNavigation} from '@react-navigation/native';
+
 import {TitleDetail} from '../core/interfaces/title';
 import {Episode} from '../core/interfaces/episode';
 import {Season} from '../core/interfaces/season';
 import {swapEpisodeUrlId} from '../utils/common';
 import {InteractionManager} from 'react-native';
 import LoadingIndicator from '../components/LoadingIndicator';
+import {Channel} from '../core/interfaces/channel';
 
 interface PlayerParams {
-  title: TitleDetail;
+  title?: TitleDetail;
   season?: Season;
   episode?: Episode;
+  channel?: Channel;
 }
 
 interface Sub {
@@ -23,51 +26,57 @@ interface Sub {
 
 export const PlayerScreen: React.FC = () => {
   const {params} = useRoute();
-  const {title, episode} = params as PlayerParams;
+  const {title, episode, channel} = params as PlayerParams;
   const [info, setInfo] = useState<{
     video: string;
     subtitles: Sub[];
   } | null>();
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      if (title.type === 'm') {
-        const video = title.videos[0].url;
-        const subtitles = title.subtitles.map(
-          (sub) =>
-            ({
-              title: sub.language,
-              type: 'text/vtt',
-              language: sub.language,
-              uri: sub.url.replace('{f}', 'vtt'),
-            } as Sub),
-        );
-        console.log(subtitles);
-        setInfo({video, subtitles});
-      } else if (episode) {
-        const video = episode.videos[0].url;
-        const subtitles = episode.subtitles.map(
-          (sub) =>
-            ({
-              title: sub.language,
-              type: 'text/vtt',
-              language: sub.language,
-              uri: swapEpisodeUrlId(sub.url),
-            } as Sub),
-        );
-        console.log(subtitles);
-        setInfo({video, subtitles});
+      if (title) {
+        if (title.type === 'm') {
+          const video = title.videos[0].url;
+          const subtitles = title.subtitles.map(
+            (sub) =>
+              ({
+                title: sub.language ?? 'ar',
+                type: 'text/vtt',
+                language: sub.language ?? 'ar',
+                uri: sub.url.replace('{f}', 'vtt'),
+              } as Sub),
+          );
+          console.log(subtitles);
+          setInfo({video, subtitles});
+        } else if (episode) {
+          const video = episode.videos[0].url;
+          const subtitles = episode.subtitles.map(
+            (sub) =>
+              ({
+                title: sub.language,
+                type: 'text/vtt',
+                language: sub.language,
+                uri: swapEpisodeUrlId(sub.url),
+              } as Sub),
+          );
+          console.log(subtitles);
+          setInfo({video, subtitles});
+        }
+      } else if (channel) {
+        setInfo({video: channel.url, subtitles: []});
       }
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title.id]);
+  }, [title?.id, channel?.id]);
 
   return info ? (
     <>
       {loading ? <LoadingIndicator /> : null}
-      <Video
+      <VideoPlayer
+        navigator={navigation}
         source={{uri: info.video}}
         style={{
           position: 'absolute',
@@ -78,10 +87,10 @@ export const PlayerScreen: React.FC = () => {
         }}
         selectedTextTrack={info.subtitles.length ? {type: 'language', value: 'ar'} : undefined}
         textTracks={info.subtitles.length ? info.subtitles : undefined}
-        onLoad={() => {
-          setLoading(false);
-        }}
-        controls
+        // onLoad={() => {
+        //   setLoading(false);
+        // }}
+        // muted
       />
     </>
   ) : null;
