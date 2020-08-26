@@ -45,7 +45,7 @@ export const EpisodesScreen: FunctionComponent = () => {
       {seasonDetails && (
         <View>
           {seasonDetails.episodes.map((episode) => (
-            <EpisodeCard key={episode.id} episode={episode} />
+            <EpisodeCard key={episode.id} title={title} season={seasonDetails} episode={episode} />
           ))}
         </View>
       )}

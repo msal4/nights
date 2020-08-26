@@ -9,6 +9,7 @@ import {colors} from './src/constants/style';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import {LanguageProvider} from './src/utils/lang';
 import {AuthProvider} from './src/context/auth-context';
+import {PlayerScreen} from './src/screens/Player';
 
 Ionicons.loadFont();
 
@@ -44,6 +45,7 @@ export default () => {
             <NavigationContainer theme={navigationTheme}>
               <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Root" component={RootScreen} />
+                <Stack.Screen name="Player" component={PlayerScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </LanguageProvider>

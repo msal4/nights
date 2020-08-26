@@ -5,17 +5,28 @@ import {Image, Text} from 'react-native-elements';
 
 import {Episode} from '../core/interfaces/episode';
 import {colors} from '../constants/style';
+import {useNavigation} from '@react-navigation/native';
+import {TitleDetail} from '../core/interfaces/title';
+import {Season} from '../core/interfaces/season';
 
 export interface EpisodeCardProps {
+  title: TitleDetail;
+  season: Season;
   episode: Episode;
 }
 
-const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode}) => {
+const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, season}) => {
+  const navigation = useNavigation();
+
   const progress =
     episode.hits?.length > 0 ? (episode.hits[0].playback_position / episode.hits[0].runtime) * 100 : 0;
 
   return (
-    <TouchableOpacity style={{flexDirection: 'row', height: 80, overflow: 'hidden', marginTop: 20}}>
+    <TouchableOpacity
+      style={{flexDirection: 'row', height: 80, overflow: 'hidden', marginTop: 20}}
+      onPress={() => {
+        navigation.navigate('Player', {title, season, episode});
+      }}>
       <Image source={{uri: episode.image}} style={{width: 150, height: 80, marginRight: 10}}>
         <View
           style={{

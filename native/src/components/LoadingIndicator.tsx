@@ -3,7 +3,7 @@ import {StyleSheet, ActivityIndicator, View} from 'react-native';
 
 export default () => (
   <View style={styles.container}>
-    <ActivityIndicator />
+    <ActivityIndicator color="white" />
   </View>
 );
 

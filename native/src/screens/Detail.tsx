@@ -79,7 +79,11 @@ export const DetailScreen: React.FC = () => {
                   alignItems: 'center',
                   borderRadius: 40,
                 }}
-                onPress={() => {}}>
+                onPress={() => {
+                  if (title?.type === 'm') {
+                    navigation.navigate('Player', {title});
+                  }
+                }}>
                 <Icon type="ionicon" name="play" size={50} color={colors.white} />
               </TouchableOpacity>
             </View>
