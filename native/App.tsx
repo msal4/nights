@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Orientation from 'react-native-orientation-locker';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
@@ -36,6 +37,9 @@ const elementsTheme: ElementsTheme = {
 };
 
 export default () => {
+  useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
   return (
     <>
       <StatusBar barStyle="light-content" />
@@ -45,7 +49,11 @@ export default () => {
             <NavigationContainer theme={navigationTheme}>
               <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Root" component={RootScreen} />
-                <Stack.Screen name="Player" component={PlayerScreen} />
+                <Stack.Screen
+                  name="Player"
+                  component={PlayerScreen}
+                  options={{gestureResponseDistance: {horizontal: 10}}}
+                />
               </Stack.Navigator>
             </NavigationContainer>
           </LanguageProvider>

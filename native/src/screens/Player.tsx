@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import VideoPlayer from 'react-native-video-controls';
 import {useRoute, useNavigation} from '@react-navigation/native';
+import Orientation from 'react-native-orientation-locker';
 
 import {TitleDetail} from '../core/interfaces/title';
 import {Episode} from '../core/interfaces/episode';
@@ -69,6 +70,11 @@ export const PlayerScreen: React.FC = () => {
       }
     });
 
+    Orientation.lockToLandscape();
+
+    return () => {
+      Orientation.lockToPortrait();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title?.id, channel?.id]);
 

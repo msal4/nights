@@ -91,9 +91,17 @@ const Home = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={{alignItems: 'center'}}>
-              <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{promo?.name}</Text>
-              <Text style={{marginBottom: 15, color: colors.lightGray, marginHorizontal: 10}}>
+            <View style={{width: '100%'}}>
+              <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10}}>
+                {promo?.name}
+              </Text>
+              <Text
+                style={{
+                  marginBottom: 15,
+                  color: colors.lightGray,
+                  textAlign: 'center',
+                  marginHorizontal: 10,
+                }}>
                 {joinTopics(promo?.genres)}
               </Text>
               <View style={{marginHorizontal: 50}}>
