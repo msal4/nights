@@ -121,7 +121,7 @@ const Title: FunctionComponent<TitleProps> = ({ title }) => {
       <div className="hidden md:block bottom-info card-container-reveal text-black pt-2 font-thin">
         {title.genres
           .slice(0, 3)
-          .map((g) => g.name.charAt(0).toUpperCase() + g.name.slice(1))
+          .map(g => g.name.charAt(0).toUpperCase() + g.name.slice(1))
           .join(" • ")}
       </div>
     </div>
