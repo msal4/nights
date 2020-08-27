@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import VideoPlayer from 'react-native-video-controls';
-import {useRoute, useNavigation} from '@react-navigation/native';
-import Orientation from 'react-native-orientation-locker';
+// import VideoPlayer from 'react-native-video-controls';
+import {useRoute} from '@react-navigation/native';
+import Orientation from 'react-native-orientation';
 
 import {TitleDetail} from '../core/interfaces/title';
 import {Episode} from '../core/interfaces/episode';
 import {Season} from '../core/interfaces/season';
 import {swapEpisodeUrlId} from '../utils/common';
 import {InteractionManager} from 'react-native';
-import LoadingIndicator from '../components/LoadingIndicator';
 import {Channel} from '../core/interfaces/channel';
+import {getHit} from '../api/title';
+import {ViewHit} from '../core/interfaces/view-hit';
+import {useAuth} from '../context/auth-context';
+import Video from 'react-native-video';
 
 interface PlayerParams {
   title?: TitleDetail;
@@ -25,6 +28,8 @@ interface Sub {
   uri: string;
 }
 
+let videoRef: Video | null;
+
 export const PlayerScreen: React.FC = () => {
   const {params} = useRoute();
   const {title, episode, channel} = params as PlayerParams;
@@ -32,8 +37,25 @@ export const PlayerScreen: React.FC = () => {
     video: string;
     subtitles: Sub[];
   } | null>();
-  const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
+  // const [loading, setLoading] = useState(true);
+  const {token} = useAuth();
+  const {hit} = useHit(title?.id, token);
+  // const navigation = useNavigation();
+
+  useEffect(() => {
+    console.log('is this working');
+    console.log(videoRef);
+    if (videoRef) {
+      console.log('this one is from video');
+      console.dir(videoRef, {depth: null});
+      if (hit) {
+        console.log('this one is from hit');
+        videoRef.seek(hit.playback_position);
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hit, videoRef]);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -80,9 +102,12 @@ export const PlayerScreen: React.FC = () => {
 
   return info ? (
     <>
-      {loading ? <LoadingIndicator /> : null}
-      <VideoPlayer
-        navigator={navigation}
+      {/* {loading ? <LoadingIndicator /> : null} */}
+      <Video
+        ref={(ref) => {
+          videoRef = ref;
+        }}
+        // navigator={navigation}
         source={{uri: info.video}}
         style={{
           position: 'absolute',
@@ -96,8 +121,37 @@ export const PlayerScreen: React.FC = () => {
         // onLoad={() => {
         //   setLoading(false);
         // }}
-        // muted
+        controls
+        muted
       />
     </>
   ) : null;
+};
+
+const useHit = (id?: string | number, token?: string | null) => {
+  const [error, setError] = useState<Error | null>(null);
+  const [hit, setHit] = useState<ViewHit | null>(null);
+
+  const getHitDetail = async () => {
+    try {
+      if (token && id) {
+        try {
+          const data = await getHit(id);
+          setHit(data);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      setError(null);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  useEffect(() => {
+    getHitDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, token]);
+
+  return {hit, error};
 };
