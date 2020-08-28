@@ -15,9 +15,11 @@ interface TaskParams {
 
 export interface DownloadTask extends TaskParams {
   path: string;
+  status: DownloadStatus;
+  progress: number;
 }
 
-enum DownloadStatus {
+export enum DownloadStatus {
   DOWNLOADING = 'DOWNLOADING',
   PAUSED = 'PAUSED',
   DONE = 'DONE',
