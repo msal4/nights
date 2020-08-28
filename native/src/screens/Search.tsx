@@ -27,7 +27,7 @@ const Search: React.FC = () => {
           placeholder={t('search')}
           placeholderTextColor={colors.lightGray}
           inputStyle={{color: colors.white}}
-          leftIcon={{type: 'ionicon', name: 'search', color: colors.lightGray}}
+          leftIcon={{type: 'ionicon', name: 'search-outline', color: colors.lightGray}}
           onChangeText={(value) => setQuery(value)}
         />
         {result && (
