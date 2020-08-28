@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 // import VideoPlayer from 'react-native-video-controls';
 import {useRoute} from '@react-navigation/native';
 import Orientation from 'react-native-orientation';
+import Video from 'react-native-video';
 
 import {TitleDetail} from '../core/interfaces/title';
 import {Episode} from '../core/interfaces/episode';
@@ -12,7 +13,6 @@ import {Channel} from '../core/interfaces/channel';
 import {getHit} from '../api/title';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {useAuth} from '../context/auth-context';
-import Video from 'react-native-video';
 
 interface PlayerParams {
   title?: TitleDetail;

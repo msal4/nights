@@ -8,6 +8,7 @@ import {SearchScreen} from './Search';
 import {TVScreen} from './TV';
 import {useLanguage} from '../utils/lang';
 import {MoreScreen} from './More';
+import {DownloadsScreen} from './Downloads';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ export const RootScreen: React.FC = () => {
       />
       <Tab.Screen
         name="Downloads"
-        component={HomeScreen}
+        component={DownloadsScreen}
         options={{tabBarIcon: (props) => tabBarIcon('download', props), title: t('downloads')}}
       />
       <Tab.Screen

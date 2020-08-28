@@ -14,6 +14,8 @@ import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
+import RNBackgroundDownloader from 'react-native-background-downloader';
+import {Downloader} from '../core/Downloader';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -29,9 +31,11 @@ export const DetailScreen: React.FC = () => {
     title.genres.length = 3;
   }
 
+  const image = getImageUrl(title?.images[0].url, ImageQuality.h900);
+
   return (
     <ScrollView>
-      <Image source={{uri: getImageUrl(title?.images[0].url, ImageQuality.h900)}} style={{height: 400}}>
+      <Image source={{uri: image}} style={{height: 400}}>
         <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
           <SafeAreaView
             edges={['top']}
@@ -87,28 +91,79 @@ export const DetailScreen: React.FC = () => {
                 <Icon type="ionicon" name="play" size={50} color={colors.white} />
               </TouchableOpacity>
             </View>
-            <View>
-              <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{title?.name}</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
-                <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
-                  <Icon type="ionicon" size={18} name="star" color={colors.blue} style={{marginRight: 5}} />
-                  <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.rating}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+              <View>
+                <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{title?.name}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+                  <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
+                    <Icon type="ionicon" size={18} name="star" color={colors.blue} style={{marginRight: 5}} />
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.rating}</Text>
+                  </View>
+                  <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
+                    {title?.type === 'm'
+                      ? Math.round((title?.runtime ?? 0) / 60) + ' min'
+                      : (title?.seasons.length ?? '') + ' ' + t('seasons')}
+                  </Text>
+                  <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
                 </View>
-                <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
-                  {title?.type === 'm'
-                    ? Math.round((title?.runtime ?? 0) / 60) + ' min'
-                    : (title?.seasons.length ?? '') + ' ' + t('seasons')}
-                </Text>
-                <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
-              </View>
-              <Text style={{marginBottom: 10, color: colors.lightGray}}>{joinTopics(title?.genres)}</Text>
-              <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
-                <Text style={{color: colors.lightGray, marginRight: 10}}>{title?.rated}</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Icon type="ionicon" size={18} name="eye" color={colors.blue} style={{marginRight: 5}} />
-                  <Text style={{color: colors.lightGray}}>{title?.views}</Text>
+                <Text style={{marginBottom: 10, color: colors.lightGray}}>{joinTopics(title?.genres)}</Text>
+                <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
+                  <Text style={{color: colors.lightGray, marginRight: 10}}>{title?.rated}</Text>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon type="ionicon" size={18} name="eye" color={colors.blue} style={{marginRight: 5}} />
+                    <Text style={{color: colors.lightGray}}>{title?.views}</Text>
+                  </View>
                 </View>
               </View>
+              {title?.type === 'm' ? (
+                <>
+                  <Icon
+                    type="ionicon"
+                    name="menu-outline"
+                    color={colors.blue}
+                    size={40}
+                    onPress={async () => {
+                      console.log(
+                        '\n\n\n                                    -----------👻My Downloader Tasks👻-----------',
+                      );
+                      for (const task of Downloader.tasks()) {
+                        console.log(task.id, task.name, task.progress, task.status, task.type, task.size);
+                      }
+                      console.log(
+                        '\n                                    -----------🌈RN Downloader Tasks🌈-----------',
+                      );
+                      for (const task of await RNBackgroundDownloader.checkForExistingDownloads()) {
+                        console.log(task.id, task.percent, task.state, task.totalBytes);
+                      }
+                      console.log('\n\n\n');
+                    }}
+                  />
+                  <Icon
+                    type="ionicon"
+                    name="pause"
+                    color={colors.blue}
+                    size={40}
+                    onPress={async () => {
+                      await Downloader.pauseAll();
+                    }}
+                  />
+                  <Icon
+                    type="ionicon"
+                    name="download-outline"
+                    color={colors.blue}
+                    size={40}
+                    onPress={async () => {
+                      Downloader.download({
+                        id: title.id,
+                        name: title.name,
+                        image: image!,
+                        video: title.videos[0]?.url.replace('{f}', 'mp4'),
+                        type: 'm',
+                      });
+                    }}
+                  />
+                </>
+              ) : null}
             </View>
           </SafeAreaView>
         </LinearGradient>
