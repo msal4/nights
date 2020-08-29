@@ -14,6 +14,9 @@ export const DownloadsScreen: React.FC = () => {
 
   useEffect(() => {
     setTasks(Downloader.tasks());
+    Downloader.onChange(() => {
+      setTasks(Downloader.tasks());
+    });
   }, []);
 
   return (

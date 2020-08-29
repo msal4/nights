@@ -14,8 +14,7 @@ import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
-import RNBackgroundDownloader from 'react-native-background-downloader';
-import {Downloader} from '../core/Downloader';
+import {Downloader, DownloadTask} from '../core/Downloader';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -23,7 +22,22 @@ export const DetailScreen: React.FC = () => {
   const {params} = useRoute();
 
   const navigation = useNavigation();
-  const {title, inMyList, setInMyList} = useTitle((params as any).id);
+  const {title, inMyList, setInMyList, setTask, task} = useTitle((params as any).id);
+
+  useEffect(() => {
+    const listener = () => {
+      setTask(Downloader.task(title!.id));
+    };
+
+    if (title) {
+      Downloader.onChange(listener);
+    }
+
+    return () => {
+      Downloader.removeOnChangeListener(listener);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title?.id]);
 
   const {t} = useLanguage();
 
@@ -117,7 +131,7 @@ export const DetailScreen: React.FC = () => {
               </View>
               {title?.type === 'm' ? (
                 <>
-                  <Icon
+                  {/* <Icon
                     type="ionicon"
                     name="menu-outline"
                     color={colors.blue}
@@ -146,20 +160,27 @@ export const DetailScreen: React.FC = () => {
                     onPress={async () => {
                       await Downloader.pauseAll();
                     }}
-                  />
+                  /> */}
                   <Icon
                     type="ionicon"
-                    name="download-outline"
+                    name={task?.status === 'DOWNLOADING' ? 'pause-outline' : 'download-outline'}
                     color={colors.blue}
                     size={40}
                     onPress={async () => {
-                      Downloader.download({
-                        id: title.id,
-                        name: title.name,
-                        image: image!,
-                        video: title.videos[0]?.url.replace('{f}', 'mp4'),
-                        type: 'm',
-                      });
+                      const status = Downloader.checkStatus(title.id);
+
+                      if (status === 'DOESNOTEXIST' || status === 'ERROR') {
+                        console.log('downloading...');
+                        Downloader.download({
+                          id: title.id,
+                          name: title.name,
+                          image: image!,
+                          video: title.videos[0]?.url.replace('{f}', 'mp4'),
+                          type: 'm',
+                        });
+                      } else {
+                        console.log('not downloading...');
+                      }
                     }}
                   />
                 </>
@@ -206,12 +227,16 @@ const useTitle = (id: number | string) => {
   const [title, setTitle] = useState<TitleDetail | null>();
   const [error, setError] = useState<Error | null>();
   const [inMyList, setInMyList] = useState(false);
+  const [task, setTask] = useState<DownloadTask>();
 
   const getInfo = useCallback(async () => {
     try {
       setTitle(null);
       const data = await getTitle(id);
       setTitle(data);
+      const t = Downloader.task(Number(id));
+      console.log(t?.status);
+      setTask(t);
       await checkMyList(data.id);
       setInMyList(true);
       setError(null);
@@ -225,5 +250,5 @@ const useTitle = (id: number | string) => {
     getInfo();
   }, [getInfo]);
 
-  return {title, error, getTitle: getInfo, inMyList, setInMyList};
+  return {title, error, getTitle: getInfo, inMyList, setInMyList, task, setTask};
 };

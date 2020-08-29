@@ -40,13 +40,7 @@ const elementsTheme: ElementsTheme = {
 export default () => {
   useEffect(() => {
     Orientation.lockToPortrait();
-    Downloader.open().then(() => {
-      const tasks = Downloader.tasks();
-      for (const task of tasks) {
-        console.log(task.id, task.name);
-      }
-      // Downloader.download({id: 1, name: 'Hello', image: 'mi image', size: 199, type: 'm'});
-    });
+    Downloader.open();
   }, []);
 
   return (

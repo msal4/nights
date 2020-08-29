@@ -36,6 +36,7 @@
     "react-native-video": "^5.1.0-alpha8",
     "react-native-video-controls": "^2.6.0",
     "realm": "^6.0.5",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "use-constant": "^1.0.0"
   },
   "devDependencies": {

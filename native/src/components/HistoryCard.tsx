@@ -35,7 +35,7 @@ export const HistoryCard: FunctionComponent<HistoryCardProps> = ({item}) => {
             <LinearGradient
               useAngle
               angle={90}
-              colors={[colors.red, colors.blue]}
+              colors={[colors.blue, colors.red]}
               style={{height: '100%', width: `${progress}%`}}
             />
           </View>

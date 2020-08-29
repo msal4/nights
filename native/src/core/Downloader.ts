@@ -26,6 +26,8 @@ export enum DownloadStatus {
   ERROR = 'ERROR',
 }
 
+type TaskStatus = DownloadStatus | 'DOESNOTEXIST';
+
 class Task {
   static schema = {
     name: 'Task',
@@ -54,51 +56,48 @@ export class Downloader {
       schemaVersion: 4,
     });
 
-    await this.resumeAll();
+    await this.reatach();
   }
 
   static tasks() {
     return this.realm.objects<DownloadTask>('Task');
   }
 
-  static async resumeAll() {
+  static task(id: number): DownloadTask | undefined {
+    return this.realm.objects<DownloadTask>('Task').find((t) => t.id === id);
+  }
+
+  static async reatach() {
     for (const t of await RNBackgroundDownloader.checkForExistingDownloads()) {
-      console.log('reigniting', t.id);
+      console.log('reataching:', t.id);
 
-      const task = this.realm.objects<DownloadTask>('Task').find((to) => to.id.toString() === t.id)!;
+      const task = this.task(Number(t.id))!;
 
-      t.begin((expectedBytes) => {
+      t.progress((percent) => {
+        console.log(`${task.name}: Downloaded: ${percent * 100}%`);
         this.realm.write(() => {
-          task.size = expectedBytes;
-          task.status = DownloadStatus.DOWNLOADING;
+          task.progress = percent;
+          console.log('updated');
         });
-        console.log(`${task.name}: Going to download ${expectedBytes} bytes!`);
       })
-        .progress((percent) => {
-          this.realm.write(() => {
-            task.progress = percent;
-            console.log('updated');
-          });
-          console.log(`${task.name}: Downloaded: ${percent * 100}%`);
-        })
         .done(() => {
+          console.log(`${task.name}: Download is done!`);
           this.realm.write(() => {
             task.status = DownloadStatus.DONE;
           });
-          console.log(`${task.name}: Download is done!`);
         })
         .error((error) => {
+          console.log(`${task.name}: Download canceled due to error:`, error);
           this.realm.write(() => {
             task.status = DownloadStatus.ERROR;
           });
-          console.log(`${task.name}: Download canceled due to error:`, error);
         });
     }
   }
 
   static async pauseAll() {
     for (const t of await RNBackgroundDownloader.checkForExistingDownloads()) {
-      const task = this.realm.objects<DownloadTask>('Task').find((to) => to.id.toString() === t.id)!;
+      const task = this.task(Number(t.id))!;
       t.pause();
       this.realm.write(() => {
         task.status = DownloadStatus.PAUSED;
@@ -111,7 +110,7 @@ export class Downloader {
 
     let task: DownloadTask;
     this.realm.write(() => {
-      task = this.realm.objects<DownloadTask>('Task').find((t) => t.id === params.id) as DownloadTask;
+      task = this.task(params.id)!;
 
       if (task === undefined) {
         task = this.realm.create<DownloadTask>('Task', {...params, path});
@@ -124,29 +123,30 @@ export class Downloader {
       destination: path,
     })
       .begin((expectedBytes) => {
+        console.log(`${task.name}: Going to download ${expectedBytes} bytes!`);
         this.realm.write(() => {
           task.size = expectedBytes;
           task.status = DownloadStatus.DOWNLOADING;
         });
-        console.log(`${task.name}: Going to download ${expectedBytes} bytes!`);
       })
       .progress((percent) => {
+        console.log(`${task.name}: Downloaded: ${percent * 100}%`);
         this.realm.write(() => {
           task.progress = percent;
         });
-        console.log(`${task.name}: Downloaded: ${percent * 100}%`);
       })
       .done(() => {
+        console.log(`${task.name}: Download is done!`);
         this.realm.write(() => {
           task.status = DownloadStatus.DONE;
         });
-        console.log(`${task.name}: Download is done!`);
       })
       .error((error) => {
+        console.log(`${task.name}: Download canceled due to error:`, error);
+
         this.realm.write(() => {
           task.status = DownloadStatus.ERROR;
         });
-        console.log(`${task.name}: Download canceled due to error:`, error);
       });
   }
 
@@ -161,6 +161,20 @@ export class Downloader {
       this.realm.delete(task);
       this.realm.commitTransaction();
     }
+
+    // TODO: DELETE FILES
+  }
+
+  static checkStatus(id: number): TaskStatus {
+    return this.task(id)?.status ?? 'DOESNOTEXIST';
+  }
+
+  static onChange(cb: () => void) {
+    this.realm.addListener('change', cb);
+  }
+
+  static removeOnChangeListener(cb: () => void) {
+    this.realm.removeListener('change', cb);
   }
 
   static close() {
