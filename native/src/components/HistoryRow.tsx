@@ -19,7 +19,9 @@ export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
 
   return (
     <View style={{marginTop: 20}}>
-      <Text style={{fontSize: 22, marginBottom: 10, marginHorizontal: 10}}>{t('continueWatching')}</Text>
+      <Text style={{fontSize: 20, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+        {t('continueWatching')}
+      </Text>
       <FlatList
         data={row}
         renderItem={({item}) => <HistoryCard key={item.id} item={item} />}

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import {getGenreRows, getPromos} from '../api/home';
+import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import client from '../api/client';
@@ -10,7 +10,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DetailScreen} from './Detail';
 import {useLanguage} from '../utils/lang';
 import {useNavigation} from '@react-navigation/native';
-import {TitleDetail, ImageQuality} from '../core/interfaces/title';
+import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
 import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
@@ -29,7 +29,7 @@ const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: Native
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList} = usePromo(params);
-  const {rows, getRows} = useRows(params);
+  const {rows, getRows, recentlyAdded, trending} = useRows(params);
   const {t} = useLanguage();
   const {history} = useHistory();
 
@@ -163,6 +163,10 @@ const Home = () => {
       </Image>
       {/* end of promo */}
       {history && <HistoryRow row={history} />}
+      {/* recently added */}
+      {recentlyAdded && <TitleRow row={recentlyAdded.results} name={t('recentlyAdded')} />}
+      {/* trending */}
+      {trending && <TitleRow row={trending.results} name={t('trending')} />}
       {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
     </ScrollView>
@@ -235,6 +239,8 @@ const usePromo = (params: Params) => {
 
 const useRows = (params: Params) => {
   const [rows, setRows] = useState<PaginatedResults<GenreRow[]>>();
+  const [recentlyAdded, setRecentlyAdded] = useState<PaginatedResults<Title[]>>();
+  const [trending, setTrending] = useState<PaginatedResults<Title[]>>();
   const [error, setError] = useState<Error | null>();
   const [loading, setLoading] = useState(false);
 
@@ -251,7 +257,12 @@ const useRows = (params: Params) => {
         return;
       }
       setLoading(true);
-      const data = await getGenreRows({...params, ...(p || {})} as Params);
+      const newParams = {...params, ...(p || {})} as Params;
+      const recent = await getRecentlyAdded(newParams);
+      setRecentlyAdded(recent);
+      const trend = await getTrending(newParams);
+      setTrending(trend);
+      const data = await getGenreRows(newParams);
       setRows(data);
       setError(null);
       setLoading(false);
@@ -266,5 +277,5 @@ const useRows = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  return {rows, error, getRows};
+  return {rows, recentlyAdded, trending, error, getRows};
 };

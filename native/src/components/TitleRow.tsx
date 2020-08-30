@@ -18,7 +18,9 @@ const TitleRow: FunctionComponent<TitleRowProps> = ({row, name}) => {
 
   return (
     <>
-      <Text style={{fontSize: 22, marginBottom: 10, marginHorizontal: 10}}>{capitalizeFirst(name)}</Text>
+      <Text style={{fontSize: 20, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+        {capitalizeFirst(name)}
+      </Text>
       <FlatList
         data={row}
         renderItem={(title) => <Title key={title.item.id} title={title.item} />}
