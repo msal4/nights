@@ -48,90 +48,103 @@ export const DetailScreen: React.FC = () => {
   const image = getImageUrl(title?.images[0].url, ImageQuality.h900);
 
   return (
-    <ScrollView>
-      <Image source={{uri: image}} style={{height: 400}}>
-        <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
-          <SafeAreaView
-            edges={['top']}
-            style={{flex: 1, justifyContent: 'space-between', marginHorizontal: 20}}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-              <Icon
-                type="ionicon"
-                size={50}
-                color={colors.white}
-                name="chevron-back-sharp"
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-              <Icon
-                type="ionicon"
-                size={50}
-                color={colors.white}
-                name={inMyList ? 'checkmark' : 'add'}
-                onPress={async () => {
-                  if (!title) {
-                    return;
-                  }
-                  if (inMyList) {
-                    try {
-                      await removeFromMyList(title.id);
-                      setInMyList(false);
-                    } catch {}
-                  } else {
-                    try {
-                      await addToMyList(title.id);
-                      setInMyList(true);
-                    } catch {}
-                  }
-                }}
-              />
-            </View>
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <TouchableOpacity
-                style={{
-                  width: 80,
-                  height: 80,
-                  backgroundColor: colors.red,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 40,
-                }}
-                onPress={() => {
-                  if (title?.type === 'm') {
-                    navigation.navigate('Player', {title});
-                  }
-                }}>
-                <Icon type="ionicon" name="play" size={50} color={colors.white} />
-              </TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-              <View>
-                <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{title?.name}</Text>
-                <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
-                  <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
-                    <Icon type="ionicon" size={18} name="star" color={colors.blue} style={{marginRight: 5}} />
-                    <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.rating}</Text>
-                  </View>
-                  <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
-                    {title?.type === 'm'
-                      ? Math.round((title?.runtime ?? 0) / 60) + ' min'
-                      : (title?.seasons.length ?? '') + ' ' + t('seasons')}
-                  </Text>
-                  <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
-                </View>
-                <Text style={{marginBottom: 10, color: colors.lightGray}}>{joinTopics(title?.genres)}</Text>
-                <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
-                  <Text style={{color: colors.lightGray, marginRight: 10}}>{title?.rated}</Text>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Icon type="ionicon" size={18} name="eye" color={colors.blue} style={{marginRight: 5}} />
-                    <Text style={{color: colors.lightGray}}>{title?.views}</Text>
-                  </View>
-                </View>
+    <>
+      <ScrollView>
+        <Image source={{uri: image}} style={{height: 400}}>
+          <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
+            <SafeAreaView
+              edges={['top']}
+              style={{flex: 1, justifyContent: 'space-between', marginHorizontal: 20}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Icon
+                  type="ionicon"
+                  size={50}
+                  color={colors.white}
+                  name="chevron-back-sharp"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />
+                <Icon
+                  type="ionicon"
+                  size={50}
+                  color={colors.white}
+                  name={inMyList ? 'checkmark' : 'add'}
+                  onPress={async () => {
+                    if (!title) {
+                      return;
+                    }
+                    if (inMyList) {
+                      try {
+                        await removeFromMyList(title.id);
+                        setInMyList(false);
+                      } catch {}
+                    } else {
+                      try {
+                        await addToMyList(title.id);
+                        setInMyList(true);
+                      } catch {}
+                    }
+                  }}
+                />
               </View>
-              {title?.type === 'm' ? (
-                <>
-                  {/* <Icon
+              <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <TouchableOpacity
+                  style={{
+                    width: 80,
+                    height: 80,
+                    backgroundColor: colors.red,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 40,
+                  }}
+                  onPress={() => {
+                    if (title?.type === 'm') {
+                      navigation.navigate('Player', {title});
+                    }
+                  }}>
+                  <Icon type="ionicon" name="play" size={50} color={colors.white} />
+                </TouchableOpacity>
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <View>
+                  <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{title?.name}</Text>
+                  <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
+                    <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
+                      <Icon
+                        type="ionicon"
+                        size={18}
+                        name="star"
+                        color={colors.blue}
+                        style={{marginRight: 5}}
+                      />
+                      <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.rating}</Text>
+                    </View>
+                    <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
+                      {title?.type === 'm'
+                        ? Math.round((title?.runtime ?? 0) / 60) + ' min'
+                        : (title?.seasons.length ?? '') + ' ' + t('seasons')}
+                    </Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
+                  </View>
+                  <Text style={{marginBottom: 10, color: colors.lightGray}}>{joinTopics(title?.genres)}</Text>
+                  <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
+                    <Text style={{color: colors.lightGray, marginRight: 10}}>{title?.rated}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Icon
+                        type="ionicon"
+                        size={18}
+                        name="eye"
+                        color={colors.blue}
+                        style={{marginRight: 5}}
+                      />
+                      <Text style={{color: colors.lightGray}}>{title?.views}</Text>
+                    </View>
+                  </View>
+                </View>
+                {title?.type === 'm' ? (
+                  <>
+                    {/* <Icon
                     type="ionicon"
                     name="menu-outline"
                     color={colors.blue}
@@ -161,65 +174,66 @@ export const DetailScreen: React.FC = () => {
                       await Downloader.pauseAll();
                     }}
                   /> */}
-                  <Icon
-                    type="ionicon"
-                    name={task?.status === 'DOWNLOADING' ? 'pause-outline' : 'download-outline'}
-                    color={colors.blue}
-                    size={40}
-                    onPress={async () => {
-                      const status = Downloader.checkStatus(title.id);
+                    <Icon
+                      type="ionicon"
+                      name={task?.status === 'DOWNLOADING' ? 'pause-outline' : 'download-outline'}
+                      color={colors.blue}
+                      size={40}
+                      onPress={async () => {
+                        const status = Downloader.checkStatus(title.id);
 
-                      if (status === 'DOESNOTEXIST' || status === 'ERROR') {
-                        console.log('downloading...');
-                        Downloader.download({
-                          id: title.id,
-                          name: title.name,
-                          image: image!,
-                          video: title.videos[0]?.url.replace('{f}', 'mp4'),
-                          type: 'm',
-                        });
-                      } else {
-                        console.log('not downloading...');
-                      }
-                    }}
-                  />
-                </>
-              ) : null}
-            </View>
-          </SafeAreaView>
-        </LinearGradient>
-      </Image>
-      {title && (
-        <Tab.Navigator
-          tabBarOptions={{
-            labelStyle: {color: colors.white},
-            style: {backgroundColor: colors.black},
-          }}>
-          {title?.type === 's' ? (
+                        if (status === 'DOESNOTEXIST' || status === 'ERROR') {
+                          console.log('downloading...');
+                          Downloader.download({
+                            id: title.id,
+                            name: title.name,
+                            image: image!,
+                            video: title.videos[0]?.url.replace('{f}', 'mp4'),
+                            type: 'm',
+                          });
+                        } else {
+                          console.log('not downloading...');
+                        }
+                      }}
+                    />
+                  </>
+                ) : null}
+              </View>
+            </SafeAreaView>
+          </LinearGradient>
+        </Image>
+        {title && (
+          <Tab.Navigator
+            tabBarOptions={{
+              labelStyle: {color: colors.white},
+              style: {backgroundColor: colors.black},
+            }}>
+            {title?.type === 's' ? (
+              <Tab.Screen
+                name="Episodes"
+                initialParams={{title}}
+                component={EpisodesScreen}
+                options={{title: t('episodes')}}
+              />
+            ) : null}
+            {title?.trailers.length ? (
+              <Tab.Screen
+                name="Trailer"
+                initialParams={{title}}
+                component={TrailerScreen}
+                options={{title: t('trailer')}}
+              />
+            ) : null}
             <Tab.Screen
-              name="Episodes"
+              name="Info"
               initialParams={{title}}
-              component={EpisodesScreen}
-              options={{title: t('episodes')}}
+              component={InfoScreen}
+              options={{title: t('info')}}
             />
-          ) : null}
-          {title?.trailers.length ? (
-            <Tab.Screen
-              name="Trailer"
-              initialParams={{title}}
-              component={TrailerScreen}
-              options={{title: t('trailer')}}
-            />
-          ) : null}
-          <Tab.Screen
-            name="Info"
-            initialParams={{title}}
-            component={InfoScreen}
-            options={{title: t('info')}}
-          />
-        </Tab.Navigator>
-      )}
-    </ScrollView>
+          </Tab.Navigator>
+        )}
+      </ScrollView>
+    </>
   );
 };
 

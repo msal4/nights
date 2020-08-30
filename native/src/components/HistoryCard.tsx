@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {View, TouchableOpacity} from 'react-native';
-import {Image, Text} from 'react-native-elements';
+import {Image, Text, Icon} from 'react-native-elements';
 
 import {getImageUrl} from '../utils/common';
 import {useNavigation} from '@react-navigation/native';
@@ -24,7 +24,23 @@ export const HistoryCard: FunctionComponent<HistoryCardProps> = ({item}) => {
         navigation.navigate('Detail', item.topic);
       }}>
       <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-        <Image style={{height: 70, width: 110, borderRadius: 8}} source={{uri}} />
+        <TouchableOpacity>
+          <Image
+            style={{height: 70, width: 110, borderRadius: 8, justifyContent: 'center', alignItems: 'center'}}
+            source={{uri}}>
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: colors.blueGray,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 40,
+              }}>
+              <Icon type="ionicon" name="play" size={20} color={colors.white} style={{marginLeft: 2}} />
+            </View>
+          </Image>
+        </TouchableOpacity>
         <View style={{marginLeft: 10, flex: 1}}>
           <View style={{flex: 1, flexDirection: 'row'}}>
             <Text style={{flexWrap: 'wrap', flex: 1}}>
