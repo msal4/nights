@@ -5,11 +5,11 @@ import RNFetchBlob, {StatefulPromise, FetchBlobResponse} from 'rn-fetch-blob';
 import Menu, {MenuItem} from 'react-native-material-menu';
 import {colors} from '../constants/style';
 import fs from 'react-native-fs';
-import {RootScreen} from '../screens/Root';
 
 interface TaskParams {
   id: number;
   name: string;
+  title: number;
   image: string;
   video: string;
   subtitles?: SubtitleItem[];
@@ -59,6 +59,7 @@ class Task {
       id: 'int',
       name: 'string',
       image: 'string',
+      title: 'int',
       video: 'string',
       subtitles: 'Subtitle[]',
       size: 'int?',
@@ -95,6 +96,10 @@ export class Downloader {
 
   static task(id: number): DownloadTask | undefined {
     return this.realm.objects<DownloadTask>('Task').find((t) => t.id === id);
+  }
+
+  static titleTasks(titleId: number) {
+    return this.realm.objects<DownloadTask>('Task').filter((task) => task.title === titleId);
   }
 
   static download(params: TaskParams) {

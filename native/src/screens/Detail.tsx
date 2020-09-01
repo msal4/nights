@@ -174,6 +174,7 @@ export const DetailScreen: React.FC = () => {
                             id: title.id,
                             name: title.name,
                             image: image!,
+                            title: title.id,
                             video: title.videos[0]?.url.replace('{f}', 'mp4'),
                             subtitles: title.subtitles.map((s) => ({
                               url: s.url.replace('{f}', 'vtt'),
