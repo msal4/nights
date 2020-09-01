@@ -1,6 +1,11 @@
 export const trans = {
   en: {
     lang: 'English',
+    retry: 'Retry',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    pause: 'Resume',
+    resume: 'Pause',
     results: 'Results',
     home: 'Home',
     tv: 'TV',
@@ -72,6 +77,11 @@ export const trans = {
   },
   ar: {
     lang: 'عربي',
+    retry: 'اعادة المحاولة',
+    delete: 'حذف',
+    cancel: 'الغاء',
+    pause: 'ايقاف مؤقت',
+    resume: 'استئناف',
     tv: 'التلفاز',
     results: 'النتائج',
     home: 'الرئيسية',

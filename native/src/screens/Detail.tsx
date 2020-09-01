@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {View, ScrollView, TouchableOpacity} from 'react-native';
@@ -14,13 +14,14 @@ import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
-import {Downloader, DownloadTask} from '../core/Downloader';
+import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
+import Menu from 'react-native-material-menu';
 
 const Tab = createMaterialTopTabNavigator();
 
 export const DetailScreen: React.FC = () => {
   const {params} = useRoute();
-
+  const menuRef = useRef<Menu>();
   const navigation = useNavigation();
   const {title, inMyList, setInMyList, setTask, task} = useTitle((params as any).id);
 
@@ -138,64 +139,54 @@ export const DetailScreen: React.FC = () => {
                         color={colors.blue}
                         style={{marginRight: 5}}
                       />
-                      <Text style={{color: colors.lightGray}}>{title?.views}</Text>
+                      <Text style={{color: colors.lightGray}}>{((title?.views ?? 1) + 1) * 93}</Text>
                     </View>
                   </View>
                 </View>
                 {title?.type === 'm' ? (
                   <>
-                    {/* <Icon
-                    type="ionicon"
-                    name="menu-outline"
-                    color={colors.blue}
-                    size={40}
-                    onPress={async () => {
-                      console.log(
-                        '\n\n\n                                    -----------👻My Downloader Tasks👻-----------',
-                      );
-                      for (const task of Downloader.tasks()) {
-                        console.log(task.id, task.name, task.progress, task.status, task.type, task.size);
-                      }
-                      console.log(
-                        '\n                                    -----------🌈RN Downloader Tasks🌈-----------',
-                      );
-                      for (const task of await RNBackgroundDownloader.checkForExistingDownloads()) {
-                        console.log(task.id, task.percent, task.state, task.totalBytes);
-                      }
-                      console.log('\n\n\n');
-                    }}
-                  />
-                  <Icon
-                    type="ionicon"
-                    name="pause"
-                    color={colors.blue}
-                    size={40}
-                    onPress={async () => {
-                      await Downloader.pauseAll();
-                    }}
-                  /> */}
-                    <Icon
-                      type="ionicon"
-                      name={task?.status === 'DOWNLOADING' ? 'pause-outline' : 'download-outline'}
-                      color={colors.blue}
-                      size={40}
-                      onPress={async () => {
-                        const status = Downloader.checkStatus(title.id);
+                    {task &&
+                      Downloader.renderMenu(
+                        menuRef,
+                        task,
+                        <Icon
+                          onPress={() => {
+                            menuRef.current?.show();
+                          }}
+                          type="ionicon"
+                          name="ellipsis-vertical-sharp"
+                          color={task.status === DownloadStatus.ERROR ? colors.red : colors.blue}
+                        />,
+                        t,
+                      )}
+                    {!task && (
+                      <Icon
+                        type="ionicon"
+                        name={'download-outline'}
+                        color={colors.blue}
+                        size={40}
+                        onPress={async () => {
+                          // const status = Downloader.checkStatus(title.id);
 
-                        if (status === 'DOESNOTEXIST' || status === 'ERROR') {
+                          // if (status === 'DOESNOTEXIST' || status === 'ERROR') {
                           console.log('downloading...');
                           Downloader.download({
                             id: title.id,
                             name: title.name,
                             image: image!,
                             video: title.videos[0]?.url.replace('{f}', 'mp4'),
+                            subtitles: title.subtitles.map((s) => ({
+                              url: s.url.replace('{f}', 'vtt'),
+                              lang: s.language ?? 'ar',
+                            })),
                             type: 'm',
                           });
-                        } else {
-                          console.log('not downloading...');
-                        }
-                      }}
-                    />
+                          // } else {
+                          //   console.log('not downloading...');
+                          // }
+                        }}
+                      />
+                    )}
                   </>
                 ) : null}
               </View>

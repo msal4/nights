@@ -17,7 +17,7 @@ const More: React.FC = () => {
   const {token, logout} = useAuth();
 
   return (
-    <ScrollView contentContainerStyle={{marginTop: 20}}>
+    <ScrollView contentContainerStyle={{marginTop: 10}}>
       <ListItem
         title={token ? t('logout') : t('login')}
         containerStyle={{backgroundColor: '#00000000'}}
