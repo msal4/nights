@@ -41,6 +41,10 @@ export default () => {
   useEffect(() => {
     Orientation.lockToPortrait();
     Downloader.open();
+
+    return () => {
+      Downloader.close();
+    };
   }, []);
 
   return (

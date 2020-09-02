@@ -17,10 +17,17 @@ export const Downloads: React.FC = () => {
   const [tasks, setTasks] = useState<Realm.Results<DownloadTask & Realm.Object>>();
 
   useEffect(() => {
-    setTasks(Downloader.tasks());
-    Downloader.onChange(() => {
+    const listener = () => {
       setTasks(Downloader.tasks());
-    });
+    };
+
+    listener();
+
+    Downloader.onChange(listener);
+
+    return () => {
+      Downloader.removeOnChangeListener(listener);
+    };
   }, []);
 
   return (
@@ -54,7 +61,8 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
   const menuRef = useRef<Menu>();
   const {t} = useLanguage();
   const navigation = useNavigation();
-  console.log(task.image);
+  const image = task.image || 'dskfjsldj';
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -67,7 +75,7 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
       onLongPress={() => {
         menuRef.current?.show();
       }}>
-      <Image source={{uri: task.image}} style={{width: 170, height: 100, marginRight: 15}} />
+      <Image source={{uri: image}} style={{width: 170, height: 100, marginRight: 15}} />
       <View style={{flex: 1}}>
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={{flex: 1}}>

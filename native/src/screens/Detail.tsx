@@ -4,6 +4,7 @@ import {useRoute, useNavigation} from '@react-navigation/native';
 import {View, ScrollView, TouchableOpacity} from 'react-native';
 import {Image, Icon, Text} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import {getImageUrl, joinTopics} from '../utils/common';
@@ -15,30 +16,27 @@ import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
-import Menu from 'react-native-material-menu';
 
 const Tab = createMaterialTopTabNavigator();
 
 export const DetailScreen: React.FC = () => {
-  const {params} = useRoute();
+  const {params}: any = useRoute();
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
-  const {title, inMyList, setInMyList, setTask, task} = useTitle((params as any).id);
+  const {title, inMyList, setInMyList, setTask, task} = useTitle(params.id);
 
   useEffect(() => {
     const listener = () => {
-      setTask(Downloader.task(title!.id));
+      setTask(Downloader.task(params.id));
     };
 
-    if (title) {
-      Downloader.onChange(listener);
-    }
+    Downloader.onChange(listener);
 
     return () => {
       Downloader.removeOnChangeListener(listener);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title?.id]);
+  }, [params.id]);
 
   const {t} = useLanguage();
 

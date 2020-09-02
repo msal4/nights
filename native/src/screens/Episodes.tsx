@@ -9,6 +9,7 @@ import {getSeason} from '../api/title';
 import {colors} from '../constants/style';
 import EpisodeCard from '../components/EpisodeCard';
 import {useLanguage} from '../utils/lang';
+import {Downloader, DownloadTask} from '../core/Downloader';
 
 interface SeasonsParams {
   title: TitleDetail;
@@ -22,6 +23,23 @@ export const EpisodesScreen: FunctionComponent = () => {
   const [season, setSeason] = useState(title.seasons[0]);
 
   const {seasonDetails} = useSeason(season.id);
+  const [tasks, setTasks] = useState<(DownloadTask & Realm.Object)[]>();
+
+  useEffect(() => {
+    let listener = () => {
+      setTasks(Downloader.seasonTasks(season.id));
+    };
+
+    listener();
+
+    Downloader.onChange(listener);
+
+    return () => {
+      Downloader.removeOnChangeListener(listener);
+    };
+  }, [season.id]);
+
+  console.log(tasks);
 
   return (
     <View style={{padding: 10}}>

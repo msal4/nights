@@ -81,7 +81,7 @@ export const PlayerScreen: React.FC = () => {
                 title: sub.language,
                 type: 'text/vtt',
                 language: sub.language,
-                uri: swapEpisodeUrlId(sub.url),
+                uri: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
               } as Sub),
           );
           console.log(subtitles);
@@ -116,8 +116,8 @@ export const PlayerScreen: React.FC = () => {
           bottom: 0,
           right: 0,
         }}
-        selectedTextTrack={info.subtitles.length ? {type: 'language', value: 'ar'} : undefined}
-        textTracks={info.subtitles.length ? info.subtitles : undefined}
+        // selectedTextTrack={info.subtitles.length ? {type: 'language', value: 'ar'} : undefined}
+        // textTracks={info.subtitles.length ? info.subtitles : undefined}
         // onLoad={() => {
         //   setLoading(false);
         // }}

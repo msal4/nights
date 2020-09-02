@@ -10,6 +10,7 @@ interface TaskParams {
   id: number;
   name: string;
   title: number;
+  season?: number;
   image: string;
   video: string;
   subtitles?: SubtitleItem[];
@@ -35,7 +36,7 @@ export enum DownloadStatus {
 
 type TaskStatus = DownloadStatus | 'DOESNOTEXIST';
 
-interface SubtitleItem {
+export interface SubtitleItem {
   url: string;
   lang: string;
 }
@@ -45,8 +46,8 @@ class Subtitle {
     name: 'Subtitle',
     primaryKey: 'url',
     properties: {
-      lang: {type: 'string', default: 'ar'},
       url: 'string',
+      lang: {type: 'string', default: 'ar'},
     },
   };
 }
@@ -60,6 +61,7 @@ class Task {
       name: 'string',
       image: 'string',
       title: 'int',
+      season: 'int?',
       video: 'string',
       subtitles: 'Subtitle[]',
       size: 'int?',
@@ -78,7 +80,7 @@ export class Downloader {
   static async open() {
     this.realm = await Realm.open({
       schema: [Task, Subtitle],
-      schemaVersion: 2,
+      schemaVersion: 1,
     });
 
     this.realm.write(() => {
@@ -102,7 +104,20 @@ export class Downloader {
     return this.realm.objects<DownloadTask>('Task').filter((task) => task.title === titleId);
   }
 
+  static seasonTasks(seasonId: number) {
+    return this.realm.objects<DownloadTask>('Task').filter((task) => task.season === seasonId);
+  }
+
   static download(params: TaskParams) {
+    params.subtitles = params.subtitles?.filter((s) => s);
+    console.log('--------------------');
+    console.log('--------------------');
+    console.log('--------------------');
+    console.log(params.video);
+    console.log(params.subtitles);
+    console.log('--------------------');
+    console.log('--------------------');
+    console.log('--------------------');
     const path = `${RNBackgroundDownloader.directories.documents}/media/${params.id}.mp4`;
     const imagePath = `${RNBackgroundDownloader.directories.documents}/images/${params.id}.jpg`;
 
@@ -187,19 +202,25 @@ export class Downloader {
 
     const task = this.realm.objects<DownloadTask>('Task').find((t) => t.id === id);
     if (task !== undefined) {
+      // delete files
       try {
-        fs.unlink(task.image);
-        fs.unlink(task.video);
-        for (const sub of task.subtitles) {
-          fs.unlink(sub.url);
-        }
-      } catch (err) {
-        console.log('delete files:', err);
+        await fs.unlink(task.image);
+      } catch {}
+      try {
+        await fs.unlink(task.video);
+      } catch {}
+      for (const sub of task.subtitles) {
+        try {
+          await fs.unlink(sub.url);
+        } catch {}
       }
 
+      // delete task
       this.realm.beginTransaction();
       task.subtitles.forEach((s) => {
-        this.realm.delete(s);
+        try {
+          this.realm.delete(s);
+        } catch {}
       });
       this.realm.delete(task);
       this.realm.commitTransaction();
