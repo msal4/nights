@@ -110,14 +110,6 @@ export class Downloader {
 
   static download(params: TaskParams) {
     params.subtitles = params.subtitles?.filter((s) => s);
-    console.log('--------------------');
-    console.log('--------------------');
-    console.log('--------------------');
-    console.log(params.video);
-    console.log(params.subtitles);
-    console.log('--------------------');
-    console.log('--------------------');
-    console.log('--------------------');
     const path = `${RNBackgroundDownloader.directories.documents}/media/${params.id}.mp4`;
     const imagePath = `${RNBackgroundDownloader.directories.documents}/images/${params.id}.jpg`;
 

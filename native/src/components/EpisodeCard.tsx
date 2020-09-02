@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useRef} from 'react';
 import {View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Text, Icon} from 'react-native-elements';
@@ -8,17 +8,22 @@ import {colors} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
 import {TitleDetail} from '../core/interfaces/title';
 import {Season} from '../core/interfaces/season';
-import {Downloader, SubtitleItem} from '../core/Downloader';
+import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
+import Menu from 'react-native-material-menu';
+import {useLanguage} from '../utils/lang';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
   season: Season;
   episode: Episode;
+  task?: DownloadTask;
 }
 
-const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, season}) => {
+const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task, season}) => {
+  const menuRef = useRef<Menu>();
   const navigation = useNavigation();
+  const {t} = useLanguage();
 
   const progress =
     episode.hits?.length > 0 ? (episode.hits[0].playback_position / episode.hits[0].runtime) * 100 : 0;
@@ -56,6 +61,10 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, seaso
       </View>
       <TouchableOpacity
         onPress={() => {
+          if (task) {
+            return menuRef.current?.show();
+          }
+
           const video = episode.videos[0].url;
           const subtitles = episode.subtitles.map(
             (sub) =>
@@ -76,7 +85,26 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, seaso
             subtitles,
           });
         }}>
-        <Icon type="ionicon" name="download-outline" color={colors.blue} size={30} style={{marginLeft: 5}} />
+        {!task ? (
+          <Icon
+            type="ionicon"
+            name="download-outline"
+            color={colors.blue}
+            size={30}
+            style={{marginLeft: 5}}
+          />
+        ) : null}
+        {task &&
+          Downloader.renderMenu(
+            menuRef,
+            task,
+            <Icon
+              type="ionicon"
+              name="ellipsis-vertical-sharp"
+              color={task.status === DownloadStatus.ERROR ? colors.red : colors.blue}
+            />,
+            t,
+          )}
       </TouchableOpacity>
     </TouchableOpacity>
   );
