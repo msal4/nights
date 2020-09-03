@@ -3,8 +3,9 @@ import Realm from 'realm';
 import RNBackgroundDownloader from 'react-native-background-downloader';
 import RNFetchBlob, {StatefulPromise, FetchBlobResponse} from 'rn-fetch-blob';
 import Menu, {MenuItem} from 'react-native-material-menu';
-import {colors} from '../constants/style';
 import fs from 'react-native-fs';
+
+import {colors} from '../constants/style';
 
 interface TaskParams {
   id: number;
@@ -109,7 +110,6 @@ export class Downloader {
   }
 
   static download(params: TaskParams) {
-    params.subtitles = params.subtitles?.filter((s) => s);
     const path = `${RNBackgroundDownloader.directories.documents}/media/${params.id}.mp4`;
     const imagePath = `${RNBackgroundDownloader.directories.documents}/images/${params.id}.jpg`;
 
@@ -209,11 +209,8 @@ export class Downloader {
 
       // delete task
       this.realm.beginTransaction();
-      task.subtitles.forEach((s) => {
-        try {
-          this.realm.delete(s);
-        } catch {}
-      });
+      this.realm.delete(task.subtitles);
+
       this.realm.delete(task);
       this.realm.commitTransaction();
     }
