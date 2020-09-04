@@ -60,17 +60,15 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
   const size = ((task.size ?? 0) / 1000000000).toFixed(1);
   const menuRef = useRef<Menu>();
   const {t} = useLanguage();
+  const image = task.imagePath || task.image;
   const navigation = useNavigation();
-  const image = task.image || 'dskfjsldj';
 
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       style={{marginBottom: 20, flexDirection: 'row', alignItems: 'center'}}
       onPress={() => {
-        if (task.type === 'm') {
-          navigation.navigate('Detail', task);
-        }
+        navigation.navigate('Detail', {id: task.title});
       }}
       onLongPress={() => {
         menuRef.current?.show();
@@ -102,17 +100,26 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
               color={colors.lightGray}
             />,
             t,
+            navigation,
           )}
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View
-            style={{backgroundColor: colors.gray, borderRadius: 20, overflow: 'hidden', height: 5, flex: 1}}>
-            <View style={{height: '100%', backgroundColor: colors.red, width: `${task.progress}%`}} />
+        {task.status === DownloadStatus.DOWNLOADING ? (
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                backgroundColor: colors.gray,
+                borderRadius: 20,
+                overflow: 'hidden',
+                height: 5,
+                flex: 1,
+              }}>
+              <View style={{height: '100%', backgroundColor: colors.blue, width: `${task.progress}%`}} />
+            </View>
+            {task.status === DownloadStatus.DOWNLOADING ? (
+              <Text style={{marginLeft: 5, fontSize: 12, color: colors.blue}}>{task.progress}%</Text>
+            ) : null}
           </View>
-          {task.status === DownloadStatus.DOWNLOADING ? (
-            <Text style={{marginLeft: 5, fontSize: 12, color: colors.blue}}>{task.progress}%</Text>
-          ) : null}
-        </View>
+        ) : null}
       </View>
     </TouchableOpacity>
   );

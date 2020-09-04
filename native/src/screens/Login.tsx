@@ -53,7 +53,7 @@ export const LoginScreen: React.FC = () => {
             } else {
               await login(username, password);
             }
-            navigation.navigate('More');
+            navigation.goBack();
           } catch (err) {
             console.log(err);
           } finally {

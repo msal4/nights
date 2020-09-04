@@ -27,7 +27,7 @@ interface Sub {
 
 export class PlayerScreen extends React.Component<
   {navigation: ReturnType<typeof useNavigation>; route: ReturnType<typeof useRoute>},
-  {video: string | null; subtitles: Sub[] | null; title: TitleDetail | null; tempSubs: Sub[] | null}
+  {video: string | null; subtitles: Sub[] | null; title: TitleDetail | null}
 > {
   constructor(props: any) {
     super(props);
@@ -50,44 +50,42 @@ export class PlayerScreen extends React.Component<
     const {title} = route.params as PlayerParams;
     const {token} = this.context;
 
+    console.log(title);
+
     if (!title) {
       return;
     }
-    console.log('hi man');
-    // InteractionManager.runAfterInteractions(async () => {
-    const video = title.videos[0]?.url.replace('{q}', '720');
-    const subtitles = title.subtitles.map(
-      (sub) =>
-        ({
-          title: sub.language ?? 'ar',
-          type: 'text/vtt',
-          language: sub.language ?? 'ar',
-          uri: sub.url.replace('{f}', 'vtt'),
-        } as Sub),
-    );
-    console.log('hi man');
-    // this.state =
-    this.setState({video, tempSubs: subtitles});
-    console.log('hello boy');
 
-    if (token) {
-      this.continueWatching(title.id);
-    }
-    // });
-  }
+    InteractionManager.runAfterInteractions(async () => {
+      const video = title.videos[0].url;
+      const subtitles = title.subtitles.map(
+        (sub) =>
+          ({
+            title: sub.language ?? 'ar',
+            type: 'text/vtt',
+            language: sub.language ?? 'ar',
+            uri: sub.url.replace('{f}', 'vtt'),
+          } as Sub),
+      );
+      console.log(subtitles);
+      this.setState({video, subtitles});
 
-  async continueWatching(id: number) {
-    try {
-      const hit = await getHit(id);
-      this.videoRef.current?.seek(hit.playback_position);
-    } catch (err) {
-      console.log(err);
-    }
+      if (token) {
+        try {
+          const hit = await getHit(title.id);
+          if (hit) {
+            this.videoRef.current?.seek(hit.playback_position);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    });
   }
 
   render() {
-    const {video, subtitles, tempSubs} = this.state;
-    console.log(this.state);
+    const {video, subtitles} = this.state;
+    console.log(subtitles);
     return video ? (
       <>
         {/* {loading ? <LoadingIndicator /> : null} */}
@@ -104,9 +102,9 @@ export class PlayerScreen extends React.Component<
           }}
           selectedTextTrack={subtitles?.length ? {type: 'language', value: 'ar'} : undefined}
           textTracks={subtitles?.length ? subtitles : undefined}
-          onLoad={() => {
-            this.setState({subtitles: tempSubs});
-          }}
+          // onLoad={() => {
+          //   setLoading(false);
+          // }}
           // controls
           // muted
         />

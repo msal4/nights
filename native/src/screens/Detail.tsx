@@ -16,6 +16,7 @@ import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
+import {useAuth} from '../context/auth-context';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -24,6 +25,7 @@ export const DetailScreen: React.FC = () => {
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
   const {title, inMyList, setInMyList, setTask, task} = useTitle(params.id);
+  const {token} = useAuth();
 
   useEffect(() => {
     const listener = () => {
@@ -73,6 +75,10 @@ export const DetailScreen: React.FC = () => {
                     if (!title) {
                       return;
                     }
+                    if (!token) {
+                      navigation.navigate('Login');
+                    }
+
                     if (inMyList) {
                       try {
                         await removeFromMyList(title.id);
@@ -156,6 +162,7 @@ export const DetailScreen: React.FC = () => {
                           color={task.status === DownloadStatus.ERROR ? colors.red : colors.blue}
                         />,
                         t,
+                        navigation,
                       )}
                     {!task && (
                       <Icon

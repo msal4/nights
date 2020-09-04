@@ -59,4 +59,6 @@ const AuthProvider: FunctionComponent<{}> = (props) => {
 
 const useAuth = () => React.useContext<Auth>(AuthContext);
 
-export {AuthProvider, useAuth};
+const AuthConsumer = AuthContext.Consumer;
+
+export {AuthProvider, useAuth, AuthConsumer, AuthContext};

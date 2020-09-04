@@ -4,8 +4,10 @@ import RNBackgroundDownloader from 'react-native-background-downloader';
 import RNFetchBlob, {StatefulPromise, FetchBlobResponse} from 'rn-fetch-blob';
 import Menu, {MenuItem} from 'react-native-material-menu';
 import fs from 'react-native-fs';
+import {useNavigation} from '@react-navigation/native';
 
 import {colors} from '../constants/style';
+import {OfflinePlayerParams} from '../screens/OfflinePlayer';
 
 interface TaskParams {
   id: number;
@@ -23,6 +25,7 @@ interface TaskParams {
 
 export interface DownloadTask extends TaskParams {
   path: string;
+  imagePath: string;
   status: DownloadStatus;
   progress: number;
   subtitles: SubtitleItem[];
@@ -61,6 +64,7 @@ class Task {
       id: 'int',
       name: 'string',
       image: 'string',
+      imagePath: 'string?',
       title: 'int',
       season: 'int?',
       video: 'string',
@@ -81,7 +85,7 @@ export class Downloader {
   static async open() {
     this.realm = await Realm.open({
       schema: [Task, Subtitle],
-      schemaVersion: 1,
+      schemaVersion: 2,
     });
 
     this.realm.write(() => {
@@ -113,52 +117,55 @@ export class Downloader {
     const path = `${RNBackgroundDownloader.directories.documents}/media/${params.id}.mp4`;
     const imagePath = `${RNBackgroundDownloader.directories.documents}/images/${params.id}.jpg`;
 
-    let task: DownloadTask;
     this.realm.write(() => {
-      task = this.task(params.id)!;
+      let task = this.task(params.id)!;
 
       if (task === undefined) {
-        task = this.realm.create<DownloadTask>('Task', {...params, path, image: '', subtitles: []});
+        task = this.realm.create<DownloadTask>('Task', {...params, path, subtitles: []});
       }
+
       task.status = DownloadStatus.DOWNLOADING;
       task.progress = 0;
 
       // download image
-      if (!task.image.length) {
-        RNFetchBlob.config({path: imagePath})
-          .fetch('GET', params.image)
-          .then((res) => {
-            if (task) {
-              this.realm.write(() => {
-                task.image = res.path() ?? '';
-              });
-              console.log('got image:', res.path());
-            }
-          });
+      if (!task.imagePath) {
+        fs.downloadFile({fromUrl: params.image, toFile: imagePath}).promise.then((_) => {
+          if (task) {
+            this.realm.write(() => {
+              task.imagePath = imagePath;
+            });
+            console.log('got image:', imagePath);
+          }
+        });
       }
 
       // download subtitles
       if (params.subtitles) {
         for (const sub of params.subtitles) {
           if (sub) {
-            RNFetchBlob.config({path: path.replace('.mp4', `.${sub.lang}.vtt`)})
-              .fetch('GET', sub.url)
-              .then((res) => {
-                if (task) {
-                  this.realm.write(() => {
-                    task.subtitles.push({url: res.path(), lang: sub.lang});
-                  });
-                  console.log('got subtitle:', res.path());
-                }
-              });
+            const subPath = path.replace('.mp4', `.${sub.lang}.vtt`);
+            fs.downloadFile({
+              fromUrl: sub.url,
+              toFile: subPath,
+            }).promise.then((_) => {
+              if (task) {
+                this.realm.write(() => {
+                  task.subtitles.push({url: subPath, lang: sub.lang});
+                });
+                console.log('got subtitle:', subPath);
+              }
+            });
           }
         }
       }
 
-      const statefulPromise = RNFetchBlob.config({path})
-        .fetch('GET', params.video)
+      const statefulPromise = RNFetchBlob.config({path}).fetch('GET', params.video);
+
+      this.statefulPromises[task.id] = statefulPromise;
+
+      statefulPromise
         .progress((recieved, total) => {
-          const progress = Math.floor((Number(recieved) / Number(total)) * 100);
+          const progress = Math.round((Number(recieved) / Number(total)) * 100);
           console.log(`${task.name}: Downloaded: ${progress}%`);
           if (progress > task.progress) {
             this.realm.write(() => {
@@ -166,11 +173,7 @@ export class Downloader {
               task.progress = progress;
             });
           }
-        });
-
-      this.statefulPromises[task.id] = statefulPromise;
-
-      statefulPromise
+        })
         .then((res) => {
           console.log(`${task.name}: Download is done!`);
           console.log('file saved to:', res.path());
@@ -199,7 +202,7 @@ export class Downloader {
         await fs.unlink(task.image);
       } catch {}
       try {
-        await fs.unlink(task.video);
+        await fs.unlink(task.path);
       } catch {}
       for (const sub of task.subtitles) {
         try {
@@ -210,12 +213,9 @@ export class Downloader {
       // delete task
       this.realm.beginTransaction();
       this.realm.delete(task.subtitles);
-
       this.realm.delete(task);
       this.realm.commitTransaction();
     }
-
-    // TODO: DELETE FILES
   }
 
   static checkStatus(id: number): TaskStatus {
@@ -239,8 +239,8 @@ export class Downloader {
     task: DownloadTask,
     element: React.ReactElement,
     t: (term: string) => string,
+    navigation: ReturnType<typeof useNavigation>,
   ) {
-    console.log('rendered menu');
     return (
       <Menu ref={menuRef as any} style={{backgroundColor: colors.gray}} button={element}>
         {task.status === DownloadStatus.DONE ? (
@@ -249,7 +249,7 @@ export class Downloader {
             underlayColor={colors.blue}
             onPress={() => {
               menuRef.current?.hide();
-              // this.download(task);
+              navigation.navigate('OfflinePlayer', task as OfflinePlayerParams);
             }}>
             {t('play')}
           </MenuItem>

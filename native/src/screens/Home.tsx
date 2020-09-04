@@ -32,7 +32,7 @@ const Home = () => {
   const {rows, getRows, recentlyAdded, trending} = useRows(params);
   const {t} = useLanguage();
   const {history} = useHistory();
-
+  const {token} = useAuth();
   const navigation = useNavigation();
 
   return (
@@ -121,6 +121,10 @@ const Home = () => {
                       if (!promo) {
                         return;
                       }
+                      if (!token) {
+                        navigation.navigate('Login');
+                      }
+
                       if (inMyList) {
                         try {
                           await removeFromMyList(promo.id);

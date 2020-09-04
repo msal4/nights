@@ -12,6 +12,7 @@ import {LanguageProvider} from './src/utils/lang';
 import {AuthProvider} from './src/context/auth-context';
 import {PlayerScreen} from './src/screens/Player';
 import {Downloader} from './src/core/Downloader';
+import {OfflinePlayerScreen} from './src/screens/OfflinePlayer';
 
 Ionicons.loadFont();
 
@@ -59,6 +60,11 @@ export default () => {
                 <Stack.Screen
                   name="Player"
                   component={PlayerScreen}
+                  options={{gestureResponseDistance: {horizontal: 10}}}
+                />
+                <Stack.Screen
+                  name="OfflinePlayer"
+                  component={OfflinePlayerScreen}
                   options={{gestureResponseDistance: {horizontal: 10}}}
                 />
               </Stack.Navigator>
