@@ -2,20 +2,13 @@ import React from 'react';
 import VideoPlayer from 'react-native-video-controls';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
-import {InteractionManager} from 'react-native';
 
 import {TitleDetail} from '../core/interfaces/title';
-import {Episode} from '../core/interfaces/episode';
-import {Season} from '../core/interfaces/season';
-import {Channel} from '../core/interfaces/channel';
-import {getHit} from '../api/title';
+import {getHit, hitTopic} from '../api/title';
 import {AuthContext} from '../context/auth-context';
 
 export interface PlayerParams {
-  title?: TitleDetail;
-  season?: Season;
-  episode?: Episode;
-  channel?: Channel;
+  title: TitleDetail;
 }
 
 interface Sub {
@@ -27,15 +20,18 @@ interface Sub {
 
 export class PlayerScreen extends React.Component<
   {navigation: ReturnType<typeof useNavigation>; route: ReturnType<typeof useRoute>},
-  {video: string | null; subtitles: Sub[] | null; title: TitleDetail | null}
+  {video: string | null; subtitles: Sub[] | null; title: TitleDetail | null; tempSubs: Sub[] | null}
 > {
   constructor(props: any) {
     super(props);
     this.videoRef = React.createRef();
+    this.lastHit = React.createRef();
+
     this.state = {
       title: null,
       video: null,
       subtitles: null,
+      tempSubs: null,
     };
   }
 
@@ -43,49 +39,50 @@ export class PlayerScreen extends React.Component<
 
   context!: React.ContextType<typeof AuthContext>;
 
-  videoRef: React.RefObject<Video>;
+  videoRef: React.RefObject<{player: {ref: Video}}>;
+  lastHit: React.RefObject<number>;
 
   componentDidMount() {
-    const {route} = this.props;
-    const {title} = route.params as PlayerParams;
+    const {title} = this.props.route.params as PlayerParams;
     const {token} = this.context;
-
-    console.log(title);
 
     if (!title) {
       return;
     }
 
-    InteractionManager.runAfterInteractions(async () => {
-      const video = title.videos[0].url;
-      const subtitles = title.subtitles.map(
-        (sub) =>
-          ({
-            title: sub.language ?? 'ar',
-            type: 'text/vtt',
-            language: sub.language ?? 'ar',
-            uri: sub.url.replace('{f}', 'vtt'),
-          } as Sub),
-      );
-      console.log(subtitles);
-      this.setState({video, subtitles});
+    const video = title.videos[0]?.url.replace('{q}', '720');
+    const subtitles = title.subtitles.map(
+      (sub) =>
+        ({
+          title: sub.language ?? 'ar',
+          type: 'text/vtt',
+          language: sub.language ?? 'ar',
+          uri: sub.url.replace('{f}', 'vtt'),
+        } as Sub),
+    );
 
-      if (token) {
-        try {
-          const hit = await getHit(title.id);
-          if (hit) {
-            this.videoRef.current?.seek(hit.playback_position);
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    });
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({video, tempSubs: subtitles});
+
+    if (token) {
+      this.continueWatching(title.id);
+    }
+  }
+
+  async continueWatching(id: number) {
+    try {
+      const hit = await getHit(id);
+      this.videoRef.current?.player.ref.seek(hit.playback_position);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
-    const {video, subtitles} = this.state;
-    console.log(subtitles);
+    const {video, subtitles, tempSubs} = this.state;
+    const {title} = this.props.route.params as PlayerParams;
+    const {token} = this.context;
+
     return video ? (
       <>
         {/* {loading ? <LoadingIndicator /> : null} */}
@@ -102,9 +99,25 @@ export class PlayerScreen extends React.Component<
           }}
           selectedTextTrack={subtitles?.length ? {type: 'language', value: 'ar'} : undefined}
           textTracks={subtitles?.length ? subtitles : undefined}
-          // onLoad={() => {
-          //   setLoading(false);
-          // }}
+          onLoad={() => {
+            this.setState({subtitles: tempSubs});
+          }}
+          onProgress={
+            token
+              ? (data: any) => {
+                  const last = this.lastHit.current ?? 0;
+                  if (data.currentTime > last + 30 || data.currentTime < last) {
+                    console.log('progress');
+                    console.log(data);
+                    (this.lastHit as any).current = data.currentTime;
+                    hitTopic(title.id, {
+                      playback_position: data.currentTime,
+                      runtime: data.seekableDuration,
+                    });
+                  }
+                }
+              : null
+          }
           // controls
           // muted
         />
