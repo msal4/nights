@@ -14,7 +14,7 @@ import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
 import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {View, TouchableOpacity, SafeAreaView, NativeScrollEvent} from 'react-native';
+import {View, TouchableOpacity, SafeAreaView, NativeScrollEvent, RefreshControl} from 'react-native';
 import {colors, PROMO_HEIGHT} from '../constants/style';
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
@@ -28,16 +28,35 @@ const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: Native
 
 const Home = () => {
   const [params, setParams] = useState<Params>({});
-  const {promo, inMyList, setInMyList} = usePromo(params);
+  const {promo, inMyList, setInMyList, getPromoTitle} = usePromo(params);
   const {rows, getRows, recentlyAdded, trending} = useRows(params);
   const {t} = useLanguage();
-  const {history} = useHistory();
+  const {history, getHits} = useHistory();
   const {token} = useAuth();
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getRows(true, params);
+    await getHits();
+    await getPromoTitle(params);
+    setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params]);
+  console.log('refreshing:', refreshing);
   return (
     <ScrollView
       scrollEventThrottle={100}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          titleColor={colors.white}
+          title={t('refreshing')}
+          tintColor={colors.white}
+        />
+      }
       onScroll={({nativeEvent}) => {
         if (isCloseToBottom(nativeEvent)) {
           getRows(false);
@@ -92,18 +111,23 @@ const Home = () => {
               </TouchableOpacity>
             </View>
             <View style={{width: '100%'}}>
-              <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10}}>
-                {promo?.name}
-              </Text>
-              <Text
-                style={{
-                  marginBottom: 15,
-                  color: colors.lightGray,
-                  textAlign: 'center',
-                  marginHorizontal: 10,
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Detail', promo);
                 }}>
-                {joinTopics(promo?.genres)}
-              </Text>
+                <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10}}>
+                  {promo?.name}
+                </Text>
+                <Text
+                  style={{
+                    marginBottom: 15,
+                    color: colors.lightGray,
+                    textAlign: 'center',
+                    marginHorizontal: 10,
+                  }}>
+                  {joinTopics(promo?.genres)}
+                </Text>
+              </TouchableOpacity>
               <View style={{marginHorizontal: 50}}>
                 <View
                   style={{
@@ -147,7 +171,13 @@ const Home = () => {
                       alignItems: 'center',
                       borderRadius: 40,
                     }}
-                    onPress={() => {}}>
+                    onPress={() => {
+                      if (promo?.type === 'm') {
+                        navigation.navigate('MoviePlayer', {title: promo});
+                      } else {
+                        navigation.navigate('SeriesPlayer', {title: promo});
+                      }
+                    }}>
                     <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
                   </TouchableOpacity>
                   <Icon
@@ -212,7 +242,7 @@ const useHistory = () => {
     getHits();
   }, [getHits]);
 
-  return {history};
+  return {history, getHits};
 };
 
 const usePromo = (params: Params) => {
@@ -220,9 +250,9 @@ const usePromo = (params: Params) => {
   const [inMyList, setInMyList] = useState(false);
   const [error, setError] = useState<Error | null>();
 
-  const getTitle = async () => {
+  const getPromoTitle = async (prms?: Params) => {
     try {
-      const promos = await getPromos({...params, limit: 1});
+      const promos = await getPromos({...params, ...(prms ?? {}), limit: 1});
       const p = promos[0];
       setPromo(p);
       await checkMyList(p.id);
@@ -234,11 +264,11 @@ const usePromo = (params: Params) => {
     }
   };
   useEffect(() => {
-    getTitle();
+    getPromoTitle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  return {promo, inMyList, setInMyList, error};
+  return {promo, inMyList, setInMyList, error, getPromoTitle};
 };
 
 const useRows = (params: Params) => {

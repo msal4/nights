@@ -17,6 +17,7 @@ import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {useAuth} from '../context/auth-context';
+import {SeriesPlayerParams} from './SeriesPlayer';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -105,7 +106,9 @@ export const DetailScreen: React.FC = () => {
                   }}
                   onPress={() => {
                     if (title?.type === 'm') {
-                      navigation.navigate('Player', {title});
+                      navigation.navigate('MoviePlayer', {title});
+                    } else {
+                      navigation.navigate('SeriesPlayer', {title} as SeriesPlayerParams);
                     }
                   }}>
                   <Icon type="ionicon" name="play" size={50} color={colors.white} />

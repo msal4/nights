@@ -16,7 +16,7 @@ export const ChannelCard: FunctionComponent<ChannelProps> = ({channel}) => {
     <TouchableOpacity
       style={{marginRight: 15, marginBottom: 15}}
       onPress={() => {
-        navigation.navigate('Player', {channel});
+        navigation.navigate('TvPlayer', {url: channel.url, name: channel.name});
       }}>
       <Image
         style={{height: 200, width: 200}}

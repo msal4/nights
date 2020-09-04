@@ -24,7 +24,15 @@ export const HistoryCard: FunctionComponent<HistoryCardProps> = ({item}) => {
         navigation.navigate('Detail', item.topic);
       }}>
       <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => {
+            const title = item.topic;
+            if (title.type === 'm') {
+              navigation.navigate('MoviePlayer', {title});
+            } else {
+              navigation.navigate('SeriesPlayer', {title});
+            }
+          }}>
           <Image
             style={{height: 70, width: 110, borderRadius: 8, justifyContent: 'center', alignItems: 'center'}}
             source={{uri}}>

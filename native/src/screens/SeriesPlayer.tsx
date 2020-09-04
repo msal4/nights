@@ -1,26 +1,31 @@
 import React from 'react';
-import VideoPlayer from 'react-native-video-controls';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import Video from 'react-native-video';
+import Video, {OnProgressData} from 'react-native-video';
 
-import {TitleDetail} from '../core/interfaces/title';
-import {getHit, hitTopic} from '../api/title';
+import {Title} from '../core/interfaces/title';
+import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
 import {AuthContext} from '../context/auth-context';
+import {Sub, Player} from '../components/Player';
+import {Season} from '../core/interfaces/season';
+import {Episode} from '../core/interfaces/episode';
+import {swapEpisodeUrlId} from '../utils/common';
+import {InteractionManager} from 'react-native';
 
-export interface PlayerParams {
-  title: TitleDetail;
+export interface SeriesPlayerParams {
+  title: Title;
+  season?: Season;
+  episode?: Episode;
 }
 
-interface Sub {
-  title: string;
-  language: string;
-  type: 'text/vtt';
-  uri: string;
-}
-
-export class PlayerScreen extends React.Component<
+export class SeriesPlayerScreen extends React.Component<
   {navigation: ReturnType<typeof useNavigation>; route: ReturnType<typeof useRoute>},
-  {video: string | null; subtitles: Sub[] | null; title: TitleDetail | null; tempSubs: Sub[] | null}
+  {
+    video: string | null;
+    subtitles: Sub[] | undefined;
+    season?: Season;
+    episode?: Episode;
+    seasonId?: number;
+  }
 > {
   constructor(props: any) {
     super(props);
@@ -28,100 +33,122 @@ export class PlayerScreen extends React.Component<
     this.lastHit = React.createRef();
 
     this.state = {
-      title: null,
       video: null,
-      subtitles: null,
-      tempSubs: null,
+      subtitles: undefined,
     };
   }
 
   static contextType = AuthContext;
 
   context!: React.ContextType<typeof AuthContext>;
-
   videoRef: React.RefObject<{player: {ref: Video}}>;
   lastHit: React.RefObject<number>;
 
   componentDidMount() {
-    const {title} = this.props.route.params as PlayerParams;
+    InteractionManager.runAfterInteractions(async () => {
+      await this.loadEpisode();
+    });
+  }
+
+  async loadEpisode() {
+    const {title: simpleTitle, season, episode} = this.props.route.params as SeriesPlayerParams;
     const {token} = this.context;
 
-    if (!title) {
-      return;
-    }
+    const title = await getTitle(simpleTitle.id);
 
-    const video = title.videos[0]?.url.replace('{q}', '720');
-    const subtitles = title.subtitles.map(
+    if (!season || !episode) {
+      if (token) {
+        try {
+          const hit = await getHit(title.id);
+          console.log('using hit:', hit);
+          this.setState({seasonId: hit.season!, episode: hit.episode!});
+          console.log('---------the state is set----------');
+          const e = await getEpisode(hit.episode!.id);
+          hit.episode && (await this.playEpisode(e, token));
+        } catch (err) {
+          if (title.seasons.length) {
+            const s = await getSeason(title.seasons[0].id);
+            const e = s.episodes[0];
+            if (e) {
+              this.setState({season: s, episode: e});
+              this.playEpisode(e, token);
+            }
+          }
+        }
+      } else {
+        if (title.seasons.length) {
+          const s = await getSeason(title.seasons[0].id);
+          const e = s.episodes[0];
+          if (e) {
+            this.setState({season: s, episode: e});
+            this.playEpisode(e, token);
+          }
+        }
+      }
+    } else {
+      this.setState({season, episode});
+      this.playEpisode(episode, token);
+    }
+  }
+
+  async playEpisode(episode: Episode, token: string | null) {
+    const video = episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4');
+    const subtitles = episode.subtitles.map(
       (sub) =>
         ({
           title: sub.language ?? 'ar',
           type: 'text/vtt',
           language: sub.language ?? 'ar',
-          uri: sub.url.replace('{f}', 'vtt'),
+          uri: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
         } as Sub),
     );
 
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({video, tempSubs: subtitles});
-
+    this.setState({video, subtitles});
     if (token) {
-      this.continueWatching(title.id);
+      console.log('token:', token);
+      this.continueWatching(episode);
     }
   }
 
-  async continueWatching(id: number) {
+  async continueWatching(episode: Episode) {
     try {
-      const hit = await getHit(id);
-      this.videoRef.current?.player.ref.seek(hit.playback_position);
+      this.videoRef.current?.player.ref.seek(episode.hits[0]?.playback_position ?? 0);
     } catch (err) {
       console.log(err);
     }
   }
 
   render() {
-    const {video, subtitles, tempSubs} = this.state;
-    const {title} = this.props.route.params as PlayerParams;
+    const {video, subtitles, seasonId, season, episode} = this.state;
+    const {title} = this.props.route.params as SeriesPlayerParams;
     const {token} = this.context;
 
     return video ? (
-      <>
-        {/* {loading ? <LoadingIndicator /> : null} */}
-        <VideoPlayer
-          ref={this.videoRef}
-          navigator={this.props.navigation}
-          source={{uri: video}}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          }}
-          selectedTextTrack={subtitles?.length ? {type: 'language', value: 'ar'} : undefined}
-          textTracks={subtitles?.length ? subtitles : undefined}
-          onLoad={() => {
-            this.setState({subtitles: tempSubs});
-          }}
-          onProgress={
-            token
-              ? (data: any) => {
-                  const last = this.lastHit.current ?? 0;
-                  if (data.currentTime > last + 30 || data.currentTime < last) {
-                    console.log('progress');
-                    console.log(data);
-                    (this.lastHit as any).current = data.currentTime;
-                    hitTopic(title.id, {
-                      playback_position: data.currentTime,
-                      runtime: data.seekableDuration,
-                    });
-                  }
+      <Player
+        videoRef={this.videoRef}
+        navigation={this.props.navigation}
+        video={video}
+        subtitles={subtitles}
+        title={episode?.name}
+        onProgress={
+          token
+            ? (data: OnProgressData) => {
+                const last = this.lastHit.current ?? 0;
+                if (data.currentTime > last + 30 || data.currentTime < last) {
+                  (this.lastHit as any).current = data.currentTime;
+                  const hitData = {
+                    playback_position: data.currentTime,
+                    runtime: data.seekableDuration,
+                    season: season?.id || seasonId,
+                    episode: episode?.id,
+                  };
+                  console.log(hitData);
+                  hitTopic(title.id, hitData);
                 }
-              : null
-          }
-          // controls
-          // muted
-        />
-      </>
+              }
+            : undefined
+        }
+      />
     ) : null;
   }
 }

@@ -34,7 +34,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
     <TouchableOpacity
       style={{flexDirection: 'row', alignItems: 'center', height: 80, overflow: 'hidden', marginTop: 20}}
       onPress={() => {
-        navigation.navigate('Player', {title, season, episode});
+        navigation.navigate('SeriesPlayer', {title, season, episode});
       }}>
       <Image source={{uri: image}} style={{width: 135, height: 80, marginRight: 10}}>
         <View
@@ -104,6 +104,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
               color={task.status === DownloadStatus.ERROR ? colors.red : colors.blue}
             />,
             t,
+            navigation,
           )}
       </TouchableOpacity>
     </TouchableOpacity>
