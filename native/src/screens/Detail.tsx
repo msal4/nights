@@ -68,7 +68,7 @@ export const DetailScreen: React.FC = () => {
                     navigation.goBack();
                   }}
                 />
-                {/* <CastButton style={{width: 25, height: 25}} /> */}
+                <CastButton style={{width: 25, height: 25}} />
                 <Icon
                   type="ionicon"
                   size={50}
