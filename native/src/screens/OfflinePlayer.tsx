@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
-// import VideoPlayer from 'react-native-video-controls';
-import {useRoute} from '@react-navigation/native';
+import {useRoute, useNavigation} from '@react-navigation/native';
 import Orientation from 'react-native-orientation';
-import Video from 'react-native-video';
 
-import {SubtitleItem} from '../core/Downloader';
+import {DownloadTask} from '../core/Downloader';
+import {Player} from '../components/Player';
 
 export interface OfflinePlayerParams {
-  video: string;
-  subtitles?: SubtitleItem[];
+  task: DownloadTask;
 }
 
 interface Sub {
@@ -22,7 +20,8 @@ interface Sub {
 
 export const OfflinePlayerScreen: React.FC = () => {
   const {params} = useRoute();
-  const {video, subtitles} = params as OfflinePlayerParams;
+  const {task} = params as OfflinePlayerParams;
+  const navigation = useNavigation();
 
   useEffect(() => {
     Orientation.lockToLandscape();
@@ -32,7 +31,7 @@ export const OfflinePlayerScreen: React.FC = () => {
     };
   }, []);
 
-  const subs = subtitles?.map(
+  const subs = task.offlineSubtitles.map(
     (sub) =>
       ({
         title: sub.lang,
@@ -42,24 +41,5 @@ export const OfflinePlayerScreen: React.FC = () => {
       } as Sub),
   );
 
-  return (
-    <Video
-      // ref={(ref) => {
-      //   videoRef = ref;
-      // }}
-      // navigator={navigation}
-      source={{uri: video}}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-      }}
-      selectedTextTrack={subs?.length ? {type: 'language', value: 'ar'} : undefined}
-      textTracks={subs?.length ? subs : undefined}
-      controls
-      muted
-    />
-  );
+  return <Player navigation={navigation} video={task.path} subtitles={subs} title={task.name} />;
 };

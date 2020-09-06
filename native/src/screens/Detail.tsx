@@ -6,6 +6,7 @@ import {Image, Icon, Text} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {CastButton} from 'react-native-google-cast';
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
@@ -67,6 +68,7 @@ export const DetailScreen: React.FC = () => {
                     navigation.goBack();
                   }}
                 />
+                {/* <CastButton style={{width: 25, height: 25}} /> */}
                 <Icon
                   type="ionicon"
                   size={50}

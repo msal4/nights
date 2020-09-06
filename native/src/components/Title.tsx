@@ -20,6 +20,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
   const {t, lang} = useLanguage();
 
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={{marginRight: 15, marginBottom: 15}}

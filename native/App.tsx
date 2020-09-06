@@ -3,7 +3,7 @@ import {StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Orientation from 'react-native-orientation-locker';
+import Orientation from 'react-native-orientation';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 
 import {RootScreen} from './src/screens/Root';

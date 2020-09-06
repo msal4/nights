@@ -25,10 +25,11 @@ interface TaskParams {
 
 export interface DownloadTask extends TaskParams {
   path: string;
-  imagePath: string;
+  imagePath?: string;
   status: DownloadStatus;
   progress: number;
   subtitles: SubtitleItem[];
+  offlineSubtitles: SubtitleItem[];
 }
 
 export enum DownloadStatus {
@@ -69,6 +70,7 @@ class Task {
       season: 'int?',
       video: 'string',
       subtitles: 'Subtitle[]',
+      offlineSubtitles: 'Subtitle[]',
       size: 'int?',
       type: 'string',
       progress: {type: 'double', default: 0},
@@ -85,7 +87,7 @@ export class Downloader {
   static async open() {
     this.realm = await Realm.open({
       schema: [Task, Subtitle],
-      schemaVersion: 2,
+      schemaVersion: 1,
     });
 
     this.realm.write(() => {
@@ -114,22 +116,42 @@ export class Downloader {
   }
 
   static download(params: TaskParams) {
-    const path = `${RNBackgroundDownloader.directories.documents}/media/${params.id}.mp4`;
-    const imagePath = `${RNBackgroundDownloader.directories.documents}/images/${params.id}.jpg`;
+    const mediaDir = `${RNBackgroundDownloader.directories.documents}/media/`;
+    const imagesDir = `${RNBackgroundDownloader.directories.documents}/images`;
 
-    this.realm.write(() => {
+    const path = `${mediaDir}/${params.id}.mp4`;
+    const imagePath = `${imagesDir}/${params.id}.jpg`;
+
+    this.realm.write(async () => {
       let task = this.task(params.id)!;
 
       if (task === undefined) {
-        task = this.realm.create<DownloadTask>('Task', {...params, path, subtitles: []});
+        task = this.realm.create('Task', {
+          ...params,
+          path,
+        } as any);
       }
 
       task.status = DownloadStatus.DOWNLOADING;
       task.progress = 0;
 
+      // create images and media directories
+      try {
+        if (!(await fs.exists(imagesDir))) {
+          await fs.mkdir(imagesDir);
+        }
+      } catch {}
+
+      try {
+        if (!(await fs.exists(mediaDir))) {
+          await fs.mkdir(mediaDir);
+        }
+      } catch {}
+
       // download image
       if (!task.imagePath) {
-        fs.downloadFile({fromUrl: params.image, toFile: imagePath}).promise.then((_) => {
+        fs.downloadFile({fromUrl: task.image, toFile: imagePath}).promise.then((res) => {
+          console.log(res);
           if (task) {
             this.realm.write(() => {
               task.imagePath = imagePath;
@@ -140,8 +162,8 @@ export class Downloader {
       }
 
       // download subtitles
-      if (params.subtitles) {
-        for (const sub of params.subtitles) {
+      if (task.offlineSubtitles.length !== task.subtitles.length) {
+        for (const sub of task.subtitles) {
           if (sub) {
             const subPath = path.replace('.mp4', `.${sub.lang}.vtt`);
             fs.downloadFile({
@@ -150,7 +172,7 @@ export class Downloader {
             }).promise.then((_) => {
               if (task) {
                 this.realm.write(() => {
-                  task.subtitles.push({url: subPath, lang: sub.lang});
+                  task.offlineSubtitles.push({url: subPath, lang: sub.lang});
                 });
                 console.log('got subtitle:', subPath);
               }
@@ -249,7 +271,7 @@ export class Downloader {
             underlayColor={colors.blue}
             onPress={() => {
               menuRef.current?.hide();
-              navigation.navigate('OfflinePlayer', task as OfflinePlayerParams);
+              navigation.navigate('OfflinePlayer', {task} as OfflinePlayerParams);
             }}>
             {t('play')}
           </MenuItem>

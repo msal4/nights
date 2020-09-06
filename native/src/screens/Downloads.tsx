@@ -73,7 +73,27 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
       onLongPress={() => {
         menuRef.current?.show();
       }}>
-      <Image source={{uri: image}} style={{width: 170, height: 100, marginRight: 15}} />
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={() => {
+          navigation.navigate('OfflinePlayer', {task});
+        }}>
+        <Image
+          source={{uri: image}}
+          style={{alignItems: 'center', justifyContent: 'center', width: 170, height: 100, marginRight: 15}}>
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              backgroundColor: colors.blueGray,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 40,
+            }}>
+            <Icon type="ionicon" name="play" size={20} color={colors.white} style={{marginLeft: 2}} />
+          </View>
+        </Image>
+      </TouchableOpacity>
       <View style={{flex: 1}}>
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={{flex: 1}}>

@@ -1,12 +1,12 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import Video, {OnProgressData} from 'react-native-video';
+import {InteractionManager} from 'react-native';
 
 import {TitleDetail, Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getTitle} from '../api/title';
 import {AuthContext} from '../context/auth-context';
 import {Sub, Player} from '../components/Player';
-import {InteractionManager} from 'react-native';
 
 export interface PlayerParams {
   title: Title;

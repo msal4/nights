@@ -2,7 +2,7 @@ import React from 'react';
 import VideoPlayer from 'react-native-video-controls';
 import {useNavigation} from '@react-navigation/native';
 import Video, {OnProgressData} from 'react-native-video';
-import Orientation from 'react-native-orientation-locker';
+import Orientation from 'react-native-orientation';
 
 export interface Sub {
   title: string;

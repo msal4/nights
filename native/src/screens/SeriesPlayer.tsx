@@ -1,6 +1,7 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import Video, {OnProgressData} from 'react-native-video';
+import {InteractionManager} from 'react-native';
 
 import {Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
@@ -9,7 +10,6 @@ import {Sub, Player} from '../components/Player';
 import {Season} from '../core/interfaces/season';
 import {Episode} from '../core/interfaces/episode';
 import {swapEpisodeUrlId} from '../utils/common';
-import {InteractionManager} from 'react-native';
 
 export interface SeriesPlayerParams {
   title: Title;
