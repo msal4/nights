@@ -1,12 +1,12 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView, TouchableOpacity, RefreshControl} from 'react-native';
 import {Image, Icon, Text} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {CastButton} from 'react-native-google-cast';
+import GoogleCast, {CastButton} from 'react-native-google-cast';
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
@@ -18,7 +18,6 @@ import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {useAuth} from '../context/auth-context';
-import {SeriesPlayerParams} from './SeriesPlayer';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -26,8 +25,15 @@ export const DetailScreen: React.FC = () => {
   const {params}: any = useRoute();
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
-  const {title, inMyList, setInMyList, setTask, task} = useTitle(params.id);
+  const {title, inMyList, setInMyList, setTask, task, getTitle} = useTitle(params.id);
   const {token} = useAuth();
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getTitle();
+    setRefreshing(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id]);
 
   useEffect(() => {
     const listener = () => {
@@ -35,6 +41,12 @@ export const DetailScreen: React.FC = () => {
     };
 
     Downloader.onChange(listener);
+
+    GoogleCast.getCastState().then((state) => {
+      if (state === 'NotConnected') {
+        GoogleCast.showIntroductoryOverlay();
+      }
+    });
 
     return () => {
       Downloader.removeOnChangeListener(listener);
@@ -49,10 +61,20 @@ export const DetailScreen: React.FC = () => {
   }
 
   const image = getImageUrl(title?.images[0].url, ImageQuality.h900);
+  const poster = getImageUrl(title?.images[0].url);
 
   return (
     <>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            titleColor={colors.white}
+            title={t('refreshing')}
+            tintColor={colors.white}
+          />
+        }>
         <Image source={{uri: image}} style={{height: 400}}>
           <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
             <SafeAreaView
@@ -68,7 +90,7 @@ export const DetailScreen: React.FC = () => {
                     navigation.goBack();
                   }}
                 />
-                <CastButton style={{width: 25, height: 25}} />
+                <CastButton style={{marginLeft: 'auto', width: 50, height: 50, tintColor: 'white'} as any} />
                 <Icon
                   type="ionicon"
                   size={50}
@@ -106,18 +128,42 @@ export const DetailScreen: React.FC = () => {
                     alignItems: 'center',
                     borderRadius: 40,
                   }}
-                  onPress={() => {
-                    if (title?.type === 'm') {
-                      navigation.navigate('MoviePlayer', {title});
+                  onPress={async () => {
+                    if (!title) {
+                      return;
+                    }
+
+                    const state = await GoogleCast.getCastState();
+                    if (state === 'Connected') {
+                      if (title.type === 'm') {
+                        GoogleCast.castMedia({
+                          mediaUrl: title.videos[0]?.url.replace('{q}', '720'),
+                          imageUrl: image,
+                          posterUrl: poster,
+                          title: title.name,
+                          subtitle: title.plot,
+                          studio: '1001 Nights',
+                          streamDuration: title.runtime || 0, // seconds
+                        });
+                      }
+                      try {
+                        // GoogleCast.launchExpandedControls();
+                      } catch (err) {
+                        console.log(err);
+                      }
                     } else {
-                      navigation.navigate('SeriesPlayer', {title} as SeriesPlayerParams);
+                      if (title?.type === 'm') {
+                        navigation.navigate('MoviePlayer', {title});
+                      } else {
+                        navigation.navigate('SeriesPlayer', {title});
+                      }
                     }
                   }}>
                   <Icon type="ionicon" name="play" size={50} color={colors.white} />
                 </TouchableOpacity>
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                <View>
+                <View style={{flex: 1}}>
                   <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{title?.name}</Text>
                   <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
                     <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
@@ -175,6 +221,7 @@ export const DetailScreen: React.FC = () => {
                         name={'download-outline'}
                         color={colors.blue}
                         size={40}
+                        // style={{flex: 0.5}}
                         onPress={async () => {
                           // const status = Downloader.checkStatus(title.id);
 

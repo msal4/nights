@@ -15,6 +15,7 @@ import {OfflinePlayerScreen} from './src/screens/OfflinePlayer';
 import {MoviePlayerScreen} from './src/screens/MoviePlayer';
 import {SeriesPlayerScreen} from './src/screens/SeriesPlayer';
 import {TvPlayerScreen} from './src/screens/TvPlayer';
+import GoogleCast from 'react-native-google-cast';
 
 Ionicons.loadFont();
 
@@ -44,8 +45,11 @@ export default () => {
   useEffect(() => {
     Orientation.lockToPortrait();
     Downloader.open();
+    GoogleCast.getCastDevice().then(console.log);
+    registerListeners();
 
     return () => {
+      GoogleCast.endSession();
       Downloader.close();
     };
   }, []);
@@ -87,3 +91,23 @@ export default () => {
     </>
   );
 };
+
+function registerListeners() {
+  const events = `
+    SESSION_STARTING SESSION_STARTED SESSION_START_FAILED SESSION_SUSPENDED
+    SESSION_RESUMING SESSION_RESUMED SESSION_ENDING SESSION_ENDED
+
+    MEDIA_STATUS_UPDATED MEDIA_PLAYBACK_STARTED MEDIA_PLAYBACK_ENDED MEDIA_PROGRESS_UPDATED
+
+    CHANNEL_CONNECTED CHANNEL_DISCONNECTED CHANNEL_MESSAGE_RECEIVED
+  `
+    .trim()
+    .split(/\s+/);
+  console.log(events);
+
+  events.forEach((event) => {
+    GoogleCast.EventEmitter.addListener((GoogleCast as any)[event], function () {
+      console.log(event, arguments);
+    });
+  });
+}

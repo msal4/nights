@@ -12,6 +12,8 @@ import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Do
 import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
 import Menu from 'react-native-material-menu';
 import {useLanguage} from '../utils/lang';
+import GoogleCast from 'react-native-google-cast';
+import LinearGradient from 'react-native-linear-gradient';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -33,22 +35,43 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
   return (
     <TouchableOpacity
       style={{flexDirection: 'row', alignItems: 'center', height: 80, overflow: 'hidden', marginTop: 20}}
-      onPress={() => {
-        navigation.navigate('SeriesPlayer', {title, season, episode});
+      onPress={async () => {
+        const state = await GoogleCast.getCastState();
+        if (state === 'Connected') {
+          GoogleCast.castMedia({
+            mediaUrl: episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
+            imageUrl: image,
+            posterUrl: getImageUrl(title.images[0].url),
+            title: episode.name,
+            subtitle: episode.plot,
+            studio: '1001 Nights',
+            streamDuration: episode.runtime || 0, // seconds
+          });
+        } else {
+          navigation.navigate('SeriesPlayer', {title, season, episode});
+        }
       }}>
       <Image source={{uri: image}} style={{width: 135, height: 80, marginRight: 10}}>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            overflow: 'hidden',
-            borderRadius: 999,
-            backgroundColor: colors.gray,
-          }}>
-          <View style={{height: '100%', width: `${progress}%`, backgroundColor: colors.red}} />
-        </View>
+        {progress ? (
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              height: 5,
+              overflow: 'hidden',
+              borderRadius: 999,
+              backgroundColor: colors.gray,
+            }}>
+            <LinearGradient
+              useAngle
+              angle={90}
+              colors={[colors.blue, colors.red]}
+              style={{height: '100%', width: `${progress}%`}}
+            />
+          </View>
+        ) : null}
       </Image>
       <View style={{overflow: 'hidden', flex: 1}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

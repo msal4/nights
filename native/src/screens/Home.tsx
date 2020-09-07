@@ -20,6 +20,7 @@ import {getImageUrl, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
 import {useAuth} from '../context/auth-context';
+import GoogleCast from 'react-native-google-cast';
 
 const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
   const paddingToBottom = 20;
@@ -171,11 +172,26 @@ const Home = () => {
                       alignItems: 'center',
                       borderRadius: 40,
                     }}
-                    onPress={() => {
-                      if (promo?.type === 'm') {
-                        navigation.navigate('MoviePlayer', {title: promo});
+                    onPress={async () => {
+                      const state = await GoogleCast.getCastState();
+                      if (state === 'Connected') {
+                        if (promo?.type === 'm') {
+                          GoogleCast.castMedia({
+                            mediaUrl: promo.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
+                            imageUrl: getImageUrl(promo.images[0].url, ImageQuality.h900),
+                            posterUrl: getImageUrl(promo.images[0].url),
+                            title: promo.name,
+                            subtitle: promo.plot,
+                            studio: '1001 Nights',
+                            streamDuration: promo.runtime || 0, // seconds
+                          });
+                        }
                       } else {
-                        navigation.navigate('SeriesPlayer', {title: promo});
+                        if (promo?.type === 'm') {
+                          navigation.navigate('MoviePlayer', {title: promo});
+                        } else {
+                          navigation.navigate('SeriesPlayer', {title: promo});
+                        }
                       }
                     }}>
                     <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
