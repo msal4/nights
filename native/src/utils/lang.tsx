@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {trans} from './trans';
+import {NativeModules, Platform} from 'react-native';
 
 const LanguageContext = React.createContext({
   lang: 'ar',
@@ -20,7 +21,22 @@ export const LanguageProvider = (props: any) => {
   useEffect(() => {
     (async () => {
       const language = await AsyncStorage.getItem(key);
-      language && setLang(language as any);
+      if (language) {
+        language && setLang(language as any);
+      } else {
+        let locale = '';
+        if (Platform.OS === 'ios') {
+          locale =
+            NativeModules.SettingsManager.settings.AppleLocale ||
+            NativeModules.SettingsManager.settings.AppleLanguages[0];
+        } else if (Platform.OS === 'android') {
+          locale = NativeModules.I18nManager.localeIdentifier;
+        }
+        if (!locale.startsWith('ar')) {
+          await AsyncStorage.setItem(key, 'en');
+          setLang('en');
+        }
+      }
     })();
   }, []);
 
