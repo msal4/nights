@@ -7,6 +7,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import GoogleCast, {CastButton} from 'react-native-google-cast';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
@@ -18,6 +19,7 @@ import {EpisodesScreen} from './Episodes';
 import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {useAuth} from '../context/auth-context';
+import {useUrl} from '../context/url-context';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -25,9 +27,13 @@ export const DetailScreen: React.FC = () => {
   const {params}: any = useRoute();
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
+  // eslint-disable-next-line no-shadow
   const {title, inMyList, setInMyList, setTask, task, getTitle} = useTitle(params.id);
   const {token} = useAuth();
   const [refreshing, setRefreshing] = useState(false);
+  const {isPrivate} = useUrl();
+  const circularProgress = useRef<AnimatedCircularProgress>();
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await getTitle();
@@ -53,6 +59,12 @@ export const DetailScreen: React.FC = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
+
+  useEffect(() => {
+    if (task) {
+      circularProgress.current?.animate(task.progress, 500);
+    }
+  }, [task]);
 
   const {t} = useLanguage();
 
@@ -90,7 +102,11 @@ export const DetailScreen: React.FC = () => {
                     navigation.goBack();
                   }}
                 />
-                <CastButton style={{marginLeft: 'auto', width: 50, height: 50, tintColor: 'white'} as any} />
+                {isPrivate ? (
+                  <CastButton
+                    style={{marginLeft: 'auto', width: 50, height: 50, tintColor: 'white'} as any}
+                  />
+                ) : null}
                 <Icon
                   type="ionicon"
                   size={50}
@@ -119,48 +135,45 @@ export const DetailScreen: React.FC = () => {
                 />
               </View>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <TouchableOpacity
-                  style={{
-                    width: 80,
-                    height: 80,
-                    backgroundColor: colors.red,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 40,
-                  }}
-                  onPress={async () => {
-                    if (!title) {
-                      return;
-                    }
+                {isPrivate ? (
+                  <TouchableOpacity
+                    style={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: colors.red,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 40,
+                    }}
+                    onPress={async () => {
+                      if (!title) {
+                        return;
+                      }
 
-                    const state = await GoogleCast.getCastState();
-                    if (state === 'Connected') {
-                      if (title.type === 'm') {
-                        GoogleCast.castMedia({
-                          mediaUrl: title.videos[0]?.url.replace('{q}', '720'),
-                          imageUrl: image,
-                          posterUrl: poster,
-                          title: title.name,
-                          subtitle: title.plot,
-                          studio: '1001 Nights',
-                          streamDuration: title.runtime || 0, // seconds
-                        });
-                      }
-                      try {
-                        // GoogleCast.launchExpandedControls();
-                      } catch (err) {
-                        console.log(err);
-                      }
-                    } else {
-                      if (title?.type === 'm') {
-                        navigation.navigate('MoviePlayer', {title});
+                      const state = await GoogleCast.getCastState();
+                      if (state === 'Connected') {
+                        if (title.type === 'm') {
+                          GoogleCast.castMedia({
+                            mediaUrl: title.videos[0]?.url.replace('{q}', '720'),
+                            imageUrl: image,
+                            posterUrl: poster,
+                            title: title.name,
+                            subtitle: title.plot,
+                            studio: '1001 Nights',
+                            streamDuration: title.runtime || 0, // seconds
+                          });
+                        }
                       } else {
-                        navigation.navigate('SeriesPlayer', {title});
+                        if (title?.type === 'm') {
+                          navigation.navigate('MoviePlayer', {title});
+                        } else {
+                          navigation.navigate('SeriesPlayer', {title});
+                        }
                       }
-                    }
-                  }}>
-                  <Icon type="ionicon" name="play" size={50} color={colors.white} />
-                </TouchableOpacity>
+                    }}>
+                    <Icon type="ionicon" name="play" size={50} color={colors.white} />
+                  </TouchableOpacity>
+                ) : null}
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                 <View style={{flex: 1}}>
@@ -198,20 +211,44 @@ export const DetailScreen: React.FC = () => {
                     </View>
                   </View>
                 </View>
-                {title?.type === 'm' ? (
+                {isPrivate && title?.type === 'm' ? (
                   <>
                     {task &&
                       Downloader.renderMenu(
                         menuRef,
                         task,
-                        <Icon
-                          onPress={() => {
-                            menuRef.current?.show();
-                          }}
-                          type="ionicon"
-                          name="ellipsis-vertical-sharp"
-                          color={task.status === DownloadStatus.ERROR ? colors.red : colors.blue}
-                        />,
+                        task.status === DownloadStatus.DOWNLOADING ? (
+                          <TouchableOpacity
+                            onPress={() => {
+                              menuRef.current?.show();
+                            }}>
+                            <AnimatedCircularProgress
+                              ref={circularProgress as any}
+                              size={35}
+                              fill={0}
+                              width={6}
+                              rotation={1}
+                              tintColor={colors.blue}
+                              backgroundColor={colors.gray}
+                            />
+                          </TouchableOpacity>
+                        ) : task.status === DownloadStatus.DONE ? (
+                          <Icon
+                            type="ionicon"
+                            name="ellipsis-vertical-sharp"
+                            size={35}
+                            color={colors.blue}
+                            onPress={() => menuRef.current?.show()}
+                          />
+                        ) : (
+                          <Icon
+                            type="ionicon"
+                            name="refresh"
+                            size={35}
+                            color={colors.red}
+                            onPress={() => menuRef.current?.show()}
+                          />
+                        ),
                         t,
                         navigation,
                       )}

@@ -25,6 +25,17 @@ const Search: React.FC = () => {
   const {t} = useLanguage();
   const {genres} = useGenres();
 
+  const orderings: Topic[] = [
+    {id: 'name', name: t('nameAsc')},
+    {id: '-name', name: t('nameDesc')},
+    {id: '-views', name: `${t('popularity')} ${t('asc')}`},
+    {id: 'views', name: `${t('popularity')} ${t('desc')}`},
+    {id: 'rating', name: `${t('rating')} ${t('asc')}`},
+    {id: '-rating', name: `${t('rating')} ${t('desc')}`},
+    {id: 'created_at', name: t('releaseDateAsc')},
+    {id: '-created_at', name: t('releaseDateDesc')},
+  ];
+
   return (
     <SafeAreaView edges={['top']} style={{flex: 1}}>
       <ScrollView contentContainerStyle={{paddingLeft: 15}}>
@@ -57,6 +68,14 @@ const Search: React.FC = () => {
               }}
             />
           )}
+
+          <Filter
+            items={orderings}
+            name={t('sort')}
+            onChange={(item) => {
+              setParams({...params, ordering: item});
+            }}
+          />
 
           <Filter
             items={[

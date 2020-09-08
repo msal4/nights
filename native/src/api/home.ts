@@ -1,7 +1,8 @@
-import client from './client';
 import {TitleDetail, Title} from '../core/interfaces/title';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import {GenreRow} from '../core/interfaces/home';
+import UrlBase from '../utils/url-base';
+const {client} = UrlBase;
 
 export const getPromos = (params: any): Promise<TitleDetail[]> => client.get('/promos/', {params});
 

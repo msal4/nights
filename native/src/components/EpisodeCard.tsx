@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useRef} from 'react';
+import React, {FunctionComponent, useRef, useEffect} from 'react';
 import {View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Text, Icon} from 'react-native-elements';
@@ -14,6 +14,8 @@ import Menu from 'react-native-material-menu';
 import {useLanguage} from '../utils/lang';
 import GoogleCast from 'react-native-google-cast';
 import LinearGradient from 'react-native-linear-gradient';
+import {useUrl} from '../context/url-context';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -26,6 +28,14 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
   const {t} = useLanguage();
+  const {isPrivate} = useUrl();
+  const circularProgress = useRef<AnimatedCircularProgress>();
+
+  useEffect(() => {
+    if (task) {
+      circularProgress.current?.animate(task.progress, 500);
+    }
+  }, [task]);
 
   const progress =
     episode.hits?.length > 0 ? (episode.hits[0].playback_position / episode.hits[0].runtime) * 100 : 0;
@@ -35,22 +45,26 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
   return (
     <TouchableOpacity
       style={{flexDirection: 'row', alignItems: 'center', height: 80, overflow: 'hidden', marginTop: 20}}
-      onPress={async () => {
-        const state = await GoogleCast.getCastState();
-        if (state === 'Connected') {
-          GoogleCast.castMedia({
-            mediaUrl: episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
-            imageUrl: image,
-            posterUrl: getImageUrl(title.images[0].url),
-            title: episode.name,
-            subtitle: episode.plot,
-            studio: '1001 Nights',
-            streamDuration: episode.runtime || 0, // seconds
-          });
-        } else {
-          navigation.navigate('SeriesPlayer', {title, season, episode});
-        }
-      }}>
+      onPress={
+        isPrivate
+          ? async () => {
+              const state = await GoogleCast.getCastState();
+              if (state === 'Connected') {
+                GoogleCast.castMedia({
+                  mediaUrl: episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
+                  imageUrl: image,
+                  posterUrl: getImageUrl(title.images[0].url),
+                  title: episode.name,
+                  subtitle: episode.plot,
+                  studio: '1001 Nights',
+                  streamDuration: episode.runtime || 0, // seconds
+                });
+              } else {
+                navigation.navigate('SeriesPlayer', {title, season, episode});
+              }
+            }
+          : undefined
+      }>
       <Image source={{uri: image}} style={{width: 135, height: 80, marginRight: 10}}>
         {progress ? (
           <View
@@ -82,54 +96,66 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
           <Text style={{opacity: 0.75, flex: 1, flexWrap: 'wrap', fontSize: 10}}>{episode.plot}</Text>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          if (task) {
-            return menuRef.current?.show();
-          }
+      {isPrivate ? (
+        <TouchableOpacity
+          onPress={() => {
+            if (task) {
+              return menuRef.current?.show();
+            }
 
-          const video = episode.videos[0].url;
-          const subtitles = episode.subtitles.map(
-            (sub) =>
-              ({
-                lang: sub.language ?? 'ar',
-                url: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
-              } as SubtitleItem),
-          );
+            const video = episode.videos[0].url;
+            const subtitles = episode.subtitles.map(
+              (sub) =>
+                ({
+                  lang: sub.language ?? 'ar',
+                  url: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
+                } as SubtitleItem),
+            );
 
-          Downloader.download({
-            id: episode.id,
-            name: episode.name,
-            season: season.id,
-            image: image!,
-            title: title.id,
-            type: 'e',
-            video,
-            subtitles,
-          });
-        }}>
-        {!task ? (
-          <Icon
-            type="ionicon"
-            name="download-outline"
-            color={colors.blue}
-            size={30}
-            style={{marginLeft: 5}}
-          />
-        ) : null}
-        {task &&
-          Downloader.renderMenu(
-            menuRef,
-            task,
+            Downloader.download({
+              id: episode.id,
+              name: episode.name,
+              season: season.id,
+              image: image!,
+              title: title.id,
+              type: 'e',
+              video,
+              subtitles,
+            });
+          }}>
+          {!task ? (
             <Icon
               type="ionicon"
-              name="ellipsis-vertical-sharp"
-              color={task.status === DownloadStatus.ERROR ? colors.red : colors.blue}
-            />,
-            t,
-            navigation,
-          )}
-      </TouchableOpacity>
+              name="download-outline"
+              color={colors.blue}
+              size={35}
+              style={{marginLeft: 5}}
+            />
+          ) : null}
+          {task &&
+            Downloader.renderMenu(
+              menuRef,
+              task,
+              task.status === DownloadStatus.DOWNLOADING ? (
+                <AnimatedCircularProgress
+                  ref={circularProgress as any}
+                  size={35}
+                  fill={0}
+                  width={6}
+                  rotation={1}
+                  tintColor={colors.blue}
+                  backgroundColor={colors.gray}
+                />
+              ) : task.status === DownloadStatus.DONE ? (
+                <Icon type="ionicon" name="ellipsis-vertical-sharp" size={35} color={colors.blue} />
+              ) : (
+                <Icon type="ionicon" name="refresh" size={35} color={colors.red} />
+              ),
+              t,
+              navigation,
+            )}
+        </TouchableOpacity>
+      ) : null}
     </TouchableOpacity>
   );
 };

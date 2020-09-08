@@ -9,6 +9,7 @@ import {TVScreen} from './TV';
 import {useLanguage} from '../utils/lang';
 import {MoreScreen} from './More';
 import {DownloadsScreen} from './Downloads';
+import {useUrl} from '../context/url-context';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +19,8 @@ function tabBarIcon(name: string, {color, size, focused}: {focused: boolean; col
 
 export const RootScreen: React.FC = () => {
   const {t} = useLanguage();
+  const {isPrivate} = useUrl();
+
   return (
     <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray}}}>
       <Tab.Screen
@@ -30,16 +33,20 @@ export const RootScreen: React.FC = () => {
         component={SearchScreen}
         options={{tabBarIcon: (props) => tabBarIcon('search', props), title: t('search')}}
       />
-      <Tab.Screen
-        name="TV"
-        component={TVScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('tv', props), title: t('tv')}}
-      />
-      <Tab.Screen
-        name="Downloads"
-        component={DownloadsScreen}
-        options={{tabBarIcon: (props) => tabBarIcon('download', props), title: t('downloads')}}
-      />
+      {isPrivate ? (
+        <>
+          <Tab.Screen
+            name="TV"
+            component={TVScreen}
+            options={{tabBarIcon: (props) => tabBarIcon('tv', props), title: t('tv')}}
+          />
+          <Tab.Screen
+            name="Downloads"
+            component={DownloadsScreen}
+            options={{tabBarIcon: (props) => tabBarIcon('download', props), title: t('downloads')}}
+          />
+        </>
+      ) : null}
       <Tab.Screen
         name="More"
         component={MoreScreen}

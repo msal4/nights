@@ -1,4 +1,5 @@
-import client from './client';
+import UrlBase from '../utils/url-base';
+const {client} = UrlBase;
 
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import {TitleDetail, Title} from '../core/interfaces/title';

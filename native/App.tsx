@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
+import GoogleCast from 'react-native-google-cast';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
@@ -15,7 +16,7 @@ import {OfflinePlayerScreen} from './src/screens/OfflinePlayer';
 import {MoviePlayerScreen} from './src/screens/MoviePlayer';
 import {SeriesPlayerScreen} from './src/screens/SeriesPlayer';
 import {TvPlayerScreen} from './src/screens/TvPlayer';
-import GoogleCast from 'react-native-google-cast';
+import {UrlProvider} from './src/context/url-context';
 
 Ionicons.loadFont();
 
@@ -58,35 +59,37 @@ export default () => {
     <>
       <StatusBar barStyle="light-content" />
       <ThemeProvider theme={elementsTheme}>
-        <AuthProvider>
-          <LanguageProvider>
-            <NavigationContainer theme={navigationTheme}>
-              <Stack.Navigator screenOptions={{headerShown: false}}>
-                <Stack.Screen name="Root" component={RootScreen} />
-                <Stack.Screen
-                  name="MoviePlayer"
-                  component={MoviePlayerScreen}
-                  options={{gestureResponseDistance: {horizontal: 10}}}
-                />
-                <Stack.Screen
-                  name="SeriesPlayer"
-                  component={SeriesPlayerScreen}
-                  options={{gestureResponseDistance: {horizontal: 10}}}
-                />
-                <Stack.Screen
-                  name="TvPlayer"
-                  component={TvPlayerScreen}
-                  options={{gestureResponseDistance: {horizontal: 10}}}
-                />
-                <Stack.Screen
-                  name="OfflinePlayer"
-                  component={OfflinePlayerScreen}
-                  options={{gestureResponseDistance: {horizontal: 10}}}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </LanguageProvider>
-        </AuthProvider>
+        <UrlProvider>
+          <AuthProvider>
+            <LanguageProvider>
+              <NavigationContainer theme={navigationTheme}>
+                <Stack.Navigator screenOptions={{headerShown: false}}>
+                  <Stack.Screen name="Root" component={RootScreen} />
+                  <Stack.Screen
+                    name="MoviePlayer"
+                    component={MoviePlayerScreen}
+                    options={{gestureResponseDistance: {horizontal: 10}}}
+                  />
+                  <Stack.Screen
+                    name="SeriesPlayer"
+                    component={SeriesPlayerScreen}
+                    options={{gestureResponseDistance: {horizontal: 10}}}
+                  />
+                  <Stack.Screen
+                    name="TvPlayer"
+                    component={TvPlayerScreen}
+                    options={{gestureResponseDistance: {horizontal: 10}}}
+                  />
+                  <Stack.Screen
+                    name="OfflinePlayer"
+                    component={OfflinePlayerScreen}
+                    options={{gestureResponseDistance: {horizontal: 10}}}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </LanguageProvider>
+          </AuthProvider>
+        </UrlProvider>
       </ThemeProvider>
     </>
   );

@@ -1,4 +1,5 @@
-import client from './client';
+import UrlBase from '../utils/url-base';
+const {client} = UrlBase;
 import {LoginData, UserDetail} from '../core/interfaces/user';
 
 export const loginUser = (username: string, password: string): Promise<LoginData> =>

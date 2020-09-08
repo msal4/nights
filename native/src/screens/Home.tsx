@@ -4,7 +4,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
-import client from '../api/client';
 import TitleRow from '../components/TitleRow';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DetailScreen} from './Detail';
@@ -21,6 +20,9 @@ import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
 import {useAuth} from '../context/auth-context';
 import GoogleCast from 'react-native-google-cast';
+import UrlBase from '../utils/url-base';
+import {useUrl} from '../context/url-context';
+const {client} = UrlBase;
 
 const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
   const paddingToBottom = 20;
@@ -36,6 +38,7 @@ const Home = () => {
   const {token} = useAuth();
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
+  const {isPrivate} = useUrl();
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -45,7 +48,7 @@ const Home = () => {
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
-  console.log('refreshing:', refreshing);
+
   return (
     <ScrollView
       scrollEventThrottle={100}
@@ -64,7 +67,7 @@ const Home = () => {
         }
       }}>
       <Image
-        source={{uri: getImageUrl(promo?.images[0].url, ImageQuality.h900)}}
+        source={{uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900)}}
         style={{height: PROMO_HEIGHT}}>
         <LinearGradient colors={['#000000', '#00000000', '#000']} style={{height: '100%'}}>
           <SafeAreaView style={{flex: 1, justifyContent: 'space-between'}}>
@@ -163,39 +166,47 @@ const Home = () => {
                       }
                     }}
                   />
-                  <TouchableOpacity
-                    style={{
-                      width: 80,
-                      height: 80,
-                      backgroundColor: colors.red,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: 40,
-                    }}
-                    onPress={async () => {
-                      const state = await GoogleCast.getCastState();
-                      if (state === 'Connected') {
-                        if (promo?.type === 'm') {
-                          GoogleCast.castMedia({
-                            mediaUrl: promo.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
-                            imageUrl: getImageUrl(promo.images[0].url, ImageQuality.h900),
-                            posterUrl: getImageUrl(promo.images[0].url),
-                            title: promo.name,
-                            subtitle: promo.plot,
-                            studio: '1001 Nights',
-                            streamDuration: promo.runtime || 0, // seconds
-                          });
-                        }
-                      } else {
-                        if (promo?.type === 'm') {
-                          navigation.navigate('MoviePlayer', {title: promo});
+                  {isPrivate ? (
+                    <TouchableOpacity
+                      style={{
+                        width: 80,
+                        height: 80,
+                        backgroundColor: colors.red,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 40,
+                      }}
+                      onPress={async () => {
+                        const state = await GoogleCast.getCastState();
+                        if (state === 'Connected') {
+                          if (promo?.type === 'm') {
+                            GoogleCast.castMedia({
+                              mediaUrl: promo.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
+                              imageUrl: getImageUrl(promo.images[0].url, ImageQuality.h900),
+                              posterUrl: getImageUrl(promo.images[0].url),
+                              title: promo.name,
+                              subtitle: promo.plot,
+                              studio: '1001 Nights',
+                              streamDuration: promo.runtime || 0, // seconds
+                            });
+                          }
                         } else {
-                          navigation.navigate('SeriesPlayer', {title: promo});
+                          if (promo?.type === 'm') {
+                            navigation.navigate('MoviePlayer', {title: promo});
+                          } else {
+                            navigation.navigate('SeriesPlayer', {title: promo});
+                          }
                         }
-                      }
-                    }}>
-                    <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
-                  </TouchableOpacity>
+                      }}>
+                      <Icon
+                        type="ionicon"
+                        name="play"
+                        size={50}
+                        color={colors.white}
+                        style={{marginLeft: 5}}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
                   <Icon
                     type="ionicon"
                     name="information-circle-outline"
@@ -212,7 +223,7 @@ const Home = () => {
         </LinearGradient>
       </Image>
       {/* end of promo */}
-      {history && <HistoryRow row={history} />}
+      {history && isPrivate ? <HistoryRow row={history} /> : null}
       {/* recently added */}
       {recentlyAdded && <TitleRow row={recentlyAdded.results} name={t('recentlyAdded')} />}
       {/* trending */}
