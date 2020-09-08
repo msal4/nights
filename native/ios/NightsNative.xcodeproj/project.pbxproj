@@ -713,7 +713,7 @@
 				PRODUCT_NAME = "1001 Nights";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -738,7 +738,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.onethousandnights.cinema;
 				PRODUCT_NAME = "1001 Nights";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
