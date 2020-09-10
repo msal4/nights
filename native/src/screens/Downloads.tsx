@@ -79,7 +79,7 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
           navigation.navigate('OfflinePlayer', {task});
         }}>
         <Image
-          source={{uri: image}}
+          source={{uri: image.startsWith('/') ? `file://${image}` : image}}
           style={{alignItems: 'center', justifyContent: 'center', width: 170, height: 100, marginRight: 15}}>
           <View
             style={{

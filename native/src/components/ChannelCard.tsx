@@ -12,6 +12,7 @@ export interface ChannelProps {
 
 export const ChannelCard: FunctionComponent<ChannelProps> = ({channel}) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={{marginRight: 15, marginBottom: 15}}

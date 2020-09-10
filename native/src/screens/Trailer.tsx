@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-controls';
 
 import {getImageUrl} from '../utils/common';
 import {TitleDetail, ImageQuality} from '../core/interfaces/title';
@@ -14,7 +14,6 @@ export const TrailerScreen: FunctionComponent = () => {
   const params: TrailerParams = useRoute().params as any;
 
   const {title} = params;
-  // const player = useRef<Video>();
   const uri = title?.trailers[0]?.url.replace('{f}', 'mp4');
   const poster = getImageUrl(title.images[0]?.url, ImageQuality.h900);
 
@@ -22,27 +21,13 @@ export const TrailerScreen: FunctionComponent = () => {
     return null;
   }
 
-  return (
-    <Video
-      poster={poster}
-      controls
-      paused
-      source={{uri}} // Can be a URL or a local file.
-      // ref={player} // Store reference
-      onBuffer={() => {
-        console.log('buffering...');
-      }} // Callback when remote video is buffering
-      onError={(e) => {
-        console.log('error:', e.error.errorString);
-      }} // Callback when video cannot be loaded
-      style={styles.video}
-    />
-  );
+  return <VideoPlayer poster={poster} paused source={{uri}} style={styles.video} />;
 };
 
 var styles = StyleSheet.create({
   video: {
     marginTop: 10,
+    maxHeight: 300,
     height: 300,
     width: '100%',
   },

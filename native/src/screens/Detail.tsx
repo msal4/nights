@@ -92,7 +92,13 @@ export const DetailScreen: React.FC = () => {
             <SafeAreaView
               edges={['top']}
               style={{flex: 1, justifyContent: 'space-between', marginHorizontal: 20}}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <View
+                style={{
+                  marginTop: 10,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
                 <Icon
                   type="ionicon"
                   size={50}
@@ -151,6 +157,8 @@ export const DetailScreen: React.FC = () => {
                       }
 
                       const state = await GoogleCast.getCastState();
+                      console.log(state);
+
                       if (state === 'Connected') {
                         if (title.type === 'm') {
                           GoogleCast.castMedia({

@@ -22,7 +22,7 @@ export const RootScreen: React.FC = () => {
   const {isPrivate} = useUrl();
 
   return (
-    <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray}}}>
+    <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray, paddingBottom: 2}}}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}

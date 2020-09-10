@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.nightsnative">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.nightsnative">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -9,7 +10,13 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:usesCleartextTraffic="true"
+      android:theme="@style/AppTheme"
+      tools:ignore="UnusedAttribute"
+        >
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.reactnative.googlecast.GoogleCastOptionsProvider" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

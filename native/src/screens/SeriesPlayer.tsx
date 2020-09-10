@@ -1,7 +1,6 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import Video, {OnProgressData} from 'react-native-video';
-import {InteractionManager} from 'react-native';
 
 import {Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
@@ -45,9 +44,7 @@ export class SeriesPlayerScreen extends React.Component<
   lastHit: React.RefObject<number>;
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(async () => {
-      await this.loadEpisode();
-    });
+    this.loadEpisode();
   }
 
   async loadEpisode() {
@@ -104,8 +101,8 @@ export class SeriesPlayerScreen extends React.Component<
     );
 
     this.setState({video, subtitles});
+
     if (token) {
-      console.log('token:', token);
       this.continueWatching(episode);
     }
   }

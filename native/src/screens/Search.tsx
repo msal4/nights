@@ -52,12 +52,14 @@ const Search: React.FC = () => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            top: 60,
-            left: 15,
-            position: 'absolute',
-            justifyContent: 'center',
-            width: '100%',
-            zIndex: 1000,
+            marginTop: 10,
+            marginRight: 5,
+            justifyContent: 'space-around',
+            // top: 60,
+            // left: 15,
+            // position: 'absolute',
+            // width: '100%',
+            // zIndex: 1000,
           }}>
           {genres && (
             <Filter
@@ -80,8 +82,8 @@ const Search: React.FC = () => {
           <Filter
             items={[
               {id: null, name: t('type')} as any,
-              {id: 'm', name: t('Movies')},
-              {id: 's', name: t('Series')},
+              {id: 'm', name: t('movies')},
+              {id: 's', name: t('series')},
             ]}
             name={t('type')}
             onChange={(type) => {
@@ -91,7 +93,7 @@ const Search: React.FC = () => {
         </View>
 
         {result && (
-          <View style={{marginTop: 60, flexDirection: 'row', flexWrap: 'wrap'}}>
+          <View style={{marginTop: 10, flexDirection: 'row', flexWrap: 'wrap', minHeight: 300}}>
             {result.result &&
               result.result.results.map((title) => <Title key={title.id} title={title} width={cardWidth} />)}
           </View>

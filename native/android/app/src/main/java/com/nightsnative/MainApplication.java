@@ -1,7 +1,10 @@
 package com.nightsnative;
 
-import android.app.Application;
 import android.content.Context;
+
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -10,8 +13,15 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.nightsnative.ToggleImmersiveModePackage;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
+
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(newBase);
+    MultiDex.install(this);
+  }
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -25,7 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
+          packages.add(new ToggleImmersiveModePackage());
           return packages;
         }
 

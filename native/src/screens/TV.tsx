@@ -9,11 +9,13 @@ import {Promo, Category, Channel} from '../core/interfaces/channel';
 import {tvBaseURL} from '../constants/const';
 import ChannelRow from '../components/ChannelRow';
 import {useLanguage} from '../utils/lang';
+import {useNavigation} from '@react-navigation/native';
 
 export const TVScreen: React.FC = () => {
   const {categories} = useRows();
   const {promo} = usePromo();
   const {t, lang} = useLanguage();
+  const navigation = useNavigation();
 
   return (
     <FlatList
@@ -24,14 +26,19 @@ export const TVScreen: React.FC = () => {
           return (
             <Image
               source={{uri: `${tvBaseURL}${promo?.promo_image}`}}
-              style={{height: PROMO_HEIGHT, marginBottom: 25}}>
+              style={{height: 400, marginBottom: 25}}>
               <LinearGradient colors={['#00000055', '#00000000', '#000']} style={{height: '100%'}}>
                 <View
                   style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginHorizontal: 50}}>
                   <Button
                     title={t('watchNow')}
                     buttonStyle={{borderRadius: 9999, paddingHorizontal: 40}}
-                    onPress={() => {}}
+                    onPress={async () => {
+                      try {
+                        const channel: Channel = await tvClient.get(`channels/${promo?.channel_id}`);
+                        navigation.navigate('TvPlayer', channel);
+                      } catch {}
+                    }}
                   />
                   <Text style={{marginTop: 10, fontSize: 17}}>
                     {promo && (promo as any)['title' + (lang === 'en' ? '' : '_ar')]}

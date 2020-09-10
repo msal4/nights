@@ -27,7 +27,7 @@ const useBase = () => {
 
   const load = async () => {
     try {
-      const res = await axios.get(privateBase);
+      const res = await axios.head(privateBase);
       if (res.status === 200) {
         UrlBase.baseURL = privateBase;
       } else {

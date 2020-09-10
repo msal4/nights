@@ -12,13 +12,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.5.3")
+        classpath("com.android.tools.build:gradle:3.6.4")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
 allprojects {
+    tasks.withType(Javadoc).all { enabled = false }
     repositories {
         mavenLocal()
         maven {
@@ -33,5 +34,17 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }
+    }
+}
+
+subprojects {
+    afterEvaluate {project ->
+        // force libs to use recent buildtools
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion = 29  // change to match your desired version
+                buildToolsVersion = "29.0.2"
+            }
+        }
     }
 }

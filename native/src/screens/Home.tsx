@@ -62,6 +62,7 @@ const Home = () => {
         />
       }
       onScroll={({nativeEvent}) => {
+        console.log(nativeEvent);
         if (isCloseToBottom(nativeEvent)) {
           getRows(false);
         }
