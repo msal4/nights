@@ -4,8 +4,9 @@ import {useNavigation} from '@react-navigation/native';
 import Video, {OnProgressData} from 'react-native-video';
 import Orientation from 'react-native-orientation';
 import fs from 'react-native-fs';
-import {NativeModules, StatusBar} from 'react-native';
+import {NativeModules, Platform, StatusBar} from 'react-native';
 import axios from 'axios';
+import LoadingIndicator from './LoadingIndicator';
 
 export interface Sub {
   title: string;
@@ -25,6 +26,7 @@ export class Player extends React.Component<
     videoRef?: VideoRef;
     title?: string;
     onProgress?: (data: OnProgressData) => void;
+    load?: () => Promise<void>;
   },
   {subtitles: Sub[] | undefined; loading: boolean}
 > {
@@ -35,19 +37,55 @@ export class Player extends React.Component<
   }
 
   componentDidMount() {
-    NativeModules.ToggleImmersiveMode.immersiveModeOn();
+    if (Platform.OS === 'android') {
+      NativeModules.ToggleImmersiveMode.immersiveModeOn();
+    }
     Orientation.lockToLandscape();
+
+    (async () => {
+      if (!this.props.subtitles) {
+        return;
+      }
+      const subs = [];
+      for (const sub of this.props.subtitles) {
+        if (sub.uri.startsWith('/')) {
+          try {
+            const exists = await fs.exists(sub.uri);
+            exists && subs.push(sub);
+          } catch {}
+        } else {
+          try {
+            const res = await axios.head(sub.uri);
+            console.log(res.status);
+            if (res.status === 200) {
+              subs.push(sub);
+            }
+          } catch {}
+        }
+      }
+      this.setState({subtitles: subs});
+    })().then(async () => {
+      try {
+        this.props.load && (await this.props.load());
+      } catch {}
+      this.setState({loading: false});
+    });
   }
 
   componentWillUnmount() {
-    NativeModules.ToggleImmersiveMode.immersiveModeOff();
+    if (Platform.OS === 'android') {
+      NativeModules.ToggleImmersiveMode.immersiveModeOff();
+    }
     Orientation.lockToPortrait();
   }
 
   render() {
     const {video, title, videoRef, onProgress} = this.props;
-    const {subtitles} = this.state;
-    console.log('subtitles:', subtitles);
+    const {subtitles, loading} = this.state;
+
+    if (loading) {
+      return <LoadingIndicator />;
+    }
 
     return (
       <>
@@ -66,27 +104,8 @@ export class Player extends React.Component<
           title={title}
           selectedTextTrack={subtitles?.length ? {type: 'language', value: 'ar'} : undefined}
           textTracks={subtitles?.length ? subtitles : undefined}
-          onLoad={async () => {
-            if (!this.props.subtitles) {
-              return;
-            }
-            const subs = [];
-            for (const sub of this.props.subtitles) {
-              if (sub.uri.startsWith('/')) {
-                const exists = await fs.exists(sub.uri);
-                exists && subs.push(sub);
-              } else {
-                try {
-                  const res = await axios.head(sub.uri);
-                  if (res.status === 200) {
-                    subs.push(sub);
-                  }
-                } catch {}
-              }
-            }
-            this.setState({subtitles: subs, loading: false});
-          }}
-          onError={(err) => {
+          onLoad={async () => {}}
+          onError={(err: any) => {
             console.log(err);
           }}
           onProgress={onProgress}

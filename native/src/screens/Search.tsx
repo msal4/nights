@@ -55,6 +55,7 @@ const Search: React.FC = () => {
             marginTop: 10,
             marginRight: 5,
             justifyContent: 'space-around',
+            zIndex: 10,
             // top: 60,
             // left: 15,
             // position: 'absolute',

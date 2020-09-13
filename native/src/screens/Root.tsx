@@ -10,6 +10,7 @@ import {useLanguage} from '../utils/lang';
 import {MoreScreen} from './More';
 import {DownloadsScreen} from './Downloads';
 import {useUrl} from '../context/url-context';
+import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +23,10 @@ export const RootScreen: React.FC = () => {
   const {isPrivate} = useUrl();
 
   return (
-    <Tab.Navigator tabBarOptions={{style: {backgroundColor: colors.gray, paddingBottom: 2}}}>
+    <Tab.Navigator
+      tabBarOptions={{
+        style: {backgroundColor: colors.gray},
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}

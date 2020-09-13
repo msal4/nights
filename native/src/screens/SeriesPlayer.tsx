@@ -61,14 +61,14 @@ export class SeriesPlayerScreen extends React.Component<
           this.setState({seasonId: hit.season!, episode: hit.episode!});
           console.log('---------the state is set----------');
           const e = await getEpisode(hit.episode!.id);
-          hit.episode && (await this.playEpisode(e, token));
+          hit.episode && (await this.playEpisode(e));
         } catch (err) {
           if (title.seasons.length) {
             const s = await getSeason(title.seasons[0].id);
             const e = s.episodes[0];
             if (e) {
               this.setState({season: s, episode: e});
-              this.playEpisode(e, token);
+              this.playEpisode(e);
             }
           }
         }
@@ -78,17 +78,17 @@ export class SeriesPlayerScreen extends React.Component<
           const e = s.episodes[0];
           if (e) {
             this.setState({season: s, episode: e});
-            this.playEpisode(e, token);
+            this.playEpisode(e);
           }
         }
       }
     } else {
       this.setState({season, episode});
-      this.playEpisode(episode, token);
+      this.playEpisode(episode);
     }
   }
 
-  async playEpisode(episode: Episode, token: string | null) {
+  async playEpisode(episode: Episode) {
     const video = episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4');
     const subtitles = episode.subtitles.map(
       (sub) =>
@@ -101,10 +101,6 @@ export class SeriesPlayerScreen extends React.Component<
     );
 
     this.setState({video, subtitles});
-
-    if (token) {
-      this.continueWatching(episode);
-    }
   }
 
   async continueWatching(episode: Episode) {
@@ -127,6 +123,11 @@ export class SeriesPlayerScreen extends React.Component<
         video={video}
         subtitles={subtitles}
         title={episode?.name}
+        load={async () => {
+          if (token) {
+            await this.continueWatching(episode!);
+          }
+        }}
         onProgress={
           token
             ? (data: OnProgressData) => {

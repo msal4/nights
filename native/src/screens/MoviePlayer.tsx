@@ -36,8 +36,6 @@ export class MoviePlayerScreen extends React.Component<
 
   async componentDidMount() {
     const {title: simpleTitle} = this.props.route.params as PlayerParams;
-    const {token} = this.context;
-
     const title = await getTitle(simpleTitle.id);
     console.log('i am running ---------------');
     const video = title.videos[0]?.url.replace('{q}', '720');
@@ -52,10 +50,6 @@ export class MoviePlayerScreen extends React.Component<
     );
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({video, subtitles});
-
-    if (token) {
-      this.continueWatching(title.id);
-    }
   }
 
   async continueWatching(id: number) {
@@ -73,32 +67,34 @@ export class MoviePlayerScreen extends React.Component<
     const {token} = this.context;
 
     return video ? (
-      <>
-        {/* {loading ? <LoadingIndicator /> : null} */}
-        <Player
-          videoRef={this.videoRef}
-          navigation={this.props.navigation}
-          video={video}
-          subtitles={subtitles}
-          title={title.name}
-          onProgress={
-            token
-              ? (data: OnProgressData) => {
-                  const last = this.lastHit.current ?? 0;
-                  if (data.currentTime > last + 30 || data.currentTime < last) {
-                    console.log('progress');
-                    console.log(data);
-                    (this.lastHit as any).current = data.currentTime;
-                    hitTopic(title.id, {
-                      playback_position: data.currentTime,
-                      runtime: data.seekableDuration,
-                    });
-                  }
-                }
-              : undefined
+      <Player
+        videoRef={this.videoRef}
+        navigation={this.props.navigation}
+        video={video}
+        subtitles={subtitles}
+        title={title.name}
+        load={async () => {
+          if (token) {
+            await this.continueWatching(title.id);
           }
-        />
-      </>
+        }}
+        onProgress={
+          token
+            ? (data: OnProgressData) => {
+                const last = this.lastHit.current ?? 0;
+                if (data.currentTime > last + 30 || data.currentTime < last) {
+                  console.log('progress');
+                  console.log(data);
+                  (this.lastHit as any).current = data.currentTime;
+                  hitTopic(title.id, {
+                    playback_position: data.currentTime,
+                    runtime: data.seekableDuration,
+                  });
+                }
+              }
+            : undefined
+        }
+      />
     ) : null;
   }
 }
