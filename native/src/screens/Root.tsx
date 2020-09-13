@@ -10,7 +10,6 @@ import {useLanguage} from '../utils/lang';
 import {MoreScreen} from './More';
 import {DownloadsScreen} from './Downloads';
 import {useUrl} from '../context/url-context';
-import {Platform} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 

@@ -61,6 +61,7 @@ export class SeriesPlayerScreen extends React.Component<
           this.setState({seasonId: hit.season!, episode: hit.episode!});
           console.log('---------the state is set----------');
           const e = await getEpisode(hit.episode!.id);
+          this.setState({episode: e});
           hit.episode && (await this.playEpisode(e));
         } catch (err) {
           if (title.seasons.length) {
@@ -104,6 +105,7 @@ export class SeriesPlayerScreen extends React.Component<
   }
 
   async continueWatching(episode: Episode) {
+    console.log(episode);
     try {
       this.videoRef.current?.player.ref.seek(episode.hits[0]?.playback_position ?? 0);
     } catch (err) {

@@ -64,11 +64,13 @@ export class Player extends React.Component<
         }
       }
       this.setState({subtitles: subs});
-    })().then(async () => {
-      try {
-        this.props.load && (await this.props.load());
-      } catch {}
-      this.setState({loading: false});
+    })().then(() => {
+      this.setState({loading: false}, async () => {
+        try {
+          this.props.load && (await this.props.load());
+          console.log('it is called');
+        } catch {}
+      });
     });
   }
 
@@ -91,7 +93,10 @@ export class Player extends React.Component<
       <>
         <StatusBar hidden />
         <VideoPlayer
-          ref={videoRef}
+          ref={(ref: any) => {
+            (videoRef!.current as any) = ref;
+            console.log('ref is set');
+          }}
           navigator={this.props.navigation}
           source={{uri: video}}
           style={{
