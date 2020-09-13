@@ -57,11 +57,8 @@ export class SeriesPlayerScreen extends React.Component<
       if (token) {
         try {
           const hit = await getHit(title.id);
-          console.log('using hit:', hit);
-          this.setState({seasonId: hit.season!, episode: hit.episode!});
-          console.log('---------the state is set----------');
           const e = await getEpisode(hit.episode!.id);
-          this.setState({episode: e});
+          this.setState({seasonId: hit.season!, episode: e});
           hit.episode && (await this.playEpisode(e));
         } catch (err) {
           if (title.seasons.length) {
