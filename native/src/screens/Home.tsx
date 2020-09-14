@@ -251,7 +251,7 @@ const Home = () => {
       {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
       <View style={{height: 40}} />
-      {loading ? <ActivityIndicator style={{marginTop: -40}} color="white" size="large" /> : null}
+      {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="large" /> : null}
     </ScrollView>
   );
 };

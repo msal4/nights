@@ -68,11 +68,6 @@ const Search: React.FC = () => {
             marginRight: 5,
             justifyContent: 'space-around',
             zIndex: 10,
-            // top: 60,
-            // left: 15,
-            // position: 'absolute',
-            // width: '100%',
-            // zIndex: 1000,
           }}>
           {genres && (
             <Filter
@@ -106,11 +101,19 @@ const Search: React.FC = () => {
         </View>
 
         {result && (
-          <View style={{marginTop: 10, flexDirection: 'row', flexWrap: 'wrap', minHeight: 300}}>
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}>
             {result.result &&
               result.result.results.map((title) => <Title key={title.id} title={title} width={cardWidth} />)}
           </View>
         )}
+        {!result || !result.result?.results.length || result.result.results.length < 6 ? (
+          <View style={{height: 300}} />
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
