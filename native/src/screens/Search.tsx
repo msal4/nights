@@ -16,6 +16,18 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {getGenres} from '../api/genre';
 import {Topic} from '../core/interfaces/topic';
 import {capitalizeFirst} from '../utils/common';
+import {defaultStackOptions} from '../utils/defaultStackOptions';
+
+const Stack = createStackNavigator();
+
+export const SearchScreen: React.FC = () => {
+  return (
+    <Stack.Navigator screenOptions={{...defaultStackOptions, headerShown: false}}>
+      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const Search: React.FC = () => {
   const {setQuery, searchResults: result, setParams, params} = useSearch();
@@ -168,14 +180,4 @@ const useSearch = () => {
   }, [debouncedSearchFunction, query, params]);
 
   return {setQuery, searchResults, params, setParams};
-};
-
-const Stack = createStackNavigator();
-export const SearchScreen = () => {
-  return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Search" component={Search} />
-      <Stack.Screen name="Detail" component={DetailScreen} />
-    </Stack.Navigator>
-  );
 };

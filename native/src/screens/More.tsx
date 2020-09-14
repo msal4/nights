@@ -1,15 +1,37 @@
 import React from 'react';
 import {ListItem, Text} from 'react-native-elements';
-import {useLanguage} from '../utils/lang';
-import {colors} from '../constants/style';
 import {ScrollView} from 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
-import {LoginScreen} from './Login';
 import {useNavigation} from '@react-navigation/native';
-import {useAuth} from '../context/auth-context';
 import {Linking} from 'react-native';
+
+import {useAuth} from '../context/auth-context';
 import {MyListScreen} from './MyList';
 import {DetailScreen} from './Detail';
+import {defaultStackOptions} from '../utils/defaultStackOptions';
+import {LoginScreen} from './Login';
+import {colors} from '../constants/style';
+import {useLanguage} from '../utils/lang';
+
+const Stack = createStackNavigator();
+
+export const MoreScreen: React.FC = () => {
+  const {t} = useLanguage();
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...defaultStackOptions,
+        headerStyle: {backgroundColor: colors.black},
+        headerTintColor: colors.white,
+      }}>
+      <Stack.Screen name="More" component={More} options={{title: t('more')}} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{title: t('login')}} />
+      <Stack.Screen name="MyList" component={MyListScreen} options={{title: t('myList')}} />
+      <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />
+    </Stack.Navigator>
+  );
+};
 
 const More: React.FC = () => {
   const navigation = useNavigation();
@@ -70,23 +92,5 @@ const More: React.FC = () => {
         }}
       />
     </ScrollView>
-  );
-};
-
-const Stack = createStackNavigator();
-
-export const MoreScreen: React.FC = () => {
-  const {t} = useLanguage();
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {backgroundColor: colors.black},
-        headerTintColor: colors.white,
-      }}>
-      <Stack.Screen name="More" component={More} options={{title: t('more')}} />
-      <Stack.Screen name="Login" component={LoginScreen} options={{title: t('login')}} />
-      <Stack.Screen name="MyList" component={MyListScreen} options={{title: t('myList')}} />
-      <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />
-    </Stack.Navigator>
   );
 };

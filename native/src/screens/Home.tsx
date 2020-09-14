@@ -1,19 +1,27 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
+import {createStackNavigator} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
+
+import {Image, Icon, Text} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
+import {
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  NativeScrollEvent,
+  RefreshControl,
+  ActivityIndicator,
+} from 'react-native';
 
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import TitleRow from '../components/TitleRow';
-import {createStackNavigator} from '@react-navigation/stack';
 import {DetailScreen} from './Detail';
 import {useLanguage} from '../utils/lang';
-import {useNavigation} from '@react-navigation/native';
 import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
-import {Image, Icon, Text} from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
-import {View, TouchableOpacity, SafeAreaView, NativeScrollEvent, RefreshControl} from 'react-native';
 import {colors, PROMO_HEIGHT} from '../constants/style';
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
@@ -22,7 +30,19 @@ import {useAuth} from '../context/auth-context';
 import GoogleCast from 'react-native-google-cast';
 import UrlBase from '../utils/url-base';
 import {useUrl} from '../context/url-context';
+import {defaultStackOptions} from '../utils/defaultStackOptions';
 const {client} = UrlBase;
+
+const Stack = createStackNavigator();
+
+export const HomeScreen: React.FC = () => {
+  return (
+    <Stack.Navigator screenOptions={{...defaultStackOptions, headerShown: false}}>
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Detail" component={DetailScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
   const paddingToBottom = 20;
@@ -32,7 +52,7 @@ const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: Native
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList, getPromoTitle} = usePromo(params);
-  const {rows, getRows, recentlyAdded, trending} = useRows(params);
+  const {rows, getRows, recentlyAdded, trending, loading} = useRows(params);
   const {t} = useLanguage();
   const {history, getHits} = useHistory();
   const {token} = useAuth();
@@ -62,14 +82,13 @@ const Home = () => {
         />
       }
       onScroll={({nativeEvent}) => {
-        console.log(nativeEvent);
         if (isCloseToBottom(nativeEvent)) {
           getRows(false);
         }
       }}>
       <Image
         source={{uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900)}}
-        style={{height: PROMO_HEIGHT}}>
+        style={{height: PROMO_HEIGHT, marginBottom: 20}}>
         <LinearGradient colors={['#000000', '#00000000', '#000']} style={{height: '100%'}}>
           <SafeAreaView style={{flex: 1, justifyContent: 'space-between'}}>
             <View
@@ -77,7 +96,7 @@ const Home = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginVertical: 10,
+                marginVertical: 20,
                 marginHorizontal: 20,
               }}>
               <TouchableOpacity
@@ -94,7 +113,7 @@ const Home = () => {
                 onPress={() => {
                   setParams({type: 'm'});
                 }}>
-                <Text style={{fontSize: 17, fontWeight: params.type === 'm' ? 'bold' : 'normal'}}>
+                <Text style={{fontSize: 14, fontWeight: params.type === 'm' ? 'bold' : 'normal'}}>
                   {t('movies')}
                 </Text>
               </TouchableOpacity>
@@ -102,7 +121,7 @@ const Home = () => {
                 onPress={() => {
                   setParams({type: 's'});
                 }}>
-                <Text style={{fontSize: 17, fontWeight: params.type === 's' ? 'bold' : 'normal'}}>
+                <Text style={{fontSize: 14, fontWeight: params.type === 's' ? 'bold' : 'normal'}}>
                   {t('series')}
                 </Text>
               </TouchableOpacity>
@@ -110,7 +129,7 @@ const Home = () => {
                 onPress={() => {
                   setParams({rated: 'G'});
                 }}>
-                <Text style={{fontSize: 17, fontWeight: params.rated === 'G' ? 'bold' : 'normal'}}>
+                <Text style={{fontSize: 14, fontWeight: params.rated === 'G' ? 'bold' : 'normal'}}>
                   {t('kids')}
                 </Text>
               </TouchableOpacity>
@@ -231,18 +250,9 @@ const Home = () => {
       {trending && <TitleRow row={trending.results} name={t('trending')} />}
       {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
+      <View style={{height: 40}} />
+      {loading ? <ActivityIndicator style={{marginTop: -40}} color="white" size="large" /> : null}
     </ScrollView>
-  );
-};
-
-const Stack = createStackNavigator();
-
-export const HomeScreen: React.FC = () => {
-  return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Detail" component={DetailScreen} />
-    </Stack.Navigator>
   );
 };
 
@@ -327,11 +337,10 @@ const useRows = (params: Params) => {
       const data = await getGenreRows(newParams);
       setRows(data);
       setError(null);
-      setLoading(false);
     } catch (err) {
       setError(err);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -339,5 +348,5 @@ const useRows = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  return {rows, recentlyAdded, trending, error, getRows};
+  return {rows, recentlyAdded, trending, error, getRows, loading};
 };

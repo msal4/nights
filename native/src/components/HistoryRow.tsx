@@ -5,7 +5,6 @@ import {Text} from 'react-native-elements';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {useLanguage} from '../utils/lang';
 import {HistoryCard} from './HistoryCard';
-import {View} from 'react-native';
 
 export interface HistoryRowProps {
   row: ViewHit[];
@@ -18,8 +17,8 @@ export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
   }
 
   return (
-    <View style={{marginTop: 20}}>
-      <Text style={{fontSize: 20, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+    <>
+      <Text style={{fontSize: 17, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
         {t('continueWatching')}
       </Text>
       <FlatList
@@ -29,6 +28,6 @@ export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
         horizontal
         contentContainerStyle={{marginHorizontal: 10}}
       />
-    </View>
+    </>
   );
 };

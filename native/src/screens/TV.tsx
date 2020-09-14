@@ -2,14 +2,13 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {View, FlatList} from 'react-native';
 import {Text, Image, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
 
 import tvClient from '../api/tv-client';
-import {PROMO_HEIGHT} from '../constants/style';
 import {Promo, Category, Channel} from '../core/interfaces/channel';
 import {tvBaseURL} from '../constants/const';
 import ChannelRow from '../components/ChannelRow';
 import {useLanguage} from '../utils/lang';
-import {useNavigation} from '@react-navigation/native';
 
 export const TVScreen: React.FC = () => {
   const {categories} = useRows();

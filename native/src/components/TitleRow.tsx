@@ -18,7 +18,7 @@ const TitleRow: FunctionComponent<TitleRowProps> = ({row, name}) => {
 
   return (
     <>
-      <Text style={{fontSize: 20, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+      <Text style={{fontSize: 17, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
         {capitalizeFirst(name)}
       </Text>
       <FlatList

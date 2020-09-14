@@ -1,5 +1,6 @@
 import React, {FunctionComponent, useState, useEffect} from 'react';
 import axios from 'axios';
+import NetInfo from '@react-native-community/netinfo';
 
 import UrlBase from '../utils/url-base';
 import {privateBase, publicBase} from '../constants/const';
@@ -26,20 +27,26 @@ const useBase = () => {
   }, []);
 
   const load = async () => {
-    try {
-      const res = await axios.head(privateBase);
-      if (res.status === 200) {
-        UrlBase.baseURL = privateBase;
-      } else {
+    const info = await NetInfo.fetch();
+
+    if (info.isConnected) {
+      try {
+        const res = await axios.head(privateBase);
+        if (res.status === 200) {
+          UrlBase.baseURL = privateBase;
+        } else {
+          UrlBase.baseURL = publicBase;
+        }
+      } catch {
         UrlBase.baseURL = publicBase;
       }
-    } catch {
-      UrlBase.baseURL = publicBase;
-    } finally {
-      UrlBase.private = UrlBase.baseURL === privateBase;
-      UrlBase.client = UrlBase.createClient();
-      setBase({base: UrlBase.baseURL, isPrivate: UrlBase.private});
+    } else {
+      UrlBase.baseURL = privateBase;
     }
+
+    UrlBase.private = UrlBase.baseURL === privateBase;
+    UrlBase.client = UrlBase.createClient();
+    setBase({base: UrlBase.baseURL, isPrivate: UrlBase.private});
   };
 
   return {load, ...base};

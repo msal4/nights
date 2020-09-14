@@ -3,15 +3,34 @@ import Realm from 'realm';
 import {View, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, Image, Icon} from 'react-native-elements';
 import Menu from 'react-native-material-menu';
+import {useNavigation} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import {DownloadTask, Downloader, DownloadStatus} from '../core/Downloader';
-
 import {colors} from '../constants/style';
 import {capitalizeFirst} from '../utils/common';
 import {useLanguage} from '../utils/lang';
-import {useNavigation} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+
 import {DetailScreen} from './Detail';
+import {defaultStackOptions} from '../utils/defaultStackOptions';
+
+const Stack = createStackNavigator();
+
+export const DownloadsScreen: React.FC = () => {
+  const {t} = useLanguage();
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...defaultStackOptions,
+        headerStyle: {backgroundColor: colors.black},
+        headerTintColor: colors.white,
+      }}>
+      <Stack.Screen name="Downloads" component={Downloads} options={{title: t('downloads')}} />
+      <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />
+    </Stack.Navigator>
+  );
+};
 
 export const Downloads: React.FC = () => {
   const [tasks, setTasks] = useState<Realm.Results<DownloadTask & Realm.Object>>();
@@ -38,21 +57,6 @@ export const Downloads: React.FC = () => {
         ))}
       </ScrollView>
     </>
-  );
-};
-const Stack = createStackNavigator();
-
-export const DownloadsScreen: React.FC = () => {
-  const {t} = useLanguage();
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {backgroundColor: colors.black},
-        headerTintColor: colors.white,
-      }}>
-      <Stack.Screen name="Downloads" component={Downloads} options={{title: t('downloads')}} />
-      <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />
-    </Stack.Navigator>
   );
 };
 

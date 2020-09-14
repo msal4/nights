@@ -57,7 +57,7 @@ export default () => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
+      <StatusBar translucent barStyle="light-content" backgroundColor="transparent" />
       <ThemeProvider theme={elementsTheme}>
         <UrlProvider>
           <AuthProvider>

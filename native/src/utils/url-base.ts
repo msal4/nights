@@ -4,7 +4,7 @@ import AuthToken from './auth-token';
 class UrlBase {
   static publicBase = 'http://185.217.88.44:1001';
   static privateBase = 'http://172.18.0.224';
-  static baseURL = 'http://185.217.88.44:1001';
+  static baseURL = UrlBase.publicBase;
   static private = false;
 
   static client = UrlBase.createClient();
