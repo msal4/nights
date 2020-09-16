@@ -134,8 +134,8 @@ android {
         applicationId "fun.OneThousandnights.cinema"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "3.2"
+        versionCode 18
+        versionName "3.4"
         multiDexEnabled true
     }
     splits {
