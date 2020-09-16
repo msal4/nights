@@ -68,7 +68,6 @@ export class Player extends React.Component<
       this.setState({loading: false}, async () => {
         try {
           this.props.load && (await this.props.load());
-          console.log('it is called');
         } catch {}
       });
     });
@@ -93,10 +92,7 @@ export class Player extends React.Component<
       <>
         <StatusBar hidden />
         <VideoPlayer
-          ref={(ref: any) => {
-            (videoRef!.current as any) = ref;
-            console.log('ref is set');
-          }}
+          ref={videoRef}
           navigator={this.props.navigation}
           source={{uri: video}}
           style={{

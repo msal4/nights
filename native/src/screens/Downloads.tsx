@@ -50,13 +50,11 @@ export const Downloads: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <ScrollView contentContainerStyle={{padding: 20}}>
-        {tasks?.map((t) => (
-          <TaskCard key={t.id} task={t} />
-        ))}
-      </ScrollView>
-    </>
+    <ScrollView contentContainerStyle={{padding: 20}}>
+      {tasks?.map((t) => (
+        <TaskCard key={t.id} task={t} />
+      ))}
+    </ScrollView>
   );
 };
 

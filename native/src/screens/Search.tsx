@@ -29,6 +29,17 @@ export const SearchScreen: React.FC = () => {
   );
 };
 
+const createOrderings = (t: (term: string) => string): Topic[] => [
+  {id: 'name', name: t('nameAsc')},
+  {id: '-name', name: t('nameDesc')},
+  {id: '-views', name: `${t('popularity')} ${t('asc')}`},
+  {id: 'views', name: `${t('popularity')} ${t('desc')}`},
+  {id: 'rating', name: `${t('rating')} ${t('asc')}`},
+  {id: '-rating', name: `${t('rating')} ${t('desc')}`},
+  {id: 'created_at', name: t('releaseDateAsc')},
+  {id: '-created_at', name: t('releaseDateDesc')},
+];
+
 const Search: React.FC = () => {
   const {setQuery, searchResults: result, setParams, params} = useSearch();
   const {width} = Dimensions.get('window');
@@ -37,16 +48,7 @@ const Search: React.FC = () => {
   const {t} = useLanguage();
   const {genres} = useGenres();
 
-  const orderings: Topic[] = [
-    {id: 'name', name: t('nameAsc')},
-    {id: '-name', name: t('nameDesc')},
-    {id: '-views', name: `${t('popularity')} ${t('asc')}`},
-    {id: 'views', name: `${t('popularity')} ${t('desc')}`},
-    {id: 'rating', name: `${t('rating')} ${t('asc')}`},
-    {id: '-rating', name: `${t('rating')} ${t('desc')}`},
-    {id: 'created_at', name: t('releaseDateAsc')},
-    {id: '-created_at', name: t('releaseDateDesc')},
-  ];
+  const orderings: Topic[] = createOrderings(t);
 
   return (
     <SafeAreaView edges={['top']} style={{flex: 1}}>
@@ -60,53 +62,43 @@ const Search: React.FC = () => {
           onChangeText={(value) => setQuery(value)}
         />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-            marginRight: 5,
-            justifyContent: 'space-around',
-            zIndex: 10,
-          }}>
-          {genres && (
-            <Filter
-              items={genres}
-              name={t('genres')}
-              onChange={(genre) => {
-                setParams({...params, genres: genre});
-              }}
-            />
-          )}
-
-          <Filter
-            items={orderings}
-            name={t('sort')}
-            onChange={(item) => {
-              setParams({...params, ordering: item});
-            }}
-          />
-
-          <Filter
-            items={[
-              {id: null, name: t('type')} as any,
-              {id: 'm', name: t('movies')},
-              {id: 's', name: t('series')},
-            ]}
-            name={t('type')}
-            onChange={(type) => {
-              setParams({...params, type});
-            }}
-          />
-        </View>
-
         {result && (
           <View
             style={{
               marginTop: 10,
               flexDirection: 'row',
               flexWrap: 'wrap',
+              justifyContent: 'space-between',
             }}>
+            {genres && (
+              <Filter
+                items={genres}
+                name={t('genres')}
+                onChange={(genre) => {
+                  setParams({...params, genres: genre});
+                }}
+              />
+            )}
+
+            <Filter
+              items={orderings}
+              name={t('sort')}
+              onChange={(item) => {
+                setParams({...params, ordering: item});
+              }}
+            />
+
+            <Filter
+              items={[
+                {id: null, name: t('type')} as any,
+                {id: 'm', name: t('movies')},
+                {id: 's', name: t('series')},
+              ]}
+              name={t('type')}
+              onChange={(type) => {
+                setParams({...params, type});
+              }}
+            />
             {result.result &&
               result.result.results.map((title) => <Title key={title.id} title={title} width={cardWidth} />)}
           </View>
