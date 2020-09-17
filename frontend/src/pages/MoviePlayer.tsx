@@ -1,28 +1,28 @@
-import React, { FunctionComponent, useState, useEffect } from "react"
-import { useParams, useHistory } from "react-router-dom"
+import React, { FunctionComponent, useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
-import { TitleDetail, ImageQuality } from "../core/interfaces/title"
-import { getTitle, hitTopic, getHit } from "../api/title"
-import Player from "../components/Player"
-import { useAuth } from "../context/auth-context"
-import { ViewHit } from "../core/interfaces/view-hit"
-import { getImageUrl } from "../utils/common"
-import LoadingIndicator from "../components/LoadingIndicator"
+import { TitleDetail, ImageQuality } from "../core/interfaces/title";
+import { getTitle, hitTopic, getHit } from "../api/title";
+import Player from "../components/Player";
+import { useAuth } from "../context/auth-context";
+import { ViewHit } from "../core/interfaces/view-hit";
+import { getImageUrl } from "../utils/common";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const MoviePlayer: FunctionComponent = () => {
-  const { id } = useParams()
-  const history = useHistory()
-  const { token } = useAuth()
-  const { title, hit, loading } = useTitle(id, token || "")
+  const { id } = useParams();
+  const history = useHistory();
+  const { token } = useAuth();
+  const { title, hit, loading } = useTitle(id, token || "");
 
   const onUpdatePosition = async (position: number, duration: number) => {
     if (token) {
       await hitTopic(title?.id || "", {
         playback_position: position,
         runtime: duration,
-      })
+      });
     }
-  }
+  };
 
   return (
     <div>
@@ -40,41 +40,41 @@ const MoviePlayer: FunctionComponent = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
 const useTitle = (id: string | number, token: string) => {
-  const [title, setTitle] = useState<TitleDetail | null>(null)
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [hit, setHit] = useState<ViewHit | null>(null)
+  const [title, setTitle] = useState<TitleDetail | null>(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [hit, setHit] = useState<ViewHit | null>(null);
 
   const getTitleDetail = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const title = await getTitle(id)
+      const title = await getTitle(id);
       if (token) {
         try {
-          const data = await getHit(title.id)
-          setHit(data)
+          const data = await getHit(title.id);
+          setHit(data);
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       }
-      if (error) setError(null)
-      setTitle(title)
+      if (error) setError(null);
+      setTitle(title);
     } catch (error) {
-      setError(error)
+      setError(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    getTitleDetail()
-  }, [id, token])
+    getTitleDetail();
+  }, [id, token]);
 
-  return { title, hit, error, loading }
-}
+  return { title, hit, error, loading };
+};
 
-export default MoviePlayer
+export default MoviePlayer;
