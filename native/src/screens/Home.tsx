@@ -5,14 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  NativeScrollEvent,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
+import {View, TouchableOpacity, SafeAreaView, RefreshControl, ActivityIndicator} from 'react-native';
 
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
@@ -23,7 +16,7 @@ import {useLanguage} from '../utils/lang';
 import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
 import {colors, PROMO_HEIGHT} from '../constants/style';
-import {getImageUrl, joinTopics} from '../utils/common';
+import {getImageUrl, isCloseToBottom, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
 import {useAuth} from '../context/auth-context';
@@ -42,11 +35,6 @@ export const HomeScreen: React.FC = () => {
       <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
   );
-};
-
-const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
-  const paddingToBottom = 20;
-  return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
 };
 
 const Home = () => {

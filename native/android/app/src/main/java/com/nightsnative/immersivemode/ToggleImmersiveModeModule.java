@@ -48,14 +48,9 @@ public class ToggleImmersiveModeModule extends ReactContextBaseJavaModule {
         final int flag = View.SYSTEM_UI_FLAG_VISIBLE;
 
         if (reactActivity != null) {
-            reactActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    reactActivity.getWindow()
-                            .getDecorView()
-                            .setSystemUiVisibility(flag);
-                }
-            });
+            reactActivity.runOnUiThread(() -> reactActivity.getWindow()
+                    .getDecorView()
+                    .setSystemUiVisibility(flag));
         }
     }
 }

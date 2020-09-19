@@ -87,7 +87,7 @@ export class SeriesPlayerScreen extends React.Component<
   }
 
   async playEpisode(episode: Episode) {
-    const video = episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4');
+    const video = swapEpisodeUrlId(episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'));
     const subtitles = episode.subtitles.map(
       (sub) =>
         ({

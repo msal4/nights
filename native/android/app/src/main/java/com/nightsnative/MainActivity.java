@@ -1,6 +1,10 @@
 package com.nightsnative;
 
+import android.app.Activity;
+import android.view.View;
+
 import com.facebook.react.GoogleCastActivity;
+import com.nightsnative.ToggleImmersiveModeModule;
 
 public class MainActivity extends GoogleCastActivity {
 

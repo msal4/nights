@@ -75,6 +75,7 @@ export const trans = {
     similar: 'Similar',
     settings: 'Settings',
     language: 'Language',
+    year: 'Year',
   },
   ar: {
     lang: 'عربي',
@@ -91,6 +92,7 @@ export const trans = {
     refreshing: 'جاري اعادة التحميل',
     kids: 'الاطفال',
     play: 'تشغيل',
+    year: 'السنة',
     myList: 'قائمتي',
     info: 'معلومات',
     continueWatching: 'واصل المشاهدة',

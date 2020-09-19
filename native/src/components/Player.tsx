@@ -74,9 +74,9 @@ export class Player extends React.Component<
   }
 
   componentWillUnmount() {
-    if (Platform.OS === 'android') {
-      NativeModules.ToggleImmersiveMode.immersiveModeOff();
-    }
+    // if (Platform.OS === 'android') {
+    //   NativeModules.ToggleImmersiveMode.immersiveModeOff();
+    // }
     Orientation.lockToPortrait();
   }
 
@@ -107,6 +107,7 @@ export class Player extends React.Component<
           textTracks={subtitles?.length ? subtitles : undefined}
           onLoad={async () => {}}
           onError={(err: any) => {
+            console.log(video, subtitles);
             console.log(err);
           }}
           onProgress={onProgress}
