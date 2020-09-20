@@ -1,0 +1,48 @@
+.custom-icon-forward,
+.custom-icon-rewind {
+  font-family: THEOplayer;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.custom-icon-forward:before {
+  content: '\f11f';
+  font-size: 2.2em;
+}
+
+.custom-icon-rewind:before {
+  content: '\f120';
+  font-size: 2.2em;
+}
+
+.theo-primary-color,
+.vjs-selected {
+  color: #ea1437 !important;
+}
+
+.theo-primary-background {
+  color: #000000 !important;
+  background-color: #ea1437 !important;
+}
+
+.theo-secondary-color {
+  color: #ffffff !important;
+}
+
+.theo-secondary-background {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+.theo-tertiary-color {
+  color: #000000 !important;
+}
+
+.theo-tertiary-background {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+}
+/* 
+.theoplayer-skin .vjs-fullscreen-control {
+  display: none;
+} */

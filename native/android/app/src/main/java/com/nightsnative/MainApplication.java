@@ -23,6 +23,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     MultiDex.install(this);
   }
 
+
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
         @Override
@@ -36,6 +37,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           packages.add(new ToggleImmersiveModePackage());
+          packages.add(new TheoPlayerPackage());
           return packages;
         }
 
@@ -87,4 +89,5 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
       }
     }
   }
+
 }

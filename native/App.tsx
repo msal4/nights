@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {NativeModules, Platform, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -48,10 +48,6 @@ export default () => {
     Downloader.open();
     GoogleCast.getCastDevice().then(console.log);
     registerListeners();
-
-    if (Platform.OS === 'android') {
-      NativeModules.ToggleImmersiveMode.immersiveModeOn();
-    }
 
     return () => {
       GoogleCast.endSession();

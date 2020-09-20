@@ -34,8 +34,13 @@ export const TVScreen: React.FC = () => {
                     buttonStyle={{borderRadius: 9999, paddingHorizontal: 40}}
                     onPress={async () => {
                       try {
-                        const channel: Channel = await tvClient.get(`channels/${promo?.channel_id}`);
-                        navigation.navigate('TvPlayer', channel);
+                        const {channel}: {channel: Channel} = await tvClient.get(
+                          `channels/${promo?.channel_id}`,
+                        );
+
+                        if (channel) {
+                          navigation.navigate('TvPlayer', channel);
+                        }
                       } catch {}
                     }}
                   />
