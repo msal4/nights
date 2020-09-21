@@ -4,8 +4,10 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
 import com.theoplayer.android.api.player.track.texttrack.TextTrack;
+import com.theoplayer.android.api.player.track.texttrack.TextTrackKind;
 import com.theoplayer.android.api.source.SourceDescription;
 import com.theoplayer.android.api.source.SourceType;
+import com.theoplayer.android.api.source.TextTrackDescription;
 import com.theoplayer.android.api.source.TypedSource;
 import com.theoplayer.android.api.source.addescription.AdDescription;
 import com.theoplayer.android.api.source.addescription.GoogleImaAdDescription;
@@ -36,7 +38,7 @@ public class SourceHelper {
 
             //typed sources
             ArrayList<TypedSource> typedSources = new ArrayList<>();
-            for (int i = 0 ; i < jsonSources.length(); i++) {
+            for (int i = 0; i < jsonSources.length(); i++) {
                 JSONObject jsonTypedSource = (JSONObject) jsonSources.get(i);
 
                 SourceType sourceType = null;
@@ -47,20 +49,23 @@ public class SourceHelper {
                 TypedSource ts = TypedSource.Builder.typedSource().src(jsonTypedSource.getString("src")).type(sourceType).build();
                 typedSources.add(ts);
             }
-//
-//            //typed sources
-//            ArrayList<TextTrack> typedTextTracks = new ArrayList<>();
-//            for (int i = 0 ; i < jsonTracks.length(); i++) {
-//                JSONObject jsonTrack = (JSONObject) jsonTracks.get(i);
-//
-//                SourceType sourceType = null;
-//                if (jsonTrack.getString("type").equals("application/x-mpegurl")) {
-//                    sourceType = SourceType.HLSX;
-//                }
-//
-//                TypedSource ts = TypedSource.Builder.typedSource().src(jsonTypedSource.getString("src")).type(sourceType).build();
-//                typedSources.add(ts);
-//            }
+
+            //tracks
+            ArrayList<TextTrackDescription> tracks = new ArrayList<>();
+            for (int i = 0; i < jsonTracks.length(); i++) {
+                JSONObject jsonTrack = (JSONObject) jsonTracks.get(i);
+
+
+                TextTrackDescription track = new TextTrackDescription(
+                        jsonTrack.getString("src"), //src
+                        jsonTrack.getBoolean("default"), //isDefault
+                        TextTrackKind.SUBTITLES,
+                        jsonTrack.getString("srclang"), //srclang
+                        jsonTrack.getString("label") // label
+                );
+
+                tracks.add(track);
+            }
 
             //poster
             String poster = jsonSourceObject.optString("poster");
@@ -69,7 +74,7 @@ public class SourceHelper {
             JSONArray jsonAds = jsonSourceObject.optJSONArray("ads");
             ArrayList<AdDescription> ads = new ArrayList<>();
             if (jsonAds != null) {
-                for (int i = 0 ; i < jsonAds.length(); i++) {
+                for (int i = 0; i < jsonAds.length(); i++) {
                     JSONObject jsonAdDescription = (JSONObject) jsonAds.get(i);
                     String integration = "";
                     String integrationGoogleIma = "google-ima";
@@ -85,7 +90,11 @@ public class SourceHelper {
                     }
                 }
             }
-            return SourceDescription.Builder.sourceDescription(typedSources.toArray(new TypedSource[]{})).poster(poster).ads(ads.toArray(new AdDescription[]{})).build();
+            return SourceDescription.Builder
+                    .sourceDescription(typedSources.toArray(new TypedSource[]{}))
+                    .textTracks(tracks.toArray(new TextTrackDescription[]{}))
+                    .poster(poster)
+                    .ads(ads.toArray(new AdDescription[]{})).build();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -133,10 +142,11 @@ public class SourceHelper {
 
     /**
      * Eliminate all the Readable* classes from the map
+     *
      * @param readableMap
      * @return
      */
-    protected static HashMap<String, Object> eliminateReadables(ReadableMap readableMap){
+    protected static HashMap<String, Object> eliminateReadables(ReadableMap readableMap) {
         HashMap<String, Object> hashMap = readableMap.toHashMap();
         HashMap<String, Object> eliminatedHashMap = new HashMap<>();
 
@@ -154,10 +164,11 @@ public class SourceHelper {
 
     /**
      * Eliminate all the Readable* classes from the array
+     *
      * @param readableArray
      * @return
      */
-    protected static ArrayList<Object> eliminateReadables(ReadableArray readableArray){
+    protected static ArrayList<Object> eliminateReadables(ReadableArray readableArray) {
         ArrayList<Object> arrayList = readableArray.toArrayList();
         ArrayList<Object> eliminatedArrayList = new ArrayList<>();
 

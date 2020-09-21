@@ -15,6 +15,16 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.theoplayer.android.api.THEOplayerConfig;
 import com.theoplayer.android.api.THEOplayerView;
+import com.theoplayer.android.api.cast.chromecast.PlayerCastState;
+import com.theoplayer.android.api.event.EventListener;
+import com.theoplayer.android.api.event.chromecast.CastStateChangeEvent;
+import com.theoplayer.android.api.event.chromecast.ChromecastEventTypes;
+import com.theoplayer.android.api.event.player.PlayerEventTypes;
+import com.theoplayer.android.api.event.player.PlayingEvent;
+import com.theoplayer.android.api.event.track.texttrack.list.TextTrackListEventTypes;
+import com.theoplayer.android.api.event.track.texttrack.list.TrackListChangeEvent;
+import com.theoplayer.android.api.player.track.texttrack.TextTrack;
+import com.theoplayer.android.api.player.track.texttrack.TextTrackMode;
 import com.theoplayer.android.api.source.SourceDescription;
 
 import java.io.IOException;
@@ -33,6 +43,7 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
     public String getName() {
         return RCT_MODULE_NAME;
     }
+    TextTrack currentTextTrack;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -47,8 +58,8 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
                 .build();
 
         playerView = new THEOplayerView(activity, config);
-        playerView.evaluateJavaScript("init({player: player})", null);
         playerView.getFullScreenManager().requestFullScreen();
+        playerView.evaluateJavaScript("init({player: player})", null);
 
         reactContext.addLifecycleEventListener(this);
 
@@ -89,7 +100,6 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
         playerView.onPause();
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onHostDestroy() {
         playerView.onDestroy();
