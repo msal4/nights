@@ -1,6 +1,6 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import Video, {OnProgressData} from 'react-native-video';
+import {OnProgressData} from 'react-native-video';
 
 import {TitleDetail, Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getTitle} from '../api/title';
@@ -13,17 +13,17 @@ export interface PlayerParams {
 
 export class MoviePlayerScreen extends React.Component<
   {navigation: ReturnType<typeof useNavigation>; route: ReturnType<typeof useRoute>},
-  {video: string | null; subtitles: Sub[] | undefined; title: TitleDetail | null}
+  {video: string | null; subtitles: Sub[] | undefined; title: TitleDetail | null; startTime?: number}
 > {
   constructor(props: any) {
     super(props);
-    this.videoRef = React.createRef();
     this.lastHit = React.createRef();
 
     this.state = {
       title: null,
       video: null,
       subtitles: undefined,
+      startTime: undefined,
     };
   }
 
@@ -31,7 +31,6 @@ export class MoviePlayerScreen extends React.Component<
 
   context!: React.ContextType<typeof AuthContext>;
 
-  videoRef: React.RefObject<{player: {ref: Video}}>;
   lastHit: React.RefObject<number>;
 
   async componentDidMount() {
@@ -50,34 +49,32 @@ export class MoviePlayerScreen extends React.Component<
     );
     // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({video, subtitles});
+    await this.continueWatching(title.id);
   }
 
   async continueWatching(id: number) {
     try {
       const hit = await getHit(id);
-      this.videoRef.current?.player.ref.seek(hit.playback_position);
+      this.setState({startTime: hit.playback_position ?? 0});
+      // this.videoRef.current?.player.ref.seek(hit.playback_position);
     } catch (err) {
       console.log(err);
+      this.setState({startTime: 0});
     }
   }
 
   render() {
-    const {video, subtitles} = this.state;
+    const {video, subtitles, startTime} = this.state;
     const {title} = this.props.route.params as PlayerParams;
     const {token} = this.context;
 
-    return video ? (
+    return video && startTime !== undefined ? (
       <Player
-        videoRef={this.videoRef}
-        navigation={this.props.navigation}
         video={video}
         subtitles={subtitles}
         title={title.name}
-        load={async () => {
-          if (token) {
-            await this.continueWatching(title.id);
-          }
-        }}
+        load={async () => {}}
+        startTime={startTime}
         onProgress={
           token
             ? (data: OnProgressData) => {

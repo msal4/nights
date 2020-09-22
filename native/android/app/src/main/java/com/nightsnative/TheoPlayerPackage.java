@@ -16,7 +16,7 @@ public class TheoPlayerPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.<NativeModule>asList(
-//                new ReactNativeEventEmitterHelper(reactContext, theoPlayerViewManager),
+                new ReactNativeEventEmitterHelper(reactContext, theoPlayerViewManager),
                 new TheoPlayerViewModule(reactContext, theoPlayerViewManager)
         );
     }

@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {OnProgressData} from 'react-native-video';
-import {Dimensions, NativeModules, Platform, StyleSheet, View} from 'react-native';
+import {NativeModules, Platform, StyleSheet, View} from 'react-native';
 import {TheoPlayer} from './TheoPlayer';
 import {ScrollView} from 'react-native-gesture-handler';
-import Orientation from 'react-native-orientation';
 import {Icon} from 'react-native-elements';
 import {colors} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import TheoEventEmitter from '../utils/theo-event-emitter';
+
+const theoEventEmitter = new TheoEventEmitter();
 
 export interface Sub {
   title: string;
@@ -25,17 +27,41 @@ interface PlayerProps {
   load?: () => Promise<void>;
 }
 
-export const Player: React.FC<PlayerProps> = ({video, subtitles}) => {
+export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress}) => {
   const playerStyle: any = {...styles.player};
   const navigation = useNavigation();
+  const duration = useRef<number>();
+  const listeners = useRef<any>({});
 
   useEffect(() => {
-    // Orientation.lockToLandscape();
+    if (onProgress) {
+      listeners.current.timeUpdateListener = theoEventEmitter.addListener('timeupdate', (e: any) => {
+        if (!duration.current) {
+          duration.current = NativeModules.THEOplayerViewManager.getDuration();
+        }
+
+        if (e.currentTime > duration.current! + 30 || e.currentTime < duration.current!) {
+          onProgress({currentTime: e.currentTime, seekableDuration: duration.current!, playableDuration: 0});
+          console.log('timeupdate:', e);
+        }
+      });
+    }
+
+    if (startTime) {
+      listeners.current.loadedDataListener = theoEventEmitter.addListener('loadeddata', (e: any) => {
+        NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
+        console.log('loadeddata:', e);
+      });
+    }
+
+    const currentListeners = listeners.current;
+
     return () => {
-      NativeModules.THEOplayerViewManager?.destroy();
-      // Orientation.lockToPortrait();
-      // NativeModules.ToggleImmersiveMode.immersiveModeOff();
+      Object.keys(currentListeners).forEach((key) => {
+        currentListeners[key].remove();
+      });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let BaseComponent: any = View;
@@ -50,15 +76,6 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles}) => {
   if (!video) {
     return null;
   }
-  console.log(
-    subtitles?.map((s) => ({
-      default: s.language === 'ar',
-      kind: 'subtitles',
-      label: s.title,
-      src: s.uri,
-      srclang: s.language,
-    })),
-  );
 
   return (
     <BaseComponent style={styles.container}>
@@ -73,6 +90,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles}) => {
           }}
         />
       </SafeAreaView>
+
       <TheoPlayer
         style={playerStyle}
         source={{
@@ -94,7 +112,6 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles}) => {
 const styles = StyleSheet.create({
   container: {flex: 1},
   player: {
-    // aspectRatio: 1.7,
     flex: 1,
   },
 });

@@ -17,6 +17,7 @@ import {MoviePlayerScreen} from './src/screens/MoviePlayer';
 import {SeriesPlayerScreen} from './src/screens/SeriesPlayer';
 import {TvPlayerScreen} from './src/screens/TvPlayer';
 import {UrlProvider} from './src/context/url-context';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 Ionicons.loadFont();
 
@@ -48,6 +49,7 @@ export default () => {
     Downloader.open();
     GoogleCast.getCastDevice().then(console.log);
     registerListeners();
+    changeNavigationBarColor(colors.gray, true, true);
 
     return () => {
       GoogleCast.endSession();

@@ -104,6 +104,7 @@ const Search: React.FC = () => {
               alignItems: 'center',
             },
           }}
+          value={query}
           onChangeText={(value) => setQuery(value)}
         />
         {isVisible ? (

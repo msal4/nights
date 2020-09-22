@@ -1,5 +1,5 @@
-import React from 'react';
-import {requireNativeComponent} from 'react-native';
+import React, {useEffect} from 'react';
+import {NativeModules, requireNativeComponent} from 'react-native';
 
 interface TheoPlayerProps {
   autoplay?: boolean;
@@ -26,6 +26,12 @@ export const TheoPlayer: React.FC<TheoPlayerProps> = ({
   source,
   ...props
 }) => {
+  useEffect(() => {
+    return () => {
+      NativeModules.THEOplayerViewManager?.destroy();
+    };
+  }, []);
+
   return (
     <THEOplayerViewNative
       autoplay={autoplay}
