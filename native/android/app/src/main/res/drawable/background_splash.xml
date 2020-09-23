@@ -6,9 +6,9 @@
         android:drawable="@color/bg"/>
 
     <item
-        android:width="100dp"
-        android:height="100dp"
-        android:drawable="@mipmap/ic_launcher_round"
+        android:width="300dp"
+        android:height="80dp"
+        android:drawable="@mipmap/splash_logo"
         android:gravity="center"
         tools:ignore="UnusedAttribute" />
 
