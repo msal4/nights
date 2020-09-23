@@ -14,7 +14,7 @@ const ChannelRow: FunctionComponent<{category: Category}> = ({category}) => {
 
   return (
     <>
-      <Text style={{fontSize: 22, marginBottom: 10, marginHorizontal: 10}}>
+      <Text style={{fontSize: 17, marginBottom: 10, marginHorizontal: 10}}>
         {(category as any)['name' + (lang === 'en' ? '' : '_ar')]}
       </Text>
       <FlatList

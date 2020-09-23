@@ -18,6 +18,7 @@ import {SeriesPlayerScreen} from './src/screens/SeriesPlayer';
 import {TvPlayerScreen} from './src/screens/TvPlayer';
 import {UrlProvider} from './src/context/url-context';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import SplashScreen from 'react-native-splash-screen';
 
 Ionicons.loadFont();
 
@@ -45,11 +46,12 @@ const elementsTheme: ElementsTheme = {
 
 export default () => {
   useEffect(() => {
+    changeNavigationBarColor(colors.gray, true, true);
+    SplashScreen.hide();
     Orientation.lockToPortrait();
     Downloader.open();
     GoogleCast.getCastDevice().then(console.log);
     registerListeners();
-    changeNavigationBarColor(colors.gray, true, true);
 
     return () => {
       GoogleCast.endSession();

@@ -116,7 +116,7 @@ export class Downloader {
   }
 
   static download(params: TaskParams) {
-    const mediaDir = `${RNBackgroundDownloader.directories.documents}/media/`;
+    const mediaDir = `${RNBackgroundDownloader.directories.documents}/media`;
     const imagesDir = `${RNBackgroundDownloader.directories.documents}/images`;
 
     const path = `${mediaDir}/${params.id}.mp4`;
@@ -287,16 +287,6 @@ export class Downloader {
             {t('retry')}
           </MenuItem>
         ) : null}
-        {/* {task.status === DownloadStatus.PAUSED || task.status === DownloadStatus.DOWNLOADING ? (
-          <MenuItem
-            textStyle={{color: colors.white}}
-            underlayColor={colors.blue}
-            onPress={() => {
-              menuRef.current?.hide();
-            }}>
-            {task.status === DownloadStatus.DOWNLOADING ? t('pause') : t('resume')}
-          </MenuItem>
-        ) : null} */}
         <MenuItem
           textStyle={{color: colors.white}}
           underlayColor={colors.red}

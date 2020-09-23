@@ -233,7 +233,7 @@ const useGenres = () => {
 const useSearch = () => {
   const [query, setQuery] = useState('');
   const [params, setParams] = useState({});
-  // const [refresh, setRefresh] = useState(true);
+  const [refresh, setRefresh] = useState(true);
 
   const debouncedSearchFunction = useConstant(() => {
     return AwesomeDebouncePromise(getTitles, 300);
@@ -241,6 +241,7 @@ const useSearch = () => {
 
   const searchResults = useAsync(async () => {
     return await debouncedSearchFunction({...params, search: query});
-  }, [debouncedSearchFunction, query, params]);
-  return {query, setQuery, searchResults, params, setParams};
+  }, [debouncedSearchFunction, query, params, refresh]);
+
+  return {query, setQuery, searchResults, params, setParams, setRefresh};
 };

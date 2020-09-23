@@ -20,7 +20,7 @@ export const ChannelCard: FunctionComponent<ChannelProps> = ({channel}) => {
         navigation.navigate('TvPlayer', {url: channel.url, name: channel.name});
       }}>
       <Image
-        style={{height: 200, width: 200}}
+        style={{height: 110, width: 110}}
         source={{uri: `${tvBaseURL}${channel.image}`, cache: 'force-cache'}}
       />
     </TouchableOpacity>

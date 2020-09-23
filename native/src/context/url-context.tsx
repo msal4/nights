@@ -4,6 +4,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 import UrlBase from '../utils/url-base';
 import {privateBase, publicBase} from '../constants/const';
+import {Platform} from 'react-native';
 
 const UrlContext = React.createContext<Base>({
   base: UrlBase.baseURL,
@@ -29,7 +30,7 @@ const useBase = () => {
   const load = async () => {
     const info = await NetInfo.fetch();
 
-    if (info.isConnected) {
+    if (info.isConnected && Platform.OS === 'ios') {
       try {
         const res = await axios.head(privateBase);
         if (res.status === 200) {

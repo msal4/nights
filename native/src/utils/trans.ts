@@ -76,8 +76,10 @@ export const trans = {
     settings: 'Settings',
     language: 'Language',
     year: 'Year',
+    seeOnImdb: 'See on IMDB',
   },
   ar: {
+    seeOnImdb: 'اذهب الى IMDB',
     lang: 'عربي',
     retry: 'اعادة المحاولة',
     delete: 'حذف',

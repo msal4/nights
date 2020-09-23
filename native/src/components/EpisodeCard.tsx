@@ -2,6 +2,10 @@ import React, {FunctionComponent, useRef, useEffect} from 'react';
 import {View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Text, Icon} from 'react-native-elements';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
+import Menu from 'react-native-material-menu';
+import LinearGradient from 'react-native-linear-gradient';
+import GoogleCast from 'react-native-google-cast';
 
 import {Episode} from '../core/interfaces/episode';
 import {colors} from '../constants/style';
@@ -10,12 +14,8 @@ import {TitleDetail} from '../core/interfaces/title';
 import {Season} from '../core/interfaces/season';
 import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
-import Menu from 'react-native-material-menu';
 import {useLanguage} from '../utils/lang';
-import GoogleCast from 'react-native-google-cast';
-import LinearGradient from 'react-native-linear-gradient';
 import {useUrl} from '../context/url-context';
-import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -65,7 +65,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
     <View
       style={{
         flexDirection: 'row',
-        alignItems: 'center',
+        // alignItems: 'center',
         height: 80,
         overflow: 'hidden',
         marginTop: 20,
@@ -146,7 +146,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
               subtitles,
             });
           }}>
-          {!task ? <Icon type="ionicon" name="download-outline" color={colors.blue} size={35} /> : null}
+          {!task ? <Icon type="ionicon" name="download-outline" color={colors.blue} size={30} /> : null}
           {task &&
             Downloader.renderMenu(
               menuRef,
@@ -162,9 +162,9 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
                   backgroundColor={colors.gray}
                 />
               ) : task.status === DownloadStatus.DONE ? (
-                <Icon type="ionicon" name="ellipsis-vertical-sharp" size={35} color={colors.blue} />
+                <Icon type="ionicon" name="ellipsis-vertical-sharp" size={20} color={colors.blue} />
               ) : (
-                <Icon type="ionicon" name="refresh" size={35} color={colors.red} />
+                <Icon type="ionicon" name="refresh" size={25} color={colors.red} />
               ),
               t,
               navigation,

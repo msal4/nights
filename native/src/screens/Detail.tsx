@@ -6,7 +6,6 @@ import {Image, Icon, Text} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import GoogleCast, {CastButton} from 'react-native-google-cast';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 import {getImageUrl, joinTopics} from '../utils/common';
@@ -48,12 +47,6 @@ export const DetailScreen: React.FC = () => {
 
     Downloader.onChange(listener);
 
-    GoogleCast.getCastState().then((state) => {
-      if (state === 'NotConnected') {
-        GoogleCast.showIntroductoryOverlay();
-      }
-    });
-
     return () => {
       Downloader.removeOnChangeListener(listener);
     };
@@ -73,7 +66,7 @@ export const DetailScreen: React.FC = () => {
   }
 
   const image = getImageUrl(title?.images[0].url, ImageQuality.h900);
-  const poster = getImageUrl(title?.images[0].url);
+  // const poster = getImageUrl(title?.images[0].url);
 
   return (
     <>
@@ -108,11 +101,6 @@ export const DetailScreen: React.FC = () => {
                     navigation.goBack();
                   }}
                 />
-                {isPrivate ? (
-                  <CastButton
-                    style={{marginLeft: 'auto', width: 50, height: 50, tintColor: 'white'} as any}
-                  />
-                ) : null}
                 <Icon
                   type="ionicon"
                   size={50}
@@ -156,27 +144,10 @@ export const DetailScreen: React.FC = () => {
                         return;
                       }
 
-                      const state = await GoogleCast.getCastState();
-                      console.log(state);
-
-                      if (state === 'Connected') {
-                        if (title.type === 'm') {
-                          GoogleCast.castMedia({
-                            mediaUrl: title.videos[0]?.url.replace('{q}', '720'),
-                            imageUrl: image,
-                            posterUrl: poster,
-                            title: title.name,
-                            subtitle: title.plot,
-                            studio: '1001 Nights',
-                            streamDuration: title.runtime || 0, // seconds
-                          });
-                        }
+                      if (title.type === 'm') {
+                        navigation.navigate('MoviePlayer', {title});
                       } else {
-                        if (title?.type === 'm') {
-                          navigation.navigate('MoviePlayer', {title});
-                        } else {
-                          navigation.navigate('SeriesPlayer', {title});
-                        }
+                        navigation.navigate('SeriesPlayer', {title});
                       }
                     }}>
                     <Icon type="ionicon" name="play" size={50} color={colors.white} />

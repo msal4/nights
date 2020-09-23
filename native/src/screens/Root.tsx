@@ -24,8 +24,8 @@ export const RootScreen: React.FC = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        showLabel: false,
-        style: {backgroundColor: colors.gray},
+        labelStyle: {fontSize: 8},
+        style: {backgroundColor: colors.gray, borderTopWidth: 0},
       }}>
       <Tab.Screen
         name="Home"
