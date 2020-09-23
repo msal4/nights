@@ -1,15 +1,13 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {OnProgressData} from 'react-native-video';
 import {NativeModules, Platform, StyleSheet, View} from 'react-native';
-import {TheoPlayer} from './TheoPlayer';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
-import {colors} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import TheoEventEmitter from '../utils/theo-event-emitter';
 
-const theoEventEmitter = new TheoEventEmitter();
+import {colors} from '../constants/style';
+import {TheoPlayer} from './TheoPlayer';
 
 export interface Sub {
   title: string;
@@ -31,38 +29,6 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
   const playerStyle: any = {...styles.player};
   const navigation = useNavigation();
   const duration = useRef<number>();
-  const listeners = useRef<any>({});
-
-  useEffect(() => {
-    if (onProgress) {
-      listeners.current.timeUpdateListener = theoEventEmitter.addListener('timeupdate', (e: any) => {
-        if (!duration.current) {
-          duration.current = NativeModules.THEOplayerViewManager.getDuration();
-        }
-
-        if (e.currentTime > duration.current! + 30 || e.currentTime < duration.current!) {
-          onProgress({currentTime: e.currentTime, seekableDuration: duration.current!, playableDuration: 0});
-          console.log('timeupdate:', e);
-        }
-      });
-    }
-
-    if (startTime) {
-      listeners.current.loadedDataListener = theoEventEmitter.addListener('loadeddata', (e: any) => {
-        NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
-        console.log('loadeddata:', e);
-      });
-    }
-
-    const currentListeners = listeners.current;
-
-    return () => {
-      Object.keys(currentListeners).forEach((key) => {
-        currentListeners[key].remove();
-      });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   let BaseComponent: any = View;
 
@@ -103,6 +69,20 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
             srclang: s.language,
           })),
         }}
+        onLoadedData={() => {
+          startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
+        }}
+        onTimeUpdate={
+          onProgress &&
+          (async ({nativeEvent: {currentTime}}: any) => {
+            if (!duration.current) {
+              duration.current = await NativeModules.THEOplayerViewManager.getDuration();
+            }
+
+            onProgress({currentTime, seekableDuration: duration.current!, playableDuration: 0});
+            console.log('timeupdate from prop', currentTime);
+          })
+        }
         autoplay
       />
     </BaseComponent>
@@ -110,7 +90,9 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {
+    flex: 1,
+  },
   player: {
     flex: 1,
   },

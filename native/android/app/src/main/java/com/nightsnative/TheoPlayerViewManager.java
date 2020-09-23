@@ -1,9 +1,6 @@
 package com.nightsnative;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -11,7 +8,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -19,13 +16,12 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.theoplayer.android.api.THEOplayerConfig;
 import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.event.EventListener;
-import com.theoplayer.android.api.event.player.PauseEvent;
-import com.theoplayer.android.api.event.player.PlayEvent;
+import com.theoplayer.android.api.event.player.LoadedDataEvent;
 import com.theoplayer.android.api.event.player.PlayerEventTypes;
-import com.theoplayer.android.api.event.player.PresentationModeChange;
-import com.theoplayer.android.api.event.player.SeekedEvent;
-import com.theoplayer.android.api.player.track.texttrack.TextTrack;
+import com.theoplayer.android.api.event.player.TimeUpdateEvent;
 import com.theoplayer.android.api.source.SourceDescription;
+
+import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -44,11 +40,8 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
 
 
     private enum InternalAndGlobalEventPair {
-        onStart("onStartEventInternal", "onStart"),
-        onSeek("onSeekEventInternal", "onSeek"),
-        onPlay("onPlayEventInternal", "onPlay"),
-        onPause("onPauseEventInternal", "onPause"),
-        onPresentationModeChange("onPresentationModeChangeEventInternal", "onPresentationModeChange");
+        onTimeUpdate("onTimeUpdateEventInternal", "onTimeUpdate"),
+        onLoadedData("onLoadedDataEventInternal", "onLoadedData");
 
         String internalEvent;
         String globalEvent;
@@ -71,15 +64,66 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
                 .build();
 
         playerView = new THEOplayerView(activity, config);
-//        playerView.getFullScreenManager().requestFullScreen();
+        playerView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+
+        addPropertyChangeListeners(reactContext);
+
         playerView.evaluateJavaScript("init({player: player})", null);
 
         reactContext.addLifecycleEventListener(this);
 
-        playerView.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
         return playerView;
     }
+
+
+    // Change listeners
+    private void addPropertyChangeListeners(final ThemedReactContext reactContext) {
+        playerView.getPlayer().addEventListener(PlayerEventTypes.LOADEDDATA, new EventListener<LoadedDataEvent>() {
+            @Override
+            public void handleEvent(final LoadedDataEvent playEvent) {
+                WritableMap event = Arguments.createMap();
+
+                // Local property change
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                        playerView.getId(),
+                        InternalAndGlobalEventPair.onLoadedData.internalEvent,
+                        event);
+            }
+        });
+
+        playerView.getPlayer().addEventListener(PlayerEventTypes.TIMEUPDATE, new EventListener<TimeUpdateEvent>() {
+            @Override
+            public void handleEvent(final TimeUpdateEvent updateEvent) {
+                WritableMap event = Arguments.createMap();
+                event.putDouble("currentTime", updateEvent.getCurrentTime());
+
+                // Local property change
+                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                        playerView.getId(),
+                        InternalAndGlobalEventPair.onTimeUpdate.internalEvent,
+                        event);
+            }
+        });
+
+    }
+
+    @Override
+    public Map getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.builder()
+                .put(
+                        InternalAndGlobalEventPair.onLoadedData.internalEvent,
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of("bubbled", InternalAndGlobalEventPair.onLoadedData.globalEvent)))
+                .put(
+                        InternalAndGlobalEventPair.onTimeUpdate.internalEvent,
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of("bubbled", InternalAndGlobalEventPair.onTimeUpdate.globalEvent)))
+                .build();
+    }
+
 
     // Setting autoplay prop
     @ReactProp(name = "autoplay", defaultBoolean = false)

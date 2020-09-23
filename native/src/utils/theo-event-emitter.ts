@@ -1,8 +1,7 @@
 import {NativeEventEmitter, NativeModules, Platform} from 'react-native';
 
-//import { DeviceEventEmitter } from 'react-native'; //android
 const {ReactNativeEventEmitter, ReactNativeEventEmitterHelper} = NativeModules; //ios + android (ReactNativeEventEmitterHelper android only)
-const theoEventEmitter = new NativeEventEmitter(ReactNativeEventEmitter);
+const theoEventEmitter = new NativeEventEmitter(ReactNativeEventEmitter); // DeviceEventEmitter
 
 export default class TheoEventEmitter {
   addListener(eventType: any, listener: any) {

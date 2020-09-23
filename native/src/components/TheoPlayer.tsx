@@ -16,6 +16,8 @@ interface TheoPlayerProps {
     }[];
   };
   style?: any;
+  onLoadedData?: any;
+  onTimeUpdate?: any;
 }
 
 const THEOplayerViewNative = requireNativeComponent<any>('THEOplayerView');

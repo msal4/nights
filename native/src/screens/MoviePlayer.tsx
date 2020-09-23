@@ -36,7 +36,7 @@ export class MoviePlayerScreen extends React.Component<
   async componentDidMount() {
     const {title: simpleTitle} = this.props.route.params as PlayerParams;
     const title = await getTitle(simpleTitle.id);
-    console.log('i am running ---------------');
+
     const video = title.videos[0]?.url.replace('{q}', '720');
     const subtitles = title.subtitles.map(
       (sub) =>
@@ -83,9 +83,15 @@ export class MoviePlayerScreen extends React.Component<
                   console.log('progress');
                   console.log(data);
                   (this.lastHit as any).current = data.currentTime;
+                  console.log(title.id, {
+                    playback_position: data.currentTime,
+                    runtime: data.seekableDuration,
+                  });
                   hitTopic(title.id, {
                     playback_position: data.currentTime,
                     runtime: data.seekableDuration,
+                  }).catch((e) => {
+                    console.log(e);
                   });
                 }
               }

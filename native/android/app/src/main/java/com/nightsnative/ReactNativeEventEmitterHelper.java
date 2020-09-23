@@ -160,34 +160,6 @@ public class ReactNativeEventEmitterHelper extends ReactContextBaseJavaModule {
                 break;
 
 
-            case Events.PLAY :
-                final EventListener playListener = new EventListener<PlayEvent>() {
-                    @Override
-                    public void handleEvent(final PlayEvent playEvent) {
-                        //emit global event
-                        WritableMap eventGlobal = Arguments.createMap(); //new map, because the other one get consumed!
-                        sendEvent(getReactApplicationContext(), Events.PLAY, eventGlobal);
-                    }
-                };
-                listeners.put(Events.PLAY, playListener);
-                theoPlayerViewManager.playerView.getPlayer().addEventListener(PlayerEventTypes.PLAY, playListener);
-
-                break;
-
-            // case Events.PRESENTATIONMODECHANGE :
-            //     final EventListener playListener2 = new EventListener<PresentationModeChange>() {
-            //         @Override
-            //         public void handleEvent(final PresentationModeChange playEvent) {
-            //             //emit global event
-            //             WritableMap eventGlobal = Arguments.createMap(); //new map, because the other one get consumed!
-            //             eventGlobal.putBoolean("isFullScreen", theoPlayerViewManager.playerView.getFullScreenManager().isFullScreen());
-            //             sendEvent(getReactApplicationContext(), Events.PRESENTATIONMODECHANGE, eventGlobal);
-            //         }
-            //     };
-            //     listeners.put(Events.PRESENTATIONMODECHANGE, playListener2);
-            //     theoPlayerViewManager.playerView.getPlayer().addEventListener(PlayerEventTypes.PRESENTATIONMODECHANGE, playListener2);
-
-            //     break;
             default:
                 break;
         }
