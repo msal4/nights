@@ -1,11 +1,10 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import {OnProgressData} from 'react-native-video';
 
 import {Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
 import {AuthContext} from '../context/auth-context';
-import {Sub, Player} from '../components/Player';
+import {Sub, Player, OnProgressData} from '../components/Player';
 import {Season} from '../core/interfaces/season';
 import {Episode} from '../core/interfaces/episode';
 import {swapEpisodeUrlId} from '../utils/common';
@@ -130,7 +129,7 @@ export class SeriesPlayerScreen extends React.Component<
                   (this.lastHit as any).current = data.currentTime;
                   const hitData = {
                     playback_position: data.currentTime,
-                    runtime: data.seekableDuration,
+                    runtime: data.runtime,
                     season: season?.id || seasonId,
                     episode: episode?.id,
                   };

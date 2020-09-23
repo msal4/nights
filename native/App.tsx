@@ -3,9 +3,7 @@ import {StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Orientation from 'react-native-orientation';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
-import GoogleCast from 'react-native-google-cast';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
@@ -48,13 +46,9 @@ export default () => {
   useEffect(() => {
     changeNavigationBarColor(colors.gray, true, true);
     SplashScreen.hide();
-    Orientation.lockToPortrait();
     Downloader.open();
-    GoogleCast.getCastDevice().then(console.log);
-    registerListeners();
 
     return () => {
-      GoogleCast.endSession();
       Downloader.close();
     };
   }, []);
@@ -98,23 +92,3 @@ export default () => {
     </>
   );
 };
-
-function registerListeners() {
-  const events = `
-    SESSION_STARTING SESSION_STARTED SESSION_START_FAILED SESSION_SUSPENDED
-    SESSION_RESUMING SESSION_RESUMED SESSION_ENDING SESSION_ENDED
-
-    MEDIA_STATUS_UPDATED MEDIA_PLAYBACK_STARTED MEDIA_PLAYBACK_ENDED MEDIA_PROGRESS_UPDATED
-
-    CHANNEL_CONNECTED CHANNEL_DISCONNECTED CHANNEL_MESSAGE_RECEIVED
-  `
-    .trim()
-    .split(/\s+/);
-  console.log(events);
-
-  events.forEach((event) => {
-    GoogleCast.EventEmitter.addListener((GoogleCast as any)[event], function () {
-      console.log(event, arguments);
-    });
-  });
-}

@@ -1,5 +1,4 @@
 import React, {useRef} from 'react';
-import {OnProgressData} from 'react-native-video';
 import {NativeModules, Platform, StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
@@ -14,6 +13,11 @@ export interface Sub {
   language: string;
   type: 'text/vtt';
   uri: string;
+}
+
+export interface OnProgressData {
+  currentTime: number;
+  runtime: number;
 }
 
 interface PlayerProps {
@@ -79,7 +83,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
               duration.current = await NativeModules.THEOplayerViewManager.getDuration();
             }
 
-            onProgress({currentTime, seekableDuration: duration.current!, playableDuration: 0});
+            onProgress({currentTime, runtime: duration.current!});
             console.log('timeupdate from prop', currentTime);
           })
         }

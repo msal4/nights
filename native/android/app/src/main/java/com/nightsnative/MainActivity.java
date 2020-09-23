@@ -1,15 +1,12 @@
 package com.nightsnative;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 
-import com.facebook.react.GoogleCastActivity;
-import com.nightsnative.ToggleImmersiveModeModule;
+import com.facebook.react.ReactActivity;
 
 import org.devio.rn.splashscreen.SplashScreen;
 
-public class MainActivity extends GoogleCastActivity {
+public class MainActivity extends ReactActivity {
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

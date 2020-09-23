@@ -1,11 +1,10 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import {OnProgressData} from 'react-native-video';
 
 import {TitleDetail, Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getTitle} from '../api/title';
 import {AuthContext} from '../context/auth-context';
-import {Sub, Player} from '../components/Player';
+import {Sub, Player, OnProgressData} from '../components/Player';
 
 export interface PlayerParams {
   title: Title;
@@ -83,13 +82,9 @@ export class MoviePlayerScreen extends React.Component<
                   console.log('progress');
                   console.log(data);
                   (this.lastHit as any).current = data.currentTime;
-                  console.log(title.id, {
-                    playback_position: data.currentTime,
-                    runtime: data.seekableDuration,
-                  });
                   hitTopic(title.id, {
                     playback_position: data.currentTime,
-                    runtime: data.seekableDuration,
+                    runtime: data.runtime,
                   }).catch((e) => {
                     console.log(e);
                   });

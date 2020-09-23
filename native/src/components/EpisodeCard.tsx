@@ -5,7 +5,6 @@ import {Image, Text, Icon} from 'react-native-elements';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import Menu from 'react-native-material-menu';
 import LinearGradient from 'react-native-linear-gradient';
-import GoogleCast from 'react-native-google-cast';
 
 import {Episode} from '../core/interfaces/episode';
 import {colors} from '../constants/style';
@@ -43,21 +42,8 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
   const image = episode.image ?? getImageUrl(title.images[0]?.url);
 
   const playEpisode = isPrivate
-    ? async () => {
-        const state = await GoogleCast.getCastState();
-        if (state === 'Connected') {
-          GoogleCast.castMedia({
-            mediaUrl: episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
-            imageUrl: image,
-            posterUrl: getImageUrl(title.images[0].url),
-            title: episode.name,
-            subtitle: episode.plot,
-            studio: '1001 Nights',
-            streamDuration: episode.runtime || 0, // seconds
-          });
-        } else {
-          navigation.navigate('SeriesPlayer', {title, season, episode});
-        }
+    ? () => {
+        navigation.navigate('SeriesPlayer', {title, season, episode});
       }
     : undefined;
 

@@ -13,7 +13,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.nightsnative.ToggleImmersiveModePackage;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
@@ -36,7 +35,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          packages.add(new ToggleImmersiveModePackage());
           packages.add(new TheoPlayerPackage());
           return packages;
         }
