@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Dimensions} from 'react-native';
+import {ScrollView, View, Dimensions, ActivityIndicator} from 'react-native';
 import {Input} from 'react-native-elements';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import useConstant from 'use-constant';
@@ -11,13 +11,16 @@ import dayjs from 'dayjs';
 
 import {colors, CARD_WIDTH} from '../constants/style';
 import {getTitles} from '../api/title';
-import Title from '../components/Title';
 import {DetailScreen} from './Detail';
 import {useLanguage} from '../utils/lang';
 import {getGenres} from '../api/genre';
 import {Topic} from '../core/interfaces/topic';
 import {capitalizeFirst, isCloseToBottom} from '../utils/common';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
+import Axios from 'axios';
+import {PaginatedResults} from '../core/interfaces/paginated-results';
+import {Title as ITitle} from '../core/interfaces/title';
+import Title from '../components/Title';
 
 const Stack = createStackNavigator();
 
@@ -52,7 +55,7 @@ const createYears = (t: (term: string) => string) => {
 };
 
 const Search: React.FC = () => {
-  const {setQuery, query, searchResults: result, setParams, params} = useSearch();
+  const {setQuery, query, result, setParams, params, getMore, loading} = useSearch();
   const {width} = Dimensions.get('window');
   const numCards = Math.round(width / CARD_WIDTH);
   const cardWidth = width / numCards - 15 - 15 / numCards;
@@ -67,9 +70,10 @@ const Search: React.FC = () => {
     <SafeAreaView edges={['top']} style={{flex: 1}}>
       <ScrollView
         contentContainerStyle={{paddingLeft: 15}}
+        scrollEventThrottle={100}
         onScroll={({nativeEvent}) => {
           if (isCloseToBottom(nativeEvent)) {
-            result;
+            getMore();
           }
         }}>
         <Input
@@ -155,13 +159,15 @@ const Search: React.FC = () => {
               flexDirection: 'row',
               flexWrap: 'wrap',
             }}>
-            {result.result &&
-              result.result.results.map((title) => <Title key={title.id} title={title} width={cardWidth} />)}
+            {result &&
+              result.results.map((title) => <Title key={title.id} title={title} width={cardWidth} />)}
           </View>
         )}
-        {!result || !result.result?.results.length || result.result.results.length < 6 ? (
+        {!result || !result?.results.length || result.results.length < 6 ? (
           <View style={{height: 300}} />
         ) : null}
+        <View style={{height: 40}} />
+        {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="large" /> : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -207,8 +213,6 @@ const Filter: React.FC<{
       }}
       activeLabelStyle={{backgroundColor: colors.white + '55', borderRadius: 100}}
       zIndex={100}
-      // onOpen={() => {
-      // }}
     />
   );
 };
@@ -233,15 +237,43 @@ const useGenres = () => {
 const useSearch = () => {
   const [query, setQuery] = useState('');
   const [params, setParams] = useState({});
-  const [refresh, setRefresh] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<PaginatedResults<ITitle[]>>();
 
   const debouncedSearchFunction = useConstant(() => {
     return AwesomeDebouncePromise(getTitles, 300);
   });
 
-  const searchResults = useAsync(async () => {
-    return await debouncedSearchFunction({...params, search: query});
-  }, [debouncedSearchFunction, query, params, refresh]);
+  const searchResults = useAsync(
+    async () => {
+      return await debouncedSearchFunction({...params, search: query});
+    },
+    [debouncedSearchFunction, query, params],
+    {
+      onSuccess: (res) => {
+        setResult(res);
+      },
+    },
+  );
 
-  return {query, setQuery, searchResults, params, setParams, setRefresh};
+  const getMore = async () => {
+    if (!result || loading || !result.next) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const {data} = await Axios.get<PaginatedResults<ITitle[]>>(result.next);
+      const results = [...result.results, ...data.results];
+
+      data.results = results;
+
+      setResult(data);
+    } catch {}
+
+    setLoading(false);
+  };
+
+  return {query, setQuery, searchResults, params, setParams, loading, getMore, result};
 };
