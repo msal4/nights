@@ -7,6 +7,8 @@ import android.view.View;
 import com.facebook.react.GoogleCastActivity;
 import com.nightsnative.ToggleImmersiveModeModule;
 
+import org.devio.rn.splashscreen.SplashScreen;
+
 public class MainActivity extends GoogleCastActivity {
 
   /**
@@ -16,5 +18,11 @@ public class MainActivity extends GoogleCastActivity {
   @Override
   protected String getMainComponentName() {
     return "NightsNative";
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this);
+    super.onCreate(savedInstanceState);
   }
 }
