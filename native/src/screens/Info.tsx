@@ -37,23 +37,6 @@ export const InfoScreen: FunctionComponent = () => {
             <Text style={{opacity: 0.75}}>{joinTopics(title.cast)}</Text>
           </View>
         ) : null}
-        {title.imdb ? (
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL(`https://imdb.com/title/${title.imdb}`);
-            }}
-            style={{
-              marginBottom: 20,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              backgroundColor: colors.green,
-              padding: 5,
-              borderRadius: 5,
-            }}>
-            <Icon type="fontisto" name="imdb" color={colors.white} />
-            <Text style={{fontSize: 15, marginLeft: 10}}>{t('seeOnImdb')}</Text>
-          </TouchableOpacity>
-        ) : null}
       </View>
 
       <TitleRow name={t('similar')} row={title.recommended} />

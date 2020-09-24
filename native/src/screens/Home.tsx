@@ -93,6 +93,7 @@ const Home = () => {
                 <Image
                   source={require('../../assets/logo.png')}
                   style={{width: 100, height: 50}}
+                  placeholderStyle={{backgroundColor: 'transparent'}}
                   resizeMode="contain"
                 />
               </TouchableOpacity>

@@ -98,14 +98,14 @@ export class SeriesPlayerScreen extends React.Component<
     );
 
     this.setState({video, subtitles});
-    this.continueWatching(episode!);
+    this.continueWatching(episode);
   }
 
   async continueWatching(episode: Episode) {
     try {
       this.setState({startTime: episode.hits[0]?.playback_position ?? 0});
     } catch (err) {
-      console.log(err);
+      console.log('from continue watching: ', err.message);
       this.setState({startTime: 0});
     }
   }

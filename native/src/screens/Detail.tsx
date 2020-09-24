@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import {View, ScrollView, TouchableOpacity, RefreshControl} from 'react-native';
+import {View, ScrollView, TouchableOpacity, RefreshControl, Linking} from 'react-native';
 import {Image, Icon, Text} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
@@ -101,32 +101,49 @@ export const DetailScreen: React.FC = () => {
                     navigation.goBack();
                   }}
                 />
-                <Icon
-                  type="ionicon"
-                  size={50}
-                  color={colors.white}
-                  name={inMyList ? 'checkmark' : 'add'}
-                  onPress={async () => {
-                    if (!title) {
-                      return;
-                    }
-                    if (!token) {
-                      navigation.navigate('Login');
-                    }
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  {title?.imdb ? (
+                    <TouchableOpacity
+                      style={{marginRight: 30}}
+                      onPress={() => {
+                        Linking.openURL(`https://imdb.com/title/${title.imdb}`);
+                      }}>
+                      <Image
+                        source={require('../../assets/imdb.png')}
+                        resizeMode="contain"
+                        placeholderStyle={{backgroundColor: 'transparent'}}
+                        style={{width: 50, height: 40}}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
 
-                    if (inMyList) {
-                      try {
-                        await removeFromMyList(title.id);
-                        setInMyList(false);
-                      } catch {}
-                    } else {
-                      try {
-                        await addToMyList(title.id);
-                        setInMyList(true);
-                      } catch {}
-                    }
-                  }}
-                />
+                  <Icon
+                    type="ionicon"
+                    size={50}
+                    color={colors.white}
+                    name={inMyList ? 'checkmark' : 'add'}
+                    onPress={async () => {
+                      if (!title) {
+                        return;
+                      }
+                      if (!token) {
+                        navigation.navigate('Login');
+                      }
+
+                      if (inMyList) {
+                        try {
+                          await removeFromMyList(title.id);
+                          setInMyList(false);
+                        } catch {}
+                      } else {
+                        try {
+                          await addToMyList(title.id);
+                          setInMyList(true);
+                        } catch {}
+                      }
+                    }}
+                  />
+                </View>
               </View>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 {isPrivate ? (
@@ -161,19 +178,19 @@ export const DetailScreen: React.FC = () => {
                     <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
                       <Icon
                         type="ionicon"
-                        size={18}
+                        size={14}
                         name="star"
                         color={colors.blue}
                         style={{marginRight: 5}}
                       />
-                      <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.rating}</Text>
+                      <Text style={{fontWeight: 'bold', fontSize: 14}}>{title?.rating}</Text>
                     </View>
-                    <Text style={{fontWeight: 'bold', fontSize: 18, marginRight: 10}}>
+                    <Text style={{fontWeight: 'bold', fontSize: 14, marginRight: 10}}>
                       {title?.type === 'm'
                         ? Math.round((title?.runtime ?? 0) / 60) + ' min'
                         : (title?.seasons.length ?? '') + ' ' + t('seasons')}
                     </Text>
-                    <Text style={{fontWeight: 'bold', fontSize: 18}}>{title?.released_at}</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 14}}>{title?.released_at}</Text>
                   </View>
                   <Text style={{marginBottom: 10, color: colors.lightGray}}>{joinTopics(title?.genres)}</Text>
                   <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
