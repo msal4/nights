@@ -60,7 +60,7 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
                 .chromeless(false)
                 .defaultCss(true)
                 .jsPaths("js/theoplayer.js")
-                .cssPaths("css/theoplayer.css")
+                .cssPaths("css/fa/css/all.min.css", "css/theoplayer.css")
                 .build();
 
         playerView = new THEOplayerView(activity, config);

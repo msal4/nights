@@ -1,19 +1,16 @@
-.custom-icon-forward,
-.custom-icon-rewind {
-  font-family: THEOplayer;
-  font-weight: normal;
-  font-style: normal;
+.fa-undo {
+  order: -100;
+  cursor: pointer;
+  font-size: 1.4em !important;
+  line-height: 2.1 !important;
+}
+.fa-redo {
+  order: -100;
+  cursor: pointer;
+  font-size: 1.4em !important;
+  line-height: 2.1 !important;
 }
 
-.custom-icon-forward:before {
-  content: '\f11f';
-  font-size: 2.2em;
-}
-
-.custom-icon-rewind:before {
-  content: '\f120';
-  font-size: 2.2em;
-}
 
 .theo-primary-color,
 .vjs-selected {
