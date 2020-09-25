@@ -112,7 +112,7 @@ export const DetailScreen: React.FC = () => {
                         source={require('../../assets/imdb.png')}
                         resizeMode="contain"
                         placeholderStyle={{backgroundColor: 'transparent'}}
-                        style={{width: 50, height: 40}}
+                        style={{width: 60, height: 50}}
                       />
                     </TouchableOpacity>
                   ) : null}
@@ -127,7 +127,7 @@ export const DetailScreen: React.FC = () => {
                         return;
                       }
                       if (!token) {
-                        navigation.navigate('Login');
+                        navigation.navigate('More', {screen: 'Login', initial: false});
                       }
 
                       if (inMyList) {

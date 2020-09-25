@@ -17,6 +17,7 @@ import {TvPlayerScreen} from './src/screens/TvPlayer';
 import {UrlProvider} from './src/context/url-context';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import SplashScreen from 'react-native-splash-screen';
+import OneSignal from 'react-native-onesignal';
 
 Ionicons.loadFont();
 
@@ -44,9 +45,15 @@ const elementsTheme: ElementsTheme = {
 
 export default () => {
   useEffect(() => {
-    changeNavigationBarColor(colors.gray, true, true);
+    changeNavigationBarColor(colors.darkGray, true, true);
     SplashScreen.hide();
     Downloader.open();
+
+    OneSignal.init('023b88c0-ddf6-45f7-8684-1ddd9b763a37', {
+      kOSSettingsKeyAutoPrompt: false,
+      kOSSettingsKeyInAppLaunchURL: false,
+      kOSSettingsKeyInFocusDisplayOption: 2,
+    });
 
     return () => {
       Downloader.close();

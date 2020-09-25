@@ -116,6 +116,7 @@ export class Downloader {
   }
 
   static download(params: TaskParams) {
+    console.log(params);
     const mediaDir = `${RNBackgroundDownloader.directories.documents}/media`;
     const imagesDir = `${RNBackgroundDownloader.directories.documents}/images`;
 

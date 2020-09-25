@@ -3921,7 +3921,7 @@ internal-slot@^1.0.2:
     has "^1.0.3"
     side-channel "^1.0.2"
 
-invariant@*, invariant@^2.2.4:
+invariant@*, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -6309,6 +6309,13 @@ react-native-navigation-bar-color@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.1.tgz#ee2be25cc37105f7da355717b0a9a32c9c059ae6"
   integrity sha512-1kE/oxWt+HYjRxdZdvke9tJ365xaee5n3+euOQA1En8zQuSbOxiE4SYEGM7TeaWnmLJ0l37mRnPHaB2H4mGh0A==
+
+react-native-onesignal@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.9.1.tgz#b47c2ab61e84dcc7fce63cd565574760c01b1f46"
+  integrity sha512-m511mn6Kgh6AbU8TiGvA5u1yp7od1b/0rVK4m3pz13Yp8PDceGEBd8IxoghLSZRR1/HHBxxe+CWZS9Tsa/IKsg==
+  dependencies:
+    invariant "^2.2.2"
 
 react-native-orientation@^3.1.3:
   version "3.1.3"

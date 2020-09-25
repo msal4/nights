@@ -158,7 +158,7 @@ const Home = () => {
                         return;
                       }
                       if (!token) {
-                        navigation.navigate('Login');
+                        navigation.navigate('More', {screen: 'Login', initial: false});
                       }
 
                       if (inMyList) {
