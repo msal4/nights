@@ -38,7 +38,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
               paddingHorizontal: 5,
               borderRadius: 2,
             }}>
-            <Text style={{fontSize: 8, color: colors.gray}}>
+            <Text style={{fontSize: 8, color: colors.black}}>
               {title.type === 's' ? t('newEpisodes') : t('new')}
             </Text>
           </View>
