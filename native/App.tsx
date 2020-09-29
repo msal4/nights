@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StatusBar} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -60,6 +60,17 @@ export default () => {
     };
   }, []);
 
+  const options =
+    Platform.OS === 'ios'
+      ? {
+          headerShown: true,
+          headerStyle: {backgroundColor: colors.black},
+          headerBackTitle: 'Back',
+          headerTitle: '',
+          headerTintColor: colors.white,
+        }
+      : {};
+
   return (
     <>
       <StatusBar translucent barStyle="light-content" backgroundColor="transparent" />
@@ -70,26 +81,10 @@ export default () => {
               <NavigationContainer theme={navigationTheme}>
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                   <Stack.Screen name="Root" component={RootScreen} />
-                  <Stack.Screen
-                    name="MoviePlayer"
-                    component={MoviePlayerScreen}
-                    options={{gestureResponseDistance: {horizontal: 10}}}
-                  />
-                  <Stack.Screen
-                    name="SeriesPlayer"
-                    component={SeriesPlayerScreen}
-                    options={{gestureResponseDistance: {horizontal: 10}}}
-                  />
-                  <Stack.Screen
-                    name="TvPlayer"
-                    component={TvPlayerScreen}
-                    options={{gestureResponseDistance: {horizontal: 10}}}
-                  />
-                  <Stack.Screen
-                    name="OfflinePlayer"
-                    component={OfflinePlayerScreen}
-                    options={{gestureResponseDistance: {horizontal: 10}}}
-                  />
+                  <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} options={options} />
+                  <Stack.Screen name="SeriesPlayer" component={SeriesPlayerScreen} options={options} />
+                  <Stack.Screen name="TvPlayer" component={TvPlayerScreen} options={options} />
+                  <Stack.Screen name="OfflinePlayer" component={OfflinePlayerScreen} options={options} />
                 </Stack.Navigator>
               </NavigationContainer>
             </LanguageProvider>

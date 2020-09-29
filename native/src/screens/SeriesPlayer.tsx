@@ -8,6 +8,7 @@ import {Sub, Player, OnProgressData} from '../components/Player';
 import {Season} from '../core/interfaces/season';
 import {Episode} from '../core/interfaces/episode';
 import {swapEpisodeUrlId} from '../utils/common';
+import {InteractionManager, Platform} from 'react-native';
 
 export interface SeriesPlayerParams {
   title: Title;
@@ -43,7 +44,11 @@ export class SeriesPlayerScreen extends React.Component<
   lastHit: React.RefObject<number>;
 
   componentDidMount() {
-    this.loadEpisode();
+    if (Platform.OS === 'ios') {
+      InteractionManager.runAfterInteractions(this.loadEpisode);
+    } else {
+      this.loadEpisode();
+    }
   }
 
   async loadEpisode() {

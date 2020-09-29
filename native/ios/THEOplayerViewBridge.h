@@ -7,4 +7,4 @@
 
 #import <React/RCTBridgeModule.h>
 
-#endif /* THEOplayerViewBridge_h */
+#endif

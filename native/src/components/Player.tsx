@@ -48,18 +48,20 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
   }
 
   return (
-    <BaseComponent style={styles.container}>
-      <SafeAreaView edges={['top']} style={{alignItems: 'flex-start', paddingTop: 20, paddingLeft: 10}}>
-        <Icon
-          type="ionicon"
-          size={50}
-          color={colors.white}
-          name="chevron-back-sharp"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      </SafeAreaView>
+    <BaseComponent style={{flex: 1}}>
+      {Platform.OS === 'android' ? (
+        <SafeAreaView edges={['top']} style={{alignItems: 'flex-start', paddingTop: 20, paddingLeft: 10}}>
+          <Icon
+            type="ionicon"
+            size={50}
+            color={colors.white}
+            name="chevron-back-sharp"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
+        </SafeAreaView>
+      ) : null}
 
       <TheoPlayer
         style={playerStyle}
@@ -94,10 +96,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   player: {
-    flex: 1,
+    aspectRatio: 1.7,
   },
 });

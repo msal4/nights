@@ -1,8 +1,10 @@
-//
-//  THEOplayerViewBridge.m
-//  NightsNative
-//
-//  Created by Mohammed Salman on 9/26/20.
-//
+#import "React/RCTView.h"
+#import "React/RCTBridgeModule.h"
+#import "React/RCTViewManager.h"
 
-#import <Foundation/Foundation.h>
+@interface RCT_EXTERN_MODULE(THEOplayerViewManager, RCTViewManager)
+
+RCT_EXPORT_VIEW_PROPERTY(source, SourceDescription);
+RCT_EXPORT_VIEW_PROPERTY(autoplay, BOOL);
+
+@end

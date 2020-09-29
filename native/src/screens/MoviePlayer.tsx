@@ -5,6 +5,7 @@ import {TitleDetail, Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getTitle} from '../api/title';
 import {AuthContext} from '../context/auth-context';
 import {Sub, Player, OnProgressData} from '../components/Player';
+import {InteractionManager, Platform} from 'react-native';
 
 export interface PlayerParams {
   title: Title;
@@ -32,23 +33,31 @@ export class MoviePlayerScreen extends React.Component<
 
   lastHit: React.RefObject<number>;
 
-  async componentDidMount() {
-    const {title: simpleTitle} = this.props.route.params as PlayerParams;
-    const title = await getTitle(simpleTitle.id);
+  componentDidMount() {
+    const load = async () => {
+      const {title: simpleTitle} = this.props.route.params as PlayerParams;
+      const title = await getTitle(simpleTitle.id);
 
-    const video = title.videos[0]?.url.replace('{q}', '720');
-    const subtitles = title.subtitles.map(
-      (sub) =>
-        ({
-          title: sub.language ?? 'ar',
-          type: 'text/vtt',
-          language: sub.language ?? 'ar',
-          uri: sub.url.replace('{f}', 'vtt'),
-        } as Sub),
-    );
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({video, subtitles});
-    await this.continueWatching(title.id);
+      const video = title.videos[0]?.url.replace('{q}', '720');
+      const subtitles = title.subtitles.map(
+        (sub) =>
+          ({
+            title: sub.language ?? 'ar',
+            type: 'text/vtt',
+            language: sub.language ?? 'ar',
+            uri: sub.url.replace('{f}', 'vtt'),
+          } as Sub),
+      );
+
+      this.setState({video, subtitles});
+      await this.continueWatching(title.id);
+    };
+
+    if (Platform.OS === 'ios') {
+      InteractionManager.runAfterInteractions(load);
+    } else {
+      load();
+    }
   }
 
   async continueWatching(id: number) {

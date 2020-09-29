@@ -17,6 +17,15 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* NightsNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NightsNativeTests.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		CB42619925228F3C00F47F6D /* THEOplayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */; };
+		CB42619A25228F3C00F47F6D /* THEOplayerSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB42619C2522B98700F47F6D /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB42619225203EE400F47F6D /* GoogleCast.framework */; };
+		CB42619D2522B98700F47F6D /* GoogleCast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB42619225203EE400F47F6D /* GoogleCast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB4261A72522CD6B00F47F6D /* assets in Resources */ = {isa = PBXBuildFile; fileRef = CB4261A62522CD6B00F47F6D /* assets */; };
+		CBBD7C84251E936500DF1E97 /* THEOplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C83251E936500DF1E97 /* THEOplayerView.swift */; };
+		CBBD7C86251E93D600DF1E97 /* THEOplayerViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C85251E93D600DF1E97 /* THEOplayerViewBridge.m */; };
+		CBBD7C88251E93FC00DF1E97 /* THEOplayerViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */; };
+		CBBD7C8A251E943D00DF1E97 /* THEOplayerView+Convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C89251E943C00DF1E97 /* THEOplayerView+Convert.swift */; };
 		DD69A569702DA128F8E9EEEB /* libPods-NightsNative-NightsNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB45D7B2CEACBB227957EEFE /* libPods-NightsNative-NightsNativeTests.a */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +45,21 @@
 			remoteInfo = "NightsNative-tvOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CB42619B25228F3C00F47F6D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CB42619D2522B98700F47F6D /* GoogleCast.framework in Embed Frameworks */,
+				CB42619A25228F3C00F47F6D /* THEOplayerSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -58,6 +82,15 @@
 		AB45D7B2CEACBB227957EEFE /* libPods-NightsNative-NightsNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NightsNative-NightsNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0115C212DBC8AF97B5C84B1 /* Pods-NightsNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative.debug.xcconfig"; path = "Target Support Files/Pods-NightsNative/Pods-NightsNative.debug.xcconfig"; sourceTree = "<group>"; };
 		CB1D7AE625055BBB00BA1327 /* NightsNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NightsNative.entitlements; path = NightsNative/NightsNative.entitlements; sourceTree = "<group>"; };
+		CB42619225203EE400F47F6D /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
+		CB4261A62522CD6B00F47F6D /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = THEOplayerSDK.framework; sourceTree = "<group>"; };
+		CBBD7C82251E936500DF1E97 /* THEOplayerViewBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THEOplayerViewBridge.h; sourceTree = "<group>"; };
+		CBBD7C83251E936500DF1E97 /* THEOplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THEOplayerView.swift; sourceTree = "<group>"; };
+		CBBD7C85251E93D600DF1E97 /* THEOplayerViewBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = THEOplayerViewBridge.m; sourceTree = "<group>"; };
+		CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THEOplayerViewManager.swift; sourceTree = "<group>"; };
+		CBBD7C89251E943C00DF1E97 /* THEOplayerView+Convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "THEOplayerView+Convert.swift"; sourceTree = "<group>"; };
+		CBBD7C8B251E94B600DF1E97 /* NightsNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NightsNative-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -75,6 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB42619C2522B98700F47F6D /* GoogleCast.framework in Frameworks */,
+				CB42619925228F3C00F47F6D /* THEOplayerSDK.framework in Frameworks */,
 				1DFAE879662EE473313FC4B0 /* libPods-NightsNative.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,6 +159,12 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				CBBD7C83251E936500DF1E97 /* THEOplayerView.swift */,
+				CBBD7C82251E936500DF1E97 /* THEOplayerViewBridge.h */,
+				CBBD7C85251E93D600DF1E97 /* THEOplayerViewBridge.m */,
+				CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */,
+				CBBD7C89251E943C00DF1E97 /* THEOplayerView+Convert.swift */,
+				CBBD7C8B251E94B600DF1E97 /* NightsNative-Bridging-Header.h */,
 			);
 			name = NightsNative;
 			sourceTree = "<group>";
@@ -131,6 +172,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB42619225203EE400F47F6D /* GoogleCast.framework */,
+				CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				0357ACA31E8854789F105891 /* libPods-NightsNative.a */,
@@ -149,6 +192,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CB4261A62522CD6B00F47F6D /* assets */,
 				13B07FAE1A68108700A75B9A /* NightsNative */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* NightsNativeTests */,
@@ -195,7 +239,6 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				510DA891EFF98C2D250B4423 /* [CP] Copy Pods Resources */,
-				7A667A8DD248411D492C1866 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -218,7 +261,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				061618A5EDA634121843A758 /* [CP] Copy Pods Resources */,
-				F79676C777B3530E4DFA0A72 /* [CP] Embed Pods Frameworks */,
+				CB42619B25228F3C00F47F6D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -280,7 +323,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = QKR48F4739;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1160;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -327,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				CB4261A72522CD6B00F47F6D /* assets in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,24 +543,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7A667A8DD248411D492C1866 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests-frameworks.sh",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.3.0/GoogleCast.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleCast.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		88550C5704DA858568806EF7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -537,24 +563,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F79676C777B3530E4DFA0A72 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NightsNative/Pods-NightsNative-frameworks.sh",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.3.0/GoogleCast.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleCast.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NightsNative/Pods-NightsNative-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -610,8 +618,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBBD7C88251E93FC00DF1E97 /* THEOplayerViewManager.swift in Sources */,
+				CBBD7C84251E936500DF1E97 /* THEOplayerView.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				CBBD7C86251E93D600DF1E97 /* THEOplayerViewBridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				CBBD7C8A251E943D00DF1E97 /* THEOplayerView+Convert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -703,6 +715,10 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = QKR48F4739;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = NightsNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 3.0;
@@ -713,6 +729,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.onethousandnights.cinema;
 				PRODUCT_NAME = "1001 Nights";
+				SWIFT_OBJC_BRIDGING_HEADER = "NightsNative-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -729,6 +746,10 @@
 				CODE_SIGN_ENTITLEMENTS = NightsNative/NightsNative.entitlements;
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = QKR48F4739;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = NightsNative/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 3.0;
@@ -739,6 +760,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.onethousandnights.cinema;
 				PRODUCT_NAME = "1001 Nights";
+				SWIFT_OBJC_BRIDGING_HEADER = "NightsNative-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
