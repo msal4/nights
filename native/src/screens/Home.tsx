@@ -47,14 +47,27 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const {isPrivate} = useUrl();
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
+  const reload = async () => {
     await getRows(true, params);
     await getHits();
     await getPromoTitle(params);
+  };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await reload();
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      reload();
+    });
+
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScrollView

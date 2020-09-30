@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {NativeModules, Platform, requireNativeComponent} from 'react-native';
+import {NativeModules, requireNativeComponent} from 'react-native';
 
 interface TheoPlayerProps {
   autoplay?: boolean;

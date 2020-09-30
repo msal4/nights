@@ -26,8 +26,7 @@ export const DetailScreen: React.FC = () => {
   const {params}: any = useRoute();
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
-  // eslint-disable-next-line no-shadow
-  const {title, inMyList, setInMyList, setTask, task, getTitle} = useTitle(params.id);
+  const {title, inMyList, setInMyList, setTask, task, reload} = useTitle(params.id);
   const {token} = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const {isPrivate} = useUrl();
@@ -35,7 +34,7 @@ export const DetailScreen: React.FC = () => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await getTitle();
+    await reload();
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
@@ -45,10 +44,15 @@ export const DetailScreen: React.FC = () => {
       setTask(Downloader.task(params.id));
     };
 
+    const unsubscribe = navigation.addListener('focus', () => {
+      reload();
+    });
+
     Downloader.onChange(listener);
 
     return () => {
       Downloader.removeOnChangeListener(listener);
+      unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
@@ -327,7 +331,6 @@ const useTitle = (id: number | string) => {
 
   const getInfo = useCallback(async () => {
     try {
-      setTitle(null);
       const data = await getTitle(id);
       setTitle(data);
       const t = Downloader.task(Number(id));
@@ -343,8 +346,17 @@ const useTitle = (id: number | string) => {
   }, [id]);
 
   useEffect(() => {
+    setTitle(null);
     getInfo();
   }, [getInfo]);
 
-  return {title, error, getTitle: getInfo, inMyList, setInMyList, task, setTask};
+  return {
+    title,
+    error,
+    reload: getInfo,
+    inMyList,
+    setInMyList,
+    task,
+    setTask,
+  };
 };

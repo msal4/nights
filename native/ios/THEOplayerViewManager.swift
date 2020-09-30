@@ -110,7 +110,7 @@ import THEOplayerSDK
   
     @objc
     func destroy() {
-      playerView.player.destroy()
+      playerView.player.stop()
     }
 
     @objc(getCurrentAds:reject:)
