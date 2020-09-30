@@ -22,6 +22,8 @@
 		CB42619C2522B98700F47F6D /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB42619225203EE400F47F6D /* GoogleCast.framework */; };
 		CB42619D2522B98700F47F6D /* GoogleCast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB42619225203EE400F47F6D /* GoogleCast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB4261A72522CD6B00F47F6D /* assets in Resources */ = {isa = PBXBuildFile; fileRef = CB4261A62522CD6B00F47F6D /* assets */; };
+		CB4261AB2523FD9C00F47F6D /* ReactNativeEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4261AA2523FD9C00F47F6D /* ReactNativeEventEmitter.swift */; };
+		CB4261AD2523FDEE00F47F6D /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4261AC2523FDEE00F47F6D /* EventEmitter.swift */; };
 		CBBD7C84251E936500DF1E97 /* THEOplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C83251E936500DF1E97 /* THEOplayerView.swift */; };
 		CBBD7C86251E93D600DF1E97 /* THEOplayerViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C85251E93D600DF1E97 /* THEOplayerViewBridge.m */; };
 		CBBD7C88251E93FC00DF1E97 /* THEOplayerViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */; };
@@ -84,6 +86,8 @@
 		CB1D7AE625055BBB00BA1327 /* NightsNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NightsNative.entitlements; path = NightsNative/NightsNative.entitlements; sourceTree = "<group>"; };
 		CB42619225203EE400F47F6D /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
 		CB4261A62522CD6B00F47F6D /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		CB4261AA2523FD9C00F47F6D /* ReactNativeEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeEventEmitter.swift; sourceTree = "<group>"; };
+		CB4261AC2523FDEE00F47F6D /* EventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventEmitter.swift; sourceTree = "<group>"; };
 		CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = THEOplayerSDK.framework; sourceTree = "<group>"; };
 		CBBD7C82251E936500DF1E97 /* THEOplayerViewBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THEOplayerViewBridge.h; sourceTree = "<group>"; };
 		CBBD7C83251E936500DF1E97 /* THEOplayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THEOplayerView.swift; sourceTree = "<group>"; };
@@ -165,6 +169,8 @@
 				CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */,
 				CBBD7C89251E943C00DF1E97 /* THEOplayerView+Convert.swift */,
 				CBBD7C8B251E94B600DF1E97 /* NightsNative-Bridging-Header.h */,
+				CB4261AA2523FD9C00F47F6D /* ReactNativeEventEmitter.swift */,
+				CB4261AC2523FDEE00F47F6D /* EventEmitter.swift */,
 			);
 			name = NightsNative;
 			sourceTree = "<group>";
@@ -619,6 +625,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBBD7C88251E93FC00DF1E97 /* THEOplayerViewManager.swift in Sources */,
+				CB4261AD2523FDEE00F47F6D /* EventEmitter.swift in Sources */,
+				CB4261AB2523FD9C00F47F6D /* ReactNativeEventEmitter.swift in Sources */,
 				CBBD7C84251E936500DF1E97 /* THEOplayerView.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				CBBD7C86251E93D600DF1E97 /* THEOplayerViewBridge.m in Sources */,

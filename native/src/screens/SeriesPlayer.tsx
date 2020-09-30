@@ -45,7 +45,7 @@ export class SeriesPlayerScreen extends React.Component<
 
   componentDidMount() {
     if (Platform.OS === 'ios') {
-      InteractionManager.runAfterInteractions(this.loadEpisode);
+      InteractionManager.runAfterInteractions(this.loadEpisode.bind(this));
     } else {
       this.loadEpisode();
     }

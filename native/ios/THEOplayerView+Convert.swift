@@ -64,9 +64,11 @@ import THEOplayerSDK
     
     @objc(TextTrack:)
     class func textTrack(_ json: [String:AnyObject]) -> TextTrackDescription? {
+      print("itemJson:", json, json["src"].flatMap(RCTConvert.nsString) ?? "nothing", json["srclang"].flatMap(RCTConvert.nsString) ?? "nothing")
         if let src = json["src"].flatMap(RCTConvert.nsString),
-            let srclang = json["srcLang"].flatMap(RCTConvert.nsString) {
-            return TextTrackDescription(
+            let srclang = json["srclang"].flatMap(RCTConvert.nsString) {
+              print("not nil")
+              return TextTrackDescription(
                 src: src,
                 srclang: srclang,
                 isDefault: json["default"].flatMap(RCTConvert.bool),
@@ -84,6 +86,9 @@ import THEOplayerSDK
     class func textTrackArray(_ json: [AnyObject]) -> [TextTrackDescription]? {
         let sources = RCTConvertArrayValue(#selector(textTrack), json)
             .compactMap { $0 as? TextTrackDescription }
+      
+        print("sources", sources)
+      
         return sources.count > 0 ? sources : nil
     }
     

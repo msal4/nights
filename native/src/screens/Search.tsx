@@ -112,7 +112,14 @@ const Search: React.FC = () => {
           onChangeText={(value) => setQuery(value)}
         />
         {isVisible ? (
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginTop: 10}}>
+          <View
+            style={{
+              zIndex: 1000,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}>
             {genres && (
               <Filter
                 items={genres}
