@@ -1,8 +1,7 @@
 import Foundation
 import THEOplayerSDK
 
-@objc(THEOplayerViewManager)
-class THEOplayerViewManager: RCTViewManager {
+@objc(THEOplayerViewManager) class THEOplayerViewManager: RCTViewManager {
     var playerView = THEOplayerView()
 
     override func view() -> UIView! {
@@ -107,6 +106,11 @@ class THEOplayerViewManager: RCTViewManager {
       } catch {
         print(error)
       }
+    }
+  
+    @objc
+    func destroy() {
+      playerView.player.destroy()
     }
 
     @objc(getCurrentAds:reject:)

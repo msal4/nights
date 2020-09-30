@@ -80,7 +80,10 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
         }}
         onTimeUpdate={
           onProgress &&
-          (async ({nativeEvent: {currentTime}}: any) => {
+          (async ({nativeEvent}: any) => {
+            console.log('nativeEvent:', nativeEvent);
+            const {currentTime} = nativeEvent;
+
             if (!duration.current) {
               duration.current = await NativeModules.THEOplayerViewManager.getDuration();
             }

@@ -61,7 +61,7 @@ class THEOplayerView: UIView {
             return
           }
 
-         self.onLoadedData!([:])
+        self.onLoadedData!([:])
       }
       listeners[PlayerEventTypes.LOADED_DATA.name] = loadedDataListener
       
@@ -71,7 +71,7 @@ class THEOplayerView: UIView {
             return
           }
 
-         self.onTimeUpdate!([:])
+         self.onTimeUpdate!(["currentTime": event.currentTime])
       }
       listeners[PlayerEventTypes.TIME_UPDATE.name] = timeUpdateListener
       
