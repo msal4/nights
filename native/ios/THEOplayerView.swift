@@ -30,14 +30,14 @@ class THEOplayerView: UIView {
       ].compactMap { $0 }
       
       let stylePaths = [
-        Bundle.main.path(forResource: "assets/css/fa/css/all.min", ofType: "css"),
-        Bundle.main.path(forResource: "assets/css/theoplayer", ofType: "css")
+//        Bundle.main.path(forResource: "assets/css/fa/css/all.min", ofType: "css"),
+        Bundle.main.path(forResource: "assets/css/theoplayer", ofType: "css"),
       ].compactMap { $0 }
       
       print("scriptpaths: ", scriptPaths)
       print("stylepaths: ", stylePaths)
       
-      let playerConfig = THEOplayerConfiguration(chromeless: false, cssPaths: stylePaths, jsPaths: scriptPaths, pip: nil)
+      let playerConfig = THEOplayerConfiguration(chromeless: false, defaultCSS: true, cssPaths: stylePaths, jsPaths: scriptPaths, pip: nil)
 
       // Init player
       player = THEOplayer(configuration: playerConfig)

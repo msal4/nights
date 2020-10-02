@@ -18,9 +18,9 @@ export const OfflinePlayerScreen: React.FC = () => {
         title: sub.lang,
         type: 'text/vtt',
         language: sub.lang,
-        uri: sub.url,
+        uri: `file://${sub.url}`,
       } as Sub),
   );
 
-  return <Player video={task.path} subtitles={subs} title={task.name} />;
+  return <Player video={`file://${task.path}`} subtitles={subs} title={task.name} />;
 };

@@ -81,7 +81,6 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
         onTimeUpdate={
           onProgress &&
           (async ({nativeEvent}: any) => {
-            console.log('nativeEvent:', nativeEvent);
             const {currentTime} = nativeEvent;
 
             if (!duration.current) {
@@ -89,7 +88,6 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
             }
 
             onProgress({currentTime, runtime: duration.current!});
-            console.log('timeupdate from prop', currentTime);
           })
         }
         autoplay
