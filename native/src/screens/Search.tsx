@@ -174,7 +174,7 @@ const Search: React.FC = () => {
           <View style={{height: 300}} />
         ) : null}
         <View style={{height: 40}} />
-        {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="large" /> : null}
+        {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="small" /> : null}
       </ScrollView>
     </SafeAreaView>
   );
