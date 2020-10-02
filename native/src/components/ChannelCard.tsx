@@ -8,17 +8,21 @@ import {tvBaseURL} from '../constants/const';
 
 export interface ChannelProps {
   channel: Channel;
+  onPress?: () => void;
 }
 
-export const ChannelCard: FunctionComponent<ChannelProps> = ({channel}) => {
+export const ChannelCard: FunctionComponent<ChannelProps> = ({channel, onPress}) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={{marginRight: 15, marginBottom: 15}}
-      onPress={() => {
-        navigation.navigate('TvPlayer', {url: channel.url, name: channel.name});
-      }}>
+      onPress={
+        onPress ||
+        (() => {
+          navigation.navigate('TvPlayer', {url: channel.url, name: channel.name});
+        })
+      }>
       <Image
         style={{height: 110, width: 110}}
         source={{uri: `${tvBaseURL}${channel.image}`, cache: 'force-cache'}}

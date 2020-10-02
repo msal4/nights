@@ -70,7 +70,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
           textTracks: subtitles?.map((s) => ({
             default: s.language === 'ar',
             kind: 'subtitles',
-            label: s.title,
+            label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
             src: s.uri,
             srclang: s.language,
           })),
