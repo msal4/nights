@@ -96,7 +96,7 @@ const Home = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginVertical: 10,
+                // marginVertical: 10,
                 marginHorizontal: 20,
               }}>
               <TouchableOpacity
