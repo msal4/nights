@@ -2,7 +2,7 @@ import React, {useState, useCallback, useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {View, ScrollView, TouchableOpacity, RefreshControl, Linking} from 'react-native';
-import {Image, Icon, Text} from 'react-native-elements';
+import {Image, Icon, Text, Button} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -84,7 +84,7 @@ export const DetailScreen: React.FC = () => {
             tintColor={colors.white}
           />
         }>
-        <Image source={{uri: image}} style={{height: 400}}>
+        <Image source={{uri: image}} style={{height: 300}}>
           <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
             <SafeAreaView
               edges={['top']}
@@ -150,7 +150,7 @@ export const DetailScreen: React.FC = () => {
                 </View>
               </View>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                {isPrivate ? (
+                {/* {isPrivate ? (
                   <TouchableOpacity
                     style={{
                       width: 80,
@@ -173,7 +173,7 @@ export const DetailScreen: React.FC = () => {
                     }}>
                     <Icon type="ionicon" name="play" size={50} color={colors.white} />
                   </TouchableOpacity>
-                ) : null}
+                ) : null} */}
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                 <View style={{flex: 1}}>
@@ -288,6 +288,22 @@ export const DetailScreen: React.FC = () => {
             </SafeAreaView>
           </LinearGradient>
         </Image>
+        <Button
+          style={{margin: 10, borderRadius: 100, overflow: 'hidden'}}
+          onPress={async () => {
+            if (!title) {
+              return;
+            }
+
+            if (title.type === 'm') {
+              navigation.navigate('MoviePlayer', {title});
+            } else {
+              navigation.navigate('SeriesPlayer', {title});
+            }
+          }}
+          title="Play"
+          icon={{type: 'ionicon', name: 'play', color: 'white'}}
+        />
         {title && (
           <Tab.Navigator
             tabBarOptions={{
