@@ -57,6 +57,7 @@ class Title(Topic):
 
     promoted_at = models.DateTimeField(null=True, blank=True)
     featured_at = models.DateTimeField(null=True, blank=True)
+    coming_soon_at = models.DateTimeField(null=True, blank=True)
     plot = models.TextField(null=True)
     runtime = models.IntegerField(
         null=True, blank=True, help_text='In minutes')
