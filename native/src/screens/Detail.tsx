@@ -288,22 +288,24 @@ export const DetailScreen: React.FC = () => {
             </SafeAreaView>
           </LinearGradient>
         </Image>
-        <Button
-          style={{margin: 10, borderRadius: 100, overflow: 'hidden'}}
-          onPress={async () => {
-            if (!title) {
-              return;
-            }
+        {isPrivate ? (
+          <Button
+            style={{margin: 10, borderRadius: 100, overflow: 'hidden'}}
+            onPress={async () => {
+              if (!title) {
+                return;
+              }
 
-            if (title.type === 'm') {
-              navigation.navigate('MoviePlayer', {title});
-            } else {
-              navigation.navigate('SeriesPlayer', {title});
-            }
-          }}
-          title="Play"
-          icon={{type: 'ionicon', name: 'play', color: 'white'}}
-        />
+              if (title.type === 'm') {
+                navigation.navigate('MoviePlayer', {title});
+              } else {
+                navigation.navigate('SeriesPlayer', {title});
+              }
+            }}
+            title="Play"
+            icon={{type: 'ionicon', name: 'play', color: 'white'}}
+          />
+        ) : null}
         {title && (
           <Tab.Navigator
             tabBarOptions={{
