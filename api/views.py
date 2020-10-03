@@ -205,7 +205,7 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
         filters.OrderingFilter,
         DjangoFilterBackend
     )
-    filterset_fields = ('type', 'genres', 'cast', 'coming_soon_at', 'released_at')
+    filterset_fields = ('type', 'genres', 'cast', 'is_coming_soon', 'released_at')
     search_fields = ('name',)
     ordering_fields = ('name', 'type', 'rating', 'views', 'created_at')
     ordering = ('-created_at',)
