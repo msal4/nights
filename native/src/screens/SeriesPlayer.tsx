@@ -1,14 +1,14 @@
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import Video, {OnProgressData} from 'react-native-video';
 
 import {Title} from '../core/interfaces/title';
 import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
 import {AuthContext} from '../context/auth-context';
-import {Sub, Player} from '../components/Player';
+import {Sub, Player, OnProgressData} from '../components/Player';
 import {Season} from '../core/interfaces/season';
 import {Episode} from '../core/interfaces/episode';
 import {swapEpisodeUrlId} from '../utils/common';
+import {InteractionManager, Platform} from 'react-native';
 
 export interface SeriesPlayerParams {
   title: Title;
@@ -24,27 +24,31 @@ export class SeriesPlayerScreen extends React.Component<
     season?: Season;
     episode?: Episode;
     seasonId?: number;
+    startTime?: number;
   }
 > {
   constructor(props: any) {
     super(props);
-    this.videoRef = React.createRef();
     this.lastHit = React.createRef();
 
     this.state = {
       video: null,
       subtitles: undefined,
+      startTime: undefined,
     };
   }
 
   static contextType = AuthContext;
 
   context!: React.ContextType<typeof AuthContext>;
-  videoRef: React.RefObject<{player: {ref: Video}}>;
   lastHit: React.RefObject<number>;
 
   componentDidMount() {
-    this.loadEpisode();
+    if (Platform.OS === 'ios') {
+      InteractionManager.runAfterInteractions(this.loadEpisode.bind(this));
+    } else {
+      this.loadEpisode();
+    }
   }
 
   async loadEpisode() {
@@ -87,7 +91,7 @@ export class SeriesPlayerScreen extends React.Component<
   }
 
   async playEpisode(episode: Episode) {
-    const video = episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4');
+    const video = swapEpisodeUrlId(episode.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'));
     const subtitles = episode.subtitles.map(
       (sub) =>
         ({
@@ -99,34 +103,29 @@ export class SeriesPlayerScreen extends React.Component<
     );
 
     this.setState({video, subtitles});
+    this.continueWatching(episode);
   }
 
   async continueWatching(episode: Episode) {
-    console.log(episode);
     try {
-      this.videoRef.current?.player.ref.seek(episode.hits[0]?.playback_position ?? 0);
+      this.setState({startTime: episode.hits[0]?.playback_position ?? 0});
     } catch (err) {
-      console.log(err);
+      console.log('from continue watching: ', err.message);
+      this.setState({startTime: 0});
     }
   }
 
   render() {
-    const {video, subtitles, seasonId, season, episode} = this.state;
+    const {video, subtitles, seasonId, season, episode, startTime} = this.state;
     const {title} = this.props.route.params as SeriesPlayerParams;
     const {token} = this.context;
 
-    return video ? (
+    return video && startTime !== undefined ? (
       <Player
-        videoRef={this.videoRef}
-        navigation={this.props.navigation}
+        startTime={startTime}
         video={video}
         subtitles={subtitles}
         title={episode?.name}
-        load={async () => {
-          if (token) {
-            await this.continueWatching(episode!);
-          }
-        }}
         onProgress={
           token
             ? (data: OnProgressData) => {
@@ -135,11 +134,11 @@ export class SeriesPlayerScreen extends React.Component<
                   (this.lastHit as any).current = data.currentTime;
                   const hitData = {
                     playback_position: data.currentTime,
-                    runtime: data.seekableDuration,
+                    runtime: data.runtime,
                     season: season?.id || seasonId,
                     episode: episode?.id,
                   };
-                  console.log(hitData);
+
                   hitTopic(title.id, hitData);
                 }
               }

@@ -67,9 +67,9 @@ const Player: FunctionComponent<PlayerProps> = ({
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [showSidebar, setShowSidebar] = useState(false);
 
-  useDisposableEffect((disposed) => {
+  useDisposableEffect(disposed => {
     const player = videojs(videoNode.current, {
-      sources: videos.map((video) => {
+      sources: videos.map(video => {
         const { format, url } = getVideoUrl(video);
         return {
           src: url,
@@ -94,7 +94,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       // Toggle sidebar
       player.on(
         "togglesidebar",
-        () => !disposed && setShowSidebar((showSidebar) => !showSidebar)
+        () => !disposed && setShowSidebar(showSidebar => !showSidebar)
       );
 
       onFinish && player.on("ended", onFinish);
@@ -146,7 +146,7 @@ const Player: FunctionComponent<PlayerProps> = ({
           autoPlay
           controls
         >
-          {subtitles.map((subtitle) => (
+          {subtitles.map(subtitle => (
             <track
               kind="captions"
               src={swapEpisodeUrlId(subtitle.url.replace("{f}", "vtt")) || ""}
@@ -196,7 +196,7 @@ const replaceFullscreenButton = (
   let isFullscreen = false;
 
   if (ref && ref.current)
-    ref.current.onfullscreenchange = (_) => {
+    ref.current.onfullscreenchange = _ => {
       isFullscreen = !isFullscreen;
     };
 

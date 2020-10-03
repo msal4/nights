@@ -5,14 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  NativeScrollEvent,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
+import {View, TouchableOpacity, SafeAreaView, RefreshControl, ActivityIndicator} from 'react-native';
 
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
@@ -23,11 +16,10 @@ import {useLanguage} from '../utils/lang';
 import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
 import {colors, PROMO_HEIGHT} from '../constants/style';
-import {getImageUrl, joinTopics} from '../utils/common';
+import {getImageUrl, isCloseToBottom, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
 import {useAuth} from '../context/auth-context';
-import GoogleCast from 'react-native-google-cast';
 import UrlBase from '../utils/url-base';
 import {useUrl} from '../context/url-context';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
@@ -44,11 +36,6 @@ export const HomeScreen: React.FC = () => {
   );
 };
 
-const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent) => {
-  const paddingToBottom = 20;
-  return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
-};
-
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList, getPromoTitle} = usePromo(params);
@@ -60,14 +47,27 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const {isPrivate} = useUrl();
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
+  const reload = async () => {
     await getRows(true, params);
     await getHits();
     await getPromoTitle(params);
+  };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await reload();
     setRefreshing(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      reload();
+    });
+
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScrollView
@@ -96,7 +96,7 @@ const Home = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginVertical: 25,
+                // marginVertical: 10,
                 marginHorizontal: 20,
               }}>
               <TouchableOpacity
@@ -106,6 +106,7 @@ const Home = () => {
                 <Image
                   source={require('../../assets/logo.png')}
                   style={{width: 100, height: 50}}
+                  placeholderStyle={{backgroundColor: 'transparent'}}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
@@ -170,7 +171,7 @@ const Home = () => {
                         return;
                       }
                       if (!token) {
-                        navigation.navigate('Login');
+                        navigation.navigate('More', {screen: 'Login', initial: false});
                       }
 
                       if (inMyList) {
@@ -196,26 +197,11 @@ const Home = () => {
                         alignItems: 'center',
                         borderRadius: 40,
                       }}
-                      onPress={async () => {
-                        const state = await GoogleCast.getCastState();
-                        if (state === 'Connected') {
-                          if (promo?.type === 'm') {
-                            GoogleCast.castMedia({
-                              mediaUrl: promo.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'),
-                              imageUrl: getImageUrl(promo.images[0].url, ImageQuality.h900),
-                              posterUrl: getImageUrl(promo.images[0].url),
-                              title: promo.name,
-                              subtitle: promo.plot,
-                              studio: '1001 Nights',
-                              streamDuration: promo.runtime || 0, // seconds
-                            });
-                          }
+                      onPress={() => {
+                        if (promo?.type === 'm') {
+                          navigation.navigate('MoviePlayer', {title: promo});
                         } else {
-                          if (promo?.type === 'm') {
-                            navigation.navigate('MoviePlayer', {title: promo});
-                          } else {
-                            navigation.navigate('SeriesPlayer', {title: promo});
-                          }
+                          navigation.navigate('SeriesPlayer', {title: promo});
                         }
                       }}>
                       <Icon
@@ -251,7 +237,7 @@ const Home = () => {
       {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
       <View style={{height: 40}} />
-      {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="large" /> : null}
+      {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="small" /> : null}
     </ScrollView>
   );
 };

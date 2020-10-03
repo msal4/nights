@@ -2,6 +2,7 @@ import {Topic} from '../core/interfaces/topic';
 import {ImageQuality} from '../core/interfaces/title';
 import {Episode} from '../core/interfaces/episode';
 import {SimpleSeason} from '../core/interfaces/season';
+import {NativeScrollEvent} from 'react-native';
 
 export const capitalizeFirst = (str: string) => str?.charAt(0).toUpperCase() + str.slice(1);
 
@@ -50,3 +51,8 @@ export const cleanObjectProperties = (obj: any): any => {
 
   return newObj;
 };
+
+export const isCloseToBottom = (
+  {layoutMeasurement, contentOffset, contentSize}: NativeScrollEvent,
+  paddingToBottom = 20,
+) => layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;

@@ -1,12 +1,12 @@
-import React from 'react';
-import VideoPlayer from 'react-native-video-controls';
+import React, {useRef} from 'react';
+import {NativeModules, Platform, StyleSheet, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {Icon} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
-import Video, {OnProgressData} from 'react-native-video';
-import Orientation from 'react-native-orientation';
-import fs from 'react-native-fs';
-import {NativeModules, Platform, StatusBar} from 'react-native';
-import axios from 'axios';
-import LoadingIndicator from './LoadingIndicator';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+import {colors} from '../constants/style';
+import {TheoPlayer} from './TheoPlayer';
 
 export interface Sub {
   title: string;
@@ -15,103 +15,89 @@ export interface Sub {
   uri: string;
 }
 
-export type VideoRef = React.RefObject<{player: {ref: Video}}>;
-
-export class Player extends React.Component<
-  {
-    navigation: ReturnType<typeof useNavigation>;
-    video: string;
-    subtitles?: Sub[];
-    startTime?: number;
-    videoRef?: VideoRef;
-    title?: string;
-    onProgress?: (data: OnProgressData) => void;
-    load?: () => Promise<void>;
-  },
-  {subtitles: Sub[] | undefined; loading: boolean}
-> {
-  constructor(props: any) {
-    super(props);
-
-    this.state = {subtitles: undefined, loading: true};
-  }
-
-  componentDidMount() {
-    if (Platform.OS === 'android') {
-      NativeModules.ToggleImmersiveMode.immersiveModeOn();
-    }
-    Orientation.lockToLandscape();
-
-    (async () => {
-      if (!this.props.subtitles) {
-        return;
-      }
-      const subs = [];
-      for (const sub of this.props.subtitles) {
-        if (sub.uri.startsWith('/')) {
-          try {
-            const exists = await fs.exists(sub.uri);
-            exists && subs.push(sub);
-          } catch {}
-        } else {
-          try {
-            const res = await axios.head(sub.uri);
-            console.log(res.status);
-            if (res.status === 200) {
-              subs.push(sub);
-            }
-          } catch {}
-        }
-      }
-      this.setState({subtitles: subs});
-    })().then(() => {
-      this.setState({loading: false}, async () => {
-        try {
-          this.props.load && (await this.props.load());
-        } catch {}
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    if (Platform.OS === 'android') {
-      NativeModules.ToggleImmersiveMode.immersiveModeOff();
-    }
-    Orientation.lockToPortrait();
-  }
-
-  render() {
-    const {video, title, videoRef, onProgress} = this.props;
-    const {subtitles, loading} = this.state;
-
-    if (loading) {
-      return <LoadingIndicator />;
-    }
-
-    return (
-      <>
-        <StatusBar hidden />
-        <VideoPlayer
-          ref={videoRef}
-          navigator={this.props.navigation}
-          source={{uri: video}}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-          }}
-          title={title}
-          selectedTextTrack={subtitles?.length ? {type: 'language', value: 'ar'} : undefined}
-          textTracks={subtitles?.length ? subtitles : undefined}
-          onLoad={async () => {}}
-          onError={(err: any) => {
-            console.log(err);
-          }}
-          onProgress={onProgress}
-        />
-      </>
-    );
-  }
+export interface OnProgressData {
+  currentTime: number;
+  runtime: number;
 }
+
+interface PlayerProps {
+  video: string;
+  subtitles?: Sub[];
+  startTime?: number;
+  title?: string;
+  onProgress?: (data: OnProgressData) => void;
+  load?: () => Promise<void>;
+}
+
+export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress}) => {
+  const playerStyle: any = {...styles.player};
+  const navigation = useNavigation();
+  const duration = useRef<number>();
+
+  let BaseComponent: any = View;
+
+  if (Platform.OS === 'android') {
+    playerStyle.width = '100%';
+    playerStyle.height = '100%';
+  } else {
+    BaseComponent = ScrollView;
+  }
+
+  if (!video) {
+    return null;
+  }
+
+  return (
+    <BaseComponent style={{flex: 1}}>
+      {Platform.OS === 'android' ? (
+        <SafeAreaView edges={['top']} style={{alignItems: 'flex-start', paddingTop: 20, paddingLeft: 10}}>
+          <Icon
+            type="ionicon"
+            size={50}
+            color={colors.white}
+            name="chevron-back-sharp"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
+        </SafeAreaView>
+      ) : null}
+
+      <TheoPlayer
+        style={playerStyle}
+        source={{
+          sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
+          textTracks: subtitles?.map((s) => ({
+            default: s.language === 'ar',
+            kind: 'subtitles',
+            label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
+            src: s.uri,
+            srclang: s.language,
+          })),
+        }}
+        onLoadedData={() => {
+          startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
+        }}
+        onTimeUpdate={
+          onProgress &&
+          (async ({nativeEvent}: any) => {
+            const {currentTime} = nativeEvent;
+
+            if (!duration.current) {
+              duration.current = await NativeModules.THEOplayerViewManager.getDuration();
+            }
+
+            onProgress({currentTime, runtime: duration.current!});
+          })
+        }
+        autoplay
+      />
+    </BaseComponent>
+  );
+};
+
+const styles = StyleSheet.create({
+  player: {
+    aspectRatio: 1.7,
+  },
+});

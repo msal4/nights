@@ -17,7 +17,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
   const uri = getImageUrl(title.images[0]?.url);
   const cardWidth = width ?? CARD_WIDTH;
   const cardHeight = cardWidth * 1.6;
-  const {t, lang} = useLanguage();
+  const {t} = useLanguage();
 
   const navigation = useNavigation();
 
@@ -33,12 +33,12 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
             style={{
               backgroundColor: colors.green,
               position: 'absolute',
-              left: 2,
-              top: 5,
+              left: 3,
+              top: 4,
               paddingHorizontal: 5,
-              paddingBottom: lang === 'ar' ? 3 : 1,
+              borderRadius: 2,
             }}>
-            <Text style={{fontSize: 12, color: colors.black}}>
+            <Text style={{fontSize: 8, color: colors.black}}>
               {title.type === 's' ? t('newEpisodes') : t('new')}
             </Text>
           </View>
