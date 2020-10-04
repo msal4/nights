@@ -14,7 +14,7 @@ import TitleRow from '../components/TitleRow';
 import {DetailScreen} from './Detail';
 import {useLanguage} from '../utils/lang';
 import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
-import {checkMyList, addToMyList, removeFromMyList, getHistory} from '../api/title';
+import {checkMyList, addToMyList, removeFromMyList, getHistory, getTitles} from '../api/title';
 import {colors, PROMO_HEIGHT} from '../constants/style';
 import {getImageUrl, isCloseToBottom, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
@@ -23,6 +23,7 @@ import {useAuth} from '../context/auth-context';
 import UrlBase from '../utils/url-base';
 import {useUrl} from '../context/url-context';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
+import {ComingSoonRow} from '../components/ComingSoonRow';
 const {client} = UrlBase;
 
 const Stack = createStackNavigator();
@@ -39,7 +40,7 @@ export const HomeScreen: React.FC = () => {
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList, getPromoTitle} = usePromo(params);
-  const {rows, getRows, recentlyAdded, trending, loading} = useRows(params);
+  const {rows, getRows, recentlyAdded, trending, comingSoon, loading} = useRows(params);
   const {t} = useLanguage();
   const {history, getHits} = useHistory();
   const {token} = useAuth();
@@ -67,7 +68,8 @@ const Home = () => {
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params]);
+  console.log('coming soon:', comingSoon);
 
   return (
     <ScrollView
@@ -234,6 +236,8 @@ const Home = () => {
       {recentlyAdded && <TitleRow row={recentlyAdded.results} name={t('recentlyAdded')} />}
       {/* trending */}
       {trending && <TitleRow row={trending.results} name={t('trending')} />}
+      {/* coming soon */}
+      {comingSoon && <ComingSoonRow row={comingSoon.results} />}
       {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
       <View style={{height: 40}} />
@@ -299,6 +303,7 @@ const useRows = (params: Params) => {
   const [rows, setRows] = useState<PaginatedResults<GenreRow[]>>();
   const [recentlyAdded, setRecentlyAdded] = useState<PaginatedResults<Title[]>>();
   const [trending, setTrending] = useState<PaginatedResults<Title[]>>();
+  const [comingSoon, setComingSoon] = useState<PaginatedResults<Title[]>>();
   const [error, setError] = useState<Error | null>();
   const [loading, setLoading] = useState(false);
 
@@ -320,6 +325,8 @@ const useRows = (params: Params) => {
       setRecentlyAdded(recent);
       const trend = await getTrending(newParams);
       setTrending(trend);
+      const coming = await getTitles({...newParams, is_coming_soon: 1});
+      setComingSoon(coming);
       const data = await getGenreRows(newParams);
       setRows(data);
       setError(null);
@@ -334,5 +341,5 @@ const useRows = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  return {rows, recentlyAdded, trending, error, getRows, loading};
+  return {rows, recentlyAdded, trending, comingSoon, error, getRows, loading};
 };
