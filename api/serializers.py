@@ -213,7 +213,7 @@ class TitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Title
         fields = ('id', 'name', 'plot', 'runtime', 'imdb', 'rating', 'rated', 'images',
-                  'videos', 'subtitles', 'trailers', 'type', 'is_new', 'views', 'seasons',
+                  'videos', 'subtitles', 'trailers', 'type', 'is_new', 'views', 'seasons', 'is_coming_soon',
                   'genres', 'cast', 'recommended', 'released_at', 'created_at', 'updated_at')
 
     # noinspection PyMethodMayBeStatic
