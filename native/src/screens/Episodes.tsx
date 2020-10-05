@@ -39,8 +39,6 @@ export const EpisodesScreen: FunctionComponent = () => {
     };
   }, [season.id]);
 
-  console.log(tasks);
-
   return (
     <View style={{padding: 10}}>
       <DropDownPicker

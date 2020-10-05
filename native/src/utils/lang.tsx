@@ -52,3 +52,5 @@ export const LanguageProvider = (props: any) => {
 };
 
 export const useLanguage = () => React.useContext(LanguageContext);
+
+export const LanguageConsumer = LanguageContext.Consumer;

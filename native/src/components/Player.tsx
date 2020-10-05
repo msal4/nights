@@ -7,6 +7,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {colors} from '../constants/style';
 import {TheoPlayer} from './TheoPlayer';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {TitleDetail} from '../core/interfaces/title';
+import {EpisodesScreen} from '../screens/Episodes';
+import {InfoScreen} from '../screens/Info';
+import {useLanguage} from '../utils/lang';
 
 export interface Sub {
   title: string;
@@ -25,14 +30,18 @@ interface PlayerProps {
   subtitles?: Sub[];
   startTime?: number;
   title?: string;
+  titleDetail?: TitleDetail;
   onProgress?: (data: OnProgressData) => void;
   load?: () => Promise<void>;
 }
 
-export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress}) => {
+const Tab = createMaterialTopTabNavigator();
+
+export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress, titleDetail}) => {
   const playerStyle: any = {...styles.player};
   const navigation = useNavigation();
   const duration = useRef<number>();
+  const {t} = useLanguage();
 
   let BaseComponent: any = View;
 
@@ -92,6 +101,28 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
         }
         autoplay
       />
+      {titleDetail && (
+        <Tab.Navigator
+          tabBarOptions={{
+            labelStyle: {color: colors.white},
+            style: {backgroundColor: colors.black},
+          }}>
+          {titleDetail.type === 's' ? (
+            <Tab.Screen
+              name="Episodes"
+              initialParams={{title: titleDetail}}
+              component={EpisodesScreen}
+              options={{title: t('episodes')}}
+            />
+          ) : null}
+          <Tab.Screen
+            name="Info"
+            initialParams={{title: titleDetail}}
+            component={InfoScreen}
+            options={{title: t('info')}}
+          />
+        </Tab.Navigator>
+      )}
     </BaseComponent>
   );
 };

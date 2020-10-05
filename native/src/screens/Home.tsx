@@ -69,7 +69,6 @@ const Home = () => {
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
-  console.log('coming soon:', comingSoon);
 
   return (
     <ScrollView
