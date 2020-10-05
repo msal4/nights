@@ -49,7 +49,7 @@ export class MoviePlayerScreen extends React.Component<
           } as Sub),
       );
 
-      this.setState({video, subtitles});
+      this.setState({video, subtitles, title});
       await this.continueWatching(title.id);
     };
 
@@ -66,30 +66,26 @@ export class MoviePlayerScreen extends React.Component<
       this.setState({startTime: hit.playback_position ?? 0});
       // this.videoRef.current?.player.ref.seek(hit.playback_position);
     } catch (err) {
-      console.log(err);
       this.setState({startTime: 0});
     }
   }
 
   render() {
-    const {video, subtitles, startTime} = this.state;
-    const {title} = this.props.route.params as PlayerParams;
+    const {video, subtitles, startTime, title} = this.state;
     const {token} = this.context;
 
-    return video && startTime !== undefined ? (
+    return video && startTime !== undefined && title ? (
       <Player
+        titleDetail={title}
         video={video}
         subtitles={subtitles}
         title={title.name}
-        load={async () => {}}
         startTime={startTime}
         onProgress={
           token
             ? (data: OnProgressData) => {
                 const last = this.lastHit.current ?? 0;
                 if (data.currentTime > last + 30 || data.currentTime < last) {
-                  console.log('progress');
-                  console.log(data);
                   (this.lastHit as any).current = data.currentTime;
                   hitTopic(title.id, {
                     playback_position: data.currentTime,
