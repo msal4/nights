@@ -61,6 +61,7 @@ export const SeriesPlayerScreen: React.FC = () => {
   };
 
   const loadEpisode = async () => {
+    // eslint-disable-next-line no-shadow
     const {title: simpleTitle, season, episode} = params;
 
     const title = await getTitle(simpleTitle.id);

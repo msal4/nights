@@ -38,6 +38,8 @@ export class MoviePlayerScreen extends React.Component<
       const {title: simpleTitle} = this.props.route.params as PlayerParams;
       const title = await getTitle(simpleTitle.id);
 
+      this.props.navigation.setOptions({headerTitle: title.name});
+
       const video = title.videos[0]?.url.replace('{q}', '720');
       const subtitles = title.subtitles.map(
         (sub) =>
