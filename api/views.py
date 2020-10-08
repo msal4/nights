@@ -486,7 +486,6 @@ class NewsStoryViewSet(viewsets.ModelViewSet):
             image=request.data['image'],
             body=request.data['body']
         )
-        print(story.id)
         self.rename_image(request, story)
 
         serializer = self.get_serializer(story)
