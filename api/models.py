@@ -63,12 +63,14 @@ class Title(Topic):
         null=True, blank=True, help_text='In minutes')
     imdb = models.CharField(max_length=50, null=True)
     rating = models.FloatField(null=True)
-    type = models.CharField(
-        max_length=10,
-        choices=(('m', 'Movie'), ('s', 'Series')),
-        default='m'
-    )
-    rated = models.IntegerField(null=True, blank=True)
+
+
+type = models.CharField(
+    max_length=10,
+    choices=(('m', 'Movie'), ('s', 'Series')),
+    default='m'
+)
+rated = models.IntegerField(null=True, blank=True)
 
 
 class Season(Topic):
@@ -192,14 +194,18 @@ class NewsStory(Topic):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='likes')
+    topic = models.ForeignKey(
+        Topic, on_delete=models.CASCADE, related_name='likes')
     date_added = models.DateTimeField(auto_now_add=True, blank=True)
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='comments')
+    topic = models.ForeignKey(
+        Topic, on_delete=models.CASCADE, related_name='comments')
 
     body = models.TextField()
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)

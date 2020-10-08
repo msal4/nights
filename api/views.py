@@ -444,7 +444,9 @@ class NewsStoryViewSet(viewsets.ModelViewSet):
     queryset = NewsStory.objects.all()
     serializer_class = serializers.NewsStorySerializer
     permission_classes = [IsAdminOrReadOnly]
-
+    serializer_action_classes = {
+        'list': serializers.NewsStoryListSerializer,
+    }
     # @method_decorator(cache_page(60 * 60 * 10))
     # def dispatch(self, request, *args, **kwargs):
     #     return super().dispatch(request, *args, **kwargs)

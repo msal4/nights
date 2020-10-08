@@ -1,10 +1,10 @@
 from pprint import pprint
 
-from rest_framework import serializers
+from rest_framework import serializers, pagination
 from django.utils import timezone
 
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
-    Media, LandingPromo, Provider, NewsStory
+    Media, LandingPromo, Provider, NewsStory, Comment
 from . import helpers
 
 
@@ -314,7 +314,40 @@ class LandingPromoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'body', 'user', 'created_at')
+
+
+class NewsStoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'image')
+
+
 class NewsStorySerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField('paginated_comments')
+
     class Meta:
         model = NewsStory
-        fields = '__all__'
+        fields = ('id', 'name', 'body', 'image', 'likes', 'comments')
+
+    def get_likes(self, story):
+        return story.likes.count()
+
+    def paginated_comments(self, obj):
+        comments = Comment.objects.filter(topic=obj).order_by('-created_at')
+        paginator = pagination.PageNumberPagination()
+        page = paginator.paginate_queryset(comments, self.context['request'])
+        serializer = CommentSerializer(page, many=True, context={
+            'request': self.context['request']})
+
+        # pprint(paginator.get_paginated_response(serializer.data))
+        return {
+            'count': comments.count(),
+            'next': paginator.get_next_link(),
+            'previous': paginator.get_previous_link(),
+            'results': serializer.data
+        }
