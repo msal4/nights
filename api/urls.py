@@ -14,6 +14,10 @@ router.register(r'my_list', views.MyListViewSet, basename='MyList')
 router.register(r'history', views.WatchHistoryViewSet, basename='History')
 router.register(r'landing_promos', views.LandingPromoViewSet,
                 basename='LandingPromos')
+router.register(r'likes', views.LikesViewSet,
+                basename='Likes')
+router.register(r'comments', views.CommentsViewSet,
+                basename='Comments')
 router.register(r'news_stories', views.NewsStoryViewSet,
                 basename='NewsStories')
 

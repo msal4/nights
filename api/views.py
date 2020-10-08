@@ -26,6 +26,7 @@ from .paginators import TitleGenreRowViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import helpers
+from api.models import Comment, Like
 
 
 @permission_classes(permissions.IsAdminUser)
@@ -498,3 +499,15 @@ class NewsStoryViewSet(viewsets.ModelViewSet):
         self.rename_image(request, self.queryset.get(pk=pk))
 
         return super().update(self, request, *args, pk=pk, **kwargs)
+
+
+class CommentsViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class LikesViewSet(viewsets.ModelViewSet):
+    queryset = Like.objects.all()
+    serializer_class = serializers.LikeSerializer
+    permission_classes = [permissions.IsAuthenticated]

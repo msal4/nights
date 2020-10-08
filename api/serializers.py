@@ -4,7 +4,7 @@ from rest_framework import serializers, pagination
 from django.utils import timezone
 
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
-    Media, LandingPromo, Provider, NewsStory, Comment
+    Media, LandingPromo, Provider, NewsStory, Comment, Like
 from . import helpers
 
 
@@ -318,6 +318,12 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'body', 'user', 'created_at')
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ('user', 'topic')
 
 
 class NewsStoryListSerializer(serializers.ModelSerializer):
