@@ -175,7 +175,32 @@ class LandingPromo(models.Model):
     title_ar = models.CharField(max_length=60)
     body = models.CharField(max_length=250)
     body_ar = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='landing_promos')
+    image = models.ImageField(
+        upload_to='landing_promos', storage=OverwriteStorage())
 
     def __str__(self):
         return self.title
+
+
+class NewsStory(Topic):
+    body = models.TextField()
+    image = models.ImageField(upload_to='news_stories')
+
+    def save(self, *args, **kwargs):
+        print(self.image)
+        super().save(*args, **kwargs)
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    body = models.TextField()
+    updated_at = models.DateTimeField(auto_now_add=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)

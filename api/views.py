@@ -1,4 +1,7 @@
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+import os
+from pprint import pprint
+
+from PIL import Image
 from django.core.files.storage import default_storage
 from django.db.models import Q, Count, F
 from django.utils import timezone
@@ -18,7 +21,7 @@ from rest_framework.parsers import FileUploadParser
 from django.core.cache import cache
 from rest_framework.decorators import permission_classes
 from .mixins import GetSerializerClassMixin
-from .models import Title, Episode, Season, Genre, Cast, ViewHit, LandingPromo
+from .models import Title, Episode, Season, Genre, Cast, ViewHit, LandingPromo, NewsStory
 from .paginators import TitleGenreRowViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
@@ -205,7 +208,8 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
         filters.OrderingFilter,
         DjangoFilterBackend
     )
-    filterset_fields = ('type', 'genres', 'cast', 'is_coming_soon', 'released_at')
+    filterset_fields = ('type', 'genres', 'cast',
+                        'is_coming_soon', 'released_at')
     search_fields = ('name',)
     ordering_fields = ('name', 'type', 'rating', 'views', 'created_at')
     ordering = ('-created_at',)
@@ -434,3 +438,62 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     # @method_decorator(cache_page(60 * 60 * 10))
     # def dispatch(self, request, *args, **kwargs):
     #     return super().dispatch(request, *args, **kwargs)
+
+
+class NewsStoryViewSet(viewsets.ModelViewSet):
+    queryset = NewsStory.objects.all()
+    serializer_class = serializers.NewsStorySerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+    # @method_decorator(cache_page(60 * 60 * 10))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
+
+    def rename_image(self, request, story):
+        image = request.data.pop('image')
+        name = str(story.id) + '.png'
+        story.image.save('original/' + name, image[0], save=True)
+
+        path = os.path.join(settings.MEDIA_ROOT, story.image.name)
+        image = Image.open(path)
+
+        image_copy = image.copy()
+        image_copy.thumbnail((300, 300), Image.ANTIALIAS)
+
+        thumbnails_directory = os.path.join(
+            settings.MEDIA_ROOT, 'news_stories/300')
+
+        if not os.path.isdir(thumbnails_directory):
+            os.mkdir(thumbnails_directory)
+
+        image_copy.save(os.path.join(thumbnails_directory, name))
+
+        image_copy = image.copy()
+
+        medium_images_directory = os.path.join(
+            settings.MEDIA_ROOT, 'news_stories/600')
+
+        if not os.path.isdir(medium_images_directory):
+            os.mkdir(medium_images_directory)
+
+        image_copy.thumbnail((600, 600), Image.ANTIALIAS)
+        image_copy.save(os.path.join(medium_images_directory, name))
+
+    def create(self, request, *args, **kwargs):
+
+        story = self.queryset.create(
+            name=request.data['name'],
+            image=request.data['image'],
+            body=request.data['body']
+        )
+        print(story.id)
+        self.rename_image(request, story)
+
+        serializer = self.get_serializer(story)
+        return Response(serializer.data)
+        # return super().update(self, request, pk=story.id, *args, **kwargs)
+
+    def update(self, request, pk=None, *args, **kwargs):
+        self.rename_image(request, self.queryset.get(pk=pk))
+
+        return super().update(self, request, *args, pk=pk, **kwargs)

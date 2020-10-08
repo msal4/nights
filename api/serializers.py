@@ -4,7 +4,7 @@ from rest_framework import serializers
 from django.utils import timezone
 
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
-    Media, LandingPromo, Provider
+    Media, LandingPromo, Provider, NewsStory
 from . import helpers
 
 
@@ -311,4 +311,10 @@ class TitleGenreSerializer(serializers.ModelSerializer):
 class LandingPromoSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandingPromo
+        fields = '__all__'
+
+
+class NewsStorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsStory
         fields = '__all__'

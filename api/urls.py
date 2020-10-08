@@ -14,6 +14,8 @@ router.register(r'my_list', views.MyListViewSet, basename='MyList')
 router.register(r'history', views.WatchHistoryViewSet, basename='History')
 router.register(r'landing_promos', views.LandingPromoViewSet,
                 basename='LandingPromos')
+router.register(r'news_stories', views.NewsStoryViewSet,
+                basename='NewsStories')
 
 urlpatterns = [
     path('', include(router.urls)),
