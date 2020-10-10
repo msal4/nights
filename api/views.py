@@ -452,6 +452,10 @@ class NewsStoryViewSet(viewsets.ModelViewSet):
     # def dispatch(self, request, *args, **kwargs):
     #     return super().dispatch(request, *args, **kwargs)
 
+    @method_decorator(cache_page(60 * 60 * 4))
+    def list(self, *args, **kwargs):
+        return super().list(*args, **kwargs)
+
     def rename_image(self, request, story):
         image = request.data.pop('image')
         name = str(story.id) + '.png'
