@@ -317,7 +317,7 @@ class LandingPromoSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'body', 'user', 'created_at')
+        fields = ('id', 'body', 'user', 'topic', 'created_at')
 
 
 class LikeSerializer(serializers.ModelSerializer):
