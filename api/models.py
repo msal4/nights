@@ -64,13 +64,12 @@ class Title(Topic):
     imdb = models.CharField(max_length=50, null=True)
     rating = models.FloatField(null=True)
 
-
-type = models.CharField(
-    max_length=10,
-    choices=(('m', 'Movie'), ('s', 'Series')),
-    default='m'
-)
-rated = models.IntegerField(null=True, blank=True)
+    type = models.CharField(
+        max_length=10,
+        choices=(('m', 'Movie'), ('s', 'Series')),
+        default='m'
+    )
+    rated = models.IntegerField(null=True, blank=True)
 
 
 class Season(Topic):
