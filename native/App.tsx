@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Platform, StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
@@ -18,6 +18,7 @@ import {MoviePlayerScreen} from './src/screens/MoviePlayer';
 import {SeriesPlayerScreen} from './src/screens/SeriesPlayer';
 import {TvPlayerScreen} from './src/screens/TvPlayer';
 import {UrlProvider} from './src/context/url-context';
+import {StoryScreen} from './src/screens/Story';
 
 Ionicons.loadFont();
 
@@ -83,6 +84,15 @@ export default () => {
                   <Stack.Screen name="Root" component={RootScreen} />
                   <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} options={options} />
                   <Stack.Screen name="SeriesPlayer" component={SeriesPlayerScreen} options={options} />
+                  <Stack.Screen
+                    name="Story"
+                    component={StoryScreen}
+                    options={{
+                      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                      gestureDirection: 'vertical',
+                      gestureResponseDistance: {vertical: 100},
+                    }}
+                  />
                   <Stack.Screen name="TvPlayer" component={TvPlayerScreen} options={options} />
                   <Stack.Screen name="OfflinePlayer" component={OfflinePlayerScreen} options={options} />
                 </Stack.Navigator>

@@ -73,7 +73,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
               <Icon type="ionicon" name="play" size={20} color={colors.white} style={{marginLeft: 2}} />
             </View>
           ) : null}
-          {progress ? (
+          {isPrivate && progress ? (
             <View
               style={{
                 position: 'absolute',

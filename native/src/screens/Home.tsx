@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 
-import {Image, Icon, Text} from 'react-native-elements';
+import {Image, Icon, Text, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {View, TouchableOpacity, SafeAreaView, RefreshControl, ActivityIndicator} from 'react-native';
 
@@ -47,6 +47,7 @@ const Home = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const {isPrivate} = useUrl();
+  const scrollView = useRef<ScrollView>();
 
   const reload = async () => {
     await getRows(true, params);
@@ -63,7 +64,8 @@ const Home = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      reload();
+      getHits();
+      getPromoTitle(params);
     });
 
     return unsubscribe;
@@ -72,6 +74,7 @@ const Home = () => {
 
   return (
     <ScrollView
+      ref={scrollView as any}
       scrollEventThrottle={100}
       refreshControl={
         <RefreshControl
@@ -229,6 +232,12 @@ const Home = () => {
           </SafeAreaView>
         </LinearGradient>
       </Image>
+      <Button
+        title="Go To Story"
+        onPress={() => {
+          navigation.navigate('Story', {index: 0});
+        }}
+      />
       {/* end of promo */}
       {history && isPrivate ? <HistoryRow row={history} /> : null}
       {/* recently added */}
