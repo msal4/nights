@@ -48,11 +48,12 @@ export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentP
           <Text style={{marginLeft: 20, marginRight: 8}}>150</Text>
           <Icon type="ionicon" name="heart-outline" size={40} color={colors.white} />
         </View>
-        <Text style={{direction: 'rtl'}}>
+        <Text style={{direction: 'rtl', marginBottom: 5}}>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor officiis ad harum distinctio itaque
           excepturi quia veritatis voluptatem perspiciatis voluptates, incidunt cumque a doloremque nulla sed
           nemo optio suscipit dignissimos!
         </Text>
+        <Text style={{color: colors.lightGray, fontSize: 12}}>two days ago at 04:00am</Text>
         <View style={{height: 1, backgroundColor: colors.lightGray, marginVertical: 15}} />
         <Input
           value={commentText}
@@ -74,6 +75,11 @@ export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentP
               setCommentText('');
             },
           }}
+          keyboardAppearance="dark"
+          returnKeyType="send"
+          onSubmitEditing={() => {
+            setCommentText('');
+          }}
           onChangeText={(value) => {
             setCommentText(value);
           }}
@@ -84,11 +90,12 @@ export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentP
         {[1, 2, 3].map((i) => (
           <View key={i} style={{marginBottom: 20}}>
             <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 5}}>Sajad</Text>
-            <Text style={{fontSize: 13, color: colors.lightGray}}>
+            <Text style={{fontSize: 13, color: colors.lightGray, marginBottom: 5}}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed iste doloribus rem adipisci sint
               impedit, illum porro perspiciatis molestiae quibusdam accusantium magnam corrupti corporis
               maxime aliquid expedita itaque odit odio.
             </Text>
+            <Text style={{color: colors.lightGray, fontSize: 11}}>two days ago at 04:00am</Text>
           </View>
         ))}
       </View>

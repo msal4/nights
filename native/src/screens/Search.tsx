@@ -78,6 +78,8 @@ const Search: React.FC = () => {
         }}>
         <Input
           placeholder={t('search')}
+          keyboardAppearance="dark"
+          returnKeyType="search"
           containerStyle={{height: 50, marginRight: 15}}
           placeholderTextColor={colors.lightGray}
           inputStyle={{color: colors.white}}

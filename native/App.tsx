@@ -90,7 +90,7 @@ export default () => {
                     options={{
                       cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
                       gestureDirection: 'vertical',
-                      gestureResponseDistance: {vertical: 100},
+                      gestureResponseDistance: {vertical: 200},
                     }}
                   />
                   <Stack.Screen name="TvPlayer" component={TvPlayerScreen} options={options} />
