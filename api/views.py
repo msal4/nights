@@ -527,6 +527,11 @@ class LikesViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(like)
         return Response(serializer.data)
 
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        like = get_object_or_404(request.user.likes, topic=pk)
+        serializer = self.get_serializer(like)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     @staticmethod
     def destroy(request, pk=None, *args, **kwargs):
         topic = NewsStory.objects.get(pk=pk)
