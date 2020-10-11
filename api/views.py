@@ -441,7 +441,7 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
     #     return super().dispatch(request, *args, **kwargs)
 
 
-class NewsStoryViewSet(viewsets.ModelViewSet):
+class NewsStoryViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     queryset = NewsStory.objects.all()
     serializer_class = serializers.NewsStorySerializer
     permission_classes = [IsAdminOrReadOnly]
@@ -508,7 +508,7 @@ class CommentsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-class LikesViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
+class LikesViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = serializers.LikeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
