@@ -27,7 +27,7 @@ from .paginators import TitleGenreRowViewPagination, TitleViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import helpers
-from api.models import Comment, Like
+from api.models import Comment, Like, Topic
 
 
 @permission_classes(permissions.IsAdminUser)
@@ -514,7 +514,7 @@ class LikesViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def create(self, request, *args, **kwargs):
-        topic = NewsStory.objects.get(pk=request.data['topic'])
+        topic = Topic.objects.get(pk=request.data['topic'])
         queryset = self.queryset.filter(topic=topic, user=request.user)
 
         like = None
@@ -534,7 +534,7 @@ class LikesViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def destroy(request, pk=None, *args, **kwargs):
-        topic = NewsStory.objects.get(pk=pk)
+        topic = Topic.objects.get(pk=pk)
         like = get_object_or_404(request.user.likes.all(), topic=topic)
         like.delete()
         return Response(status=status.HTTP_200_OK)
