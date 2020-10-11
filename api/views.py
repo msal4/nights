@@ -448,9 +448,6 @@ class NewsStoryViewSet(viewsets.ModelViewSet):
     serializer_action_classes = {
         'list': serializers.NewsStoryListSerializer,
     }
-    # @method_decorator(cache_page(60 * 60 * 10))
-    # def dispatch(self, request, *args, **kwargs):
-    #     return super().dispatch(request, *args, **kwargs)
 
     @method_decorator(cache_page(60 * 60 * 4))
     def list(self, *args, **kwargs):
@@ -511,7 +508,7 @@ class CommentsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-class LikesViewSet(viewsets.ModelViewSet):
+class LikesViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = serializers.LikeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
