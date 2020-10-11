@@ -1,6 +1,7 @@
 import os
 from pprint import pprint
 
+from django.contrib.auth.models import User
 from PIL import Image
 from django.core.files.storage import default_storage
 from django.db.models import Q, Count, F
@@ -268,7 +269,6 @@ class EpisodeViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, pk=None, *args, **kwargs):
-        print('this is called')
         episode = Episode.objects.filter(id=pk)[0]
 
         if 'image' in request.data:
@@ -510,8 +510,35 @@ class CommentsViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def create(self, request, *args, **kwargs):
+        # request.data._mutable = True
+        # request.data['user'] = request.user
+
+        return super().create(self, request, *args, **kwargs)
+
 
 class LikesViewSet(viewsets.ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = serializers.LikeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def create(self, request, *args, **kwargs):
+        topic = NewsStory.objects.get(pk=request.data['topic'])
+        queryset = self.queryset.filter(topic=topic, user=request.user)
+
+        like = None
+
+        if not queryset.count():
+            like = self.queryset.create(topic=topic, user=request.user)
+        else:
+            like = queryset[0]
+
+        serializer = self.get_serializer(like)
+        return Response(serializer.data)
+
+    @staticmethod
+    def destroy(request, pk=None, *args, **kwargs):
+        topic = NewsStory.objects.get(pk=pk)
+        like = get_object_or_404(request.user.likes.all(), topic=topic)
+        like.delete()
+        return Response(status=status.HTTP_200_OK)
