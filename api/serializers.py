@@ -6,6 +6,7 @@ from django.utils import timezone
 from .models import Title, Season, Episode, Topic, Genre, Cast, ViewHit, \
     Media, LandingPromo, Provider, NewsStory, Comment, Like
 from . import helpers
+from django.contrib.auth.models import User
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -314,7 +315,15 @@ class LandingPromoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+
+
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Comment
         fields = ('id', 'body', 'user', 'topic', 'created_at')
