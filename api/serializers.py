@@ -317,13 +317,14 @@ class LandingPromoSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'body', 'user', 'created_at')
+        fields = ('id', 'body', 'user', 'topic', 'created_at')
+        read_only_fields = ('user',)
 
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = ('user', 'topic')
+        fields = ('topic',)
 
 
 class NewsStoryListSerializer(serializers.ModelSerializer):
