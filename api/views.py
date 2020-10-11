@@ -502,19 +502,13 @@ class NewsStoryViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None, *args, **kwargs):
         self.rename_image(request, self.queryset.get(pk=pk))
 
-        return super().update(self, request, *args, pk=pk, **kwargs)
+        return super().update(request, *args, pk=pk, **kwargs)
 
 
 class CommentsViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def create(self, request, *args, **kwargs):
-        # request.data._mutable = True
-        # request.data['user'] = request.user
-
-        return super().create(self, request, *args, **kwargs)
 
 
 class LikesViewSet(viewsets.ModelViewSet):

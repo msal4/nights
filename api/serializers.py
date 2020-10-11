@@ -320,6 +320,10 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'body', 'user', 'topic', 'created_at')
         read_only_fields = ('user',)
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return Comment.objects.create(**validated_data, user=user)
+
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
