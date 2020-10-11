@@ -24,6 +24,9 @@ import UrlBase from '../utils/url-base';
 import {useUrl} from '../context/url-context';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
 import {ComingSoonRow} from '../components/ComingSoonRow';
+import {Story} from '../core/interfaces/story';
+import {getStories} from '../api/story';
+import {StoryRow} from '../components/StoryRow';
 const {client} = UrlBase;
 
 const Stack = createStackNavigator();
@@ -40,7 +43,7 @@ export const HomeScreen: React.FC = () => {
 const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, inMyList, setInMyList, getPromoTitle} = usePromo(params);
-  const {rows, getRows, recentlyAdded, trending, comingSoon, loading} = useRows(params);
+  const {rows, getRows, recentlyAdded, trending, stories, comingSoon, loading} = useRows(params);
   const {t} = useLanguage();
   const {history, getHits} = useHistory();
   const {token} = useAuth();
@@ -232,13 +235,10 @@ const Home = () => {
           </SafeAreaView>
         </LinearGradient>
       </Image>
-      <Button
-        title="Go To Story"
-        onPress={() => {
-          navigation.navigate('Story', {index: 0});
-        }}
-      />
       {/* end of promo */}
+      {/* stories */}
+      {stories ? <StoryRow row={stories.results} /> : null}
+      {/* continue watching */}
       {history && isPrivate ? <HistoryRow row={history} /> : null}
       {/* recently added */}
       {recentlyAdded && <TitleRow row={recentlyAdded.results} name={t('recentlyAdded')} />}
@@ -314,6 +314,7 @@ const useRows = (params: Params) => {
   const [comingSoon, setComingSoon] = useState<PaginatedResults<Title[]>>();
   const [error, setError] = useState<Error | null>();
   const [loading, setLoading] = useState(false);
+  const [stories, setStories] = useState<PaginatedResults<Story[]>>();
 
   const getRows = async (refresh = true, p?: Params) => {
     try {
@@ -333,6 +334,8 @@ const useRows = (params: Params) => {
       setRecentlyAdded(recent);
       const trend = await getTrending(newParams);
       setTrending(trend);
+      const newsStories = await getStories();
+      setStories(newsStories);
       const coming = await getTitles({...newParams, is_coming_soon: 1});
       setComingSoon(coming);
       const data = await getGenreRows(newParams);
@@ -349,5 +352,5 @@ const useRows = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  return {rows, recentlyAdded, trending, comingSoon, error, getRows, loading};
+  return {rows, recentlyAdded, trending, comingSoon, stories, error, getRows, loading};
 };

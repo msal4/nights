@@ -1,36 +1,95 @@
 import React, {useEffect, useState} from 'react';
 import {View, Image as RImage, Dimensions} from 'react-native';
 import {Icon, Image, Input, Text} from 'react-native-elements';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import {Story as IStory, StoryDetail} from '../core/interfaces/story';
 import {colors} from '../constants/style';
 import LoadingIndicator from './LoadingIndicator';
+import {addLike, createComment, getLike, getStory, removeLike} from '../api/story';
+import dayjs from 'dayjs';
 
-export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentPage}) => {
+export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, currentPage}) => {
   const [imageHeight, setImageHeight] = useState(500);
   const [commentText, setCommentText] = useState('');
+  const [commentDisabled, setCommentDisabled] = useState(false);
+  const [storyDetail, setStoryDetail] = useState<StoryDetail>();
+  const [liked, setLiked] = useState<boolean>(false);
+  const [error, setError] = useState();
+
+  const getDetails = async () => {
+    isLiked();
+    try {
+      const data = await getStory(story.id);
+      setStoryDetail(data);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const postComment = async () => {
+    try {
+      setCommentDisabled(true);
+      await createComment(story.id, commentText);
+      await getDetails();
+      setCommentText('');
+    } finally {
+      setCommentDisabled(false);
+    }
+  };
+
+  const isLiked = async () => {
+    try {
+      const res = await getLike(story.id);
+      console.log(res);
+      setLiked(true);
+    } catch (err) {
+      console.log('isLiked:', err);
+    }
+  };
+
+  const like = async () => {
+    try {
+      await addLike(story.id);
+      setLiked(true);
+      if (storyDetail) {
+        setStoryDetail({...storyDetail, likes: storyDetail.likes + 1});
+      }
+    } catch (err) {
+      console.log('like:', err);
+    }
+  };
+
+  const unlike = async () => {
+    try {
+      await removeLike(story.id);
+      setLiked(false);
+      if (storyDetail) {
+        setStoryDetail({...storyDetail, likes: storyDetail.likes - 1});
+      }
+    } catch (err) {
+      console.log('unlike:', err);
+    }
+  };
 
   useEffect(() => {
-    RImage.getSize(
-      'http://cinema.shashety.com/storage/posters/600_ACooqNbz6KT7qrH1jfVd.jpg',
-      (width, height) => {
-        const imageWidth = Dimensions.get('screen').width;
-        setImageHeight(height * (imageWidth / width));
-      },
-    );
+    RImage.getSize(story.image, (width, height) => {
+      const imageWidth = Dimensions.get('screen').width;
+      setImageHeight(height * (imageWidth / width));
+    });
   }, []);
 
   useEffect(() => {
-    if (currentPage === id) {
-      console.log('fetched:', id);
+    if (currentPage && !storyDetail) {
+      getDetails();
     }
   }, [currentPage]);
 
   return (
-    <ScrollView contentContainerStyle={{paddingBottom: 100}} bounces={false}>
+    <ScrollView contentContainerStyle={{paddingBottom: 100}} style={{flex: 1}} bounces={false}>
       <Image
-        source={{uri: 'http://cinema.shashety.com/storage/posters/600_ACooqNbz6KT7qrH1jfVd.jpg'}}
+        source={{uri: story.image}}
         PlaceholderContent={<LoadingIndicator />}
         placeholderStyle={{backgroundColor: 'transparent'}}
         style={{width: '100%', height: imageHeight}}
@@ -38,22 +97,29 @@ export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentP
       <View style={{padding: 15}}>
         <View
           style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15}}>
-          <Text style={{marginRight: 10}}>150</Text>
+          <Text style={{marginRight: 10}}>{storyDetail?.comments.count ?? 0}</Text>
           <Image
             source={require('../../assets/comment.png')}
             resizeMode="contain"
             placeholderStyle={{backgroundColor: 'transparent'}}
             style={{width: 40, height: 40}}
           />
-          <Text style={{marginLeft: 20, marginRight: 8}}>150</Text>
-          <Icon type="ionicon" name="heart-outline" size={40} color={colors.white} />
+          <Text style={{marginLeft: 20, marginRight: 8}}>{storyDetail?.likes ?? 0}</Text>
+          <Icon
+            type="ionicon"
+            name={liked ? 'heart' : 'heart-outline'}
+            size={40}
+            color={liked ? colors.red : colors.white}
+            onPress={() => {
+              if (liked) {
+                unlike();
+              } else {
+                like();
+              }
+            }}
+          />
         </View>
-        <Text style={{direction: 'rtl', marginBottom: 5}}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor officiis ad harum distinctio itaque
-          excepturi quia veritatis voluptatem perspiciatis voluptates, incidunt cumque a doloremque nulla sed
-          nemo optio suscipit dignissimos!
-        </Text>
-        <Text style={{color: colors.lightGray, fontSize: 12}}>two days ago at 04:00am</Text>
+        <Text style={{direction: 'rtl', marginBottom: 5}}>{storyDetail?.body}</Text>
         <View style={{height: 1, backgroundColor: colors.lightGray, marginVertical: 15}} />
         <Input
           value={commentText}
@@ -65,21 +131,18 @@ export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentP
             borderWidth: 1,
             borderColor: colors.lightGray,
           }}
+          disabled={commentDisabled}
           rightIcon={{
             type: 'ionicon',
             name: commentText.length === 0 ? 'send-outline' : 'send',
             color: commentText.length === 0 ? colors.white : colors.blue,
             disabled: commentText.length === 0,
             disabledStyle: {backgroundColor: 'transparent', opacity: 0.75},
-            onPress: () => {
-              setCommentText('');
-            },
+            onPress: postComment,
           }}
           keyboardAppearance="dark"
           returnKeyType="send"
-          onSubmitEditing={() => {
-            setCommentText('');
-          }}
+          onSubmitEditing={postComment}
           onChangeText={(value) => {
             setCommentText(value);
           }}
@@ -87,15 +150,11 @@ export const Story: React.FC<{id: number; currentPage: number}> = ({id, currentP
           placeholder="Write something..."
           placeholderTextColor={colors.lightGray}
         />
-        {[1, 2, 3].map((i) => (
-          <View key={i} style={{marginBottom: 20}}>
-            <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 5}}>Sajad</Text>
-            <Text style={{fontSize: 13, color: colors.lightGray, marginBottom: 5}}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed iste doloribus rem adipisci sint
-              impedit, illum porro perspiciatis molestiae quibusdam accusantium magnam corrupti corporis
-              maxime aliquid expedita itaque odit odio.
-            </Text>
-            <Text style={{color: colors.lightGray, fontSize: 11}}>two days ago at 04:00am</Text>
+        {storyDetail?.comments.results.map((comment) => (
+          <View key={comment.id} style={{marginBottom: 20}}>
+            <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 5}}>{comment.user.username}</Text>
+            <Text style={{fontSize: 13, color: colors.lightGray, marginBottom: 5}}>{comment.body}</Text>
+            {/* <Text style={{color: colors.lightGray, fontSize: 11}}>{dayjs(comment.created_at).}</Text> */}
           </View>
         ))}
       </View>

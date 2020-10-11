@@ -7,25 +7,26 @@ import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Story} from '../components/Story';
 import {colors} from '../constants/style';
+import {Story as IStory} from '../core/interfaces/story';
 
 export const StoryScreen: React.FC = () => {
-  const {params} = useRoute() as {params: {index: number}};
+  const {params} = useRoute() as {params: {index: number; stories: IStory[]}};
   const [progress, setProgress] = useState({position: 0, offset: 0});
   const [page, setPage] = useState(params.index || 0);
   const [scrollState, setScrollState] = useState<PageScrollStateChangedEvent['pageScrollState']>('idle');
   const viewPager = useRef<ViewPager>();
   const navigation = useNavigation();
-  const pages = [0, 1, 2, 3];
 
+  const {stories} = params;
   const fractionalPosition = progress.position + progress.offset;
 
-  let progressBarSize = (fractionalPosition / (pages.length - 1)) * 100;
+  let progressBarSize = (fractionalPosition / (stories.length - 1)) * 100;
   progressBarSize = progressBarSize < 0 ? 0 : progressBarSize > 100 ? 100 : progressBarSize;
 
   return (
     <>
       <ImageBackground
-        source={require('../../assets/mock-story.png')}
+        source={{uri: stories[page].image}}
         blurRadius={50}
         style={{position: 'absolute', width: '100%', height: 200}}>
         <LinearGradient colors={['#00000022', '#00000055', '#000000']} style={{height: '100%'}} />
@@ -84,8 +85,8 @@ export const StoryScreen: React.FC = () => {
           // Lib does not support dynamically transitionStyle change
           transitionStyle="scroll"
           ref={viewPager as any}>
-          {pages.map((p) => (
-            <Story key={p} id={p} currentPage={page} />
+          {stories.map((p, index) => (
+            <Story key={p.id} story={p} currentPage={page === index} />
           ))}
         </ViewPager>
       </SafeAreaView>

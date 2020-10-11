@@ -1,6 +1,7 @@
 export const trans = {
   en: {
     lang: 'English',
+    stories: 'Stories',
     retry: 'Retry',
     delete: 'Delete',
     cancel: 'Cancel',
@@ -81,6 +82,7 @@ export const trans = {
   },
   ar: {
     seeOnImdb: 'اذهب الى IMDB',
+    stories: 'قصص',
     lang: 'عربي',
     retry: 'اعادة المحاولة',
     delete: 'حذف',
