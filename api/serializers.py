@@ -342,7 +342,7 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class NewsStoryListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = NewsStory
         fields = ('id', 'image')
 
 
