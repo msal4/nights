@@ -29,7 +29,8 @@ export const ComingSoonRow: FunctionComponent<ComingSoonRowProps> = ({row}) => {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-        <Text style={{fontSize: 17, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+        <Text
+          style={{fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
           {t('comingSoon')}
         </Text>
       </View>

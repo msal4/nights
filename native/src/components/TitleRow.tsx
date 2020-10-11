@@ -25,8 +25,14 @@ const TitleRow: FunctionComponent<TitleRowProps> = ({row, name, seeMore, onSeeMo
 
   return (
     <>
-      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-        <Text style={{fontSize: 17, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <Text
+          style={{fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
           {capitalizeFirst(name)}
         </Text>
         {seeMore ? (
