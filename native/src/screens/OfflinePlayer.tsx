@@ -11,7 +11,6 @@ export interface OfflinePlayerParams {
 export const OfflinePlayerScreen: React.FC = () => {
   const {params} = useRoute();
   const {task} = params as OfflinePlayerParams;
-
   const subs = task.offlineSubtitles.map(
     (sub) =>
       ({

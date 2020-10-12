@@ -56,22 +56,20 @@ export default () => {
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
 
+    OneSignal.promptForPushNotificationsWithUserResponse(() => {});
+
     return () => {
       Downloader.close();
     };
   }, []);
 
-  const options =
-    Platform.OS === 'ios'
-      ? {
-          headerShown: true,
-          headerStyle: {backgroundColor: colors.black},
-          headerBackTitle: 'Back',
-          headerTitle: '',
-          headerTintColor: colors.white,
-        }
-      : {};
-
+  const options = {
+    headerShown: true,
+    headerStyle: {backgroundColor: colors.black},
+    headerBackTitle: 'Back',
+    headerTitle: '',
+    headerTintColor: colors.white,
+  };
   return (
     <>
       <StatusBar translucent barStyle="light-content" backgroundColor="transparent" />

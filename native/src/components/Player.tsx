@@ -38,42 +38,18 @@ interface PlayerProps {
 const Tab = createMaterialTopTabNavigator();
 
 export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress, titleDetail}) => {
-  const playerStyle: any = {...styles.player};
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const duration = useRef<number>();
   const {t} = useLanguage();
-
-  let BaseComponent: any = View;
-
-  if (Platform.OS === 'android') {
-    playerStyle.width = '100%';
-    playerStyle.height = '100%';
-  } else {
-    BaseComponent = ScrollView;
-  }
 
   if (!video) {
     return null;
   }
 
   return (
-    <BaseComponent style={{flex: 1}}>
-      {Platform.OS === 'android' ? (
-        <SafeAreaView edges={['top']} style={{alignItems: 'flex-start', paddingTop: 20, paddingLeft: 10}}>
-          <Icon
-            type="ionicon"
-            size={50}
-            color={colors.white}
-            name="chevron-back-sharp"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
-        </SafeAreaView>
-      ) : null}
-
+    <ScrollView style={{flex: 1}}>
       <TheoPlayer
-        style={playerStyle}
+        style={styles.player}
         source={{
           sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
           textTracks: subtitles?.map((s) => ({
@@ -123,12 +99,13 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
           />
         </Tab.Navigator>
       )}
-    </BaseComponent>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   player: {
+    width: '100%',
     aspectRatio: 1.7,
   },
 });
