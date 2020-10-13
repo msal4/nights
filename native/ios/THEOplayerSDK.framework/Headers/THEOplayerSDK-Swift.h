@@ -344,6 +344,13 @@ SWIFT_CLASS("_TtC13THEOplayerSDK11MoatOptions")
 
 
 
+
+SWIFT_CLASS("_TtC13THEOplayerSDK7Promise")
+@interface Promise : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 @class SourceDescription;
 
 /// Related Content Source object
@@ -447,6 +454,7 @@ SWIFT_PROTOCOL("_TtP13THEOplayerSDK17THEOScriptMessage_")
 @property (nonatomic, readonly, copy) NSString * _Nonnull name;
 @property (nonatomic, readonly, copy) NSString * _Nullable parsedBodyString;
 @property (nonatomic, readonly, copy) NSData * _Nullable parsedBodyData;
+@property (nonatomic, readonly, strong) Promise * _Nullable promise;
 @end
 
 
@@ -901,6 +909,13 @@ SWIFT_CLASS("_TtC13THEOplayerSDK11MoatOptions")
 
 
 
+
+SWIFT_CLASS("_TtC13THEOplayerSDK7Promise")
+@interface Promise : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 @class SourceDescription;
 
 /// Related Content Source object
@@ -1004,6 +1019,7 @@ SWIFT_PROTOCOL("_TtP13THEOplayerSDK17THEOScriptMessage_")
 @property (nonatomic, readonly, copy) NSString * _Nonnull name;
 @property (nonatomic, readonly, copy) NSString * _Nullable parsedBodyString;
 @property (nonatomic, readonly, copy) NSData * _Nullable parsedBodyData;
+@property (nonatomic, readonly, strong) Promise * _Nullable promise;
 @end
 
 

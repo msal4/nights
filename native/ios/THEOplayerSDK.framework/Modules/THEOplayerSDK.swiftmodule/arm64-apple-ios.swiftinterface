@@ -8,7 +8,6 @@ import CoreData
 import CoreGraphics
 import CoreMedia
 import Foundation
-import GoogleCast
 import MediaPlayer
 import Swift
 import SystemConfiguration
@@ -866,12 +865,12 @@ public class VerimatrixDRMConfiguration : THEOplayerSDK.FairPlayDRMConfiguration
   @objc deinit
   @objc override dynamic public init()
 }
-public enum THEOErrorCode : Swift.String, Swift.Codable {
-  case NETWORK_GENERAL
-  case AVPLAYER_GENERAL
-  public typealias RawValue = Swift.String
-  public init?(rawValue: Swift.String)
-  public var rawValue: Swift.String {
+public enum THEOErrorCode : Swift.Int32, Swift.Codable {
+  case MEDIA_AVPLAYER_ERROR
+  case NETWORK_ERROR
+  public typealias RawValue = Swift.Int32
+  public init?(rawValue: Swift.Int32)
+  public var rawValue: Swift.Int32 {
     get
   }
 }
@@ -1333,6 +1332,7 @@ public protocol GoogleImaAd : THEOplayerSDK.Ad {
   var wrapperAdIds: [Swift.String] { get }
   var wrapperAdSystems: [Swift.String] { get }
   var wrapperCreativeIds: [Swift.String] { get }
+  var vastMediaBitrate: Swift.Int { get }
 }
 public enum AdIntegrationKind : Swift.String, Swift.Codable {
   case defaultKind
@@ -1359,7 +1359,6 @@ public protocol THEOError {
   var timestamp: Foundation.Date { get }
   var code: THEOplayerSDK.THEOErrorCode { get }
   var cause: THEOplayerSDK.THEOError? { get }
-  var parameters: [Swift.String : Swift.String]? { get }
 }
 public protocol Chromecast : THEOplayerSDK.EventDispatcherProtocol {
   var casting: Swift.Bool { get }
@@ -1493,6 +1492,7 @@ public struct THEOMargins {
   @objc var name: Swift.String { get }
   @objc var parsedBodyString: Swift.String? { get }
   @objc var parsedBodyData: Foundation.Data? { get }
+  @objc var promise: THEOplayerSDK.Promise? { get }
 }
 @objc public class RelatedContentSource : ObjectiveC.NSObject, Swift.Codable {
   @objc final public let duration: Swift.String?
@@ -1627,17 +1627,16 @@ public class GoogleDAIConfiguration : THEOplayerSDK.ServerSideAdInsertionConfigu
   required public init(from decoder: Swift.Decoder) throws
   public func encode(to encoder: Swift.Encoder) throws
 }
+@objc public class Promise : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc deinit
+}
 public protocol Track : THEOplayerSDK.EventDispatcherProtocol {
   var kind: Swift.String { get }
   var language: Swift.String { get }
   var label: Swift.String { get }
   var id: Swift.String { get }
   var uid: Swift.Int { get }
-}
-public class THEOplayerCastHelper {
-  public static var theoplayerReceiverApplicationID: Swift.String
-  public static func setGCKCastContextSharedInstanceWithDefaultCastOptions()
-  @objc deinit
 }
 extension SourceDescription {
   public var ads: [THEOplayerSDK.AdDescription]? {

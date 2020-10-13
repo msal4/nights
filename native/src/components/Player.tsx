@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {NativeModules, Platform, StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
@@ -12,6 +12,7 @@ import {TitleDetail} from '../core/interfaces/title';
 import {EpisodesScreen} from '../screens/Episodes';
 import {InfoScreen} from '../screens/Info';
 import {useLanguage} from '../utils/lang';
+import Video from 'react-native-video';
 
 export interface Sub {
   title: string;
@@ -38,69 +39,66 @@ interface PlayerProps {
 const Tab = createMaterialTopTabNavigator();
 
 export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress, titleDetail}) => {
-  const playerStyle: any = {...styles.player};
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const duration = useRef<number>();
   const {t} = useLanguage();
-
-  let BaseComponent: any = View;
-
-  if (Platform.OS === 'android') {
-    playerStyle.width = '100%';
-    playerStyle.height = '100%';
-  } else {
-    BaseComponent = ScrollView;
-  }
+  const player = useRef<Video>();
 
   if (!video) {
     return null;
   }
 
   return (
-    <BaseComponent style={{flex: 1}}>
+    <ScrollView style={{flex: 1}}>
       {Platform.OS === 'android' ? (
-        <SafeAreaView edges={['top']} style={{alignItems: 'flex-start', paddingTop: 20, paddingLeft: 10}}>
-          <Icon
-            type="ionicon"
-            size={50}
-            color={colors.white}
-            name="chevron-back-sharp"
-            onPress={() => {
-              navigation.goBack();
-            }}
-          />
-        </SafeAreaView>
-      ) : null}
+        <TheoPlayer
+          style={styles.player}
+          source={{
+            sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
+            textTracks: subtitles?.map((s) => ({
+              default: s.language === 'ar',
+              kind: 'subtitles',
+              label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
+              src: s.uri,
+              srclang: s.language,
+            })),
+          }}
+          onLoadedData={() => {
+            startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
+          }}
+          onTimeUpdate={
+            onProgress &&
+            (async ({nativeEvent}: any) => {
+              const {currentTime} = nativeEvent;
 
-      <TheoPlayer
-        style={playerStyle}
-        source={{
-          sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
-          textTracks: subtitles?.map((s) => ({
-            default: s.language === 'ar',
-            kind: 'subtitles',
-            label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
-            src: s.uri,
-            srclang: s.language,
-          })),
-        }}
-        onLoadedData={() => {
-          startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
-        }}
-        onTimeUpdate={
-          onProgress &&
-          (async ({nativeEvent}: any) => {
-            const {currentTime} = nativeEvent;
+              if (!duration.current) {
+                duration.current = await NativeModules.THEOplayerViewManager.getDuration();
+              }
 
-            if (!duration.current) {
-              duration.current = await NativeModules.THEOplayerViewManager.getDuration();
-            }
-
-            onProgress({currentTime, runtime: duration.current!});
-          })
-        }
-        autoplay
-      />
+              onProgress({currentTime, runtime: duration.current!});
+            })
+          }
+          autoplay
+        />
+      ) : (
+        <Video
+          ref={player as any}
+          controls
+          style={styles.player}
+          source={{uri: video}}
+          textTracks={subtitles}
+          selectedTextTrack={{type: 'language', value: 'ar'}}
+          onLoad={() => {
+            player.current?.seek(startTime ?? 0);
+          }}
+          onProgress={
+            onProgress &&
+            (({currentTime, seekableDuration}) => {
+              onProgress({currentTime, runtime: seekableDuration});
+            })
+          }
+        />
+      )}
       {titleDetail && (
         <Tab.Navigator
           tabBarOptions={{
@@ -123,12 +121,13 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
           />
         </Tab.Navigator>
       )}
-    </BaseComponent>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   player: {
+    width: '100%',
     aspectRatio: 1.7,
   },
 });

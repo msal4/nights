@@ -20,7 +20,6 @@ class THEOplayerView: UIView {
     init() {
     // Set delegate
     if let appDelegate = UIApplication.shared.delegate as? AppDelegate, !appDelegate.castContextSet {
-        THEOplayerCastHelper.setGCKCastContextSharedInstanceWithDefaultCastOptions()
         appDelegate.castContextSet = true
     }
       
@@ -42,8 +41,6 @@ class THEOplayerView: UIView {
       // Init player
       player = THEOplayer(configuration: playerConfig)
       player.evaluateJavaScript("init({player: player})")
-      
-
       
       
       // Set frame

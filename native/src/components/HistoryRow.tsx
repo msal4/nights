@@ -20,7 +20,8 @@ export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
   return (
     <>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text style={{fontSize: 17, marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+        <Text
+          style={{fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
           {t('continueWatching')}
         </Text>
       </View>

@@ -1,10 +1,11 @@
 import axios from 'axios';
+import {privateBase, publicBase} from '../constants/const';
 import AuthToken from './auth-token';
 
 class UrlBase {
-  static publicBase = 'http://185.217.88.44:1001';
-  static privateBase = 'http://172.18.0.224';
-  static baseURL = UrlBase.publicBase;
+  static publicBase = publicBase;
+  static privateBase = privateBase;
+  static baseURL = publicBase;
   static private = false;
 
   static client = UrlBase.createClient();
