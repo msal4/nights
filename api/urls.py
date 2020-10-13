@@ -28,6 +28,7 @@ urlpatterns = [
     path('cache/', views.forget_cache),
     path('auth', include('rest_framework.urls')),
     path('promos/', views.list_promos),
+    path('forward_images/', views.forward_images),
     path('recently_added/', views.RecentlyAddedView.as_view(), name='recently_added'),
     path('trending/', views.TrendingView.as_view(), name='trending'),
     path('genre_rows/', views.TitleGenreRowView.as_view(), name='genre_rows'),

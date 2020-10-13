@@ -15,6 +15,7 @@ import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Do
 import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
 import {useLanguage} from '../utils/lang';
 import {useUrl} from '../context/url-context';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -43,7 +44,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
 
   const playEpisode = isPrivate
     ? () => {
-        navigation.navigate('SeriesPlayer', {title, season, episode});
+        navigation.replace('SeriesPlayer', {title, season, episode});
       }
     : undefined;
 

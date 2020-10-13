@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {NativeModules, Platform, StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
@@ -12,6 +12,7 @@ import {TitleDetail} from '../core/interfaces/title';
 import {EpisodesScreen} from '../screens/Episodes';
 import {InfoScreen} from '../screens/Info';
 import {useLanguage} from '../utils/lang';
+import Video from 'react-native-video';
 
 export interface Sub {
   title: string;
@@ -41,6 +42,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
   // const navigation = useNavigation();
   const duration = useRef<number>();
   const {t} = useLanguage();
+  const player = useRef<Video>();
 
   if (!video) {
     return null;
@@ -48,35 +50,55 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
 
   return (
     <ScrollView style={{flex: 1}}>
-      <TheoPlayer
-        style={styles.player}
-        source={{
-          sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
-          textTracks: subtitles?.map((s) => ({
-            default: s.language === 'ar',
-            kind: 'subtitles',
-            label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
-            src: s.uri,
-            srclang: s.language,
-          })),
-        }}
-        onLoadedData={() => {
-          startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
-        }}
-        onTimeUpdate={
-          onProgress &&
-          (async ({nativeEvent}: any) => {
-            const {currentTime} = nativeEvent;
+      {Platform.OS === 'android' ? (
+        <TheoPlayer
+          style={styles.player}
+          source={{
+            sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
+            textTracks: subtitles?.map((s) => ({
+              default: s.language === 'ar',
+              kind: 'subtitles',
+              label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
+              src: s.uri,
+              srclang: s.language,
+            })),
+          }}
+          onLoadedData={() => {
+            startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
+          }}
+          onTimeUpdate={
+            onProgress &&
+            (async ({nativeEvent}: any) => {
+              const {currentTime} = nativeEvent;
 
-            if (!duration.current) {
-              duration.current = await NativeModules.THEOplayerViewManager.getDuration();
-            }
+              if (!duration.current) {
+                duration.current = await NativeModules.THEOplayerViewManager.getDuration();
+              }
 
-            onProgress({currentTime, runtime: duration.current!});
-          })
-        }
-        autoplay
-      />
+              onProgress({currentTime, runtime: duration.current!});
+            })
+          }
+          autoplay
+        />
+      ) : (
+        <Video
+          ref={player as any}
+          controls
+          style={styles.player}
+          source={{uri: video}}
+          textTracks={subtitles}
+          selectedTextTrack={{type: 'language', value: 'ar'}}
+          onLoad={() => {
+            player.current?.seek(startTime ?? 0);
+          }}
+          onProgress={
+            onProgress &&
+            (({currentTime, seekableDuration}) => {
+              onProgress({currentTime, runtime: seekableDuration});
+            })
+          }
+        />
+      )}
       {titleDetail && (
         <Tab.Navigator
           tabBarOptions={{

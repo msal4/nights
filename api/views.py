@@ -28,6 +28,31 @@ from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import helpers
 from api.models import Comment, Like, Topic
+import urllib3
+from django.http import HttpResponse
+
+http = urllib3.PoolManager()
+
+
+@api_view(['GET'])
+def forward_images(request, *args, **kwargs):
+    if 'image_url' in request.query_params:
+        url: str = request.query_params['image_url']
+        if url.find('1001nights') == -1:
+            return Response(status=400)
+
+        try:
+            res = http.request('GET', url)
+            response = HttpResponse(
+                res.data, status=res.status)
+
+            response['Content-Type'] = res.headers['Content-Type']
+            response['Content-Length'] = res.headers['Content-Length']
+            return response
+        except:
+            return Response(status=400)
+
+    return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @permission_classes(permissions.IsAdminUser)
