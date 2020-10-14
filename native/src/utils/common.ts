@@ -3,18 +3,30 @@ import {ImageQuality} from '../core/interfaces/title';
 import {Episode} from '../core/interfaces/episode';
 import {SimpleSeason} from '../core/interfaces/season';
 import {NativeScrollEvent} from 'react-native';
+import UrlBase from './url-base';
 
 export const capitalizeFirst = (str: string) => str?.charAt(0).toUpperCase() + str.slice(1);
 
 export const joinTopics = (topics?: Topic[], sep = ' • ') =>
   topics?.map((g) => capitalizeFirst(g.name)).join(sep);
 
-export const getImageUrl = (url?: string, quality = ImageQuality.v250) =>
-  url &&
-  url
+export const getImageUrl = (url?: string, quality = ImageQuality.v250) => {
+  if (!url) {
+    return url;
+  }
+
+  const imageUrl = url
     .replace('static.1001nights.fun', 'static.1001nights.fun:1001')
     .replace('{q}v', quality)
     .replace('{f}', 'jpg');
+
+  if (!UrlBase.private) {
+    console.log(`${UrlBase.publicBase}/api/forward_images/?image_url=${imageUrl}`);
+    return `${UrlBase.publicBase}/api/forward_images/?image_url=${imageUrl}`;
+  }
+
+  return imageUrl;
+};
 
 export const swapEpisodeUrlId = (url: string) => {
   if (!url) {

@@ -322,7 +322,7 @@ export const DetailScreen: React.FC = () => {
                 options={{title: t('episodes')}}
               />
             ) : null}
-            {title?.trailers.length ? (
+            {title?.trailers.length && isPrivate ? (
               <Tab.Screen
                 name="Trailer"
                 initialParams={{title}}
