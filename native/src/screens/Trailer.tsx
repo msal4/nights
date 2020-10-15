@@ -1,10 +1,11 @@
 import React, {FunctionComponent} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
 import {getImageUrl} from '../utils/common';
 import {TitleDetail, ImageQuality} from '../core/interfaces/title';
 import {TheoPlayer} from '../components/TheoPlayer';
+import Video from 'react-native-video';
 
 interface TrailerParams {
   title: TitleDetail;
@@ -23,7 +24,9 @@ export const TrailerScreen: FunctionComponent = () => {
 
   const width = Math.floor(Dimensions.get('window').width);
 
-  return (
+  return Platform.OS === 'ios' ? (
+    <Video poster={poster} controls source={{uri: src}} style={{...styles.video, width}} />
+  ) : (
     <TheoPlayer
       source={{sources: [{src, type: 'video/mp4'}], textTracks: [], poster}}
       style={{...styles.video, width}}
