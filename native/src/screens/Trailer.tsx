@@ -1,6 +1,6 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect, useRef, useState} from 'react';
 import {Dimensions, Platform, StyleSheet} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {getImageUrl} from '../utils/common';
 import {TitleDetail, ImageQuality} from '../core/interfaces/title';
@@ -13,6 +13,9 @@ interface TrailerParams {
 
 export const TrailerScreen: FunctionComponent = () => {
   const params: TrailerParams = useRoute().params as any;
+  const player = useRef<Video>();
+  const navigation = useNavigation();
+  const [paused, setPaused] = useState(false);
 
   const {title} = params;
   const src = title?.trailers[0]?.url.replace('{f}', 'mp4');
@@ -24,8 +27,26 @@ export const TrailerScreen: FunctionComponent = () => {
 
   const width = Math.floor(Dimensions.get('window').width);
 
+  useEffect(() => {
+    const blur = navigation.addListener('blur', () => {
+      setPaused(true);
+    });
+
+    return () => {
+      navigation.removeListener('blur', blur);
+    };
+  }, []);
+
   return Platform.OS === 'ios' ? (
-    <Video poster={poster} controls source={{uri: src}} style={{...styles.video, width}} />
+    <Video
+      ref={player as any}
+      paused={paused}
+      poster={poster}
+      controls
+      muted
+      source={{uri: src}}
+      style={{...styles.video, width}}
+    />
   ) : (
     <TheoPlayer
       source={{sources: [{src, type: 'video/mp4'}], textTracks: [], poster}}
