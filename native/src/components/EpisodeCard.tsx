@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useRef, useEffect} from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Text, Icon} from 'react-native-elements';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
@@ -44,7 +44,11 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
 
   const playEpisode = isPrivate
     ? () => {
-        navigation.replace('SeriesPlayer', {title, season, episode});
+        if (Platform.OS === 'ios') {
+          (navigation as any).replace('SeriesPlayer', {title, season, episode});
+        } else {
+          navigation.navigate('SeriesPlayer', {title, season, episode});
+        }
       }
     : undefined;
 
