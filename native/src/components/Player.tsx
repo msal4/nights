@@ -126,7 +126,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
           {titleDetail.type === 's' ? (
             <Tab.Screen
               name="Episodes"
-              initialParams={{title: titleDetail}}
+              initialParams={{title: titleDetail, screenName: 'Player'}}
               component={EpisodesScreen}
               options={{title: t('episodes')}}
             />

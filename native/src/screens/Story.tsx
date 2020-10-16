@@ -89,7 +89,6 @@ export const StoryScreen: React.FC = () => {
         <ViewPager
           style={{flex: 1}}
           initialPage={index}
-          showPageIndicator
           keyboardDismissMode="on-drag"
           onPageScroll={(e) => {
             setProgress(e.nativeEvent);
