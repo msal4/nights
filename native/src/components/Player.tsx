@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from 'react';
-import {NativeModules, Platform, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Dimensions, NativeModules, Platform, StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
@@ -43,16 +43,30 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
   const duration = useRef<number>();
   const {t} = useLanguage();
   const player = useRef<Video>();
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   if (!video) {
     return null;
+  }
+
+  const playerStyle: any = {...styles.player};
+
+  if (Platform.OS === 'android') {
+    let width = Math.floor(Dimensions.get('window').width);
+    let height = Math.floor(Dimensions.get('window').height);
+
+    if (isFullscreen) {
+      playerStyle.width = Math.min(width, height) + 1;
+    } else {
+      playerStyle.width = Math.min(width, height);
+    }
   }
 
   return (
     <ScrollView style={{flex: 1}}>
       {Platform.OS === 'android' ? (
         <TheoPlayer
-          style={styles.player}
+          style={playerStyle}
           source={{
             sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
             textTracks: subtitles?.map((s) => ({
@@ -78,6 +92,10 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
               onProgress({currentTime, runtime: duration.current!});
             })
           }
+          onPresentationModeChange={() => {
+            // const {width, height} = Dimensions.get('window');
+            setIsFullscreen(!isFullscreen);
+          }}
           autoplay
         />
       ) : (

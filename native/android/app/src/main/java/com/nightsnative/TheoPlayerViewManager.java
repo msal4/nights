@@ -18,6 +18,7 @@ import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.event.EventListener;
 import com.theoplayer.android.api.event.player.LoadedDataEvent;
 import com.theoplayer.android.api.event.player.PlayerEventTypes;
+import com.theoplayer.android.api.event.player.PresentationModeChange;
 import com.theoplayer.android.api.event.player.TimeUpdateEvent;
 import com.theoplayer.android.api.source.SourceDescription;
 
@@ -41,7 +42,8 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
 
     private enum InternalAndGlobalEventPair {
         onTimeUpdate("onTimeUpdateEventInternal", "onTimeUpdate"),
-        onLoadedData("onLoadedDataEventInternal", "onLoadedData");
+        onLoadedData("onLoadedDataEventInternal", "onLoadedData"),
+        onPresentationModeChange("onPresentationModeChangeEventInternal", "onPresentationModeChange");
 
         String internalEvent;
         String globalEvent;
@@ -79,31 +81,33 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
 
     // Change listeners
     private void addPropertyChangeListeners(final ThemedReactContext reactContext) {
-        playerView.getPlayer().addEventListener(PlayerEventTypes.LOADEDDATA, new EventListener<LoadedDataEvent>() {
-            @Override
-            public void handleEvent(final LoadedDataEvent playEvent) {
-                WritableMap event = Arguments.createMap();
+        playerView.getPlayer().addEventListener(PlayerEventTypes.PRESENTATIONMODECHANGE, presentationModeChangeEvent -> {
+            WritableMap event = Arguments.createMap();
 
-                // Local property change
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-                        playerView.getId(),
-                        InternalAndGlobalEventPair.onLoadedData.internalEvent,
-                        event);
-            }
+            // Local property change
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                    playerView.getId(),
+                    InternalAndGlobalEventPair.onPresentationModeChange.internalEvent,
+                    event);
+        });
+        playerView.getPlayer().addEventListener(PlayerEventTypes.LOADEDDATA, playEvent -> {
+            WritableMap event = Arguments.createMap();
+            // Local property change
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                    playerView.getId(),
+                    InternalAndGlobalEventPair.onLoadedData.internalEvent,
+                    event);
         });
 
-        playerView.getPlayer().addEventListener(PlayerEventTypes.TIMEUPDATE, new EventListener<TimeUpdateEvent>() {
-            @Override
-            public void handleEvent(final TimeUpdateEvent updateEvent) {
-                WritableMap event = Arguments.createMap();
-                event.putDouble("currentTime", updateEvent.getCurrentTime());
+        playerView.getPlayer().addEventListener(PlayerEventTypes.TIMEUPDATE, updateEvent -> {
+            WritableMap event = Arguments.createMap();
+            event.putDouble("currentTime", updateEvent.getCurrentTime());
 
-                // Local property change
-                reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-                        playerView.getId(),
-                        InternalAndGlobalEventPair.onTimeUpdate.internalEvent,
-                        event);
-            }
+            // Local property change
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                    playerView.getId(),
+                    InternalAndGlobalEventPair.onTimeUpdate.internalEvent,
+                    event);
         });
 
     }
@@ -116,6 +120,11 @@ public class TheoPlayerViewManager extends SimpleViewManager<THEOplayerView> imp
                         MapBuilder.of(
                                 "phasedRegistrationNames",
                                 MapBuilder.of("bubbled", InternalAndGlobalEventPair.onLoadedData.globalEvent)))
+                .put(
+                        InternalAndGlobalEventPair.onPresentationModeChange.internalEvent,
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of("bubbled", InternalAndGlobalEventPair.onPresentationModeChange.globalEvent)))
                 .put(
                         InternalAndGlobalEventPair.onTimeUpdate.internalEvent,
                         MapBuilder.of(

@@ -18,6 +18,7 @@ interface TheoPlayerProps {
   style?: any;
   onLoadedData?: any;
   onTimeUpdate?: any;
+  onPresentationModeChange?: any;
 }
 
 const THEOplayerViewNative = requireNativeComponent<any>('THEOplayerView');

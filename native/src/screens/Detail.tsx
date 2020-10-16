@@ -251,7 +251,7 @@ export const DetailScreen: React.FC = () => {
               containerStyle={{flex: 2}}
               disabledStyle={{backgroundColor: colors.gray}}
               disabled={title?.is_coming_soon}
-              style={{borderRadius: 100, overflow: 'hidden', marginRight: 10}}
+              buttonStyle={{borderRadius: 100, overflow: 'hidden', marginRight: 10}}
               onPress={async () => {
                 if (!title) {
                   return;
@@ -278,8 +278,9 @@ export const DetailScreen: React.FC = () => {
             }}
             buttonStyle={{
               backgroundColor: !inMyList ? colors.white : colors.lightBlueGray,
+              borderRadius: 100,
+              overflow: 'hidden',
             }}
-            style={{borderRadius: 100, overflow: 'hidden'}}
             titleStyle={{color: inMyList ? colors.white : colors.black}}
             icon={{
               type: 'ionicon',

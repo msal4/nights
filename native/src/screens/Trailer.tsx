@@ -28,13 +28,11 @@ export const TrailerScreen: FunctionComponent = () => {
   const width = Math.floor(Dimensions.get('window').width);
 
   useEffect(() => {
-    const blur = navigation.addListener('blur', () => {
+    const unsubscribe = navigation.addListener('blur', () => {
       setPaused(true);
     });
 
-    return () => {
-      navigation.removeListener('blur', blur);
-    };
+    return unsubscribe;
   }, []);
 
   return Platform.OS === 'ios' ? (
