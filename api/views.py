@@ -467,7 +467,7 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
 
 
 class NewsStoryViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
-    queryset = NewsStory.objects.all()
+    queryset = NewsStory.objects.order_by('-created_at')
     serializer_class = serializers.NewsStorySerializer
     permission_classes = [IsAdminOrReadOnly]
     serializer_action_classes = {
@@ -528,7 +528,7 @@ class NewsStoryViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
 
 
 class CommentsViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.order_by('-created_at')
     serializer_class = serializers.CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
