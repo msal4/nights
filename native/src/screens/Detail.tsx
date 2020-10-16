@@ -248,10 +248,10 @@ export const DetailScreen: React.FC = () => {
           }}>
           {isPrivate ? (
             <Button
-              containerStyle={{flex: 2}}
+              containerStyle={{flex: 2, marginRight: 10}}
               disabledStyle={{backgroundColor: colors.gray}}
               disabled={title?.is_coming_soon}
-              buttonStyle={{borderRadius: 100, overflow: 'hidden', marginRight: 10}}
+              buttonStyle={{borderRadius: 100, overflow: 'hidden'}}
               onPress={async () => {
                 if (!title) {
                   return;
