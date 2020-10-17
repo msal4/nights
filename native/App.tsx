@@ -7,6 +7,7 @@ import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import SplashScreen from 'react-native-splash-screen';
 import OneSignal from 'react-native-onesignal';
+import Orientation from 'react-native-orientation';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
@@ -46,6 +47,8 @@ const elementsTheme: ElementsTheme = {
 
 export default () => {
   useEffect(() => {
+    Orientation.lockToPortrait();
+
     changeNavigationBarColor(colors.darkGray, true, true);
     SplashScreen.hide();
     Downloader.open();

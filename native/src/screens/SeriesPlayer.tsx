@@ -18,7 +18,7 @@ export interface SeriesPlayerParams {
 
 export const SeriesPlayerScreen: React.FC = () => {
   const lastHit = useRef();
-  const {params} = useRoute() as {params: SeriesPlayerParams};
+  const {params} = useRoute() as {name: string; params: SeriesPlayerParams};
 
   const {token} = useAuth();
   const [titleDetail, setTitleDetail] = useState<TitleDetail | null>();
@@ -29,8 +29,6 @@ export const SeriesPlayerScreen: React.FC = () => {
   const [subtitles, setSubtitles] = useState<Sub[]>();
   const [startTime, setStartTime] = useState<number>();
   const navigation = useNavigation();
-
-  console.log(!!titleDetail, !!seasonId, !!season, !!episode, !!video, !!subtitles, !!startTime);
 
   const continueWatching = (ep: Episode) => {
     try {

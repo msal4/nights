@@ -1,20 +1,38 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {TheoPlayer} from '../components/TheoPlayer';
 import {TV} from './TV';
-import {FlatList, Platform, StyleSheet} from 'react-native';
+import {Dimensions, FlatList, Platform, StyleSheet} from 'react-native';
 import Video from 'react-native-video';
 
 const Player: React.FC<{src: string}> = ({src}) => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const playerStyle: any = {...styles.player};
+
+  if (Platform.OS === 'android') {
+    let width = Math.floor(Dimensions.get('window').width);
+    let height = Math.floor(Dimensions.get('window').height);
+
+    if (isFullscreen) {
+      playerStyle.width = Math.min(width, height) + 1;
+    } else {
+      playerStyle.width = Math.min(width, height);
+    }
+  }
+
   return Platform.OS === 'ios' ? (
     <Video controls source={{uri: src}} style={styles.player} />
   ) : (
     <TheoPlayer
-      style={styles.player}
+      style={playerStyle}
       source={{
         sources: [{src, type: 'application/x-mpegurl'}],
         textTracks: [],
+      }}
+      onPresentationModeChange={() => {
+        setIsFullscreen(!isFullscreen);
       }}
       autoplay
     />
@@ -37,7 +55,7 @@ export const TvPlayerScreen = () => {
       header={<Player src={url} />}
       onPress={async (channel) => {
         if (Platform.OS === 'ios') {
-          navigation.replace('TvPlayer', {url: channel.url, name: channel.name});
+          (navigation as any).replace('TvPlayer', {url: channel.url, name: channel.name});
         } else {
           listRef.current?.scrollToOffset({animated: true, offset: 0});
           navigation.navigate('TvPlayer', {url: channel.url, name: channel.name});

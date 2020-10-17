@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useRef, useEffect} from 'react';
-import {View} from 'react-native';
+import {Platform, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Text, Icon} from 'react-native-elements';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {Episode} from '../core/interfaces/episode';
 import {colors} from '../constants/style';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {TitleDetail} from '../core/interfaces/title';
 import {Season} from '../core/interfaces/season';
 import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Downloader';
@@ -22,10 +22,12 @@ export interface EpisodeCardProps {
   season: Season;
   episode: Episode;
   task?: DownloadTask;
+  screenName?: string;
 }
 
-const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task, season}) => {
+const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task, season, screenName}) => {
   const menuRef = useRef<Menu>();
+
   const navigation = useNavigation();
   const {t} = useLanguage();
   const {isPrivate} = useUrl();
@@ -44,7 +46,11 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
 
   const playEpisode = isPrivate
     ? () => {
-        navigation.replace('SeriesPlayer', {title, season, episode});
+        if (Platform.OS === 'ios' && screenName === 'Player') {
+          (navigation as any).replace('SeriesPlayer', {title, season, episode});
+        } else {
+          navigation.navigate('SeriesPlayer', {title, season, episode});
+        }
       }
     : undefined;
 

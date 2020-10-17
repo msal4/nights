@@ -13,10 +13,11 @@ import {Downloader, DownloadTask} from '../core/Downloader';
 
 interface SeasonsParams {
   title: TitleDetail;
+  screenName?: string;
 }
 
 export const EpisodesScreen: FunctionComponent = () => {
-  const params: SeasonsParams = useRoute().params as any;
+  const params = useRoute().params as SeasonsParams;
   const {title} = params;
   const {t} = useLanguage();
 
@@ -65,6 +66,7 @@ export const EpisodesScreen: FunctionComponent = () => {
               key={episode.id}
               title={title}
               task={tasks?.find((task) => task.id === episode.id)}
+              screenName={params.screenName}
               season={seasonDetails}
               episode={episode}
             />

@@ -27,6 +27,7 @@ import {ComingSoonRow} from '../components/ComingSoonRow';
 import {Story} from '../core/interfaces/story';
 import {getStories} from '../api/story';
 import {StoryRow} from '../components/StoryRow';
+import {useSafeAreaFrame, useSafeAreaInsets} from 'react-native-safe-area-context';
 const {client} = UrlBase;
 
 const Stack = createStackNavigator();
@@ -51,6 +52,7 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const {isPrivate} = useUrl();
   const scrollView = useRef<ScrollView>();
+  const {top} = useSafeAreaInsets();
 
   const reload = async () => {
     await getRows(true, params);
@@ -74,6 +76,8 @@ const Home = () => {
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
+
+  console.log(stories);
 
   return (
     <ScrollView
@@ -103,7 +107,7 @@ const Home = () => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                // marginVertical: 10,
+                marginTop: top,
                 marginHorizontal: 20,
               }}>
               <TouchableOpacity

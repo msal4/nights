@@ -9,6 +9,8 @@ import {colors} from '../constants/style';
 import LoadingIndicator from './LoadingIndicator';
 import {addLike, createComment, getLike, getStory, removeLike} from '../api/story';
 import dayjs from 'dayjs';
+import {useNavigation} from '@react-navigation/native';
+import {useAuth} from '../context/auth-context';
 
 export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, currentPage}) => {
   const [imageHeight, setImageHeight] = useState(500);
@@ -17,6 +19,8 @@ export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, c
   const [storyDetail, setStoryDetail] = useState<StoryDetail>();
   const [liked, setLiked] = useState<boolean>(false);
   const [error, setError] = useState();
+  const navigation = useNavigation();
+  const {token} = useAuth();
 
   const getDetails = async () => {
     isLiked();
@@ -29,6 +33,9 @@ export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, c
   };
 
   const postComment = async () => {
+    if (!token) {
+      navigation.navigate('More', {screen: 'Login', initial: false});
+    }
     try {
       setCommentDisabled(true);
       await createComment(story.id, commentText);
