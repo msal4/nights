@@ -23,7 +23,7 @@ from django.core.cache import cache
 from rest_framework.decorators import permission_classes
 from .mixins import GetSerializerClassMixin
 from .models import Title, Episode, Season, Genre, Cast, ViewHit, LandingPromo, NewsStory
-from .paginators import TitleGenreRowViewPagination, TitleViewPagination
+from .paginators import TitleGenreRowViewPagination, TitleViewPagination, NewsStoryViewPagination, MyListViewPagination
 from .permissions import IsAdminOrReadOnly
 from . import serializers
 from . import helpers
@@ -137,7 +137,7 @@ def list_promos(request, *args, **kwargs):
 
 class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Title.objects.filter(
-        featured_at__isnull=False).order_by('-featured_at')
+        featured_at__isnull=False, is_coming_soon=False).order_by('-featured_at')
     serializer_class = serializers.TitleListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('type',)
@@ -154,7 +154,8 @@ class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class RecentlyAddedView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Title.objects.order_by('-updated_at')
+    queryset = Title.objects.filter(
+        is_coming_soon=False).order_by('-updated_at')
     serializer_class = serializers.TitleListSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('type',)
@@ -188,7 +189,7 @@ class TitleGenreRowView(mixins.ListModelMixin, generics.GenericAPIView):
         page = self.paginate_queryset(queryset) or queryset
 
         for genre in page:
-            titles = genre.titles.all()
+            titles = genre.titles.filter(is_coming_soon=False)
             titles = rate_query(request, titles)
             genre.title_list = self.filter_queryset(titles)[:10]
 
@@ -221,7 +222,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
-    queryset = Title.objects.all()
+    queryset = Title.objects.filter(is_coming_soon=False)
     serializer_class = serializers.TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     serializer_action_classes = {
@@ -240,11 +241,6 @@ class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     search_fields = ('name',)
     ordering_fields = ('name', 'type', 'rating', 'views', 'created_at')
     ordering = ('-created_at',)
-
-#    def create(self, request, *args, **kwargs):
-#        Title.objects.create(name="Test Movie",
-#                             plot="Test Plot", type="s")
-#        return Response()
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset()).distinct()
@@ -336,6 +332,7 @@ class FileUploadView(views.APIView):
 class MyListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = serializers.TitleListSerializer
+    pagination_class = MyListViewPagination
 
     def get_queryset(self):
         return self.request.user.my_list.order_by('-mylist__date_added')
@@ -469,12 +466,12 @@ class LandingPromoViewSet(viewsets.ModelViewSet):
 class NewsStoryViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
     queryset = NewsStory.objects.order_by('-created_at')
     serializer_class = serializers.NewsStorySerializer
+    pagination_class = NewsStoryViewPagination
     permission_classes = [IsAdminOrReadOnly]
     serializer_action_classes = {
         'list': serializers.NewsStoryListSerializer,
     }
 
-    @method_decorator(cache_page(60 * 60 * 4))
     def list(self, *args, **kwargs):
         return super().list(*args, **kwargs)
 
