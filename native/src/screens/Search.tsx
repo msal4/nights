@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Dimensions, ActivityIndicator} from 'react-native';
+import {View, Dimensions, ActivityIndicator} from 'react-native';
 import {Input} from 'react-native-elements';
+import {ScrollView} from 'react-native-gesture-handler';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import useConstant from 'use-constant';
 import {useAsync} from 'react-async-hook';

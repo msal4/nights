@@ -1,5 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Text} from 'react-native-elements';
 
 import {Title as ITitle} from '../core/interfaces/title';

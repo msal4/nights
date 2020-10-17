@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 
@@ -27,7 +27,7 @@ import {ComingSoonRow} from '../components/ComingSoonRow';
 import {Story} from '../core/interfaces/story';
 import {getStories} from '../api/story';
 import {StoryRow} from '../components/StoryRow';
-import {useSafeAreaFrame, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 const {client} = UrlBase;
 
 const Stack = createStackNavigator();
@@ -41,9 +41,11 @@ export const HomeScreen: React.FC = () => {
   );
 };
 
+type Promo = TitleDetail & {inMyList?: boolean};
+
 const Home = () => {
   const [params, setParams] = useState<Params>({});
-  const {promo, inMyList, setInMyList, getPromoTitle} = usePromo(params);
+  const {promo, picked, setPromo, setPicked, getPromoTitle} = usePromos(params);
   const {rows, getRows, recentlyAdded, trending, stories, comingSoon, loading} = useRows(params);
   const {t} = useLanguage();
   const {history, getHits} = useHistory();
@@ -77,7 +79,31 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  console.log(stories);
+  const addToList = async (
+    token: string | undefined | null,
+    title: Promo | undefined,
+    setItem: (promo: Promo) => void,
+  ) => {
+    if (!title) {
+      return;
+    }
+
+    if (!token) {
+      navigation.navigate('More', {screen: 'Login', initial: false});
+    }
+
+    if (title.inMyList) {
+      try {
+        await removeFromMyList(title.id);
+        setItem({...title, inMyList: false});
+      } catch {}
+    } else {
+      try {
+        await addToMyList(title.id);
+        setItem({...title, inMyList: true});
+      } catch {}
+    }
+  };
 
   return (
     <ScrollView
@@ -174,28 +200,11 @@ const Home = () => {
                   }}>
                   <Icon
                     type="ionicon"
-                    name={inMyList ? 'checkmark' : 'add'}
+                    name={promo?.inMyList ? 'checkmark' : 'add'}
                     size={50}
                     color={colors.blue}
-                    onPress={async () => {
-                      if (!promo) {
-                        return;
-                      }
-                      if (!token) {
-                        navigation.navigate('More', {screen: 'Login', initial: false});
-                      }
-
-                      if (inMyList) {
-                        try {
-                          await removeFromMyList(promo.id);
-                          setInMyList(false);
-                        } catch {}
-                      } else {
-                        try {
-                          await addToMyList(promo.id);
-                          setInMyList(true);
-                        } catch {}
-                      }
+                    onPress={() => {
+                      addToList(token, promo, setPromo);
                     }}
                   />
                   {isPrivate ? (
@@ -250,10 +259,111 @@ const Home = () => {
       {trending && <TitleRow row={trending.results} name={t('trending')} />}
       {/* coming soon */}
       {comingSoon && <ComingSoonRow row={comingSoon.results} />}
+      {picked && (
+        <>
+          <Text
+            style={{fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+            {t('pickedForYou')}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Detail', picked);
+            }}>
+            <Image
+              source={{uri: getImageUrl(picked.images[0]?.url, ImageQuality.h900)}}
+              style={{height: 300, width: '100%', marginBottom: 10}}>
+              <LinearGradient
+                style={{flex: 1, paddingVertical: 10, paddingHorizontal: 30}}
+                colors={['#00000000', '#00000000', '#00000088']}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 'auto',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{flex: 1}}>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={{flex: 1, fontWeight: 'bold', fontSize: 20, marginBottom: 5}}>
+                        {picked.name}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{fontSize: 14, marginRight: 20}}>
+                          {picked.type === 's'
+                            ? `${picked.seasons.length} ${t('seasons')}`
+                            : `${Math.round((picked.runtime ?? 0) / 60)} min`}
+                        </Text>
+
+                        <View style={{flexDirection: 'row', marginRight: 20, alignItems: 'center'}}>
+                          <Icon
+                            type="ionicon"
+                            size={14}
+                            name="star"
+                            color={colors.blue}
+                            style={{marginRight: 5}}
+                          />
+                          <Text style={{fontSize: 14}}>{picked.rating}</Text>
+                        </View>
+                        <Text style={{fontSize: 14}}>{picked.released_at}</Text>
+                      </View>
+
+                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        {isPrivate ? (
+                          <TouchableOpacity
+                            style={{
+                              width: 50,
+                              height: 50,
+                              backgroundColor: colors.red,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              borderRadius: 999,
+                              marginRight: 15,
+                            }}
+                            onPress={() => {
+                              if (picked.type === 'm') {
+                                navigation.navigate('MoviePlayer', {title: picked});
+                              } else {
+                                navigation.navigate('SeriesPlayer', {title: picked});
+                              }
+                            }}>
+                            <Icon
+                              type="ionicon"
+                              name="play"
+                              size={30}
+                              color={colors.white}
+                              style={{marginLeft: 5}}
+                            />
+                          </TouchableOpacity>
+                        ) : null}
+                        <Icon
+                          type="ionicon"
+                          name={picked.inMyList ? 'checkmark' : 'add'}
+                          size={60}
+                          color={colors.white}
+                          onPress={() => {
+                            addToList(token, picked, setPicked);
+                          }}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </LinearGradient>
+            </Image>
+          </TouchableOpacity>
+        </>
+      )}
       {/* rows */}
       {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
-      <View style={{height: 40}} />
-      {loading ? <ActivityIndicator style={{marginTop: -35}} color="white" size="small" /> : null}
+      <View style={{height: 35}} />
+      {loading ? <ActivityIndicator style={{marginTop: -20}} color="white" size="small" /> : null}
     </ScrollView>
   );
 };
@@ -285,22 +395,31 @@ const useHistory = () => {
   return {history, getHits};
 };
 
-const usePromo = (params: Params) => {
-  const [promo, setPromo] = useState<TitleDetail>();
-  const [inMyList, setInMyList] = useState(false);
+const usePromos = (params: Params) => {
+  const [promo, setPromo] = useState<TitleDetail & {inMyList?: boolean}>();
+  const [picked, setPicked] = useState<TitleDetail & {inMyList?: boolean}>();
   const [error, setError] = useState<Error | null>();
 
   const getPromoTitle = async (prms?: Params) => {
     try {
-      const promos = await getPromos({...params, ...(prms ?? {}), limit: 1});
-      const p = promos[0];
-      setPromo(p);
-      await checkMyList(p.id);
-      setInMyList(true);
+      const promos = await getPromos({...params, ...(prms ?? {}), limit: 2});
+      setPromo(promos[0]);
+      setPicked(promos[1]);
       setError(null);
+
+      checkMyList(promos[0].id)
+        .then(() => {
+          setPromo({...promos[0], inMyList: true});
+        })
+        .catch(() => {});
+
+      checkMyList(promos[1].id)
+        .then(() => {
+          setPicked({...promos[1], inMyList: true});
+        })
+        .catch(() => {});
     } catch (err) {
       setError(err);
-      setInMyList(false);
     }
   };
   useEffect(() => {
@@ -308,7 +427,7 @@ const usePromo = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
-  return {promo, inMyList, setInMyList, error, getPromoTitle};
+  return {promo, picked, setPromo, setPicked, error, getPromoTitle};
 };
 
 const useRows = (params: Params) => {
