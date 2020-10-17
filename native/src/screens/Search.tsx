@@ -6,7 +6,7 @@ import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import useConstant from 'use-constant';
 import {useAsync} from 'react-async-hook';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker2';
 import {createStackNavigator} from '@react-navigation/stack';
 import dayjs from 'dayjs';
 

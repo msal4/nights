@@ -6301,9 +6301,17 @@ react-native-dropdown-menu@^2.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-dropdown-picker@msal4/react-native-dropdown-picker#3.x:
+react-native-dropdown-picker2@msal4/react-native-dropdown-picker#3.x:
   version "3.7.0"
-  resolved "https://codeload.github.com/msal4/react-native-dropdown-picker/tar.gz/9c0440e3793548392a4be948c1a7b41a957e12ff"
+  resolved "https://codeload.github.com/msal4/react-native-dropdown-picker/tar.gz/b3ec45da7909846e3dcaa7ddbbe6dd8dd7367354"
+  dependencies:
+    prop-types "^15.7.2"
+    react-native-vector-icons "^7.0.0"
+
+react-native-dropdown-picker@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-3.7.0.tgz#592e657b73f0ac86dc28242e4b8ea8657d78afbb"
+  integrity sha512-OLMGdC16gVGAKPULRDPFYHjWVUSt2x0JXAWh5Rxr+zpD8udUEl4VxC/soy53yoeNwFH6HmEklsFlKwbS5XkgbA==
   dependencies:
     prop-types "^15.7.2"
     react-native-vector-icons "^7.0.0"

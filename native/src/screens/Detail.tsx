@@ -1,7 +1,8 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import {View, ScrollView, TouchableOpacity, RefreshControl, Linking, Dimensions} from 'react-native';
+import {View, RefreshControl, Linking, Dimensions} from 'react-native';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {Image, Icon, Text, Button} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
