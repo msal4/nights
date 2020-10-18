@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {ScrollView, TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 
-import {Image, Icon, Text, Button} from 'react-native-elements';
+import {Image, Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {View, TouchableOpacity, SafeAreaView, RefreshControl, ActivityIndicator} from 'react-native';
+import {View, TouchableOpacity, RefreshControl, ActivityIndicator, Dimensions} from 'react-native';
 
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
@@ -15,7 +15,7 @@ import {DetailScreen} from './Detail';
 import {useLanguage} from '../utils/lang';
 import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory, getTitles} from '../api/title';
-import {colors, PROMO_HEIGHT} from '../constants/style';
+import {colors} from '../constants/style';
 import {getImageUrl, isCloseToBottom, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {HistoryRow} from '../components/HistoryRow';
@@ -28,7 +28,6 @@ import {Story} from '../core/interfaces/story';
 import {getStories} from '../api/story';
 import {StoryRow} from '../components/StoryRow';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-const {client} = UrlBase;
 
 const Stack = createStackNavigator();
 
@@ -105,6 +104,9 @@ const Home = () => {
     }
   };
 
+  const {width} = Dimensions.get('screen');
+  const promoHeight = width / 1.4;
+
   return (
     <ScrollView
       ref={scrollView as any}
@@ -125,7 +127,7 @@ const Home = () => {
       }}>
       <Image
         source={{uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900)}}
-        style={{height: PROMO_HEIGHT, marginBottom: 20}}>
+        style={{height: promoHeight}}>
         <LinearGradient
           colors={['#000000', '#00000000', '#000']}
           style={{flex: 1, justifyContent: 'space-between'}}>
@@ -191,66 +193,67 @@ const Home = () => {
                 {joinTopics(promo?.genres)}
               </Text>
             </TouchableOpacity>
-            <View style={{marginHorizontal: 50}}>
-              <View
-                style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-around',
-                }}>
-                <Icon
-                  type="ionicon"
-                  name={promo?.inMyList ? 'checkmark' : 'add'}
-                  size={50}
-                  color={colors.blue}
-                  onPress={() => {
-                    addToList(token, promo, setPromo);
-                  }}
-                />
-                {isPrivate ? (
-                  <TouchableOpacity
-                    style={{
-                      width: 80,
-                      height: 80,
-                      backgroundColor: colors.red,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: 40,
-                    }}
-                    onPress={() => {
-                      if (promo?.type === 'm') {
-                        navigation.navigate('MoviePlayer', {title: promo});
-                      } else {
-                        navigation.navigate('SeriesPlayer', {title: promo});
-                      }
-                    }}>
-                    <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
-                  </TouchableOpacity>
-                ) : null}
-                <Icon
-                  type="ionicon"
-                  name="information-circle-outline"
-                  size={50}
-                  color={colors.blue}
-                  onPress={() => {
-                    navigation.navigate('Detail', promo);
-                  }}
-                />
-              </View>
-            </View>
           </View>
         </LinearGradient>
       </Image>
+      <View style={{marginHorizontal: 50}}>
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            marginBottom: 20,
+          }}>
+          <Icon
+            type="ionicon"
+            name={promo?.inMyList ? 'checkmark' : 'add'}
+            size={50}
+            color={colors.blue}
+            onPress={() => {
+              addToList(token, promo, setPromo);
+            }}
+          />
+          {isPrivate ? (
+            <TouchableOpacity
+              style={{
+                width: 80,
+                height: 80,
+                backgroundColor: colors.red,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 40,
+              }}
+              onPress={() => {
+                if (promo?.type === 'm') {
+                  navigation.navigate('MoviePlayer', {title: promo});
+                } else {
+                  navigation.navigate('SeriesPlayer', {title: promo});
+                }
+              }}>
+              <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
+            </TouchableOpacity>
+          ) : null}
+          <Icon
+            type="ionicon"
+            name="information-circle-outline"
+            size={50}
+            color={colors.blue}
+            onPress={() => {
+              navigation.navigate('Detail', promo);
+            }}
+          />
+        </View>
+      </View>
       {/* end of promo */}
       {/* stories */}
       {stories ? <StoryRow row={stories.results} /> : null}
       {/* continue watching */}
       {history && isPrivate ? <HistoryRow row={history} /> : null}
-      {/* recently added */}
-      {recentlyAdded && <TitleRow row={recentlyAdded.results} name={t('recentlyAdded')} />}
       {/* trending */}
       {trending && <TitleRow row={trending.results} name={t('trending')} />}
+      {/* recently added */}
+      {recentlyAdded && <TitleRow row={recentlyAdded.results} name={t('recentlyAdded')} />}
       {/* coming soon */}
       {comingSoon && <ComingSoonRow row={comingSoon.results} />}
       {picked && (
@@ -265,7 +268,7 @@ const Home = () => {
             }}>
             <Image
               source={{uri: getImageUrl(picked.images[0]?.url, ImageQuality.h900)}}
-              style={{height: 300, width: '100%', marginBottom: 10}}>
+              style={{height: promoHeight, width: '100%', marginBottom: 10}}>
               <LinearGradient
                 style={{flex: 1, paddingVertical: 10, paddingHorizontal: 30}}
                 colors={['#00000000', '#00000000', '#00000088']}>
@@ -440,7 +443,7 @@ const useRows = (params: Params) => {
           return;
         }
         setLoading(true);
-        const res = (await client.get(rows.next)) as PaginatedResults<GenreRow[]>;
+        const res = (await UrlBase.client.get(rows.next)) as PaginatedResults<GenreRow[]>;
         setRows({...res, results: [...rows.results, ...res.results]});
         setLoading(false);
         return;

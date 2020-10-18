@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState, useEffect, useCallback, useRef} from 'react';
+import React, {FunctionComponent, useState, useEffect, useCallback} from 'react';
 import {View} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -25,7 +25,6 @@ export const EpisodesScreen: FunctionComponent = () => {
 
   const {seasonDetails} = useSeason(season.id);
   const [tasks, setTasks] = useState<(DownloadTask & Realm.Object)[]>();
-  const picker = useRef<DropDownPicker>();
 
   useEffect(() => {
     let listener = () => {
@@ -43,26 +42,24 @@ export const EpisodesScreen: FunctionComponent = () => {
 
   return (
     <View style={{padding: 10}}>
-      <View style={{zIndex: 1000}}>
-        <DropDownPicker
-          items={title.seasons.map((value) => ({label: `${t('season')} ${value.index + 1}`, value}))}
-          defaultValue={season}
-          searchable={title.seasons.length > 3}
-          searchablePlaceholder={t('search')}
-          searchablePlaceholderTextColor={colors.white + 'cc'}
-          searchableStyle={{textAlign: 'center', color: colors.white}}
-          containerStyle={{height: 40}}
-          style={{backgroundColor: colors.blueGray, borderWidth: 0}}
-          itemStyle={{
-            justifyContent: 'flex-start',
-          }}
-          dropDownStyle={{backgroundColor: colors.lightBlueGray, borderWidth: 0}}
-          labelStyle={{color: colors.white, textAlign: 'center', flex: 1}}
-          arrowColor={colors.white}
-          onChangeItem={(item) => setSeason(item.value)}
-          zIndex={100}
-        />
-      </View>
+      <DropDownPicker
+        items={title.seasons.map((value) => ({label: `${t('season')} ${value.index + 1}`, value}))}
+        defaultValue={season}
+        searchable={title.seasons.length > 3}
+        searchablePlaceholder={t('search')}
+        searchablePlaceholderTextColor={colors.white + 'cc'}
+        searchableStyle={{textAlign: 'center', color: colors.white}}
+        containerStyle={{height: 40}}
+        style={{backgroundColor: colors.blueGray, borderWidth: 0}}
+        itemStyle={{
+          justifyContent: 'flex-start',
+        }}
+        dropDownStyle={{backgroundColor: colors.lightBlueGray, borderWidth: 0}}
+        labelStyle={{color: colors.white, textAlign: 'center', flex: 1}}
+        arrowColor={colors.white}
+        onChangeItem={(item) => setSeason(item.value)}
+        zIndex={100}
+      />
       {seasonDetails && (
         <View>
           {seasonDetails.episodes.map((episode) => (

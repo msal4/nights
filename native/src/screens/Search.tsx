@@ -217,7 +217,7 @@ const Filter: React.FC<{
       dropDownStyle={{backgroundColor: colors.gray, borderWidth: 0, padding: 0}}
       labelStyle={{color: colors.white, textAlign: 'center', flex: 1, fontSize: 10, padding: 0}}
       arrowColor={colors.white}
-      onChangeItem={(item) => {
+      onChangeItem={(item: any) => {
         // setCurrentItem(item.value);
         onChange(item.value);
       }}
