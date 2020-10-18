@@ -126,126 +126,120 @@ const Home = () => {
       <Image
         source={{uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900)}}
         style={{height: PROMO_HEIGHT, marginBottom: 20}}>
-        <LinearGradient colors={['#000000', '#00000000', '#000']} style={{height: '100%'}}>
-          <SafeAreaView style={{flex: 1, justifyContent: 'space-between'}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginTop: top,
-                marginHorizontal: 20,
+        <LinearGradient
+          colors={['#000000', '#00000000', '#000']}
+          style={{flex: 1, justifyContent: 'space-between'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: top,
+              marginHorizontal: 20,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setParams({});
               }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setParams({});
+              <Image
+                source={require('../../assets/logo.png')}
+                style={{width: 100, height: 50}}
+                placeholderStyle={{backgroundColor: 'transparent'}}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setParams({type: 'm'});
+              }}>
+              <Text style={{fontSize: 14, fontWeight: params.type === 'm' ? 'bold' : 'normal'}}>
+                {t('movies')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setParams({type: 's'});
+              }}>
+              <Text style={{fontSize: 14, fontWeight: params.type === 's' ? 'bold' : 'normal'}}>
+                {t('series')}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setParams({rated: 'G'});
+              }}>
+              <Text style={{fontSize: 14, fontWeight: params.rated === 'G' ? 'bold' : 'normal'}}>
+                {t('kids')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{width: '100%'}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Detail', promo);
+              }}>
+              <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10}}>
+                {promo?.name}
+              </Text>
+              <Text
+                style={{
+                  marginBottom: 15,
+                  color: colors.lightGray,
+                  textAlign: 'center',
+                  marginHorizontal: 10,
                 }}>
-                <Image
-                  source={require('../../assets/logo.png')}
-                  style={{width: 100, height: 50}}
-                  placeholderStyle={{backgroundColor: 'transparent'}}
-                  resizeMode="contain"
+                {joinTopics(promo?.genres)}
+              </Text>
+            </TouchableOpacity>
+            <View style={{marginHorizontal: 50}}>
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                }}>
+                <Icon
+                  type="ionicon"
+                  name={promo?.inMyList ? 'checkmark' : 'add'}
+                  size={50}
+                  color={colors.blue}
+                  onPress={() => {
+                    addToList(token, promo, setPromo);
+                  }}
                 />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setParams({type: 'm'});
-                }}>
-                <Text style={{fontSize: 14, fontWeight: params.type === 'm' ? 'bold' : 'normal'}}>
-                  {t('movies')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setParams({type: 's'});
-                }}>
-                <Text style={{fontSize: 14, fontWeight: params.type === 's' ? 'bold' : 'normal'}}>
-                  {t('series')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setParams({rated: 'G'});
-                }}>
-                <Text style={{fontSize: 14, fontWeight: params.rated === 'G' ? 'bold' : 'normal'}}>
-                  {t('kids')}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{width: '100%'}}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Detail', promo);
-                }}>
-                <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10}}>
-                  {promo?.name}
-                </Text>
-                <Text
-                  style={{
-                    marginBottom: 15,
-                    color: colors.lightGray,
-                    textAlign: 'center',
-                    marginHorizontal: 10,
-                  }}>
-                  {joinTopics(promo?.genres)}
-                </Text>
-              </TouchableOpacity>
-              <View style={{marginHorizontal: 50}}>
-                <View
-                  style={{
-                    width: '100%',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-around',
-                  }}>
-                  <Icon
-                    type="ionicon"
-                    name={promo?.inMyList ? 'checkmark' : 'add'}
-                    size={50}
-                    color={colors.blue}
-                    onPress={() => {
-                      addToList(token, promo, setPromo);
+                {isPrivate ? (
+                  <TouchableOpacity
+                    style={{
+                      width: 80,
+                      height: 80,
+                      backgroundColor: colors.red,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 40,
                     }}
-                  />
-                  {isPrivate ? (
-                    <TouchableOpacity
-                      style={{
-                        width: 80,
-                        height: 80,
-                        backgroundColor: colors.red,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 40,
-                      }}
-                      onPress={() => {
-                        if (promo?.type === 'm') {
-                          navigation.navigate('MoviePlayer', {title: promo});
-                        } else {
-                          navigation.navigate('SeriesPlayer', {title: promo});
-                        }
-                      }}>
-                      <Icon
-                        type="ionicon"
-                        name="play"
-                        size={50}
-                        color={colors.white}
-                        style={{marginLeft: 5}}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                  <Icon
-                    type="ionicon"
-                    name="information-circle-outline"
-                    size={50}
-                    color={colors.blue}
                     onPress={() => {
-                      navigation.navigate('Detail', promo);
-                    }}
-                  />
-                </View>
+                      if (promo?.type === 'm') {
+                        navigation.navigate('MoviePlayer', {title: promo});
+                      } else {
+                        navigation.navigate('SeriesPlayer', {title: promo});
+                      }
+                    }}>
+                    <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
+                  </TouchableOpacity>
+                ) : null}
+                <Icon
+                  type="ionicon"
+                  name="information-circle-outline"
+                  size={50}
+                  color={colors.blue}
+                  onPress={() => {
+                    navigation.navigate('Detail', promo);
+                  }}
+                />
               </View>
             </View>
-          </SafeAreaView>
+          </View>
         </LinearGradient>
       </Image>
       {/* end of promo */}
