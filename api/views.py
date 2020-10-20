@@ -222,7 +222,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(GetSerializerClassMixin, viewsets.ModelViewSet):
-    queryset = Title.objects.filter(is_coming_soon=False)
+    queryset = Title.objects.all()
     serializer_class = serializers.TitleSerializer
     permission_classes = [IsAdminOrReadOnly]
     serializer_action_classes = {
