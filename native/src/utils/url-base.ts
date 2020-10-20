@@ -8,11 +8,11 @@ class UrlBase {
   static baseURL = publicBase;
   static private = false;
 
-  static client = UrlBase.createClient();
+  static client = UrlBase.createClient(publicBase);
 
-  static createClient() {
+  static createClient(url: string) {
     const client = axios.create({
-      baseURL: this.baseURL + '/api',
+      baseURL: url + '/api',
       timeout: 10000,
     });
 

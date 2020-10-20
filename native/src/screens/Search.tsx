@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, View, Dimensions, ActivityIndicator} from 'react-native';
+import {View, Dimensions, ActivityIndicator} from 'react-native';
 import {Input} from 'react-native-elements';
+import {ScrollView} from 'react-native-gesture-handler';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import useConstant from 'use-constant';
 import {useAsync} from 'react-async-hook';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker2';
 import {createStackNavigator} from '@react-navigation/stack';
 import dayjs from 'dayjs';
 
@@ -216,7 +217,7 @@ const Filter: React.FC<{
       dropDownStyle={{backgroundColor: colors.gray, borderWidth: 0, padding: 0}}
       labelStyle={{color: colors.white, textAlign: 'center', flex: 1, fontSize: 10, padding: 0}}
       arrowColor={colors.white}
-      onChangeItem={(item) => {
+      onChangeItem={(item: any) => {
         // setCurrentItem(item.value);
         onChange(item.value);
       }}

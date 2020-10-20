@@ -48,7 +48,7 @@ export const EpisodesScreen: FunctionComponent = () => {
         searchable={title.seasons.length > 3}
         searchablePlaceholder={t('search')}
         searchablePlaceholderTextColor={colors.white + 'cc'}
-        searchableStyle={{flex: 1, textAlign: 'center', color: colors.white}}
+        searchableStyle={{textAlign: 'center', color: colors.white}}
         containerStyle={{height: 40}}
         style={{backgroundColor: colors.blueGray, borderWidth: 0}}
         itemStyle={{
@@ -58,6 +58,7 @@ export const EpisodesScreen: FunctionComponent = () => {
         labelStyle={{color: colors.white, textAlign: 'center', flex: 1}}
         arrowColor={colors.white}
         onChangeItem={(item) => setSeason(item.value)}
+        zIndex={100}
       />
       {seasonDetails && (
         <View>

@@ -21,8 +21,6 @@ export interface Base {
 const useBase = () => {
   const [base, setBase] = useState({base: UrlBase.baseURL, isPrivate: UrlBase.private});
 
-  console.log('this is the base:', base);
-
   useEffect(() => {
     load();
   }, []);
@@ -46,7 +44,7 @@ const useBase = () => {
     }
 
     UrlBase.private = UrlBase.baseURL === privateBase;
-    UrlBase.client = UrlBase.createClient();
+    UrlBase.client = UrlBase.createClient(UrlBase.baseURL);
     setBase({base: UrlBase.baseURL, isPrivate: UrlBase.private});
   };
 
