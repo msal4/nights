@@ -21,6 +21,10 @@
 		CB4261A72522CD6B00F47F6D /* assets in Resources */ = {isa = PBXBuildFile; fileRef = CB4261A62522CD6B00F47F6D /* assets */; };
 		CB4261AB2523FD9C00F47F6D /* ReactNativeEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4261AA2523FD9C00F47F6D /* ReactNativeEventEmitter.swift */; };
 		CB4261AD2523FDEE00F47F6D /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4261AC2523FDEE00F47F6D /* EventEmitter.swift */; };
+		CB5CF24A2540525800C0E10D /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB42619225203EE400F47F6D /* GoogleCast.framework */; };
+		CB5CF24B2540525800C0E10D /* GoogleCast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB42619225203EE400F47F6D /* GoogleCast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB5CF24C2540525800C0E10D /* THEOplayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */; };
+		CB5CF24D2540525800C0E10D /* THEOplayerSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB87310825335C8500D2C815 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB87310725335C8500D2C815 /* NotificationService.swift */; };
 		CB87310C25335C8500D2C815 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB87310525335C8500D2C815 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CBBD7C84251E936500DF1E97 /* THEOplayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C83251E936500DF1E97 /* THEOplayerView.swift */; };
@@ -55,6 +59,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		CB5CF24E2540525800C0E10D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CB5CF24D2540525800C0E10D /* THEOplayerSDK.framework in Embed Frameworks */,
+				CB5CF24B2540525800C0E10D /* GoogleCast.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB87311025335C8500D2C815 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,6 +140,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5CF24A2540525800C0E10D /* GoogleCast.framework in Frameworks */,
+				CB5CF24C2540525800C0E10D /* THEOplayerSDK.framework in Frameworks */,
 				1DFAE879662EE473313FC4B0 /* libPods-NightsNative.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +319,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				061618A5EDA634121843A758 /* [CP] Copy Pods Resources */,
 				CB87311025335C8500D2C815 /* Embed App Extensions */,
+				CB5CF24E2540525800C0E10D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -819,7 +838,7 @@
 			baseConfigurationReference = B0115C212DBC8AF97B5C84B1 /* Pods-NightsNative.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NightsNative/NightsNative.entitlements;
@@ -853,7 +872,7 @@
 			baseConfigurationReference = 82B6284359FF955F4B9601D4 /* Pods-NightsNative.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NightsNative/NightsNative.entitlements;
@@ -990,7 +1009,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1051,7 +1070,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -1105,7 +1124,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A127E6202D9E9CC2682E155 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1118,6 +1137,10 @@
 				CURRENT_PROJECT_VERSION = 22;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = QKR48F4739;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1139,7 +1162,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 41E5B210334FED0FFEFC6808 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
-				ARCHS = arm64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1153,6 +1176,10 @@
 				CURRENT_PROJECT_VERSION = 22;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = QKR48F4739;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

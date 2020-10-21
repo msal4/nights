@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Platform, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -47,9 +47,11 @@ const elementsTheme: ElementsTheme = {
 
 export default () => {
   useEffect(() => {
-    Orientation.lockToPortrait();
+    try {
+      Orientation.lockToPortrait();
+      changeNavigationBarColor(colors.darkGray, true, true);
+    } catch {}
 
-    changeNavigationBarColor(colors.darkGray, true, true);
     SplashScreen.hide();
     Downloader.open();
 
@@ -59,7 +61,9 @@ export default () => {
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
 
-    OneSignal.promptForPushNotificationsWithUserResponse(() => {});
+    try {
+      OneSignal.promptForPushNotificationsWithUserResponse(() => {});
+    } catch {}
 
     return () => {
       Downloader.close();
@@ -73,6 +77,7 @@ export default () => {
     headerTitle: '',
     headerTintColor: colors.white,
   };
+
   return (
     <>
       <StatusBar translucent barStyle="light-content" backgroundColor="transparent" />

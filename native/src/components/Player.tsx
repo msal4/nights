@@ -64,41 +64,41 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
 
   return (
     <ScrollView style={{flex: 1}}>
-      {Platform.OS === 'android' ? (
-        <TheoPlayer
-          style={playerStyle}
-          source={{
-            sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
-            textTracks: subtitles?.map((s) => ({
-              default: s.language === 'ar',
-              kind: 'subtitles',
-              label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
-              src: s.uri,
-              srclang: s.language,
-            })),
-          }}
-          onLoadedData={() => {
-            startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
-          }}
-          onTimeUpdate={
-            onProgress &&
-            (async ({nativeEvent}: any) => {
-              const {currentTime} = nativeEvent;
+      {/* {Platform.OS === 'android' ? ( */}
+      <TheoPlayer
+        style={playerStyle}
+        source={{
+          sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
+          textTracks: subtitles?.map((s) => ({
+            default: s.language === 'ar',
+            kind: 'subtitles',
+            label: s.title === 'ar' ? 'Arabic' : s.title === 'en' ? 'English' : s.title,
+            src: s.uri,
+            srclang: s.language,
+          })),
+        }}
+        onLoadedData={() => {
+          startTime && NativeModules.THEOplayerViewManager.setCurrentTime(startTime);
+        }}
+        onTimeUpdate={
+          onProgress &&
+          (async ({nativeEvent}: any) => {
+            const {currentTime} = nativeEvent;
 
-              if (!duration.current) {
-                duration.current = await NativeModules.THEOplayerViewManager.getDuration();
-              }
+            if (!duration.current) {
+              duration.current = await NativeModules.THEOplayerViewManager.getDuration();
+            }
 
-              onProgress({currentTime, runtime: duration.current!});
-            })
-          }
-          onPresentationModeChange={() => {
-            // const {width, height} = Dimensions.get('window');
-            setIsFullscreen(!isFullscreen);
-          }}
-          autoplay
-        />
-      ) : (
+            onProgress({currentTime, runtime: duration.current!});
+          })
+        }
+        onPresentationModeChange={() => {
+          // const {width, height} = Dimensions.get('window');
+          setIsFullscreen(!isFullscreen);
+        }}
+        autoplay
+      />
+      {/* ) : (
         <Video
           ref={player as any}
           controls
@@ -116,7 +116,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
             })
           }
         />
-      )}
+      )} */}
       {titleDetail && (
         <Tab.Navigator
           tabBarOptions={{
