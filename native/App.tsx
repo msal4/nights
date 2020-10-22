@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StatusBar} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 import {NavigationContainer, DefaultTheme, Theme} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -48,8 +48,10 @@ const elementsTheme: ElementsTheme = {
 export default () => {
   useEffect(() => {
     try {
-      Orientation.lockToPortrait();
-      changeNavigationBarColor(colors.darkGray, true, true);
+      if (!Platform.isTV) {
+        Orientation.lockToPortrait();
+        changeNavigationBarColor(colors.darkGray, true, true);
+      }
     } catch {}
 
     SplashScreen.hide();
