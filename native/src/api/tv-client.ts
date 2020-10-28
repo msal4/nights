@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const tvClient = axios.create({
-  baseURL: 'http://tv.sawadland.com/api',
+  baseURL: 'http://172.18.0.199/api',
   timeout: 10000,
 });
 
