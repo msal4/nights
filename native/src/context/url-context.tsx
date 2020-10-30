@@ -28,7 +28,7 @@ const useBase = () => {
   const load = async () => {
     const info = await NetInfo.fetch();
 
-    if (info.isConnected && Platform.OS === 'ios') {
+    if (info.isConnected) {
       try {
         const res = await axios.head(privateBase);
         if (res.status === 200) {

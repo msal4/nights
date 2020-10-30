@@ -4,6 +4,6 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-@property (assign) BOOL castContextSet;
+//@property (assign) BOOL castContextSet;
 
 @end
