@@ -13,11 +13,14 @@ import {useLanguage} from '../utils/lang';
 
 import {DetailScreen} from './Detail';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
+import {useUrl} from '../context/url-context';
+import {MyListScreen} from './MyList';
 
 const Stack = createStackNavigator();
 
 export const DownloadsScreen: React.FC = () => {
   const {t} = useLanguage();
+  const {isPrivate} = useUrl();
 
   return (
     <Stack.Navigator
@@ -26,7 +29,11 @@ export const DownloadsScreen: React.FC = () => {
         headerStyle: {backgroundColor: colors.black},
         headerTintColor: colors.white,
       }}>
-      <Stack.Screen name="Downloads" component={Downloads} options={{title: t('downloads')}} />
+      <Stack.Screen
+        name={isPrivate ? 'Downloads' : 'MyList'}
+        component={isPrivate ? Downloads : MyListScreen}
+        options={{title: isPrivate ? t('downloads') : t('myList')}}
+      />
       <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />
     </Stack.Navigator>
   );

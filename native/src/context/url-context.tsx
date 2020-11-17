@@ -40,7 +40,7 @@ const useBase = () => {
         UrlBase.baseURL = publicBase;
       }
     } else {
-      UrlBase.baseURL = privateBase;
+      UrlBase.baseURL = publicBase;
     }
 
     UrlBase.private = UrlBase.baseURL === privateBase;
