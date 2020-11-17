@@ -20,7 +20,7 @@ const Stack = createStackNavigator();
 
 export const DownloadsScreen: React.FC = () => {
   const {t} = useLanguage();
-  const {isPrivate} = useUrl();
+  const {isPrivate, online} = useUrl();
 
   return (
     <Stack.Navigator
@@ -30,9 +30,9 @@ export const DownloadsScreen: React.FC = () => {
         headerTintColor: colors.white,
       }}>
       <Stack.Screen
-        name={isPrivate ? 'Downloads' : 'MyList'}
-        component={isPrivate ? Downloads : MyListScreen}
-        options={{title: isPrivate ? t('downloads') : t('myList')}}
+        name="Downloads"
+        component={isPrivate || !online ? Downloads : MyListScreen}
+        options={{title: isPrivate && online ? t('downloads') : t('myList')}}
       />
       <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />
     </Stack.Navigator>

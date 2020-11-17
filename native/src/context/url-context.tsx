@@ -9,17 +9,19 @@ import {Platform} from 'react-native';
 const UrlContext = React.createContext<Base>({
   base: UrlBase.baseURL,
   isPrivate: false,
+  online: true,
   load: async () => console.log('Register not implemented'),
 });
 
 export interface Base {
   base: string;
   isPrivate: boolean;
+  online: boolean;
   load: () => Promise<void>;
 }
 
 const useBase = () => {
-  const [base, setBase] = useState({base: UrlBase.baseURL, isPrivate: UrlBase.private});
+  const [base, setBase] = useState({base: UrlBase.baseURL, isPrivate: UrlBase.private, online: true});
 
   useEffect(() => {
     load();
@@ -27,6 +29,7 @@ const useBase = () => {
 
   const load = async () => {
     const info = await NetInfo.fetch();
+    let online = true;
 
     if (info.isConnected) {
       try {
@@ -41,20 +44,21 @@ const useBase = () => {
       }
     } else {
       UrlBase.baseURL = publicBase;
+      online = false;
     }
 
     UrlBase.private = UrlBase.baseURL === privateBase;
     UrlBase.client = UrlBase.createClient(UrlBase.baseURL);
-    setBase({base: UrlBase.baseURL, isPrivate: UrlBase.private});
+    setBase({base: UrlBase.baseURL, isPrivate: UrlBase.private, online});
   };
 
   return {load, ...base};
 };
 
 const UrlProvider: FunctionComponent<{}> = (props) => {
-  const {base, isPrivate, load} = useBase();
+  const base = useBase();
 
-  return <UrlContext.Provider {...props} value={{base, isPrivate, load}} />;
+  return <UrlContext.Provider {...props} value={base} />;
 };
 
 const useUrl = () => React.useContext<Base>(UrlContext);
