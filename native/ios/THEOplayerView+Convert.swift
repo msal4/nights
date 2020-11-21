@@ -67,15 +67,13 @@
 //      print("itemJson:", json, json["src"].flatMap(RCTConvert.nsString) ?? "nothing", json["srclang"].flatMap(RCTConvert.nsString) ?? "nothing")
 //        if let src = json["src"].flatMap(RCTConvert.nsString),
 //            let srclang = json["srclang"].flatMap(RCTConvert.nsString) {
-//              print("not nil")
 //              return TextTrackDescription(
-//                src: src,
+//                src: "http://cdn.theoplayer.com/demos/star-wars-en.vtt",
 //                srclang: srclang,
 //                isDefault: json["default"].flatMap(RCTConvert.bool),
-//                kind: json["kind"].flatMap(RCTConvert.nsString).flatMap {
-//                    TextTrackKind.init(rawValue: $0)
-//                },
+//                kind: .subtitles,
 //                label: json["label"].flatMap(RCTConvert.nsString)
+////                format: .WebVTT
 //            )
 //        } else {
 //            return nil

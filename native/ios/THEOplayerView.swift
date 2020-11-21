@@ -1,10 +1,3 @@
-//
-//  THEOplayerView.swift
-//  NightsNative
-//
-//  Created by Mohammed Salman on 9/26/20.
-//
-
 //import Foundation
 //import UIKit
 //import THEOplayerSDK
@@ -20,6 +13,7 @@
 //    init() {
 //    // Set delegate
 //    if let appDelegate = UIApplication.shared.delegate as? AppDelegate, !appDelegate.castContextSet {
+//        
 //        appDelegate.castContextSet = true
 //    }
 //

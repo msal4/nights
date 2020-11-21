@@ -47,9 +47,13 @@ const elementsTheme: ElementsTheme = {
 
 export default () => {
   useEffect(() => {
-    Orientation.lockToPortrait();
+    try {
+      if (!Platform.isTV) {
+        Orientation.lockToPortrait();
+        changeNavigationBarColor(colors.darkGray, true, true);
+      }
+    } catch {}
 
-    changeNavigationBarColor(colors.darkGray, true, true);
     SplashScreen.hide();
     Downloader.open();
 
@@ -59,7 +63,9 @@ export default () => {
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
 
-    OneSignal.promptForPushNotificationsWithUserResponse(() => {});
+    try {
+      OneSignal.promptForPushNotificationsWithUserResponse(() => {});
+    } catch {}
 
     return () => {
       Downloader.close();
@@ -73,6 +79,7 @@ export default () => {
     headerTitle: '',
     headerTintColor: colors.white,
   };
+
   return (
     <>
       <StatusBar translucent barStyle="light-content" backgroundColor="transparent" />

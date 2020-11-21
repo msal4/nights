@@ -38,19 +38,20 @@ export const RootScreen: React.FC = () => {
         options={{tabBarIcon: (props) => tabBarIcon('search', props), title: t('search')}}
       />
       {isPrivate ? (
-        <>
-          <Tab.Screen
-            name="TV"
-            component={TVScreen}
-            options={{tabBarIcon: (props) => tabBarIcon('tv', props), title: t('tv')}}
-          />
-          <Tab.Screen
-            name="Downloads"
-            component={DownloadsScreen}
-            options={{tabBarIcon: (props) => tabBarIcon('download', props), title: t('downloads')}}
-          />
-        </>
+        <Tab.Screen
+          name="TV"
+          component={TVScreen}
+          options={{tabBarIcon: (props) => tabBarIcon('tv', props), title: t('tv')}}
+        />
       ) : null}
+      <Tab.Screen
+        name={isPrivate ? 'Downloads' : 'MyList'}
+        component={DownloadsScreen}
+        options={{
+          tabBarIcon: (props) => tabBarIcon(isPrivate ? 'download' : 'add', props),
+          title: isPrivate ? t('downloads') : t('myList'),
+        }}
+      />
       <Tab.Screen
         name="More"
         component={MoreScreen}

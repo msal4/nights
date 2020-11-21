@@ -374,6 +374,7 @@ interface Params {
 const useHistory = () => {
   const [history, setHistory] = useState<ViewHit[] | null>();
   const {token} = useAuth();
+  const {base} = useUrl();
 
   const getHits = useCallback(async () => {
     try {
@@ -387,7 +388,7 @@ const useHistory = () => {
 
   useEffect(() => {
     getHits();
-  }, [getHits]);
+  }, [getHits, base]);
 
   return {history, getHits};
 };
@@ -396,6 +397,7 @@ const usePromos = (params: Params) => {
   const [promo, setPromo] = useState<TitleDetail & {inMyList?: boolean}>();
   const [picked, setPicked] = useState<TitleDetail & {inMyList?: boolean}>();
   const [error, setError] = useState<Error | null>();
+  const {base} = useUrl();
 
   const getPromoTitle = async (prms?: Params) => {
     try {
@@ -419,10 +421,11 @@ const usePromos = (params: Params) => {
       setError(err);
     }
   };
+
   useEffect(() => {
     getPromoTitle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params]);
+  }, [params, base]);
 
   return {promo, picked, setPromo, setPicked, error, getPromoTitle};
 };
@@ -435,6 +438,7 @@ const useRows = (params: Params) => {
   const [error, setError] = useState<Error | null>();
   const [loading, setLoading] = useState(false);
   const [stories, setStories] = useState<PaginatedResults<Story[]>>();
+  const {base} = useUrl();
 
   const getRows = async (refresh = true, p?: Params) => {
     try {
@@ -470,7 +474,7 @@ const useRows = (params: Params) => {
   useEffect(() => {
     getRows();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params]);
+  }, [params, base]);
 
   return {rows, recentlyAdded, trending, comingSoon, stories, error, getRows, loading};
 };
