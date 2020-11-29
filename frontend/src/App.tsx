@@ -1,6 +1,7 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { IconContext } from "react-icons"
 import { I18nextProvider } from "react-i18next"
+import cssVars from 'css-vars-ponyfill';
 
 import "./styles/tailwind.css"
 import "./styles/App.scss"
@@ -10,6 +11,11 @@ import { BackgroundProvider } from "./context/background-context"
 import AppRouter from "./pages/Router"
 
 export default () => {
+    useEffect(() => {
+        cssVars({
+
+        })
+    }, [])
   return (
     <div className="mx-5 md:mx-10 lg:mx-16 min-h-full">
       <I18nextProvider i18n={i18n}>

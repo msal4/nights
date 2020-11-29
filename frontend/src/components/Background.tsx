@@ -14,7 +14,7 @@ export default () => {
       style={{
         // background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 38%, rgba(0,0,8,1) 49%, rgba(0,0,8,1) 100%), url(${background})`,
         background: `linear-gradient(150deg, rgba(0,0,0,0) 0%, rgba(0,0,8,1) 50%, rgba(0,0,8,1) 90%, rgba(0,0,8,1) 100%), center/100% 100% no-repeat url(${background})`,
-        filter: "blur(10px)",
+        boxShadow: "inset 0 0 30px 15px #212121",
         opacity: 0.75,
         zIndex: -1,
       }}
