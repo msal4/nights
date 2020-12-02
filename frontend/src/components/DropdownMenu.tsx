@@ -40,7 +40,7 @@ const DropdownMenu: FunctionComponent<DropdownMenuProps> = ({
           className="mt-12 pt-2 w-full absolute z-20 rounded bg-gray-800 overflow-auto"
           style={{ maxHeight: "10rem" }}
         >
-          {topics.map((topic) => (
+          {topics.map(topic => (
             <button
               className={`block text-left px-6 py-1 mb-2 w-full text-white ${
                 topic.id === currentTopic.id ? "font-bold" : ""

@@ -5,9 +5,7 @@ import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/st
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import SplashScreen from 'react-native-splash-screen';
 import OneSignal from 'react-native-onesignal';
-import Orientation from 'react-native-orientation';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
@@ -49,12 +47,10 @@ export default () => {
   useEffect(() => {
     try {
       if (!Platform.isTV) {
-        Orientation.lockToPortrait();
         changeNavigationBarColor(colors.darkGray, true, true);
       }
     } catch {}
 
-    SplashScreen.hide();
     Downloader.open();
 
     OneSignal.init('023b88c0-ddf6-45f7-8684-1ddd9b763a37', {
