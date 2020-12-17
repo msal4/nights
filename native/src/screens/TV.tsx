@@ -3,12 +3,16 @@ import {FlatList, View} from 'react-native';
 import {Text, Image, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import tvClient from '../api/tv-client';
 import {Promo, Category, Channel} from '../core/interfaces/channel';
 import {tvBaseURL} from '../constants/const';
 import ChannelRow from '../components/ChannelRow';
 import {useLanguage} from '../utils/lang';
+import {colors} from '../constants/style';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import WebView from 'react-native-webview';
 
 export const TV: React.FC<{
   listRef?: React.MutableRefObject<FlatList>;
@@ -63,8 +67,58 @@ const PromoHeader: React.FC = () => {
   );
 };
 
+const Tab = createMaterialTopTabNavigator();
+
+const TVTab: React.FC = () => <TV header={<PromoHeader />} />;
+
+const ScheduleTab: React.FC = () => {
+  const {lang} = useLanguage();
+
+  return (
+    <WebView
+      source={{uri: 'http://tv.sawadland.com/bare-schedule'}}
+      javaScriptEnabled
+      injectedJavaScript={`
+      (function(){
+        window.localStorage.setItem('locale', '${lang === 'ar' ? '_ar' : ''}');
+      })();
+      `}
+    />
+  );
+};
+
+const NewsTab: React.FC = () => {
+  const {lang} = useLanguage();
+
+  return (
+    <WebView
+      source={{uri: 'http://tv.sawadland.com/bare-news'}}
+      javaScriptEnabled
+      injectedJavaScript={`
+      (function(){
+        window.localStorage.setItem('locale', '${lang === 'ar' ? '_ar' : ''}');
+      })();
+      `}
+    />
+  );
+};
+
 export const TVScreen: React.FC = () => {
-  return <TV header={<PromoHeader />} />;
+  const {t} = useLanguage();
+
+  return (
+    <SafeAreaView style={{flex: 1}} edges={['top']}>
+      <Tab.Navigator
+        tabBarOptions={{
+          labelStyle: {color: colors.white},
+          style: {backgroundColor: colors.black},
+        }}>
+        <Tab.Screen name="TV" component={TVTab} options={{title: t('tv')}} />
+        <Tab.Screen name="Schedule" component={ScheduleTab} options={{title: t('schedule')}} />
+        <Tab.Screen name="News" component={NewsTab} options={{title: t('news')}} />
+      </Tab.Navigator>
+    </SafeAreaView>
+  );
 };
 
 const usePromo = () => {

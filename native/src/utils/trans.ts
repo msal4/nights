@@ -79,6 +79,8 @@ export const trans = {
     language: 'Language',
     year: 'Year',
     seeOnImdb: 'See on IMDB',
+    schedule: 'Schedule',
+    news: 'News',
   },
   ar: {
     seeOnImdb: 'اذهب الى IMDB',
@@ -160,5 +162,7 @@ export const trans = {
     similar: 'مشابه',
     settings: 'الاعدادات',
     language: 'اللغة',
+    schedule: 'الجدول',
+    news: 'الاخبار',
   },
 };
