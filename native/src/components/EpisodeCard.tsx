@@ -1,21 +1,20 @@
 import React, {FunctionComponent, useRef, useEffect} from 'react';
-import {Platform, View} from 'react-native';
+import {Platform, View, ImageBackground} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Image, Text, Icon} from 'react-native-elements';
+import {Text, Icon} from 'react-native-elements';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import Menu from 'react-native-material-menu';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {Episode} from '../core/interfaces/episode';
 import {colors} from '../constants/style';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {TitleDetail} from '../core/interfaces/title';
 import {Season} from '../core/interfaces/season';
 import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
-import {useLanguage} from '../utils/lang';
 import {useUrl} from '../context/url-context';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {useTranslation} from 'react-i18next';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -29,7 +28,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
   const menuRef = useRef<Menu>();
 
   const navigation = useNavigation();
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const {isPrivate} = useUrl();
   const circularProgress = useRef<AnimatedCircularProgress>();
 
@@ -64,7 +63,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
         marginTop: 20,
       }}>
       <TouchableOpacity onPress={playEpisode}>
-        <Image
+        <ImageBackground
           source={{uri: image}}
           style={{justifyContent: 'center', alignItems: 'center', width: 135, height: 80, marginRight: 10}}>
           {isPrivate ? (
@@ -100,7 +99,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
               />
             </View>
           ) : null}
-        </Image>
+        </ImageBackground>
       </TouchableOpacity>
       <View style={{overflow: 'hidden', flex: 1}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

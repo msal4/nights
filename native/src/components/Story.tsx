@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Image as RImage, Dimensions} from 'react-native';
-import {Icon, Image, Input, Text} from 'react-native-elements';
-import {ScrollView, TouchableWithoutFeedback} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {View, Image, Dimensions} from 'react-native';
+import {Icon, Input, Text} from 'react-native-elements';
+import {ScrollView} from 'react-native-gesture-handler';
 
 import {Story as IStory, StoryDetail} from '../core/interfaces/story';
 import {colors} from '../constants/style';
-import LoadingIndicator from './LoadingIndicator';
 import {addLike, createComment, getLike, getStory, removeLike} from '../api/story';
-import dayjs from 'dayjs';
 import {useNavigation} from '@react-navigation/native';
 import {useAuth} from '../context/auth-context';
 
@@ -81,7 +78,7 @@ export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, c
   };
 
   useEffect(() => {
-    RImage.getSize(story.image, (width, height) => {
+    Image.getSize(story.image, (width, height) => {
       const imageWidth = Dimensions.get('screen').width;
       setImageHeight(height * (imageWidth / width));
     });
@@ -91,16 +88,12 @@ export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, c
     if (currentPage && !storyDetail) {
       getDetails();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   return (
     <ScrollView contentContainerStyle={{paddingBottom: 100}} style={{flex: 1}} bounces={false}>
-      <Image
-        source={{uri: story.image}}
-        PlaceholderContent={<LoadingIndicator />}
-        placeholderStyle={{backgroundColor: 'transparent'}}
-        style={{width: '100%', height: imageHeight}}
-      />
+      <Image source={{uri: story.image}} style={{width: '100%', height: imageHeight}} />
       <View style={{padding: 15}}>
         <View
           style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 15}}>
@@ -108,7 +101,6 @@ export const Story: React.FC<{story: IStory; currentPage: boolean}> = ({story, c
           <Image
             source={require('../../assets/comment.png')}
             resizeMode="contain"
-            placeholderStyle={{backgroundColor: 'transparent'}}
             style={{width: 40, height: 40}}
           />
           <Text style={{marginLeft: 20, marginRight: 8}}>{storyDetail?.likes ?? 0}</Text>

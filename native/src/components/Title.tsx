@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Title as ITitle} from '../core/interfaces/title';
 import {getImageUrl} from '../utils/common';
 import {CARD_WIDTH, colors} from '../constants/style';
-import {useLanguage} from '../utils/lang';
+import {useTranslation} from 'react-i18next';
 
 export interface TitleProps {
   title: ITitle;
@@ -17,7 +17,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
   const uri = getImageUrl(title.images[0]?.url);
   const cardWidth = width ?? CARD_WIDTH;
   const cardHeight = cardWidth * 1.6;
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   const navigation = useNavigation();
 

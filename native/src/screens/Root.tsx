@@ -6,10 +6,10 @@ import {HomeScreen} from './Home';
 import {colors} from '../constants/style';
 import {SearchScreen} from './Search';
 import {TVScreen} from './TV';
-import {useLanguage} from '../utils/lang';
 import {MoreScreen} from './More';
 import {DownloadsScreen} from './Downloads';
 import {useUrl} from '../context/url-context';
+import {useTranslation} from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +18,7 @@ function tabBarIcon(name: string, {color, size, focused}: {focused: boolean; col
 }
 
 export const RootScreen: React.FC = () => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const {isPrivate} = useUrl();
 
   return (

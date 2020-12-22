@@ -1,9 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Dimensions, NativeModules, Platform, StyleSheet, View} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Dimensions, NativeModules, Platform, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Icon} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {colors} from '../constants/style';
 import {TheoPlayer} from './TheoPlayer';
@@ -11,8 +8,8 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {TitleDetail} from '../core/interfaces/title';
 import {EpisodesScreen} from '../screens/Episodes';
 import {InfoScreen} from '../screens/Info';
-import {useLanguage} from '../utils/lang';
 import Video from 'react-native-video';
+import {useTranslation} from 'react-i18next';
 
 export interface Sub {
   title: string;
@@ -41,7 +38,7 @@ const Tab = createMaterialTopTabNavigator();
 export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress, titleDetail}) => {
   // const navigation = useNavigation();
   const duration = useRef<number>();
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const player = useRef<Video>();
   const [isFullscreen, setIsFullscreen] = useState(false);
 

@@ -1,6 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {TouchableOpacity} from 'react-native';
-import {Image} from 'react-native-elements';
+import {TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {Channel} from '../core/interfaces/channel';

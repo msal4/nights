@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {FlatList, View} from 'react-native';
-import {Text, Image, Button} from 'react-native-elements';
+import {FlatList, View, Image, ImageBackground} from 'react-native';
+import {Text, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -9,10 +9,10 @@ import tvClient from '../api/tv-client';
 import {Promo, Category, Channel} from '../core/interfaces/channel';
 import {tvBaseURL} from '../constants/const';
 import ChannelRow from '../components/ChannelRow';
-import {useLanguage} from '../utils/lang';
 import {colors} from '../constants/style';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import WebView from 'react-native-webview';
+import {useTranslation} from 'react-i18next';
 
 export const TV: React.FC<{
   listRef?: React.MutableRefObject<FlatList>;
@@ -38,11 +38,14 @@ export const TV: React.FC<{
 
 const PromoHeader: React.FC = () => {
   const {promo} = usePromo();
-  const {lang, t} = useLanguage();
+  const {t, i18n} = useTranslation();
   const navigation = useNavigation();
+  const lang = i18n.language;
 
   return (
-    <Image source={{uri: `${tvBaseURL}${promo?.promo_image}`}} style={{height: 400, marginBottom: 25}}>
+    <ImageBackground
+      source={{uri: `${tvBaseURL}${promo?.promo_image}`}}
+      style={{height: 400, marginBottom: 25}}>
       <LinearGradient colors={['#00000055', '#00000000', '#000']} style={{height: '100%'}}>
         <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginHorizontal: 50}}>
           <Button
@@ -63,7 +66,7 @@ const PromoHeader: React.FC = () => {
           </Text>
         </View>
       </LinearGradient>
-    </Image>
+    </ImageBackground>
   );
 };
 
@@ -72,7 +75,9 @@ const Tab = createMaterialTopTabNavigator();
 const TVTab: React.FC = () => <TV header={<PromoHeader />} />;
 
 const ScheduleTab: React.FC = () => {
-  const {lang} = useLanguage();
+  const {
+    i18n: {language: lang},
+  } = useTranslation();
 
   return (
     <WebView
@@ -88,7 +93,9 @@ const ScheduleTab: React.FC = () => {
 };
 
 const NewsTab: React.FC = () => {
-  const {lang} = useLanguage();
+  const {
+    i18n: {language: lang},
+  } = useTranslation();
 
   return (
     <WebView
@@ -104,7 +111,7 @@ const NewsTab: React.FC = () => {
 };
 
 export const TVScreen: React.FC = () => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   return (
     <SafeAreaView style={{flex: 1}} edges={['top']}>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import Realm from 'realm';
-import {View, TouchableOpacity, ScrollView} from 'react-native';
-import {Text, Image, Icon} from 'react-native-elements';
+import {View, TouchableOpacity, ScrollView, ImageBackground} from 'react-native';
+import {Text, Icon} from 'react-native-elements';
 import Menu from 'react-native-material-menu';
 import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -9,17 +9,17 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DownloadTask, Downloader, DownloadStatus} from '../core/Downloader';
 import {colors} from '../constants/style';
 import {capitalizeFirst} from '../utils/common';
-import {useLanguage} from '../utils/lang';
 
 import {DetailScreen} from './Detail';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
 import {useUrl} from '../context/url-context';
 import {MyListScreen} from './MyList';
+import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator();
 
 export const DownloadsScreen: React.FC = () => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const {isPrivate, online} = useUrl();
 
   return (
@@ -68,7 +68,7 @@ export const Downloads: React.FC = () => {
 export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
   const size = ((task.size ?? 0) / 1000000000).toFixed(1);
   const menuRef = useRef<Menu>();
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const image = task.imagePath || task.image;
   const navigation = useNavigation();
 
@@ -87,7 +87,7 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
         onPress={() => {
           navigation.navigate('OfflinePlayer', {task});
         }}>
-        <Image
+        <ImageBackground
           source={{uri: image.startsWith('/') ? `file://${image}` : image}}
           style={{alignItems: 'center', justifyContent: 'center', width: 170, height: 100, marginRight: 15}}>
           <View
@@ -101,7 +101,7 @@ export const TaskCard: React.FC<{task: DownloadTask}> = ({task}) => {
             }}>
             <Icon type="ionicon" name="play" size={20} color={colors.white} style={{marginLeft: 2}} />
           </View>
-        </Image>
+        </ImageBackground>
       </TouchableOpacity>
       <View style={{flex: 1}}>
         <View style={{flex: 1, flexDirection: 'row'}}>

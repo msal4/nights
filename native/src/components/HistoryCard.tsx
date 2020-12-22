@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {View, TouchableOpacity} from 'react-native';
-import {Image, Text, Icon} from 'react-native-elements';
+import {View, TouchableOpacity, ImageBackground} from 'react-native';
+import {Text, Icon} from 'react-native-elements';
 
 import {getImageUrl} from '../utils/common';
 import {useNavigation} from '@react-navigation/native';
@@ -33,7 +33,7 @@ export const HistoryCard: FunctionComponent<HistoryCardProps> = ({item}) => {
               navigation.navigate('SeriesPlayer', {title});
             }
           }}>
-          <Image
+          <ImageBackground
             style={{height: 70, width: 110, borderRadius: 8, justifyContent: 'center', alignItems: 'center'}}
             source={{uri}}>
             <View
@@ -47,7 +47,7 @@ export const HistoryCard: FunctionComponent<HistoryCardProps> = ({item}) => {
               }}>
               <Icon type="ionicon" name="play" size={20} color={colors.white} style={{marginLeft: 2}} />
             </View>
-          </Image>
+          </ImageBackground>
         </TouchableOpacity>
         <View style={{marginLeft: 10, flex: 1}}>
           <View style={{flex: 1, flexDirection: 'row'}}>

@@ -8,8 +8,8 @@ import {Season} from '../core/interfaces/season';
 import {getSeason} from '../api/title';
 import {colors} from '../constants/style';
 import EpisodeCard from '../components/EpisodeCard';
-import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask} from '../core/Downloader';
+import {useTranslation} from 'react-i18next';
 
 interface SeasonsParams {
   title: TitleDetail;
@@ -19,7 +19,7 @@ interface SeasonsParams {
 export const EpisodesScreen: FunctionComponent = () => {
   const params = useRoute().params as SeasonsParams;
   const {title} = params;
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   const [season, setSeason] = useState(title.seasons[0]);
 

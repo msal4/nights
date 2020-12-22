@@ -3,16 +3,16 @@ import React, {FunctionComponent} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Text} from 'react-native-elements';
 import {ViewHit} from '../core/interfaces/view-hit';
-import {useLanguage} from '../utils/lang';
 import {HistoryCard} from './HistoryCard';
 import {View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 export interface HistoryRowProps {
   row: ViewHit[];
 }
 
 export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   if (!row || !row.length) {
     return null;
   }

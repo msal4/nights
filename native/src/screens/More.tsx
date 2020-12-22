@@ -11,12 +11,12 @@ import {DetailScreen} from './Detail';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
 import {LoginScreen} from './Login';
 import {colors} from '../constants/style';
-import {useLanguage} from '../utils/lang';
+import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator();
 
 export const MoreScreen: React.FC = () => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   return (
     <Stack.Navigator
@@ -35,8 +35,10 @@ export const MoreScreen: React.FC = () => {
 
 const More: React.FC = () => {
   const navigation = useNavigation();
-  const {t, toggleLang} = useLanguage();
+  const {t, i18n} = useTranslation();
   const {token, logout} = useAuth();
+
+  const toggleLang = () => i18n.changeLanguage(i18n.language === 'ar' ? 'en' : 'ar');
 
   return (
     <ScrollView contentContainerStyle={{marginTop: 10}}>

@@ -3,16 +3,23 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 
-import {Image, Icon, Text} from 'react-native-elements';
+import {Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {View, TouchableOpacity, RefreshControl, ActivityIndicator, Dimensions} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  RefreshControl,
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  ImageBackground,
+} from 'react-native';
 
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import TitleRow from '../components/TitleRow';
 import {DetailScreen} from './Detail';
-import {useLanguage} from '../utils/lang';
 import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
 import {checkMyList, addToMyList, removeFromMyList, getHistory, getTitles} from '../api/title';
 import {colors} from '../constants/style';
@@ -28,6 +35,7 @@ import {Story} from '../core/interfaces/story';
 import {getStories} from '../api/story';
 import {StoryRow} from '../components/StoryRow';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator();
 
@@ -46,7 +54,7 @@ const Home = () => {
   const [params, setParams] = useState<Params>({});
   const {promo, picked, setPromo, setPicked, getPromoTitle} = usePromos(params);
   const {rows, getRows, recentlyAdded, trending, stories, comingSoon, loading} = useRows(params);
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const {history, getHits} = useHistory();
   const {token} = useAuth();
   const navigation = useNavigation();
@@ -125,7 +133,7 @@ const Home = () => {
           getRows(false);
         }
       }}>
-      <Image
+      <ImageBackground
         source={{uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900)}}
         style={{height: promoHeight}}>
         <LinearGradient
@@ -146,7 +154,6 @@ const Home = () => {
               <Image
                 source={require('../../assets/logo.png')}
                 style={{width: 100, height: 50}}
-                placeholderStyle={{backgroundColor: 'transparent'}}
                 resizeMode="contain"
               />
             </TouchableOpacity>
@@ -195,7 +202,7 @@ const Home = () => {
             </TouchableOpacity>
           </View>
         </LinearGradient>
-      </Image>
+      </ImageBackground>
       <View style={{marginHorizontal: 50}}>
         <View
           style={{
@@ -266,7 +273,7 @@ const Home = () => {
             onPress={() => {
               navigation.navigate('Detail', picked);
             }}>
-            <Image
+            <ImageBackground
               source={{uri: getImageUrl(picked.images[0]?.url, ImageQuality.h900)}}
               style={{height: promoHeight, width: '100%', marginBottom: 10}}>
               <LinearGradient
@@ -353,7 +360,7 @@ const Home = () => {
                   </View>
                 </View>
               </LinearGradient>
-            </Image>
+            </ImageBackground>
           </TouchableOpacity>
         </>
       )}

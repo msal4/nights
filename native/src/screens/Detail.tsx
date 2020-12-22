@@ -1,13 +1,14 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import {View, RefreshControl, Linking, Dimensions} from 'react-native';
+import {View, RefreshControl, Linking, Dimensions, Image, ImageBackground} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {Image, Icon, Text, Button} from 'react-native-elements';
+import {Icon, Text, Button} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
+import {useTranslation} from 'react-i18next';
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
@@ -16,7 +17,6 @@ import {colors} from '../constants/style';
 import {TrailerScreen} from './Trailer';
 import {InfoScreen} from './Info';
 import {EpisodesScreen} from './Episodes';
-import {useLanguage} from '../utils/lang';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {useAuth} from '../context/auth-context';
 import {useUrl} from '../context/url-context';
@@ -64,7 +64,7 @@ export const DetailScreen: React.FC = () => {
     }
   }, [task]);
 
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   if (title && title.genres.length > 3) {
     title.genres.length = 3;
@@ -87,10 +87,7 @@ export const DetailScreen: React.FC = () => {
           tintColor={colors.white}
         />
       }>
-      <Image
-        source={{uri: image}}
-        style={{height: promoHeight}}
-        placeholderStyle={{backgroundColor: 'transparent'}}>
+      <ImageBackground source={{uri: image}} style={{height: promoHeight}}>
         <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
           <SafeAreaView
             edges={['top']}
@@ -121,7 +118,6 @@ export const DetailScreen: React.FC = () => {
                     <Image
                       source={require('../../assets/imdb.png')}
                       resizeMode="contain"
-                      placeholderStyle={{backgroundColor: 'transparent'}}
                       style={{width: 60, height: 50}}
                     />
                   </TouchableOpacity>
@@ -215,7 +211,7 @@ export const DetailScreen: React.FC = () => {
             </View>
           </SafeAreaView>
         </LinearGradient>
-      </Image>
+      </ImageBackground>
       <View style={{marginHorizontal: 20}}>
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
           <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>

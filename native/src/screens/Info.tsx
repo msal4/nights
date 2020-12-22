@@ -1,13 +1,12 @@
 import React, {FunctionComponent} from 'react';
-import {Linking, TouchableOpacity, View} from 'react-native';
-import {Icon, Text} from 'react-native-elements';
+import {View} from 'react-native';
+import {Text} from 'react-native-elements';
 import {useRoute} from '@react-navigation/native';
 
 import {TitleDetail} from '../core/interfaces/title';
 import {joinTopics} from '../utils/common';
 import TitleRow from '../components/TitleRow';
-import {useLanguage} from '../utils/lang';
-import {colors} from '../constants/style';
+import {useTranslation} from 'react-i18next';
 
 interface InfoParams {
   title: TitleDetail;
@@ -16,7 +15,7 @@ interface InfoParams {
 export const InfoScreen: FunctionComponent = () => {
   const params: InfoParams = useRoute().params as any;
   const {title} = params;
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   if (title.cast.length > 3) {
     title.cast.length = 3;

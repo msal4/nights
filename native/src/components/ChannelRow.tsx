@@ -4,13 +4,15 @@ import {FlatList} from 'react-native-gesture-handler';
 import {Text} from 'react-native-elements';
 import {Category, Channel} from '../core/interfaces/channel';
 import {ChannelCard} from './ChannelCard';
-import {useLanguage} from '../utils/lang';
+import {useTranslation} from 'react-i18next';
 
 const ChannelRow: FunctionComponent<{category: Category; onPress?: (channel: Channel) => void}> = ({
   category,
   onPress,
 }) => {
-  const {lang} = useLanguage();
+  const {
+    i18n: {language: lang},
+  } = useTranslation();
   if (!category.channels || !category.channels.length) {
     return null;
   }

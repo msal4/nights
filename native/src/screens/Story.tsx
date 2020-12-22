@@ -1,9 +1,9 @@
 import ViewPager, {PageScrollStateChangedEvent} from '@react-native-community/viewpager';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Easing, ImageBackground, Platform, View} from 'react-native';
+import {Animated, ImageBackground, View} from 'react-native';
 import {Icon} from 'react-native-elements';
-import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Story} from '../components/Story';

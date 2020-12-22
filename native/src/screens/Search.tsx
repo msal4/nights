@@ -13,7 +13,6 @@ import dayjs from 'dayjs';
 import {colors, CARD_WIDTH} from '../constants/style';
 import {getTitles} from '../api/title';
 import {DetailScreen} from './Detail';
-import {useLanguage} from '../utils/lang';
 import {getGenres} from '../api/genre';
 import {Topic} from '../core/interfaces/topic';
 import {capitalizeFirst, isCloseToBottom} from '../utils/common';
@@ -22,6 +21,7 @@ import Axios from 'axios';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import {Title as ITitle} from '../core/interfaces/title';
 import Title from '../components/Title';
+import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator();
 
@@ -60,7 +60,7 @@ const Search: React.FC = () => {
   const {width} = Dimensions.get('window');
   const numCards = Math.round(width / CARD_WIDTH);
   const cardWidth = width / numCards - 15 - 15 / numCards;
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const {genres} = useGenres();
   const [isVisible, setIsVisible] = useState(true);
 
@@ -190,7 +190,7 @@ const Filter: React.FC<{
 }> = ({items, name, onChange}) => {
   const width = 85;
   const height = 'auto';
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   return (
     <DropDownPicker
@@ -228,7 +228,7 @@ const Filter: React.FC<{
 };
 
 const useGenres = () => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const defaultGenre = {name: t('genres'), id: null};
   const [genres, setGenres] = useState<Topic[]>([defaultGenre as any]);
 

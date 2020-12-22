@@ -6,8 +6,8 @@ import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {Icon, Text} from 'react-native-elements';
 import {capitalizeFirst} from '../utils/common';
 import {View} from 'react-native';
-import {useLanguage} from '../utils/lang';
 import {colors} from '../constants/style';
+import {useTranslation} from 'react-i18next';
 
 export interface TitleRowProps {
   row: ITitle[];
@@ -17,7 +17,7 @@ export interface TitleRowProps {
 }
 
 const TitleRow: FunctionComponent<TitleRowProps> = ({row, name, seeMore, onSeeMore}) => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
 
   if (!row || !row.length) {
     return null;

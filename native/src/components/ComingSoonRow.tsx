@@ -2,19 +2,19 @@ import React, {FunctionComponent} from 'react';
 
 import {ImageQuality, Title as ITitle} from '../core/interfaces/title';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import {Image, Text} from 'react-native-elements';
+import {Text} from 'react-native-elements';
 import {getImageUrl, joinTopics} from '../utils/common';
-import {View} from 'react-native';
-import {useLanguage} from '../utils/lang';
+import {View, Image} from 'react-native';
 import {CARD_WIDTH, colors} from '../constants/style';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 export interface ComingSoonRowProps {
   row: ITitle[];
 }
 
 export const ComingSoonRow: FunctionComponent<ComingSoonRowProps> = ({row}) => {
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const navigation = useNavigation();
 
   if (!row || !row.length) {

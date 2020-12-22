@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Input, Button, Text} from 'react-native-elements';
-import {useLanguage} from '../utils/lang';
 import {colors} from '../constants/style';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useAuth} from '../context/auth-context';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 export const LoginScreen: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -13,7 +13,7 @@ export const LoginScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const {login, register} = useAuth();
-  const {t} = useLanguage();
+  const {t} = useTranslation();
   const navigation = useNavigation();
 
   return (

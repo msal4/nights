@@ -6,10 +6,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import OneSignal from 'react-native-onesignal';
+import './src/utils/i18n';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
-import {LanguageProvider} from './src/utils/lang';
 import {AuthProvider} from './src/context/auth-context';
 import {Downloader} from './src/core/Downloader';
 import {OfflinePlayerScreen} from './src/screens/OfflinePlayer';
@@ -82,26 +82,24 @@ export default () => {
       <ThemeProvider theme={elementsTheme}>
         <UrlProvider>
           <AuthProvider>
-            <LanguageProvider>
-              <NavigationContainer theme={navigationTheme}>
-                <Stack.Navigator screenOptions={{headerShown: false}}>
-                  <Stack.Screen name="Root" component={RootScreen} />
-                  <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} options={options} />
-                  <Stack.Screen name="SeriesPlayer" component={SeriesPlayerScreen} options={options} />
-                  <Stack.Screen
-                    name="Story"
-                    component={StoryScreen}
-                    options={{
-                      cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-                      gestureDirection: 'vertical',
-                      gestureResponseDistance: {vertical: 200},
-                    }}
-                  />
-                  <Stack.Screen name="TvPlayer" component={TvPlayerScreen} options={options} />
-                  <Stack.Screen name="OfflinePlayer" component={OfflinePlayerScreen} options={options} />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </LanguageProvider>
+            <NavigationContainer theme={navigationTheme}>
+              <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="Root" component={RootScreen} />
+                <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} options={options} />
+                <Stack.Screen name="SeriesPlayer" component={SeriesPlayerScreen} options={options} />
+                <Stack.Screen
+                  name="Story"
+                  component={StoryScreen}
+                  options={{
+                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                    gestureDirection: 'vertical',
+                    gestureResponseDistance: {vertical: 200},
+                  }}
+                />
+                <Stack.Screen name="TvPlayer" component={TvPlayerScreen} options={options} />
+                <Stack.Screen name="OfflinePlayer" component={OfflinePlayerScreen} options={options} />
+              </Stack.Navigator>
+            </NavigationContainer>
           </AuthProvider>
         </UrlProvider>
       </ThemeProvider>
