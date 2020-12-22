@@ -223,14 +223,20 @@ export class Downloader {
       // delete files
       try {
         await fs.unlink(task.image);
-      } catch {}
+      } catch (err) {
+        console.log('image unlink failed:', err);
+      }
       try {
         await fs.unlink(task.path);
-      } catch {}
+      } catch (err) {
+        console.log('video unlink failed:', err);
+      }
       for (const sub of task.subtitles) {
         try {
           await fs.unlink(sub.url);
-        } catch {}
+        } catch (err) {
+          console.log('sub unlink failed:', err);
+        }
       }
 
       // delete task

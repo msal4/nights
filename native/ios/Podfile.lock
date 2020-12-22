@@ -262,6 +262,8 @@ PODS:
     - React
   - react-native-viewpager (4.1.6):
     - React
+  - react-native-webview (11.0.2):
+    - React-Core
   - React-RCTActionSheet (0.63.2):
     - React-Core/RCTActionSheetHeaders (= 0.63.2)
   - React-RCTAnimation (0.63.2):
@@ -394,6 +396,7 @@ DEPENDENCIES:
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
   - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -482,6 +485,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-video"
   react-native-viewpager:
     :path: "../node_modules/@react-native-community/viewpager"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -563,6 +568,7 @@ SPEC CHECKSUMS:
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-viewpager: f44c9e21c37d4cb76d38841c8a450e3891923461
+  react-native-webview: dfd7202ff115c44d3ea401c2f36122fb3ac79f07
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
   React-RCTAnimation: 9a883bbe1e9d2e158d4fb53765ed64c8dc2200c6
   React-RCTBlob: 39cf0ece1927996c4466510e25d2105f67010e13

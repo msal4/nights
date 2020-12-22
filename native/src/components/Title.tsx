@@ -1,12 +1,11 @@
 import React, {FunctionComponent} from 'react';
-import {View} from 'react-native';
+import {View, ImageBackground, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Image, Text} from 'react-native-elements';
+import {useNavigation} from '@react-navigation/native';
 
 import {Title as ITitle} from '../core/interfaces/title';
 import {getImageUrl} from '../utils/common';
 import {CARD_WIDTH, colors} from '../constants/style';
-import {useNavigation} from '@react-navigation/native';
 import {useLanguage} from '../utils/lang';
 
 export interface TitleProps {
@@ -28,7 +27,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
       onPress={() => {
         navigation.navigate('Detail', title);
       }}>
-      <Image style={{height: cardHeight, width: cardWidth}} source={{uri}}>
+      <ImageBackground style={{height: cardHeight, width: cardWidth}} source={{uri}}>
         {title.is_new ? (
           <View
             style={{
@@ -44,7 +43,7 @@ const Title: FunctionComponent<TitleProps> = ({title, width}) => {
             </Text>
           </View>
         ) : null}
-      </Image>
+      </ImageBackground>
     </TouchableOpacity>
   );
 };

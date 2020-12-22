@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {InteractionManager, Platform, View} from 'react-native';
 
 import {Title, TitleDetail} from '../core/interfaces/title';
 import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
@@ -8,7 +9,6 @@ import {Sub, Player, OnProgressData} from '../components/Player';
 import {Season} from '../core/interfaces/season';
 import {Episode} from '../core/interfaces/episode';
 import {swapEpisodeUrlId} from '../utils/common';
-import {InteractionManager, Platform, View} from 'react-native';
 
 export interface SeriesPlayerParams {
   title: Title;
@@ -49,8 +49,6 @@ export const SeriesPlayerScreen: React.FC = () => {
           uri: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
         } as Sub),
     );
-
-    console.log('video:', video);
 
     setSubtitles(s);
     setVideo(v);
