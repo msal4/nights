@@ -222,11 +222,15 @@ export class Downloader {
     if (task !== undefined) {
       // delete files
       try {
-        await fs.unlink(task.image);
+        if (task.imagePath) {
+          await fs.unlink(task.imagePath);
+        }
       } catch (err) {
         console.log('image unlink failed:', err);
       }
       try {
+        console.log('task path:', task.path);
+        console.log('task video:', task.video);
         await fs.unlink(task.path);
       } catch (err) {
         console.log('video unlink failed:', err);

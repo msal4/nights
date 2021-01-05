@@ -87,6 +87,7 @@ const Home = () => {
   }, [params]);
 
   const addToList = async (
+    // eslint-disable-next-line no-shadow
     token: string | undefined | null,
     title: Promo | undefined,
     setItem: (promo: Promo) => void,
