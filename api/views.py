@@ -62,6 +62,7 @@ def forget_cache(request, *args, **kwargs):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@permission_classes(permissions.IsAdminUser)
 @api_view(['DELETE'])
 def delete_title(request, *args, **kwargs):
     params = request.query_params
@@ -71,6 +72,7 @@ def delete_title(request, *args, **kwargs):
             name=params['name'],
             released_at=params['released_at']
         ).delete()
+        cache.clear()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response({"detail": "name and released_at are required."},
