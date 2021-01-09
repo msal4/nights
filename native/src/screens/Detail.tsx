@@ -187,7 +187,6 @@ export const DetailScreen: React.FC = () => {
                         // const status = Downloader.checkStatus(title.id);
 
                         // if (status === 'DOESNOTEXIST' || status === 'ERROR') {
-                        console.log('downloading...');
                         Downloader.download({
                           id: title.id,
                           name: title.name,
@@ -351,7 +350,7 @@ const useTitle = (id: number | string) => {
       const data = await getTitle(id);
       setTitle(data);
       const t = Downloader.task(Number(id));
-      console.log(t?.status);
+
       setTask(t);
       await checkMyList(data.id);
       setInMyList(true);

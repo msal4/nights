@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useRef, useEffect} from 'react';
-import {Platform, View, ImageBackground} from 'react-native';
+import {Platform, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Text, Icon} from 'react-native-elements';
+import {Text, Icon, Image} from 'react-native-elements';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import Menu from 'react-native-material-menu';
 import LinearGradient from 'react-native-linear-gradient';
@@ -63,7 +63,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
         marginTop: 20,
       }}>
       <TouchableOpacity onPress={playEpisode}>
-        <ImageBackground
+        <Image
           source={{uri: image}}
           style={{justifyContent: 'center', alignItems: 'center', width: 135, height: 80, marginRight: 10}}>
           {isPrivate ? (
@@ -99,7 +99,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
               />
             </View>
           ) : null}
-        </ImageBackground>
+        </Image>
       </TouchableOpacity>
       <View style={{overflow: 'hidden', flex: 1}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
