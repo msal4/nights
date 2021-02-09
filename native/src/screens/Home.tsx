@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
@@ -6,22 +6,24 @@ import {useNavigation} from '@react-navigation/native';
 import {Icon, Text} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {
-  View,
-  TouchableOpacity,
-  RefreshControl,
   ActivityIndicator,
   Dimensions,
   Image,
   ImageBackground,
+  RefreshControl,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
 
 import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
 import {GenreRow} from '../core/interfaces/home';
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import TitleRow from '../components/TitleRow';
 import {DetailScreen} from './Detail';
-import {TitleDetail, ImageQuality, Title} from '../core/interfaces/title';
-import {checkMyList, addToMyList, removeFromMyList, getHistory, getTitles} from '../api/title';
+import {ImageQuality, Title, TitleDetail} from '../core/interfaces/title';
+import {addToMyList, checkMyList, getHistory, getTitles, removeFromMyList} from '../api/title';
 import {colors} from '../constants/style';
 import {getImageUrl, isCloseToBottom, joinTopics} from '../utils/common';
 import {ViewHit} from '../core/interfaces/view-hit';
@@ -34,8 +36,6 @@ import {ComingSoonRow} from '../components/ComingSoonRow';
 import {Story} from '../core/interfaces/story';
 import {getStories} from '../api/story';
 import {StoryRow} from '../components/StoryRow';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator();
 
@@ -77,12 +77,10 @@ const Home = () => {
   }, [params]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    return navigation.addListener('focus', () => {
       getHits();
       getPromoTitle(params);
     });
-
-    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
