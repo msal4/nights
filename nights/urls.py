@@ -12,3 +12,7 @@ urlpatterns = [
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # urlpatterns += url(r'^(?:.*)/?', include('frontend.urls')),
 urlpatterns += url(r'^', views.FrontendAppView.as_view()),
+
+urlpatterns += [
+    path('django-rq/', include('django_rq.urls'))
+]

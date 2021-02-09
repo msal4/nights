@@ -26,6 +26,7 @@ django-elasticsearch-dsl-drf = "*"
 django-elasticsearch-dsl = "*"
 pillow = "*"
 jedi = "*"
+django-rq = "*"
 
 [requires]
 python_version = "3.8"

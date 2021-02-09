@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'djoser',
     'corsheaders',
+    "django_rq",
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,15 @@ CACHES = {
         },
         "KEY_PREFIX": "nights"
     }
+}
+
+RQ_QUEUES = {
+    'high': {
+        'USE_REDIS_CACHE': 'default',
+    },
+    'low': {
+        'USE_REDIS_CACHE': 'default',
+    },
 }
 
 # Password validation

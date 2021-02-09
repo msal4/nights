@@ -65,6 +65,7 @@ const Player: FunctionComponent<PlayerProps> = ({
   const videoNode = useRef<HTMLVideoElement>(null);
   const seasonRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const posRef = useRef(position);
   const [showSidebar, setShowSidebar] = useState(false);
 
   useDisposableEffect(disposed => {
@@ -88,7 +89,18 @@ const Player: FunctionComponent<PlayerProps> = ({
         () =>
           !disposed &&
           onUpdatePosition &&
-          handleTimeUpdate(player, position, onUpdatePosition)
+          (() => {
+            const currentPosition = Math.floor(player.currentTime());
+            console.log(currentPosition, position, posRef.current)
+            // Check if the player seeked over 30 secs or the user is seeking back
+            if (currentPosition > posRef.current + 30 || currentPosition < posRef.current) {
+              // Update the position
+              const duration = Math.floor(player.duration());
+              posRef.current = currentPosition;
+          
+              onUpdatePosition && position && onUpdatePosition(currentPosition, duration);
+            }
+          })()
       );
 
       // Toggle sidebar
@@ -170,21 +182,6 @@ const Player: FunctionComponent<PlayerProps> = ({
   );
 };
 
-const handleTimeUpdate = (
-  player: VideoJsPlayer,
-  position: number,
-  onUpdatePosition: OnUpdatePositionCallback
-) => {
-  const currentPosition = Math.floor(player.currentTime());
-  // Check if the player seeked over 30 secs or the user is seeking back
-  if (currentPosition > position + 30 || currentPosition < position) {
-    // Update the position
-    const duration = Math.floor(player.duration());
-    position = currentPosition;
-
-    onUpdatePosition && position && onUpdatePosition(position, duration);
-  }
-};
 
 const replaceFullscreenButton = (
   ref: React.RefObject<HTMLDivElement> | null,

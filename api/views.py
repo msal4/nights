@@ -18,6 +18,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import FileUploadParser
+import django_rq
 
 from django.core.cache import cache
 from rest_framework.decorators import permission_classes
@@ -383,8 +384,7 @@ class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    @staticmethod
-    def put(request, topic_id, *args, **kwargs):
+    def put(self, request, topic_id, *args, **kwargs):
         topic_type = 'title'
         season_id = None
         episode_id = None
@@ -450,6 +450,12 @@ class WatchHistoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                 type=topic_type, season=season, episode=episode)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # def put(self, request, topic_id, *args, **kwargs):
+    #     queue = django_rq.get_queue('high')
+    #     def update(): return self.put_imp(request, topic_id, *args, **kwargs)
+    #     queue.enqueue(update)
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class LandingPromoViewSet(viewsets.ModelViewSet):
