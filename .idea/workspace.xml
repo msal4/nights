@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6e42863-a63e-4e4e-924d-1f75d3f6a8c9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/ScrollToTop.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pipfile" beforeDir="false" afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/helpers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CinemaPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CinemaPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LandingPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LandingPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/MoviePlayer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/MoviePlayer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/MyListPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/MyListPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Router.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Router.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/SearchPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/SearchPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TitlePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TitlePage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/styles/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/styles/App.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +61,7 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="show.migrate.to.gradle.popup" value="false" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -218,6 +204,8 @@
       <workItem from="1590161215622" duration="1566000" />
       <workItem from="1590339353361" duration="4072000" />
       <workItem from="1590345628618" duration="211000" />
+      <workItem from="1608200909223" duration="79000" />
+      <workItem from="1609414043329" duration="31000" />
     </task>
     <servers />
   </component>

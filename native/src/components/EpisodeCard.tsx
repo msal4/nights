@@ -64,6 +64,8 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
       }}>
       <TouchableOpacity onPress={playEpisode}>
         <Image
+          resizeMethod="resize"
+          transition={false}
           source={{uri: image}}
           style={{justifyContent: 'center', alignItems: 'center', width: 135, height: 80, marginRight: 10}}>
           {isPrivate ? (
