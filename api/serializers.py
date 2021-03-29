@@ -9,6 +9,7 @@ from . import helpers
 from django.contrib.auth.models import User
 from django.core.cache import cache
 
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
@@ -187,7 +188,6 @@ class TitleCreateSerializer(serializers.ModelSerializer):
                 episode.media.set(media)
                 helpers.update_object(episode, **episode_data)
 
-        cache.clear()
         return title
 
     def update(self, instance, validated_data):
