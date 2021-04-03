@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Dimensions, NativeModules, Platform, StyleSheet} from 'react-native';
+import {Dimensions, NativeModules, Platform, StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
 import {colors} from '../constants/style';
@@ -60,7 +60,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
   }
 
   return (
-    <ScrollView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       {Platform.OS === 'android' ? (
         <TheoPlayer
           style={playerStyle}
@@ -136,7 +136,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
           />
         </Tab.Navigator>
       )}
-    </ScrollView>
+    </View>
   );
 };
 

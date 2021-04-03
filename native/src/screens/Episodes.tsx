@@ -10,6 +10,7 @@ import {colors} from '../constants/style';
 import EpisodeCard from '../components/EpisodeCard';
 import {Downloader, DownloadTask} from '../core/Downloader';
 import {useTranslation} from 'react-i18next';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface SeasonsParams {
   title: TitleDetail;
@@ -41,7 +42,7 @@ export const EpisodesScreen: FunctionComponent = () => {
   }, [season.id]);
 
   return (
-    <View style={{padding: 10}}>
+    <ScrollView nestedScrollEnabled style={{padding: 10}}>
       <DropDownPicker
         items={title.seasons.map((value) => ({label: `${t('season')} ${value.index + 1}`, value}))}
         defaultValue={season}
@@ -74,7 +75,7 @@ export const EpisodesScreen: FunctionComponent = () => {
           ))}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

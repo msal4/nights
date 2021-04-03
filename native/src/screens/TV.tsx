@@ -22,17 +22,17 @@ export const TV: React.FC<{
   const {categories} = useRows();
 
   return (
-    <FlatList
-      ref={listRef}
-      keyExtractor={(item) => item.id.toString()}
-      data={[{id: 21312412}, ...(categories || [])] as Category[]}
-      renderItem={({item, index}) => {
-        if (index === 0) {
-          return header;
-        }
-        return <ChannelRow key={item.id} category={item} onPress={onPress} />;
-      }}
-    />
+    <View>
+      {header}
+      <FlatList
+        ref={listRef}
+        keyExtractor={(item) => item.id.toString()}
+        data={categories}
+        renderItem={({item}) => {
+          return <ChannelRow key={item.id} category={item} onPress={onPress} />;
+        }}
+      />
+    </View>
   );
 };
 
