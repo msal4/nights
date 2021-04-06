@@ -12,7 +12,6 @@ export const joinTopics = (topics?: Topic[], sep = " • ") =>
 export const getImageUrl = (url?: string, quality = ImageQuality.v250) =>
   url &&
   url
-    .replace("static.1001nights.fun", "static.1001nights.fun:1001")
     .replace("{q}v", quality)
     .replace("{f}", "jpg");
 
