@@ -147,7 +147,7 @@ export default () => {
             <p className="mt-2 font-thin">{t("pcSoftwareGames")}</p>
             <a
               className="mt-4 inline-block px-8 py-3 rounded-full text-sm font-semibold shadow-xl transition-background duration-200 text-black bg-white hover:bg-black hover:text-white"
-              href="http://172.18.0.196"
+              href="http://172.18.0.202"
               rel="noopener noreferrer"
               target="_blank"
             >
