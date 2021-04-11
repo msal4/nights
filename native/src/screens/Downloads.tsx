@@ -13,7 +13,6 @@ import {capitalizeFirst} from '../utils/common';
 import {DetailScreen} from './Detail';
 import {defaultStackOptions} from '../utils/defaultStackOptions';
 import {useUrl} from '../context/url-context';
-import {MyListScreen} from './MyList';
 import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator();
@@ -31,7 +30,7 @@ export const DownloadsScreen: React.FC = () => {
       }}>
       <Stack.Screen
         name="Downloads"
-        component={isPrivate || !online ? Downloads : MyListScreen}
+        component={Downloads}
         options={{title: isPrivate && online ? t('downloads') : t('myList')}}
       />
       <Stack.Screen name="Detail" component={DetailScreen} options={{headerShown: false}} />

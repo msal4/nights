@@ -11,13 +11,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		14CC349D60875AB3824F44FF /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BABF850C4E03D5D52A8F5383 /* libPods-OneSignalNotificationServiceExtension.a */; };
-		1DFAE879662EE473313FC4B0 /* libPods-NightsNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0357ACA31E8854789F105891 /* libPods-NightsNative.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* NightsNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NightsNativeTests.m */; };
+		510AEB399F4A91A7FCA36E58 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C11238175DEE3FD599ED35 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		95C6C87E56072FA06BE836C7 /* libPods-NightsNative-NightsNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BFC49AE9822CBF30E6760E7 /* libPods-NightsNative-NightsNativeTests.a */; };
 		CB4261A72522CD6B00F47F6D /* assets in Resources */ = {isa = PBXBuildFile; fileRef = CB4261A62522CD6B00F47F6D /* assets */; };
 		CB4261AB2523FD9C00F47F6D /* ReactNativeEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4261AA2523FD9C00F47F6D /* ReactNativeEventEmitter.swift */; };
 		CB4261AD2523FDEE00F47F6D /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4261AC2523FDEE00F47F6D /* EventEmitter.swift */; };
@@ -27,7 +27,7 @@
 		CBBD7C86251E93D600DF1E97 /* THEOplayerViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C85251E93D600DF1E97 /* THEOplayerViewBridge.m */; };
 		CBBD7C88251E93FC00DF1E97 /* THEOplayerViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */; };
 		CBBD7C8A251E943D00DF1E97 /* THEOplayerView+Convert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBD7C89251E943C00DF1E97 /* THEOplayerView+Convert.swift */; };
-		DD69A569702DA128F8E9EEEB /* libPods-NightsNative-NightsNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB45D7B2CEACBB227957EEFE /* libPods-NightsNative-NightsNativeTests.a */; };
+		E23DAF559AB8B39BA8FEE4F9 /* libPods-NightsNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4550EA9A96AD353D1925DE9E /* libPods-NightsNative.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,24 +73,23 @@
 		00E356EE1AD99517003FC87E /* NightsNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NightsNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* NightsNativeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NightsNativeTests.m; sourceTree = "<group>"; };
-		01BD022926265830676A96D6 /* Pods-NightsNative-NightsNativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative-NightsNativeTests.debug.xcconfig"; path = "Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0357ACA31E8854789F105891 /* libPods-NightsNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NightsNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* 1001 Nights.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "1001 Nights.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NightsNative/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NightsNative/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NightsNative/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NightsNative/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NightsNative/main.m; sourceTree = "<group>"; };
+		1D2F99983A3293F467D59DF8 /* Pods-NightsNative-NightsNativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative-NightsNativeTests.debug.xcconfig"; path = "Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* NightsNative-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NightsNative-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* NightsNative-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "NightsNative-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		39B43B6327E367FEC6E29615 /* Pods-NightsNative-NightsNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative-NightsNativeTests.release.xcconfig"; path = "Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests.release.xcconfig"; sourceTree = "<group>"; };
-		41E5B210334FED0FFEFC6808 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		3BFC49AE9822CBF30E6760E7 /* libPods-NightsNative-NightsNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NightsNative-NightsNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		409390A7606E200D157BED81 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		4550EA9A96AD353D1925DE9E /* libPods-NightsNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NightsNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NightsNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		82B6284359FF955F4B9601D4 /* Pods-NightsNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative.release.xcconfig"; path = "Target Support Files/Pods-NightsNative/Pods-NightsNative.release.xcconfig"; sourceTree = "<group>"; };
-		9A127E6202D9E9CC2682E155 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		AB45D7B2CEACBB227957EEFE /* libPods-NightsNative-NightsNativeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NightsNative-NightsNativeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B0115C212DBC8AF97B5C84B1 /* Pods-NightsNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative.debug.xcconfig"; path = "Target Support Files/Pods-NightsNative/Pods-NightsNative.debug.xcconfig"; sourceTree = "<group>"; };
-		BABF850C4E03D5D52A8F5383 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9191B6973426F733393AB19F /* Pods-NightsNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative.debug.xcconfig"; path = "Target Support Files/Pods-NightsNative/Pods-NightsNative.debug.xcconfig"; sourceTree = "<group>"; };
+		A0C11238175DEE3FD599ED35 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5044B03922B87D25B02BF75 /* Pods-NightsNative-NightsNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative-NightsNativeTests.release.xcconfig"; path = "Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests.release.xcconfig"; sourceTree = "<group>"; };
+		C3C9A8D9C6205C34CC09B56D /* Pods-NightsNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NightsNative.release.xcconfig"; path = "Target Support Files/Pods-NightsNative/Pods-NightsNative.release.xcconfig"; sourceTree = "<group>"; };
 		CB1D7AE625055BBB00BA1327 /* NightsNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = NightsNative.entitlements; path = NightsNative/NightsNative.entitlements; sourceTree = "<group>"; };
 		CB2CD8D22533E39C00898083 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		CB42619225203EE400F47F6D /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
@@ -107,6 +106,7 @@
 		CBBD7C87251E93FC00DF1E97 /* THEOplayerViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = THEOplayerViewManager.swift; sourceTree = "<group>"; };
 		CBBD7C89251E943C00DF1E97 /* THEOplayerView+Convert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "THEOplayerView+Convert.swift"; sourceTree = "<group>"; };
 		CBBD7C8B251E94B600DF1E97 /* NightsNative-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NightsNative-Bridging-Header.h"; sourceTree = "<group>"; };
+		D756B53E5948060F9AD02B25 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -116,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD69A569702DA128F8E9EEEB /* libPods-NightsNative-NightsNativeTests.a in Frameworks */,
+				95C6C87E56072FA06BE836C7 /* libPods-NightsNative-NightsNativeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DFAE879662EE473313FC4B0 /* libPods-NightsNative.a in Frameworks */,
+				E23DAF559AB8B39BA8FEE4F9 /* libPods-NightsNative.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14CC349D60875AB3824F44FF /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
+				510AEB399F4A91A7FCA36E58 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,9 +200,9 @@
 				CBBD7C7E251E92FC00DF1E97 /* THEOplayerSDK.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				0357ACA31E8854789F105891 /* libPods-NightsNative.a */,
-				AB45D7B2CEACBB227957EEFE /* libPods-NightsNative-NightsNativeTests.a */,
-				BABF850C4E03D5D52A8F5383 /* libPods-OneSignalNotificationServiceExtension.a */,
+				4550EA9A96AD353D1925DE9E /* libPods-NightsNative.a */,
+				3BFC49AE9822CBF30E6760E7 /* libPods-NightsNative-NightsNativeTests.a */,
+				A0C11238175DEE3FD599ED35 /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -246,12 +246,12 @@
 		C54746E7A3E66302289A7023 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B0115C212DBC8AF97B5C84B1 /* Pods-NightsNative.debug.xcconfig */,
-				82B6284359FF955F4B9601D4 /* Pods-NightsNative.release.xcconfig */,
-				01BD022926265830676A96D6 /* Pods-NightsNative-NightsNativeTests.debug.xcconfig */,
-				39B43B6327E367FEC6E29615 /* Pods-NightsNative-NightsNativeTests.release.xcconfig */,
-				9A127E6202D9E9CC2682E155 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
-				41E5B210334FED0FFEFC6808 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+				9191B6973426F733393AB19F /* Pods-NightsNative.debug.xcconfig */,
+				C3C9A8D9C6205C34CC09B56D /* Pods-NightsNative.release.xcconfig */,
+				1D2F99983A3293F467D59DF8 /* Pods-NightsNative-NightsNativeTests.debug.xcconfig */,
+				A5044B03922B87D25B02BF75 /* Pods-NightsNative-NightsNativeTests.release.xcconfig */,
+				409390A7606E200D157BED81 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				D756B53E5948060F9AD02B25 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -273,11 +273,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "NightsNativeTests" */;
 			buildPhases = (
-				6B81D511FBB0F166BCC4D17D /* [CP] Check Pods Manifest.lock */,
+				941857D5E3D0178EC6BFF768 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				510DA891EFF98C2D250B4423 /* [CP] Copy Pods Resources */,
+				88961D49CBB2CA28CA9464FE /* [CP] Embed Pods Frameworks */,
+				E583EC347151F27E4688B667 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -293,14 +294,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NightsNative" */;
 			buildPhases = (
-				88550C5704DA858568806EF7 /* [CP] Check Pods Manifest.lock */,
+				377583B02001A0662C872784 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				061618A5EDA634121843A758 /* [CP] Copy Pods Resources */,
 				CB87311025335C8500D2C815 /* Embed App Extensions */,
+				1F8CB0A814D84BE7F1AD402C /* [CP] Embed Pods Frameworks */,
+				38E7154F238684ECEF3F4928 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -353,7 +355,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB87310D25335C8500D2C815 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
-				56DB4F74AAB6FD9528E702EA /* [CP] Check Pods Manifest.lock */,
+				9A9DC540D779CFF64AC31999 /* [CP] Check Pods Manifest.lock */,
 				CB87310125335C8500D2C815 /* Sources */,
 				CB87310225335C8500D2C815 /* Frameworks */,
 				CB87310325335C8500D2C815 /* Resources */,
@@ -479,7 +481,63 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		061618A5EDA634121843A758 /* [CP] Copy Pods Resources */ = {
+		1F8CB0A814D84BE7F1AD402C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NightsNative/Pods-NightsNative-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NightsNative/Pods-NightsNative-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		377583B02001A0662C872784 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NightsNative-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		38E7154F238684ECEF3F4928 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -529,21 +587,71 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NightsNative/Pods-NightsNative-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+		88961D49CBB2CA28CA9464FE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
-			name = "Bundle React Native Code And Images";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
-		510DA891EFF98C2D250B4423 /* [CP] Copy Pods Resources */ = {
+		941857D5E3D0178EC6BFF768 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NightsNative-NightsNativeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A9DC540D779CFF64AC31999 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E583EC347151F27E4688B667 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -591,72 +699,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NightsNative-NightsNativeTests/Pods-NightsNative-NightsNativeTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		56DB4F74AAB6FD9528E702EA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6B81D511FBB0F166BCC4D17D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NightsNative-NightsNativeTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		88550C5704DA858568806EF7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NightsNative-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -771,7 +813,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01BD022926265830676A96D6 /* Pods-NightsNative-NightsNativeTests.debug.xcconfig */;
+			baseConfigurationReference = 1D2F99983A3293F467D59DF8 /* Pods-NightsNative-NightsNativeTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -795,7 +837,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 39B43B6327E367FEC6E29615 /* Pods-NightsNative-NightsNativeTests.release.xcconfig */;
+			baseConfigurationReference = A5044B03922B87D25B02BF75 /* Pods-NightsNative-NightsNativeTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -816,7 +858,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0115C212DBC8AF97B5C84B1 /* Pods-NightsNative.debug.xcconfig */;
+			baseConfigurationReference = 9191B6973426F733393AB19F /* Pods-NightsNative.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -850,7 +892,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 82B6284359FF955F4B9601D4 /* Pods-NightsNative.release.xcconfig */;
+			baseConfigurationReference = C3C9A8D9C6205C34CC09B56D /* Pods-NightsNative.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -1105,7 +1147,7 @@
 		};
 		CB87310E25335C8500D2C815 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A127E6202D9E9CC2682E155 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			baseConfigurationReference = 409390A7606E200D157BED81 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1143,7 +1185,7 @@
 		};
 		CB87310F25335C8500D2C815 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41E5B210334FED0FFEFC6808 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			baseConfigurationReference = D756B53E5948060F9AD02B25 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;

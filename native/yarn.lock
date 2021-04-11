@@ -6426,10 +6426,10 @@ react-native-navigation-bar-color@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.1.tgz#ee2be25cc37105f7da355717b0a9a32c9c059ae6"
   integrity sha512-1kE/oxWt+HYjRxdZdvke9tJ365xaee5n3+euOQA1En8zQuSbOxiE4SYEGM7TeaWnmLJ0l37mRnPHaB2H4mGh0A==
 
-react-native-onesignal@^3.9.1:
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-3.9.1.tgz#b47c2ab61e84dcc7fce63cd565574760c01b1f46"
-  integrity sha512-m511mn6Kgh6AbU8TiGvA5u1yp7od1b/0rVK4m3pz13Yp8PDceGEBd8IxoghLSZRR1/HHBxxe+CWZS9Tsa/IKsg==
+react-native-onesignal@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-onesignal/-/react-native-onesignal-4.0.6.tgz#e20dd164310113fc0fe9a97c8b70270d5cec6fcd"
+  integrity sha512-HHU7+sy7qMOyEeVkaCguOSTq9IbHYkloJLy/CUgiRIKvlUItyHRIwAb7mmaZk4ieVANTxbUzy9LKZvKAburLhw==
   dependencies:
     invariant "^2.2.2"
 
