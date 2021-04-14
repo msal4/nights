@@ -30,6 +30,9 @@ export const getHistory = (): Promise<PaginatedResults<ViewHit[]>> => UrlBase.cl
 
 export const getHit = (id: string | number): Promise<ViewHit> => UrlBase.client.get(`/history/${id}/`);
 
+export const removeHit = (id: string | number): Promise<ViewHit> =>
+  UrlBase.client.delete(`/remove_hit/${id}/`);
+
 export const hitTopic = (topicId: number | string, data: ViewHitData) =>
   UrlBase.client.put(`/history/${topicId}/`, data);
 
