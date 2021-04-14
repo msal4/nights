@@ -26,6 +26,7 @@ urlpatterns = [
     path('fuzzytitles/', views.delete_title),
     path('fuzzyepisodes/', views.retrieve_episode),
     path('cache/', views.forget_cache),
+    path('remove_hit/<id>/', views.remove_hit),
     path('auth', include('rest_framework.urls')),
     path('promos/', views.list_promos),
     path('forward_images/', views.forward_images),

@@ -138,6 +138,12 @@ def list_promos(request, *args, **kwargs):
     return Response(serializers.TitleSerializer([]).data)
 
 
+@api_view(['DELETE'])
+def remove_hit(request, id, *args, **kwargs):
+    ViewHit.objects.filter(id=id).delete()
+    return Response(status=status.HTTP_200_OK)
+
+
 class TrendingView(mixins.ListModelMixin, generics.GenericAPIView):
     queryset = Title.objects.filter(
         featured_at__isnull=False, is_coming_soon=False).order_by('-featured_at')
