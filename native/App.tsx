@@ -52,12 +52,7 @@ export default () => {
     } catch {}
 
     Downloader.open();
-
-    OneSignal.init('023b88c0-ddf6-45f7-8684-1ddd9b763a37', {
-      kOSSettingsKeyAutoPrompt: false,
-      kOSSettingsKeyInAppLaunchURL: false,
-      kOSSettingsKeyInFocusDisplayOption: 2,
-    });
+    OneSignal.setAppId('023b88c0-ddf6-45f7-8684-1ddd9b763a37');
 
     try {
       OneSignal.promptForPushNotificationsWithUserResponse(() => {});
