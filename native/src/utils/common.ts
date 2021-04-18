@@ -15,10 +15,7 @@ export const getImageUrl = (url?: string, quality = ImageQuality.v250) => {
     return url;
   }
 
-  const imageUrl = url
-    .replace('static.1001nights.fun', 'static.1001nights.fun:1001')
-    .replace('{q}v', quality)
-    .replace('{f}', 'jpg');
+  const imageUrl = url.replace('{q}v', quality).replace('{f}', 'jpg');
 
   if (!UrlBase.private) {
     console.log(`${UrlBase.publicBase}/api/forward_images/?image_url=${imageUrl}`);
