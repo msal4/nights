@@ -255,7 +255,7 @@ const Home = () => {
       {/* stories */}
       {stories ? <StoryRow row={stories.results} /> : null}
       {/* continue watching */}
-      {history && isPrivate ? <HistoryRow row={history} /> : null}
+      {history && isPrivate ? <HistoryRow row={history} onRefresh={getHits} /> : null}
       {/* trending */}
       {trending && <TitleRow row={trending.results} name={t('trending')} />}
       {/* recently added */}

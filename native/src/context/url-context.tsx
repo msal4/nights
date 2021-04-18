@@ -4,7 +4,6 @@ import NetInfo from '@react-native-community/netinfo';
 
 import UrlBase from '../utils/url-base';
 import {privateBase, publicBase} from '../constants/const';
-import {Platform} from 'react-native';
 
 const UrlContext = React.createContext<Base>({
   base: UrlBase.baseURL,

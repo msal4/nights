@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {FlatList, View, Image, ImageBackground} from 'react-native';
+import {FlatList, View, ImageBackground} from 'react-native';
 import {Text, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
@@ -17,18 +17,22 @@ import {useTranslation} from 'react-i18next';
 export const TV: React.FC<{
   listRef?: React.MutableRefObject<FlatList>;
   header: any;
+  stickyHeader?: boolean;
   onPress?: (channel: Channel) => void;
-}> = ({listRef, header, onPress}) => {
+}> = ({listRef, header, stickyHeader = true, onPress}) => {
   const {categories} = useRows();
 
   return (
     <View>
-      {header}
+      {stickyHeader ? header : null}
       <FlatList
         ref={listRef}
         keyExtractor={(item) => item.id.toString()}
-        data={categories}
-        renderItem={({item}) => {
+        data={[{id: 1001333}, ...(categories ?? [])]}
+        renderItem={({item, index}) => {
+          if (index === 0 && !stickyHeader) {
+            return header;
+          }
           return <ChannelRow key={item.id} category={item} onPress={onPress} />;
         }}
       />
@@ -72,7 +76,7 @@ const PromoHeader: React.FC = () => {
 
 const Tab = createMaterialTopTabNavigator();
 
-const TVTab: React.FC = () => <TV header={<PromoHeader />} />;
+const TVTab: React.FC = () => <TV stickyHeader={false} header={<PromoHeader />} />;
 
 const ScheduleTab: React.FC = () => {
   const {

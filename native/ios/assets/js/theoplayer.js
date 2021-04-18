@@ -55,6 +55,7 @@ function init({player}) {
         return 'custom-icon-forward vjs-control vjs-button'; // insert all class names here
       },
     });
+
     THEOplayer.videojs.registerComponent('ForwardButton', ForwardButton);
     player.ui.getChild('controlBar').addChild('ForwardButton', {});
 

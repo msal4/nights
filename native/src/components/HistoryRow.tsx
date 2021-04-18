@@ -9,9 +9,10 @@ import {useTranslation} from 'react-i18next';
 
 export interface HistoryRowProps {
   row: ViewHit[];
+  onRefresh: () => void;
 }
 
-export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
+export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row, onRefresh}) => {
   const {t} = useTranslation();
   if (!row || !row.length) {
     return null;
@@ -27,7 +28,7 @@ export const HistoryRow: FunctionComponent<HistoryRowProps> = ({row}) => {
       </View>
       <FlatList
         data={row}
-        renderItem={({item}) => <HistoryCard key={item.id} item={item} />}
+        renderItem={({item}) => <HistoryCard key={item.id} item={item} onDelete={onRefresh} />}
         keyExtractor={(item) => item.id.toString()}
         horizontal
         contentContainerStyle={{marginHorizontal: 10}}
