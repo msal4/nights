@@ -3,7 +3,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {InteractionManager, Platform, View} from 'react-native';
 
 import {Title, TitleDetail} from '../core/interfaces/title';
-import {getHit, hitTopic, getSeason, getEpisode, getTitle} from '../api/title';
+import {getHit, hitTopic, getSeason, getEpisode, getTitle, getEpisodeURL} from '../api/title';
 import {useAuth} from '../context/auth-context';
 import {Sub, Player, OnProgressData} from '../components/Player';
 import {Season} from '../core/interfaces/season';
@@ -39,7 +39,24 @@ export const SeriesPlayerScreen: React.FC = () => {
   };
 
   const playEpisode = async (ep: Episode) => {
-    const v = swapEpisodeUrlId(ep.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'));
+    let v = swapEpisodeUrlId(ep.videos[0]?.url.replace('{q}', '720').replace('{f}', 'mp4'));
+    if (v) {
+      console.log(v);
+      const startIdx = v.indexOf('/s/');
+      const endIdx = v.indexOf('/720');
+      const info = v.substring(startIdx + 3, endIdx).split('/');
+      if (info.length === 3) {
+        try {
+          const resp: {url: string}[] = (await getEpisodeURL(info[0], info[1], info[2])) as any;
+          if (resp.length) {
+            v = resp[0].url;
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+
     const s = ep.subtitles.map(
       (sub) =>
         ({

@@ -2,7 +2,7 @@ import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 
 import {TitleDetail, Title} from '../core/interfaces/title';
-import {getHit, hitTopic, getTitle} from '../api/title';
+import {getHit, hitTopic, getTitle, getMovieURL} from '../api/title';
 import {AuthContext} from '../context/auth-context';
 import {Sub, Player, OnProgressData} from '../components/Player';
 import {InteractionManager, Platform} from 'react-native';
@@ -40,7 +40,20 @@ export class MoviePlayerScreen extends React.Component<
 
       this.props.navigation.setOptions({headerTitle: title.name});
 
-      const video = title.videos[0]?.url.replace('{q}', '720');
+      let video = title.videos[0]?.url.replace('{q}', '720');
+      const startIdx = video.indexOf('/m/');
+      const endIdx = video.indexOf('/720');
+      const videoId = video.substring(startIdx + 3, endIdx);
+
+      try {
+        const resp: {url: string}[] = (await getMovieURL(videoId)) as any;
+        if (resp.length) {
+          video = resp[0].url;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+
       const subtitles = title.subtitles.map(
         (sub) =>
           ({

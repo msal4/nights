@@ -2526,6 +2526,11 @@ cross-spawn@^7.0.0:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypto-js@^3.1.9-1:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
+  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
+
 css-select@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-2.1.0.tgz#6a34653356635934a81baca68d0255432105dbef"
@@ -6400,6 +6405,13 @@ react-native-gesture-handler@^1.7.0:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-img-cache@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-img-cache/-/react-native-img-cache-1.6.0.tgz#79635bd249146f4973629d53047edac05d6f9533"
+  integrity sha512-4LDlOW6hmFG4l0QjStuvIPuhpgr4VxKMjWsX2OPlfzgPUBV4bcipGoBf4wuAh2yJ1YuvEQYXKEiaUHopIK4mzA==
+  dependencies:
+    crypto-js "^3.1.9-1"
 
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"

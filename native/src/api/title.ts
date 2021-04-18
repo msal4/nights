@@ -7,6 +7,7 @@ import {Episode} from '../core/interfaces/episode';
 import {ViewHitData} from '../core/interfaces/topic';
 import {ViewHit} from '../core/interfaces/view-hit';
 import {sortTopics} from '../utils/common';
+import {contentURL} from '../constants/const';
 
 export const getTitles = (params: {} = {}): Promise<PaginatedResults<Title[]>> => {
   return UrlBase.client.get('/titles/', {params});
@@ -44,3 +45,8 @@ export const addToMyList = (id: string | number): Promise<{detail: string}> =>
   UrlBase.client.post('/my_list/', {id});
 
 export const removeFromMyList = (id: string | number) => UrlBase.client.delete(`/my_list/${id}/`);
+
+export const getMovieURL = (id: string) => UrlBase.client.get(`${contentURL}/vid.php?type=m&id=${id}`);
+
+export const getEpisodeURL = (id: string, season: string, episode: string) =>
+  UrlBase.client.get(`${contentURL}/vid.php?type=s&id=${id}&season=${season}&episode=${episode}`);
