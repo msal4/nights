@@ -116,6 +116,7 @@ export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onPr
       )}
       {titleDetail && (
         <Tab.Navigator
+          style={{flex: 1}}
           tabBarOptions={{
             labelStyle: {color: colors.white},
             style: {backgroundColor: colors.black},

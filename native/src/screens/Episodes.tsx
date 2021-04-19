@@ -42,7 +42,7 @@ export const EpisodesScreen: FunctionComponent = () => {
   }, [season.id]);
 
   return (
-    <ScrollView nestedScrollEnabled style={{padding: 10}}>
+    <ScrollView nestedScrollEnabled contentContainerStyle={{padding: 10}}>
       <DropDownPicker
         items={title.seasons.map((value) => ({label: `${t('season')} ${value.index + 1}`, value}))}
         defaultValue={season}
