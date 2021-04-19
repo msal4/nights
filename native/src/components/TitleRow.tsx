@@ -12,11 +12,10 @@ import {useTranslation} from 'react-i18next';
 export interface TitleRowProps {
   row: ITitle[];
   name: string;
-  seeMore?: boolean;
   onSeeMore?: () => void;
 }
 
-const TitleRow: FunctionComponent<TitleRowProps> = ({row, name, seeMore, onSeeMore}) => {
+const TitleRow: FunctionComponent<TitleRowProps> = ({row, name, onSeeMore}) => {
   const {t} = useTranslation();
 
   if (!row || !row.length) {
@@ -35,7 +34,7 @@ const TitleRow: FunctionComponent<TitleRowProps> = ({row, name, seeMore, onSeeMo
           style={{fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
           {capitalizeFirst(name)}
         </Text>
-        {seeMore ? (
+        {onSeeMore ? (
           <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={onSeeMore}>
             <Text>{t('seeMore')}</Text>
             <Icon type="ionicon" name="chevron-forward-sharp" color={colors.red} />

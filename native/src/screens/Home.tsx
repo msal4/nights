@@ -36,6 +36,7 @@ import {ComingSoonRow} from '../components/ComingSoonRow';
 import {Story} from '../core/interfaces/story';
 import {getStories} from '../api/story';
 import {StoryRow} from '../components/StoryRow';
+import {CategoryScreen} from './Category';
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,15 @@ export const HomeScreen: React.FC = () => {
   return (
     <Stack.Navigator screenOptions={{...defaultStackOptions, headerShown: false}}>
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {backgroundColor: colors.black},
+          headerTintColor: colors.white,
+        }}
+      />
       <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
   );
@@ -364,7 +374,17 @@ const Home = () => {
         </>
       )}
       {/* rows */}
-      {rows && rows.results.map((row) => <TitleRow key={row.id} row={row.title_list} name={row.name} />)}
+      {rows &&
+        rows.results.map((row) => (
+          <TitleRow
+            key={row.id}
+            row={row.title_list}
+            name={row.name}
+            onSeeMore={() => {
+              navigation.navigate('Category', row);
+            }}
+          />
+        ))}
       <View style={{height: 35}} />
       {loading ? <ActivityIndicator style={{marginTop: -20}} color="white" size="small" /> : null}
     </ScrollView>
