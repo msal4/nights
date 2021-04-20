@@ -23,19 +23,22 @@ export const TV: React.FC<{
   const {categories} = useRows();
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       {stickyHeader ? header : null}
-      <FlatList
-        ref={listRef}
-        keyExtractor={(item) => item.id.toString()}
-        data={[{id: 1001333}, ...(categories ?? [])]}
-        renderItem={({item, index}) => {
-          if (index === 0 && !stickyHeader) {
-            return header;
-          }
-          return <ChannelRow key={item.id} category={item} onPress={onPress} />;
-        }}
-      />
+      <View style={{flex: 1}}>
+        <FlatList
+          ref={listRef}
+          // contentContainerStyle={{paddingBottom: stickyHeader ? 425 : 0}}
+          keyExtractor={(item) => item.id.toString()}
+          data={[{id: 1001333}, ...(categories ?? [])]}
+          renderItem={({item, index}) => {
+            if (index === 0 && !stickyHeader) {
+              return header;
+            }
+            return <ChannelRow key={item.id} category={item} onPress={onPress} />;
+          }}
+        />
+      </View>
     </View>
   );
 };
