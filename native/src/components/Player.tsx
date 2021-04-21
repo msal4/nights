@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
 import {Dimensions, NativeModules, Platform, StyleSheet, View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 
 import {colors} from '../constants/style';
 import {TheoPlayer} from './TheoPlayer';

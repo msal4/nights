@@ -47,11 +47,12 @@ export const HomeScreen: React.FC = () => {
       <Stack.Screen
         name="Category"
         component={CategoryScreen}
-        options={{
+        options={({route}) => ({
           headerShown: true,
           headerStyle: {backgroundColor: colors.black},
           headerTintColor: colors.white,
-        }}
+          title: (route as any).params.headerTitle,
+        })}
       />
       <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
@@ -381,7 +382,7 @@ const Home = () => {
             row={row.title_list}
             name={row.name}
             onSeeMore={() => {
-              navigation.navigate('Category', row);
+              navigation.navigate('Category', {...row, headerTitle: row.name});
             }}
           />
         ))}

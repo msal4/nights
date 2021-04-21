@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Dimensions, ActivityIndicator} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Axios from 'axios';
+import {useRoute} from '@react-navigation/native';
 
 import {CARD_WIDTH} from '../constants/style';
 import {getTitles} from '../api/title';
@@ -10,7 +10,6 @@ import {PaginatedResults} from '../core/interfaces/paginated-results';
 import {Title as ITitle} from '../core/interfaces/title';
 import Title from '../components/Title';
 import {isCloseToBottom} from '../utils/common';
-import {useRoute} from '@react-navigation/native';
 
 export const CategoryScreen: React.FC = () => {
   const {params}: any = useRoute();

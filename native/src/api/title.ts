@@ -1,5 +1,4 @@
 import UrlBase from '../utils/url-base';
-
 import {PaginatedResults} from '../core/interfaces/paginated-results';
 import {TitleDetail, Title} from '../core/interfaces/title';
 import {Season} from '../core/interfaces/season';
