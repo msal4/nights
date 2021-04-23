@@ -88,7 +88,7 @@ const ScheduleTab: React.FC = () => {
 
   return (
     <WebView
-      source={{uri: 'http://tv.sawadland.com/bare-schedule'}}
+      source={{uri: `${tvBaseURL}/bare-schedule`}}
       javaScriptEnabled
       injectedJavaScript={`
       (function(){
@@ -106,7 +106,7 @@ const NewsTab: React.FC = () => {
 
   return (
     <WebView
-      source={{uri: 'http://tv.sawadland.com/bare-news'}}
+      source={{uri: `${tvBaseURL}/bare-news`}}
       javaScriptEnabled
       injectedJavaScript={`
       (function(){
