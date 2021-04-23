@@ -55,12 +55,12 @@ export default () => {
             {channelPromo && (
               <LandingSitePromo
                 onVisit={() =>
-                  (window.location.href = `http://tv.sawadland.com`)
+                  (window.location.href = `http://tv.1001nights.fun`)
                 }
                 onWatch={() =>
-                  (window.location.href = `http://tv.sawadland.com/channel/${channelPromo.channel_id}`)
+                  (window.location.href = `http://tv.1001nights.fun/channel/${channelPromo.channel_id}`)
                 }
-                image={`http://tv.sawadland.com${channelPromo.promo_image}`}
+                image={`http://tv.1001nights.fun${channelPromo.promo_image}`}
                 logo="/static/frontend/images/tv_logo_white.svg"
               />
             )}

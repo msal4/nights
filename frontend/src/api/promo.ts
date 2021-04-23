@@ -5,5 +5,5 @@ export const getLandingPromos = (): Promise<LandingPromo[]> =>
   client.get("/landing_promos/")
 
 export const getChannelPromo = async (): Promise<ChannelPromo> =>
-  ((await client.get("http://tv.sawadland.com/api/home_promo")) as any)
+  ((await client.get("http://tv.1001nights.fun/api/home_promo")) as any)
     .home_promo
