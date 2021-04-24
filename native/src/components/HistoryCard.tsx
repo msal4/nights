@@ -92,6 +92,7 @@ export const HistoryCard: FunctionComponent<HistoryCardProps> = ({item, onDelete
                 underlayColor={colors.red}
                 onPress={async () => {
                   menuRef.current?.hide();
+                  console.log(item.id);
                   try {
                     await removeHit(item.id);
                   } catch (e) {
