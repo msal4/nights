@@ -1,6 +1,6 @@
 import React from 'react';
 import Realm from 'realm';
-import RNBackgroundDownloader, {DownloadTaskState} from 'react-native-background-downloader';
+import RNBackgroundDownloader from 'react-native-background-downloader';
 import RNFetchBlob, {StatefulPromise, FetchBlobResponse} from 'rn-fetch-blob';
 import Menu, {MenuItem} from 'react-native-material-menu';
 import fs from 'react-native-fs';
@@ -114,6 +114,13 @@ export class Downloader {
     return this.realm.objects<DownloadTask>('Task').filter((task) => task.season === seasonId);
   }
 
+  static listFiles() {
+    RNFetchBlob.fs.ls(this.mediaDir).then((files) => {
+      console.log('mediaDir:', this.mediaDir);
+      console.log(files);
+    });
+  }
+
   static mediaDir = `${RNBackgroundDownloader.directories.documents}/media`;
 
   static isAndroid = Platform.OS === 'android';
@@ -183,13 +190,8 @@ export class Downloader {
         }
       }
 
-      RNFetchBlob.fs.ls(mediaDir).then((files) => {
-        console.log('mediaDir:', mediaDir);
-        console.log(files);
-      });
-
       if (await fs.exists(tmpPath)) {
-        await fs.appendFile(path, tmpPath, 'uri');
+        await fs.appendFile(path, tmpPath);
         await fs.unlink(tmpPath);
       }
 
@@ -210,8 +212,8 @@ export class Downloader {
       this.statefulPromises[task.id] = statefulPromise;
 
       statefulPromise
-        .progress((recieved, total) => {
-          const progress = Math.round(((Number(recieved) + Number(pathStat.size)) / Number(total)) * 100);
+        .progress((received, total) => {
+          const progress = Math.round(((Number(received) + Number(pathStat.size)) / Number(total)) * 100);
           console.log(`${task.name}: Downloaded: ${progress}%`);
           if (progress > task.progress) {
             this.realm.write(() => {
@@ -223,7 +225,7 @@ export class Downloader {
         .then(async (res) => {
           console.log(`${task.name}: Download is done!`);
           console.log('file saved to:', res.path());
-          await fs.appendFile(path, res.path(), 'uri');
+          await fs.appendFile(path, res.path());
           await fs.unlink(tmpPath);
 
           this.realm.write(() => {

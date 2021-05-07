@@ -57,6 +57,12 @@ export const Downloads: React.FC = () => {
 
   return (
     <ScrollView contentContainerStyle={{padding: 20}}>
+      <TouchableOpacity
+        onPress={() => {
+          Downloader.listFiles();
+        }}>
+        <Text>Show me files</Text>
+      </TouchableOpacity>
       {tasks?.map((t) => (
         <TaskCard key={t.id} task={t} />
       ))}
