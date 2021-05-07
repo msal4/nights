@@ -7,6 +7,7 @@ import {ThemeProvider, Theme as ElementsTheme} from 'react-native-elements';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import OneSignal from 'react-native-onesignal';
 import './src/utils/i18n';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import {RootScreen} from './src/screens/Root';
 import {colors} from './src/constants/style';
@@ -42,6 +43,26 @@ const elementsTheme: ElementsTheme = {
     },
   },
 };
+
+const header = () => (
+  <DropDownPicker
+    items={[
+      {label: '720p', value: '720'},
+      {label: '480p', value: '480'},
+      {label: '360p', value: '360p'},
+    ]}
+    defaultValue={'720'}
+    containerStyle={{height: 40}}
+    style={{backgroundColor: colors.blueGray, borderWidth: 0}}
+    itemStyle={{
+      justifyContent: 'flex-start',
+    }}
+    dropDownStyle={{backgroundColor: colors.lightBlueGray, borderWidth: 0}}
+    labelStyle={{color: colors.white, textAlign: 'center', flex: 1}}
+    arrowColor={colors.white}
+    zIndex={100}
+  />
+);
 
 export default () => {
   useEffect(() => {
@@ -80,8 +101,19 @@ export default () => {
             <NavigationContainer theme={navigationTheme}>
               <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Root" component={RootScreen} />
-                <Stack.Screen name="MoviePlayer" component={MoviePlayerScreen} options={options} />
-                <Stack.Screen name="SeriesPlayer" component={SeriesPlayerScreen} options={options} />
+                <Stack.Screen
+                  name="MoviePlayer"
+                  component={MoviePlayerScreen}
+                  options={{
+                    ...options,
+                    headerRight: header,
+                  }}
+                />
+                <Stack.Screen
+                  name="SeriesPlayer"
+                  component={SeriesPlayerScreen}
+                  options={{...options, headerRight: header}}
+                />
                 <Stack.Screen
                   name="Story"
                   component={StoryScreen}
