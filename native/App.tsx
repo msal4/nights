@@ -47,11 +47,11 @@ const elementsTheme: ElementsTheme = {
 const header = () => (
   <DropDownPicker
     items={[
+      {label: '1080p', value: '1080'},
       {label: '720p', value: '720'},
       {label: '480p', value: '480'},
-      {label: '360p', value: '360p'},
     ]}
-    defaultValue={'720'}
+    defaultValue={'1080'}
     containerStyle={{height: 40}}
     style={{backgroundColor: colors.blueGray, borderWidth: 0}}
     itemStyle={{
