@@ -191,7 +191,7 @@ export class Downloader {
       }
 
       if (await fs.exists(tmpPath)) {
-        await fs.appendFile(path, tmpPath);
+        await RNFetchBlob.fs.appendFile(path, tmpPath, 'uri');
         await fs.unlink(tmpPath);
       }
 
@@ -206,14 +206,18 @@ export class Downloader {
         IOSBackgroundTask: true,
         IOSDownloadTask: true,
         fileCache: true,
-        tmpPath,
+        path: tmpPath,
       } as any).fetch('GET', params.video, {Range: `bytes=${pathStat.size}-`});
 
       this.statefulPromises[task.id] = statefulPromise;
 
       statefulPromise
         .progress((received, total) => {
-          const progress = Math.round(((Number(received) + Number(pathStat.size)) / Number(total)) * 100);
+          console.log(`received: ${received} total: ${total}`);
+
+          const progress = Math.round(
+            ((Number(received) + Number(pathStat.size)) / (Number(total) + Number(pathStat.size))) * 100,
+          );
           console.log(`${task.name}: Downloaded: ${progress}%`);
           if (progress > task.progress) {
             this.realm.write(() => {
@@ -225,8 +229,16 @@ export class Downloader {
         .then(async (res) => {
           console.log(`${task.name}: Download is done!`);
           console.log('file saved to:', res.path());
-          await fs.appendFile(path, res.path());
-          await fs.unlink(tmpPath);
+          try {
+            await RNFetchBlob.fs.appendFile(path, res.path(), 'uri');
+          } catch (e) {
+            console.log('error from appending file:', e);
+          }
+          try {
+            await fs.unlink(res.path());
+          } catch (e) {
+            console.log('error from unlinking file', e);
+          }
 
           this.realm.write(() => {
             task.status = DownloadStatus.DONE;
@@ -260,6 +272,7 @@ export class Downloader {
         console.log('task path:', task.path);
         console.log('task video:', task.video);
         await fs.unlink(task.path);
+        await fs.unlink(`${task.path}.download`);
       } catch (err) {
         console.log('video unlink failed:', err);
       }
