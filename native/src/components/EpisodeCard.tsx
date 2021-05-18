@@ -1,20 +1,21 @@
-import React, { FunctionComponent, useRef, useEffect } from 'react';
-import { Platform, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, Icon, Image } from 'react-native-elements';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import React, {FunctionComponent, useRef, useEffect} from 'react';
+import {Platform, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Text, Icon, Image} from 'react-native-elements';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import Menu from 'react-native-material-menu';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { Episode } from '../core/interfaces/episode';
-import { colors } from '../constants/style';
-import { useNavigation } from '@react-navigation/native';
-import { TitleDetail } from '../core/interfaces/title';
-import { Season } from '../core/interfaces/season';
-import { Downloader, SubtitleItem, DownloadTask, DownloadStatus } from '../core/Downloader';
-import { swapEpisodeUrlId, getImageUrl } from '../utils/common';
-import { useUrl } from '../context/url-context';
-import { useTranslation } from 'react-i18next';
+import {Episode} from '../core/interfaces/episode';
+import {colors} from '../constants/style';
+import {useNavigation} from '@react-navigation/native';
+import {TitleDetail} from '../core/interfaces/title';
+import {Season} from '../core/interfaces/season';
+import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Downloader';
+import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
+import {useUrl} from '../context/url-context';
+import {useTranslation} from 'react-i18next';
+import {privateBase} from '../constants/const';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -24,12 +25,12 @@ export interface EpisodeCardProps {
   screenName?: string;
 }
 
-const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode, title, task, season, screenName }) => {
+const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task, season, screenName}) => {
   const menuRef = useRef<Menu>();
 
   const navigation = useNavigation();
-  const { t } = useTranslation();
-  const { isPrivate } = useUrl();
+  const {t} = useTranslation();
+  const {isPrivate} = useUrl();
   const circularProgress = useRef<AnimatedCircularProgress>();
 
   useEffect(() => {
@@ -45,14 +46,16 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode, title, task
 
   const playEpisode = isPrivate
     ? () => {
-      navigation.navigate('WebPlayer', { url: `${privateBase}/series/${title.id}/${season.id}/${episode.index}/play` });
+        navigation.navigate('WebPlayer', {
+          url: `${privateBase}/series/${title.id}/${season.id}/${episode.index}/play`,
+        });
 
-      // if (Platform.OS === 'ios' && screenName === 'Player') {
-      //   (navigation as any).replace('SeriesPlayer', {title, season, episode});
-      // } else {
-      //   navigation.navigate('SeriesPlayer', {title, season, episode});
-      // }
-    }
+        // if (Platform.OS === 'ios' && screenName === 'Player') {
+        //   (navigation as any).replace('SeriesPlayer', {title, season, episode});
+        // } else {
+        //   navigation.navigate('SeriesPlayer', {title, season, episode});
+        // }
+      }
     : undefined;
 
   return (
@@ -68,8 +71,8 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode, title, task
         <Image
           resizeMethod="resize"
           transition={false}
-          source={{ uri: image }}
-          style={{ justifyContent: 'center', alignItems: 'center', width: 135, height: 80, marginRight: 10 }}>
+          source={{uri: image}}
+          style={{justifyContent: 'center', alignItems: 'center', width: 135, height: 80, marginRight: 10}}>
           {isPrivate ? (
             <View
               style={{
@@ -80,7 +83,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode, title, task
                 alignItems: 'center',
                 borderRadius: 40,
               }}>
-              <Icon type="ionicon" name="play" size={20} color={colors.white} style={{ marginLeft: 2 }} />
+              <Icon type="ionicon" name="play" size={20} color={colors.white} style={{marginLeft: 2}} />
             </View>
           ) : null}
           {isPrivate && progress ? (
@@ -99,24 +102,24 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode, title, task
                 useAngle
                 angle={90}
                 colors={[colors.blue, colors.red]}
-                style={{ height: '100%', width: `${progress}%` }}
+                style={{height: '100%', width: `${progress}%`}}
               />
             </View>
           ) : null}
         </Image>
       </TouchableOpacity>
-      <View style={{ overflow: 'hidden', flex: 1 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontSize: 11, color: colors.red, marginRight: 5 }}>{episode.index + 1}</Text>
-          <Text style={{ fontSize: 9 }}>{episode.name}</Text>
+      <View style={{overflow: 'hidden', flex: 1}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 11, color: colors.red, marginRight: 5}}>{episode.index + 1}</Text>
+          <Text style={{fontSize: 9}}>{episode.name}</Text>
         </View>
-        <View style={{ flexDirection: 'row', flex: 1 }}>
-          <Text style={{ opacity: 0.5, flex: 1, flexWrap: 'wrap', fontSize: 7 }}>{episode.plot}</Text>
+        <View style={{flexDirection: 'row', flex: 1}}>
+          <Text style={{opacity: 0.5, flex: 1, flexWrap: 'wrap', fontSize: 7}}>{episode.plot}</Text>
         </View>
       </View>
       {isPrivate ? (
         <TouchableOpacity
-          style={{ marginLeft: 5 }}
+          style={{marginLeft: 5}}
           onPress={() => {
             if (task) {
               return menuRef.current?.show();
@@ -125,10 +128,10 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({ episode, title, task
             const video = episode.videos[0].url;
             const subtitles = episode.subtitles.map(
               (sub) =>
-              ({
-                lang: sub.language ?? 'ar',
-                url: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
-              } as SubtitleItem),
+                ({
+                  lang: sub.language ?? 'ar',
+                  url: swapEpisodeUrlId(sub.url)?.replace('{f}', 'vtt'),
+                } as SubtitleItem),
             );
 
             Downloader.download({

@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { Dimensions, NativeModules, Platform, StyleSheet, View } from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Dimensions, NativeModules, Platform, StyleSheet, View} from 'react-native';
 
-import { colors } from '../constants/style';
-import { TheoPlayer } from './TheoPlayer';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { TitleDetail } from '../core/interfaces/title';
-import { EpisodesScreen } from '../screens/Episodes';
-import { InfoScreen } from '../screens/Info';
+import {colors} from '../constants/style';
+import {TheoPlayer} from './TheoPlayer';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {TitleDetail} from '../core/interfaces/title';
+import {EpisodesScreen} from '../screens/Episodes';
+import {InfoScreen} from '../screens/Info';
 import Video from 'react-native-video';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 export interface Sub {
   title: string;
@@ -34,10 +34,10 @@ interface PlayerProps {
 
 const Tab = createMaterialTopTabNavigator();
 
-export const Player: React.FC<PlayerProps> = ({ video, subtitles, startTime, onProgress, titleDetail }) => {
+export const Player: React.FC<PlayerProps> = ({video, subtitles, startTime, onProgress, titleDetail}) => {
   // const navigation = useNavigation();
   const duration = useRef<number>();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const player = useRef<Video>();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -45,7 +45,7 @@ export const Player: React.FC<PlayerProps> = ({ video, subtitles, startTime, onP
     return null;
   }
 
-  const playerStyle: any = { ...styles.player };
+  const playerStyle: any = {...styles.player};
 
   if (Platform.OS === 'android') {
     let width = Math.floor(Dimensions.get('window').width);
@@ -59,12 +59,12 @@ export const Player: React.FC<PlayerProps> = ({ video, subtitles, startTime, onP
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {Platform.OS === 'android' ? (
         <TheoPlayer
           style={playerStyle}
           source={{
-            sources: [{ src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl' }],
+            sources: [{src: video, type: video.endsWith('.mp4') ? 'video/mp4' : 'application/x-mpegurl'}],
             textTracks: subtitles?.map((s) => ({
               default: s.language === 'ar',
               kind: 'subtitles',
@@ -78,14 +78,14 @@ export const Player: React.FC<PlayerProps> = ({ video, subtitles, startTime, onP
           }}
           onTimeUpdate={
             onProgress &&
-            (async ({ nativeEvent }: any) => {
-              const { currentTime } = nativeEvent;
+            (async ({nativeEvent}: any) => {
+              const {currentTime} = nativeEvent;
 
               if (!duration.current) {
                 duration.current = await NativeModules.THEOplayerViewManager.getDuration();
               }
 
-              onProgress({ currentTime, runtime: duration.current! });
+              onProgress({currentTime, runtime: duration.current!});
             })
           }
           onPresentationModeChange={() => {
@@ -99,40 +99,40 @@ export const Player: React.FC<PlayerProps> = ({ video, subtitles, startTime, onP
           ref={player as any}
           controls
           style={styles.player}
-          source={{ uri: video }}
+          source={{uri: video}}
           textTracks={subtitles}
-          selectedTextTrack={{ type: 'language', value: 'ar' }}
+          selectedTextTrack={{type: 'language', value: 'ar'}}
           onLoad={() => {
             player.current?.seek(startTime ?? 0);
           }}
           onProgress={
             onProgress &&
-            (({ currentTime, seekableDuration }) => {
-              onProgress({ currentTime, runtime: seekableDuration });
+            (({currentTime, seekableDuration}) => {
+              onProgress({currentTime, runtime: seekableDuration});
             })
           }
         />
       )}
       {titleDetail && (
         <Tab.Navigator
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           tabBarOptions={{
-            labelStyle: { color: colors.white },
-            style: { backgroundColor: colors.black },
+            labelStyle: {color: colors.white},
+            style: {backgroundColor: colors.black},
           }}>
           {titleDetail.type === 's' ? (
             <Tab.Screen
               name="Episodes"
-              initialParams={{ title: titleDetail, screenName: 'Player' }}
+              initialParams={{title: titleDetail, screenName: 'Player'}}
               component={EpisodesScreen}
-              options={{ title: t('episodes') }}
+              options={{title: t('episodes')}}
             />
           ) : null}
           <Tab.Screen
             name="Info"
-            initialParams={{ title: titleDetail }}
+            initialParams={{title: titleDetail}}
             component={InfoScreen}
-            options={{ title: t('info') }}
+            options={{title: t('info')}}
           />
         </Tab.Navigator>
       )}
