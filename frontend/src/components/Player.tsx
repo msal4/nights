@@ -97,7 +97,7 @@ const Player: FunctionComponent<PlayerProps> = ({
               // Update the position
               const duration = Math.floor(player.duration());
               posRef.current = currentPosition;
-          
+
               onUpdatePosition && position && onUpdatePosition(currentPosition, duration);
             }
           })()
@@ -114,7 +114,13 @@ const Player: FunctionComponent<PlayerProps> = ({
       // Add title bar
       player.addChild("vjsTitleBar", {
         title: name,
-        goBack: () => history.push(`/title/${title.id}`),
+        goBack: () => {
+          if (typeof (window as any).ReactNativeWebView != undefined) {
+            (window as any).ReactNativeWebView.postMessage("exit");
+          } else {
+            history.push(`/title/${title.id}`);
+          }
+        },
         displaySidebar,
       });
       player
@@ -147,7 +153,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       className="absolute inset-0 z-10 overflow-hidden player text-black"
     >
       <ScrollToTop />
-      <div data-vjs-player style={{ width: showSidebar ? "75vw" : "100vw" }}>
+      <div data-vjs-player style={{ width: showSidebar ? "73vw" : "100vw" }}>
         <video
           ref={videoNode}
           id="video-js-player"
@@ -173,7 +179,7 @@ const Player: FunctionComponent<PlayerProps> = ({
         <div
           ref={seasonRef}
           className="season-container bg-gray-900 overflow-auto"
-          style={{ right: showSidebar ? "0" : "-25vw" }}
+          style={{ right: showSidebar ? "0" : "-27vw" }}
         >
           <PlayerSidebar />
         </div>

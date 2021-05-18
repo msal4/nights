@@ -45,7 +45,7 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({
           <h4 className="text-base md:text-xl text-n-red">
             {episode.index + 1}
           </h4>
-          <h4 className="ml-2 text-xs md:text-lg">{episode.name}</h4>
+          <h4 className="ml-2 text-xs md:text-sm">{episode.name}</h4>
         </div>
         <p className="mt-1 text-xs font-thin opacity-75 md:text-xs">
           {episode.plot}
