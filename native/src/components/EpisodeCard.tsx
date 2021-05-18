@@ -15,6 +15,7 @@ import {Downloader, SubtitleItem, DownloadTask, DownloadStatus} from '../core/Do
 import {swapEpisodeUrlId, getImageUrl} from '../utils/common';
 import {useUrl} from '../context/url-context';
 import {useTranslation} from 'react-i18next';
+import {privateBase} from '../constants/const';
 
 export interface EpisodeCardProps {
   title: TitleDetail;
@@ -45,11 +46,15 @@ const EpisodeCard: FunctionComponent<EpisodeCardProps> = ({episode, title, task,
 
   const playEpisode = isPrivate
     ? () => {
-        if (Platform.OS === 'ios' && screenName === 'Player') {
-          (navigation as any).replace('SeriesPlayer', {title, season, episode});
-        } else {
-          navigation.navigate('SeriesPlayer', {title, season, episode});
-        }
+        navigation.navigate('WebPlayer', {
+          url: `${privateBase}/series/${title.id}/${season.id}/${episode.index}/play`,
+        });
+
+        // if (Platform.OS === 'ios' && screenName === 'Player') {
+        //   (navigation as any).replace('SeriesPlayer', {title, season, episode});
+        // } else {
+        //   navigation.navigate('SeriesPlayer', {title, season, episode});
+        // }
       }
     : undefined;
 

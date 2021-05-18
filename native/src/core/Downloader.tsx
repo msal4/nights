@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {colors} from '../constants/style';
 import {OfflinePlayerParams} from '../screens/OfflinePlayer';
+import {Platform} from 'react-native';
 
 interface TaskParams {
   id: number;
@@ -90,12 +91,10 @@ export class Downloader {
       schemaVersion: 1,
     });
 
-    this.realm.write(() => {
-      this.realm.objects<DownloadTask>('Task').forEach((t) => {
-        if (t.status === DownloadStatus.DOWNLOADING) {
-          t.status = DownloadStatus.ERROR;
-        }
-      });
+    this.realm.objects<DownloadTask>('Task').forEach((t) => {
+      if (t.status === DownloadStatus.DOWNLOADING) {
+        this.download(t);
+      }
     });
   }
 
@@ -115,22 +114,30 @@ export class Downloader {
     return this.realm.objects<DownloadTask>('Task').filter((task) => task.season === seasonId);
   }
 
+  static listFiles() {
+    RNFetchBlob.fs.ls(this.mediaDir).then((files) => {
+      console.log('mediaDir:', this.mediaDir);
+      console.log(files);
+    });
+  }
+
+  static mediaDir = `${RNBackgroundDownloader.directories.documents}/media`;
+
+  static isAndroid = Platform.OS === 'android';
+
   static download(params: TaskParams) {
-    console.log(params);
-    const mediaDir = `${RNBackgroundDownloader.directories.documents}/media`;
+    const mediaDir = this.mediaDir;
     const imagesDir = `${RNBackgroundDownloader.directories.documents}/images`;
 
     const path = `${mediaDir}/${params.id}.mp4`;
+    const tmpPath = `${path}.download`;
     const imagePath = `${imagesDir}/${params.id}.jpg`;
 
     this.realm.write(async () => {
       let task = this.task(params.id)!;
 
       if (task === undefined) {
-        task = this.realm.create('Task', {
-          ...params,
-          path,
-        } as any);
+        task = this.realm.create('Task', {...params, path} as any);
       }
 
       task.status = DownloadStatus.DOWNLOADING;
@@ -150,7 +157,7 @@ export class Downloader {
       } catch {}
 
       // download image
-      if (!task.imagePath) {
+      if (!task.imagePath && task.image.startsWith('http')) {
         fs.downloadFile({fromUrl: task.image, toFile: imagePath}).promise.then((res) => {
           console.log(res);
           if (task) {
@@ -163,6 +170,7 @@ export class Downloader {
       }
 
       // download subtitles
+      // I didn't think I'm gonna read this code again... sorry
       if (task.offlineSubtitles.length !== task.subtitles.length) {
         for (const sub of task.subtitles) {
           if (sub) {
@@ -182,13 +190,34 @@ export class Downloader {
         }
       }
 
-      const statefulPromise = RNFetchBlob.config({path}).fetch('GET', params.video);
+      if (await fs.exists(tmpPath)) {
+        await RNFetchBlob.fs.appendFile(path, tmpPath, 'uri');
+        await fs.unlink(tmpPath);
+      }
+
+      let pathStat: fs.StatResult = {size: 0} as any;
+      if (await fs.exists(path)) {
+        pathStat = await fs.stat(path);
+      }
+
+      console.log(pathStat);
+
+      const statefulPromise = RNFetchBlob.config({
+        IOSBackgroundTask: true,
+        IOSDownloadTask: true,
+        fileCache: true,
+        path: tmpPath,
+      } as any).fetch('GET', params.video, {Range: `bytes=${pathStat.size}-`});
 
       this.statefulPromises[task.id] = statefulPromise;
 
       statefulPromise
-        .progress((recieved, total) => {
-          const progress = Math.round((Number(recieved) / Number(total)) * 100);
+        .progress((received, total) => {
+          console.log(`received: ${received} total: ${total}`);
+
+          const progress = Math.round(
+            ((Number(received) + Number(pathStat.size)) / (Number(total) + Number(pathStat.size))) * 100,
+          );
           console.log(`${task.name}: Downloaded: ${progress}%`);
           if (progress > task.progress) {
             this.realm.write(() => {
@@ -197,9 +226,20 @@ export class Downloader {
             });
           }
         })
-        .then((res) => {
+        .then(async (res) => {
           console.log(`${task.name}: Download is done!`);
           console.log('file saved to:', res.path());
+          try {
+            await RNFetchBlob.fs.appendFile(path, res.path(), 'uri');
+          } catch (e) {
+            console.log('error from appending file:', e);
+          }
+          try {
+            await fs.unlink(res.path());
+          } catch (e) {
+            console.log('error from unlinking file', e);
+          }
+
           this.realm.write(() => {
             task.status = DownloadStatus.DONE;
           });
@@ -232,6 +272,7 @@ export class Downloader {
         console.log('task path:', task.path);
         console.log('task video:', task.video);
         await fs.unlink(task.path);
+        await fs.unlink(`${task.path}.download`);
       } catch (err) {
         console.log('video unlink failed:', err);
       }

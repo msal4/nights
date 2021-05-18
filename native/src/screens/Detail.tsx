@@ -20,6 +20,7 @@ import {EpisodesScreen} from './Episodes';
 import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {useAuth} from '../context/auth-context';
 import {useUrl} from '../context/url-context';
+import {privateBase} from '../constants/const';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -253,11 +254,19 @@ export const DetailScreen: React.FC = () => {
                 return;
               }
 
-              if (title.type === 'm') {
-                navigation.navigate('MoviePlayer', {title});
+              if (title?.type === 'm') {
+                navigation.navigate('WebPlayer', {url: `${privateBase}/movie/${title.id}/play`});
+                // navigation.navigate('MoviePlayer', { title: promo });
               } else {
-                navigation.navigate('SeriesPlayer', {title});
+                navigation.navigate('WebPlayer', {url: `${privateBase}/series/${title.id}/auto/auto/play`});
+                // navigation.navigate('SeriesPlayer', { title: promo });
               }
+
+              // if (title.type === 'm') {
+              //   navigation.navigate('MoviePlayer', {title});
+              // } else {
+              //   navigation.navigate('SeriesPlayer', {title});
+              // }
             }}
             title={title?.is_coming_soon ? t('comingSoon') : t('play')}
             icon={{

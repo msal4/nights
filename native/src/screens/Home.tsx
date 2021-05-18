@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
-import {Icon, Text} from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   ActivityIndicator,
@@ -14,42 +14,43 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
-import {getGenreRows, getPromos, getRecentlyAdded, getTrending} from '../api/home';
-import {GenreRow} from '../core/interfaces/home';
-import {PaginatedResults} from '../core/interfaces/paginated-results';
+import { getGenreRows, getPromos, getRecentlyAdded, getTrending } from '../api/home';
+import { GenreRow } from '../core/interfaces/home';
+import { PaginatedResults } from '../core/interfaces/paginated-results';
 import TitleRow from '../components/TitleRow';
-import {DetailScreen} from './Detail';
-import {ImageQuality, Title, TitleDetail} from '../core/interfaces/title';
-import {addToMyList, checkMyList, getHistory, getTitles, removeFromMyList} from '../api/title';
-import {colors} from '../constants/style';
-import {getImageUrl, isCloseToBottom, joinTopics} from '../utils/common';
-import {ViewHit} from '../core/interfaces/view-hit';
-import {HistoryRow} from '../components/HistoryRow';
-import {useAuth} from '../context/auth-context';
+import { DetailScreen } from './Detail';
+import { ImageQuality, Title, TitleDetail } from '../core/interfaces/title';
+import { addToMyList, checkMyList, getHistory, getTitles, removeFromMyList } from '../api/title';
+import { colors } from '../constants/style';
+import { getImageUrl, isCloseToBottom, joinTopics } from '../utils/common';
+import { ViewHit } from '../core/interfaces/view-hit';
+import { HistoryRow } from '../components/HistoryRow';
+import { useAuth } from '../context/auth-context';
 import UrlBase from '../utils/url-base';
-import {useUrl} from '../context/url-context';
-import {defaultStackOptions} from '../utils/defaultStackOptions';
-import {ComingSoonRow} from '../components/ComingSoonRow';
-import {Story} from '../core/interfaces/story';
-import {getStories} from '../api/story';
-import {StoryRow} from '../components/StoryRow';
-import {CategoryScreen} from './Category';
+import { useUrl } from '../context/url-context';
+import { defaultStackOptions } from '../utils/defaultStackOptions';
+import { ComingSoonRow } from '../components/ComingSoonRow';
+import { Story } from '../core/interfaces/story';
+import { getStories } from '../api/story';
+import { StoryRow } from '../components/StoryRow';
+import { CategoryScreen } from './Category';
+import { privateBase } from '../constants/const';
 
 const Stack = createStackNavigator();
 
 export const HomeScreen: React.FC = () => {
   return (
-    <Stack.Navigator screenOptions={{...defaultStackOptions, headerShown: false}}>
+    <Stack.Navigator screenOptions={{ ...defaultStackOptions, headerShown: false }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen
         name="Category"
         component={CategoryScreen}
-        options={({route}) => ({
+        options={({ route }) => ({
           headerShown: true,
-          headerStyle: {backgroundColor: colors.black},
+          headerStyle: { backgroundColor: colors.black },
           headerTintColor: colors.white,
           title: (route as any).params.headerTitle,
         })}
@@ -59,20 +60,20 @@ export const HomeScreen: React.FC = () => {
   );
 };
 
-type Promo = TitleDetail & {inMyList?: boolean};
+type Promo = TitleDetail & { inMyList?: boolean };
 
 const Home = () => {
   const [params, setParams] = useState<Params>({});
-  const {promo, picked, setPromo, setPicked, getPromoTitle} = usePromos(params);
-  const {rows, getRows, recentlyAdded, trending, stories, comingSoon, loading} = useRows(params);
-  const {t} = useTranslation();
-  const {history, getHits} = useHistory();
-  const {token} = useAuth();
+  const { promo, picked, setPromo, setPicked, getPromoTitle } = usePromos(params);
+  const { rows, getRows, recentlyAdded, trending, stories, comingSoon, loading } = useRows(params);
+  const { t } = useTranslation();
+  const { history, getHits } = useHistory();
+  const { token } = useAuth();
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
-  const {isPrivate} = useUrl();
+  const { isPrivate } = useUrl();
   const scrollView = useRef<ScrollView>();
-  const {top} = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
 
   const reload = async () => {
     await getRows(true, params);
@@ -106,23 +107,23 @@ const Home = () => {
     }
 
     if (!token) {
-      navigation.navigate('More', {screen: 'Login', initial: false});
+      navigation.navigate('More', { screen: 'Login', initial: false });
     }
 
     if (title.inMyList) {
       try {
         await removeFromMyList(title.id);
-        setItem({...title, inMyList: false});
-      } catch {}
+        setItem({ ...title, inMyList: false });
+      } catch { }
     } else {
       try {
         await addToMyList(title.id);
-        setItem({...title, inMyList: true});
-      } catch {}
+        setItem({ ...title, inMyList: true });
+      } catch { }
     }
   };
 
-  const {width} = Dimensions.get('screen');
+  const { width } = Dimensions.get('screen');
   const promoHeight = width / 1.4;
 
   return (
@@ -138,17 +139,17 @@ const Home = () => {
           tintColor={colors.white}
         />
       }
-      onScroll={({nativeEvent}) => {
+      onScroll={({ nativeEvent }) => {
         if (isCloseToBottom(nativeEvent)) {
           getRows(false);
         }
       }}>
       <ImageBackground
-        source={{uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900)}}
-        style={{height: promoHeight}}>
+        source={{ uri: getImageUrl(promo?.images[0]?.url, ImageQuality.h900) }}
+        style={{ height: promoHeight }}>
         <LinearGradient
           colors={['#000000', '#00000000', '#000']}
-          style={{flex: 1, justifyContent: 'space-between'}}>
+          style={{ flex: 1, justifyContent: 'space-between' }}>
           <View
             style={{
               flexDirection: 'row',
@@ -163,41 +164,41 @@ const Home = () => {
               }}>
               <Image
                 source={require('../../assets/logo.png')}
-                style={{width: 100, height: 50}}
+                style={{ width: 100, height: 50 }}
                 resizeMode="contain"
               />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setParams({type: 'm'});
+                setParams({ type: 'm' });
               }}>
-              <Text style={{fontSize: 14, fontWeight: params.type === 'm' ? 'bold' : 'normal'}}>
+              <Text style={{ fontSize: 14, fontWeight: params.type === 'm' ? 'bold' : 'normal' }}>
                 {t('movies')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setParams({type: 's'});
+                setParams({ type: 's' });
               }}>
-              <Text style={{fontSize: 14, fontWeight: params.type === 's' ? 'bold' : 'normal'}}>
+              <Text style={{ fontSize: 14, fontWeight: params.type === 's' ? 'bold' : 'normal' }}>
                 {t('series')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setParams({rated: 'G'});
+                setParams({ rated: 'G' });
               }}>
-              <Text style={{fontSize: 14, fontWeight: params.rated === 'G' ? 'bold' : 'normal'}}>
+              <Text style={{ fontSize: 14, fontWeight: params.rated === 'G' ? 'bold' : 'normal' }}>
                 {t('kids')}
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{width: '100%'}}>
+          <View style={{ width: '100%' }}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Detail', promo);
               }}>
-              <Text style={{fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10}}>
+              <Text style={{ fontWeight: 'bold', textAlign: 'center', fontSize: 25, marginBottom: 10 }}>
                 {promo?.name}
               </Text>
               <Text
@@ -213,7 +214,7 @@ const Home = () => {
           </View>
         </LinearGradient>
       </ImageBackground>
-      <View style={{marginHorizontal: 50}}>
+      <View style={{ marginHorizontal: 50 }}>
         <View
           style={{
             width: '100%',
@@ -243,12 +244,14 @@ const Home = () => {
               }}
               onPress={() => {
                 if (promo?.type === 'm') {
-                  navigation.navigate('MoviePlayer', {title: promo});
+                  navigation.navigate('WebPlayer', { url: `${privateBase}/movie/${promo.id}/play` })
+                  // navigation.navigate('MoviePlayer', { title: promo });
                 } else {
-                  navigation.navigate('SeriesPlayer', {title: promo});
+                  navigation.navigate('WebPlayer', { url: `${privateBase}/series/${promo.id}/auto/auto/play` })
+                  // navigation.navigate('SeriesPlayer', { title: promo });
                 }
               }}>
-              <Icon type="ionicon" name="play" size={50} color={colors.white} style={{marginLeft: 5}} />
+              <Icon type="ionicon" name="play" size={50} color={colors.white} style={{ marginLeft: 5 }} />
             </TouchableOpacity>
           ) : null}
           <Icon
@@ -276,7 +279,7 @@ const Home = () => {
       {picked && (
         <>
           <Text
-            style={{fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10}}>
+            style={{ fontSize: 17, fontWeight: 'bold', marginBottom: 10, marginTop: 5, marginHorizontal: 10 }}>
             {t('pickedForYou')}
           </Text>
           <TouchableOpacity
@@ -284,10 +287,10 @@ const Home = () => {
               navigation.navigate('Detail', picked);
             }}>
             <ImageBackground
-              source={{uri: getImageUrl(picked.images[0]?.url, ImageQuality.h900)}}
-              style={{height: promoHeight, width: '100%', marginBottom: 10}}>
+              source={{ uri: getImageUrl(picked.images[0]?.url, ImageQuality.h900) }}
+              style={{ height: promoHeight, width: '100%', marginBottom: 10 }}>
               <LinearGradient
-                style={{flex: 1, paddingVertical: 10, paddingHorizontal: 30}}
+                style={{ flex: 1, paddingVertical: 10, paddingHorizontal: 30 }}
                 colors={['#00000000', '#00000000', '#00000088']}>
                 <View
                   style={{
@@ -296,9 +299,9 @@ const Home = () => {
                     marginTop: 'auto',
                     justifyContent: 'space-between',
                   }}>
-                  <View style={{flex: 1}}>
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={{flex: 1, fontWeight: 'bold', fontSize: 20, marginBottom: 5}}>
+                  <View style={{ flex: 1 }}>
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text style={{ flex: 1, fontWeight: 'bold', fontSize: 20, marginBottom: 5 }}>
                         {picked.name}
                       </Text>
                     </View>
@@ -308,27 +311,27 @@ const Home = () => {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                       }}>
-                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{fontSize: 14, marginRight: 20}}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 14, marginRight: 20 }}>
                           {picked.type === 's'
                             ? `${picked.seasons.length} ${t('seasons')}`
                             : `${Math.round((picked.runtime ?? 0) / 60)} min`}
                         </Text>
 
-                        <View style={{flexDirection: 'row', marginRight: 20, alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', marginRight: 20, alignItems: 'center' }}>
                           <Icon
                             type="ionicon"
                             size={14}
                             name="star"
                             color={colors.blue}
-                            style={{marginRight: 5}}
+                            style={{ marginRight: 5 }}
                           />
-                          <Text style={{fontSize: 14}}>{picked.rating}</Text>
+                          <Text style={{ fontSize: 14 }}>{picked.rating}</Text>
                         </View>
-                        <Text style={{fontSize: 14}}>{picked.released_at}</Text>
+                        <Text style={{ fontSize: 14 }}>{picked.released_at}</Text>
                       </View>
 
-                      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         {isPrivate ? (
                           <TouchableOpacity
                             style={{
@@ -341,18 +344,25 @@ const Home = () => {
                               marginRight: 15,
                             }}
                             onPress={() => {
-                              if (picked.type === 'm') {
-                                navigation.navigate('MoviePlayer', {title: picked});
+                              if (picked?.type === 'm') {
+                                navigation.navigate('WebPlayer', { url: `${privateBase}/movie/${picked.id}/play` });
+                                // navigation.navigate('MoviePlayer', { title: promo });
                               } else {
-                                navigation.navigate('SeriesPlayer', {title: picked});
+                                navigation.navigate('WebPlayer', { url: `${privateBase}/series/${picked.id}/auto/auto/play` });
+                                // navigation.navigate('SeriesPlayer', { title: promo });
                               }
+                              // if (picked.type === 'm') {
+                              //   navigation.navigate('MoviePlayer', { title: picked });
+                              // } else {
+                              //   navigation.navigate('SeriesPlayer', { title: picked });
+                              // }
                             }}>
                             <Icon
                               type="ionicon"
                               name="play"
                               size={30}
                               color={colors.white}
-                              style={{marginLeft: 5}}
+                              style={{ marginLeft: 5 }}
                             />
                           </TouchableOpacity>
                         ) : null}
@@ -382,12 +392,12 @@ const Home = () => {
             row={row.title_list}
             name={row.name}
             onSeeMore={() => {
-              navigation.navigate('Category', {...row, headerTitle: row.name});
+              navigation.navigate('Category', { ...row, headerTitle: row.name });
             }}
           />
         ))}
-      <View style={{height: 35}} />
-      {loading ? <ActivityIndicator style={{marginTop: -20}} color="white" size="small" /> : null}
+      <View style={{ height: 35 }} />
+      {loading ? <ActivityIndicator style={{ marginTop: -20 }} color="white" size="small" /> : null}
     </ScrollView>
   );
 };
@@ -400,8 +410,8 @@ interface Params {
 
 const useHistory = () => {
   const [history, setHistory] = useState<ViewHit[] | null>();
-  const {token} = useAuth();
-  const {base} = useUrl();
+  const { token } = useAuth();
+  const { base } = useUrl();
 
   const getHits = useCallback(async () => {
     try {
@@ -417,33 +427,33 @@ const useHistory = () => {
     getHits();
   }, [getHits, base]);
 
-  return {history, getHits};
+  return { history, getHits };
 };
 
 const usePromos = (params: Params) => {
-  const [promo, setPromo] = useState<TitleDetail & {inMyList?: boolean}>();
-  const [picked, setPicked] = useState<TitleDetail & {inMyList?: boolean}>();
+  const [promo, setPromo] = useState<TitleDetail & { inMyList?: boolean }>();
+  const [picked, setPicked] = useState<TitleDetail & { inMyList?: boolean }>();
   const [error, setError] = useState<Error | null>();
-  const {base} = useUrl();
+  const { base } = useUrl();
 
   const getPromoTitle = async (prms?: Params) => {
     try {
-      const promos = await getPromos({...params, ...(prms ?? {}), limit: 2});
+      const promos = await getPromos({ ...params, ...(prms ?? {}), limit: 2 });
       setPromo(promos[0]);
       setPicked(promos[1]);
       setError(null);
 
       checkMyList(promos[0].id)
         .then(() => {
-          setPromo({...promos[0], inMyList: true});
+          setPromo({ ...promos[0], inMyList: true });
         })
-        .catch(() => {});
+        .catch(() => { });
 
       checkMyList(promos[1].id)
         .then(() => {
-          setPicked({...promos[1], inMyList: true});
+          setPicked({ ...promos[1], inMyList: true });
         })
-        .catch(() => {});
+        .catch(() => { });
     } catch (err) {
       setError(err);
     }
@@ -454,7 +464,7 @@ const usePromos = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params, base]);
 
-  return {promo, picked, setPromo, setPicked, error, getPromoTitle};
+  return { promo, picked, setPromo, setPicked, error, getPromoTitle };
 };
 
 const useRows = (params: Params) => {
@@ -465,7 +475,7 @@ const useRows = (params: Params) => {
   const [error, setError] = useState<Error | null>();
   const [loading, setLoading] = useState(false);
   const [stories, setStories] = useState<PaginatedResults<Story[]>>();
-  const {base} = useUrl();
+  const { base } = useUrl();
 
   const getRows = async (refresh = true, p?: Params) => {
     try {
@@ -475,19 +485,19 @@ const useRows = (params: Params) => {
         }
         setLoading(true);
         const res = (await UrlBase.client.get(rows.next)) as PaginatedResults<GenreRow[]>;
-        setRows({...res, results: [...rows.results, ...res.results]});
+        setRows({ ...res, results: [...rows.results, ...res.results] });
         setLoading(false);
         return;
       }
       setLoading(true);
-      const newParams = {...params, ...(p || {})} as Params;
+      const newParams = { ...params, ...(p || {}) } as Params;
       const recent = await getRecentlyAdded(newParams);
       setRecentlyAdded(recent);
       const trend = await getTrending(newParams);
       setTrending(trend);
       const newsStories = await getStories();
       setStories(newsStories);
-      const coming = await getTitles({...newParams, is_coming_soon: 1});
+      const coming = await getTitles({ ...newParams, is_coming_soon: 1 });
       setComingSoon(coming);
       const data = await getGenreRows(newParams);
       setRows(data);
@@ -503,5 +513,5 @@ const useRows = (params: Params) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params, base]);
 
-  return {rows, recentlyAdded, trending, comingSoon, stories, error, getRows, loading};
+  return { rows, recentlyAdded, trending, comingSoon, stories, error, getRows, loading };
 };
