@@ -1,36 +1,36 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {useRoute, useNavigation} from '@react-navigation/native';
-import {View, RefreshControl, Linking, Dimensions, Image, ImageBackground} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {Icon, Text, Button} from 'react-native-elements';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { View, RefreshControl, Linking, Dimensions, Image, ImageBackground } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Icon, Text, Button } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Menu from 'react-native-material-menu';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import {useTranslation} from 'react-i18next';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { useTranslation } from 'react-i18next';
 
-import {getImageUrl, joinTopics} from '../utils/common';
-import {ImageQuality, TitleDetail} from '../core/interfaces/title';
-import {getTitle, checkMyList, removeFromMyList, addToMyList} from '../api/title';
-import {colors} from '../constants/style';
-import {TrailerScreen} from './Trailer';
-import {InfoScreen} from './Info';
-import {EpisodesScreen} from './Episodes';
-import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
-import {useAuth} from '../context/auth-context';
-import {useUrl} from '../context/url-context';
+import { getImageUrl, joinTopics } from '../utils/common';
+import { ImageQuality, TitleDetail } from '../core/interfaces/title';
+import { getTitle, checkMyList, removeFromMyList, addToMyList } from '../api/title';
+import { colors } from '../constants/style';
+import { TrailerScreen } from './Trailer';
+import { InfoScreen } from './Info';
+import { EpisodesScreen } from './Episodes';
+import { Downloader, DownloadTask, DownloadStatus } from '../core/Downloader';
+import { useAuth } from '../context/auth-context';
+import { useUrl } from '../context/url-context';
 
 const Tab = createMaterialTopTabNavigator();
 
 export const DetailScreen: React.FC = () => {
-  const {params}: any = useRoute();
+  const { params }: any = useRoute();
   const menuRef = useRef<Menu>();
   const navigation = useNavigation();
-  const {title, inMyList, setInMyList, setTask, task, reload} = useTitle(params.id);
-  const {token} = useAuth();
+  const { title, inMyList, setInMyList, setTask, task, reload } = useTitle(params.id);
+  const { token } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
-  const {isPrivate} = useUrl();
+  const { isPrivate } = useUrl();
   const circularProgress = useRef<AnimatedCircularProgress>();
 
   const onRefresh = useCallback(async () => {
@@ -64,7 +64,7 @@ export const DetailScreen: React.FC = () => {
     }
   }, [task]);
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   if (title && title.genres.length > 3) {
     title.genres.length = 3;
@@ -73,7 +73,7 @@ export const DetailScreen: React.FC = () => {
   const image = getImageUrl(title?.images[0].url, ImageQuality.h900);
   // const poster = getImageUrl(title?.images[0].url);
 
-  const {width} = Dimensions.get('screen');
+  const { width } = Dimensions.get('screen');
   const promoHeight = width / 1.4;
 
   return (
@@ -87,11 +87,11 @@ export const DetailScreen: React.FC = () => {
           tintColor={colors.white}
         />
       }>
-      <ImageBackground source={{uri: image}} style={{height: promoHeight}}>
-        <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{height: '100%'}}>
+      <ImageBackground source={{ uri: image }} style={{ height: promoHeight }}>
+        <LinearGradient colors={['#00000088', '#00000000', '#000']} style={{ height: '100%' }}>
           <SafeAreaView
             edges={['top']}
-            style={{flex: 1, justifyContent: 'space-between', marginHorizontal: 20}}>
+            style={{ flex: 1, justifyContent: 'space-between', marginHorizontal: 20 }}>
             <View
               style={{
                 marginTop: 2,
@@ -102,14 +102,14 @@ export const DetailScreen: React.FC = () => {
               <Icon
                 type="ionicon"
                 size={50}
-                style={{marginLeft: -10}}
+                style={{ marginLeft: -10 }}
                 color={colors.white}
                 name="chevron-back-sharp"
                 onPress={() => {
                   navigation.goBack();
                 }}
               />
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {title?.imdb ? (
                   <TouchableOpacity
                     onPress={() => {
@@ -118,7 +118,7 @@ export const DetailScreen: React.FC = () => {
                     <Image
                       source={require('../../assets/imdb.png')}
                       resizeMode="contain"
-                      style={{width: 60, height: 50}}
+                      style={{ width: 60, height: 50 }}
                     />
                   </TouchableOpacity>
                 ) : null}
@@ -132,8 +132,8 @@ export const DetailScreen: React.FC = () => {
                 justifyContent: 'space-between',
                 // marginBottom: -40,
               }}>
-              <View style={{flex: 1, marginRight: 10}}>
-                <Text style={{fontWeight: 'bold', fontSize: 25, marginBottom: 10}}>{title?.name}</Text>
+              <View style={{ flex: 1, marginRight: 10 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 25, marginBottom: 10 }}>{title?.name}</Text>
               </View>
               {isPrivate && title?.type === 'm' && !title.is_coming_soon ? (
                 <>
@@ -211,26 +211,26 @@ export const DetailScreen: React.FC = () => {
           </SafeAreaView>
         </LinearGradient>
       </ImageBackground>
-      <View style={{marginHorizontal: 20}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
-          <View style={{flexDirection: 'row', marginRight: 10, alignItems: 'center'}}>
-            <Icon type="ionicon" size={14} name="star" color={colors.blue} style={{marginRight: 5}} />
-            <Text style={{fontWeight: 'bold', fontSize: 14}}>{title?.rating}</Text>
+      <View style={{ marginHorizontal: 20 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+          <View style={{ flexDirection: 'row', marginRight: 10, alignItems: 'center' }}>
+            <Icon type="ionicon" size={14} name="star" color={colors.blue} style={{ marginRight: 5 }} />
+            <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{title?.rating}</Text>
           </View>
-          <Text style={{fontWeight: 'bold', fontSize: 14, marginRight: 10}}>
+          <Text style={{ fontWeight: 'bold', fontSize: 14, marginRight: 10 }}>
             {title?.type === 'm'
               ? Math.round((title?.runtime ?? 0) / 60) + ' min'
               : (title?.seasons.length ?? '') + ' ' + t('seasons')}
           </Text>
-          <Text style={{fontWeight: 'bold', fontSize: 14}}>{title?.released_at}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{title?.released_at}</Text>
         </View>
-        <Text style={{marginBottom: 10, color: colors.lightGray}}>{joinTopics(title?.genres)}</Text>
-        <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
-          <Text style={{color: colors.lightGray, marginRight: 10}}>{title?.rated}</Text>
+        <Text style={{ marginBottom: 10, color: colors.lightGray }}>{joinTopics(title?.genres)}</Text>
+        <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
+          <Text style={{ color: colors.lightGray, marginRight: 10 }}>{title?.rated}</Text>
           {!title?.is_coming_soon ? (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Icon type="ionicon" size={18} name="eye" color={colors.blue} style={{marginRight: 5}} />
-              <Text style={{color: colors.lightGray}}>{((title?.views ?? 1) + 1) * 93}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon type="ionicon" size={18} name="eye" color={colors.blue} style={{ marginRight: 5 }} />
+              <Text style={{ color: colors.lightGray }}>{((title?.views ?? 1) + 1) * 93}</Text>
             </View>
           ) : null}
         </View>
@@ -244,20 +244,28 @@ export const DetailScreen: React.FC = () => {
         }}>
         {isPrivate ? (
           <Button
-            containerStyle={{flex: 2, marginRight: 10}}
-            disabledStyle={{backgroundColor: colors.gray}}
+            containerStyle={{ flex: 2, marginRight: 10 }}
+            disabledStyle={{ backgroundColor: colors.gray }}
             disabled={title?.is_coming_soon}
-            buttonStyle={{borderRadius: 100, overflow: 'hidden'}}
+            buttonStyle={{ borderRadius: 100, overflow: 'hidden' }}
             onPress={async () => {
               if (!title) {
                 return;
               }
 
-              if (title.type === 'm') {
-                navigation.navigate('MoviePlayer', {title});
+              if (title?.type === 'm') {
+                navigation.navigate('WebPlayer', { url: `${privateBase}/movie/${title.id}/play` });
+                // navigation.navigate('MoviePlayer', { title: promo });
               } else {
-                navigation.navigate('SeriesPlayer', {title});
+                navigation.navigate('WebPlayer', { url: `${privateBase}/series/${title.id}/auto/auto/play` });
+                // navigation.navigate('SeriesPlayer', { title: promo });
               }
+
+              // if (title.type === 'm') {
+              //   navigation.navigate('MoviePlayer', {title});
+              // } else {
+              //   navigation.navigate('SeriesPlayer', {title});
+              // }
             }}
             title={title?.is_coming_soon ? t('comingSoon') : t('play')}
             icon={{
@@ -277,7 +285,7 @@ export const DetailScreen: React.FC = () => {
             borderRadius: 100,
             overflow: 'hidden',
           }}
-          titleStyle={{color: inMyList ? colors.white : colors.black}}
+          titleStyle={{ color: inMyList ? colors.white : colors.black }}
           icon={{
             type: 'ionicon',
             name: inMyList ? 'checkmark' : 'add',
@@ -288,19 +296,19 @@ export const DetailScreen: React.FC = () => {
               return;
             }
             if (!token) {
-              navigation.navigate('More', {screen: 'Login', initial: false});
+              navigation.navigate('More', { screen: 'Login', initial: false });
             }
 
             if (inMyList) {
               try {
                 await removeFromMyList(title.id);
                 setInMyList(false);
-              } catch {}
+              } catch { }
             } else {
               try {
                 await addToMyList(title.id);
                 setInMyList(true);
-              } catch {}
+              } catch { }
             }
           }}
         />
@@ -308,30 +316,30 @@ export const DetailScreen: React.FC = () => {
       {title && (
         <Tab.Navigator
           tabBarOptions={{
-            labelStyle: {color: colors.white},
-            style: {backgroundColor: colors.black},
+            labelStyle: { color: colors.white },
+            style: { backgroundColor: colors.black },
           }}>
           {title?.type === 's' && !title.is_coming_soon ? (
             <Tab.Screen
               name="Episodes"
-              initialParams={{title}}
+              initialParams={{ title }}
               component={EpisodesScreen}
-              options={{title: t('episodes')}}
+              options={{ title: t('episodes') }}
             />
           ) : null}
           {title?.trailers.length && isPrivate ? (
             <Tab.Screen
               name="Trailer"
-              initialParams={{title}}
+              initialParams={{ title }}
               component={TrailerScreen}
-              options={{title: t('trailer')}}
+              options={{ title: t('trailer') }}
             />
           ) : null}
           <Tab.Screen
             name="Info"
-            initialParams={{title}}
+            initialParams={{ title }}
             component={InfoScreen}
-            options={{title: t('info')}}
+            options={{ title: t('info') }}
           />
         </Tab.Navigator>
       )}

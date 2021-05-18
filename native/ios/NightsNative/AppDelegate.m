@@ -31,18 +31,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation AppDelegate
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    if (self.taskIdentifier != UIBackgroundTaskInvalid) {
-        [application endBackgroundTask:self.taskIdentifier];
-        self.taskIdentifier = UIBackgroundTaskInvalid;
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    self.taskIdentifier = [application beginBackgroundTaskWithName:nil expirationHandler:^{
-        [application endBackgroundTask:weakSelf.taskIdentifier];
-        weakSelf.taskIdentifier = UIBackgroundTaskInvalid;
-    }];
-}
+
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
