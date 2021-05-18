@@ -115,7 +115,7 @@ const Player: FunctionComponent<PlayerProps> = ({
       player.addChild("vjsTitleBar", {
         title: name,
         goBack: () => {
-          if (typeof (window as any).ReactNativeWebView != undefined) {
+          if (typeof (window as any).ReactNativeWebView != "undefined") {
             (window as any).ReactNativeWebView.postMessage("exit");
           } else {
             history.push(`/title/${title.id}`);
