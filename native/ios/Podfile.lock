@@ -24,8 +24,15 @@ PODS:
     - GCDWebServer/Core (= 3.5.4)
   - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
+  - google-cast-sdk-no-bluetooth (4.6.1):
+    - google-cast-sdk-no-bluetooth/Core (= 4.6.1)
+    - Protobuf (~> 3.13)
+  - google-cast-sdk-no-bluetooth/Core (4.6.1):
+    - Protobuf (~> 3.13)
   - OneSignal (3.3.0)
   - OneSignalXCFramework (3.4.0)
+  - PromisesObjC (2.0.0)
+  - Protobuf (3.17.0)
   - RCTRequired (0.63.2)
   - RCTTypeSafety (0.63.2):
     - FBLazyVector (= 0.63.2)
@@ -194,6 +201,16 @@ PODS:
   - React-jsinspector (0.63.2)
   - react-native-background-downloader (2.3.4):
     - React
+  - react-native-google-cast (4.0.3):
+    - React
+    - react-native-google-cast/NoBluetooth (= 4.0.3)
+  - react-native-google-cast/NoBluetooth (4.0.3):
+    - google-cast-sdk-no-bluetooth
+    - React
+    - react-native-google-cast/RNGoogleCast
+  - react-native-google-cast/RNGoogleCast (4.0.3):
+    - PromisesObjC
+    - React
   - react-native-netinfo (5.9.6):
     - React
   - react-native-onesignal (4.0.6):
@@ -320,6 +337,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-background-downloader (from `../node_modules/react-native-background-downloader`)
+  - react-native-google-cast (from `../node_modules/react-native-google-cast/ios`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-orientation (from `../node_modules/react-native-orientation`)
@@ -354,8 +372,11 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - GCDWebServer
+    - google-cast-sdk-no-bluetooth
     - OneSignal
     - OneSignalXCFramework
+    - PromisesObjC
+    - Protobuf
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -392,6 +413,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-background-downloader:
     :path: "../node_modules/react-native-background-downloader"
+  react-native-google-cast:
+    :path: "../node_modules/react-native-google-cast/ios"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-onesignal:
@@ -460,8 +483,11 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  google-cast-sdk-no-bluetooth: b3037c14fdf07a794326502e799beb0875ab2029
   OneSignal: 48898fc2ee74f84a90b50dfa4b1ca62a84b5d6de
   OneSignalXCFramework: db8d9abf56943497de1d02e569f0eef5eac388d4
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
   RCTTypeSafety: 44982c5c8e43ff4141eb519a8ddc88059acd1f3a
   React: e1c65dd41cb9db13b99f24608e47dd595f28ca9a
@@ -473,6 +499,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-background-downloader: 4a034cf39a3b00fac57364984e360a4f180a5efb
+  react-native-google-cast: 8edc149baf13eee0dd2acf1583ed1412c00fd253
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
   react-native-onesignal: b4b93d774fd626e90c5a5abafa342f9af21c66dc
   react-native-orientation: f1caf84d65f1a4fd4511a18f2b924e634ad7a628
@@ -503,6 +530,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
 
-PODFILE CHECKSUM: 6e5507614dc03acff629003d207a45f119072b6b
+PODFILE CHECKSUM: d6cd59216464249d2028d7b3036d14026dbffd50
 
 COCOAPODS: 1.10.1

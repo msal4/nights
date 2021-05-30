@@ -5,12 +5,14 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useAuth} from '../context/auth-context';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import {AxiosError} from 'axios';
 
 export const LoginScreen: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isNew, setIsNew] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<AxiosError>();
 
   const {login, register} = useAuth();
   const {t} = useTranslation();
@@ -30,6 +32,9 @@ export const LoginScreen: React.FC = () => {
         placeholderTextColor={colors.lightGray}
         onChangeText={setUsername}
       />
+      {error ? (
+        <Text style={{color: 'red', paddingBottom: 15}}>{error.response?.data.username ?? ''}</Text>
+      ) : null}
       <Input
         value={password}
         disabled={loading}
@@ -42,6 +47,9 @@ export const LoginScreen: React.FC = () => {
         placeholderTextColor={colors.lightGray}
         onChangeText={setPassword}
       />
+      {error ? (
+        <Text style={{color: 'red', paddingBottom: 15}}>{error.response?.data.password ?? ''}</Text>
+      ) : null}
       <Button
         title={isNew ? t('register') : t('login')}
         disabled={loading}
@@ -55,6 +63,7 @@ export const LoginScreen: React.FC = () => {
             }
             navigation.goBack();
           } catch (err) {
+            setError(err);
             console.log(err);
           } finally {
             setLoading(false);

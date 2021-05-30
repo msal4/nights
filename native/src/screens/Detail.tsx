@@ -9,6 +9,7 @@ import Menu from 'react-native-material-menu';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {useTranslation} from 'react-i18next';
+import {CastButton, useRemoteMediaClient, useCastState, CastState} from 'react-native-google-cast';
 
 import {getImageUrl, joinTopics} from '../utils/common';
 import {ImageQuality, TitleDetail} from '../core/interfaces/title';
@@ -21,6 +22,7 @@ import {Downloader, DownloadTask, DownloadStatus} from '../core/Downloader';
 import {useAuth} from '../context/auth-context';
 import {useUrl} from '../context/url-context';
 import {privateBase} from '../constants/const';
+import {playCurrentEpisodeRemotely, playMovieRemotely} from '../utils/play-episode';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -33,6 +35,8 @@ export const DetailScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const {isPrivate} = useUrl();
   const circularProgress = useRef<AnimatedCircularProgress>();
+  const client = useRemoteMediaClient();
+  const castState = useCastState();
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -110,6 +114,7 @@ export const DetailScreen: React.FC = () => {
                   navigation.goBack();
                 }}
               />
+              <CastButton tintColor="#ffffff" style={{width: 40, height: 40, tintColor: '#ffffff'}} />
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 {title?.imdb ? (
                   <TouchableOpacity
@@ -255,11 +260,22 @@ export const DetailScreen: React.FC = () => {
               }
 
               if (title?.type === 'm') {
+                if (client) {
+                  try {
+                    await playMovieRemotely(title, client);
+                    return;
+                  } catch {}
+                  return;
+                }
                 navigation.navigate('WebPlayer', {url: `${privateBase}/movie/${title.id}/play`});
-                // navigation.navigate('MoviePlayer', { title: promo });
+                // navigation.navigate('MoviePlayer', {title: promo });
               } else {
+                if (client && castState === CastState.CONNECTED) {
+                  playCurrentEpisodeRemotely(title, client, token);
+                  return;
+                }
                 navigation.navigate('WebPlayer', {url: `${privateBase}/series/${title.id}/auto/auto/play`});
-                // navigation.navigate('SeriesPlayer', { title: promo });
+                // navigation.navigate('SeriesPlayer', {title: promo });
               }
 
               // if (title.type === 'm') {
