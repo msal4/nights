@@ -63,15 +63,13 @@ export const SidebarButton = ({ player }: { player: VideoJsPlayer }) => {
 
   return (
     <button
-      className="opacity-0 w-0 md:opacity-100 md:w-auto"
       onClick={() => {
         player.trigger("togglesidebar");
       }}
     >
       <IoIosAlbums
-        className={`block transition-color duration-500 text-3xl ${
-          visible ? "text-n-red" : ""
-        }`}
+        className={`block transition-color duration-500 text-3xl ${visible ? "text-n-red" : ""
+          }`}
       />
     </button>
   );
