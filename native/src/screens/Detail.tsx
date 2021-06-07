@@ -114,7 +114,11 @@ export const DetailScreen: React.FC = () => {
                   navigation.goBack();
                 }}
               />
-              <CastButton tintColor="#ffffff" style={{width: 40, height: 40, tintColor: '#ffffff'}} />
+              <View style={{flex: 1}} />
+              <CastButton
+                tintColor="#ffffff"
+                style={{marginRight: 10, width: 40, height: 40, tintColor: '#ffffff'}}
+              />
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 {title?.imdb ? (
                   <TouchableOpacity
