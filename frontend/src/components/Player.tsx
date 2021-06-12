@@ -98,7 +98,7 @@ const Player: FunctionComponent<PlayerProps> = ({
               const duration = Math.floor(player.duration());
               posRef.current = currentPosition;
 
-              onUpdatePosition && position && onUpdatePosition(currentPosition, duration);
+              onUpdatePosition(currentPosition, duration);
             }
           })()
       );
