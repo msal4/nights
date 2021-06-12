@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, StatusBar, View} from 'react-native';
+import {SafeAreaView, StatusBar} from 'react-native';
 
 import WebView from 'react-native-webview';
 import Orientation from 'react-native-orientation';
@@ -30,9 +30,11 @@ export const WebPlayer: React.FC = () => {
         javaScriptEnabled
         allowsFullscreenVideo
         allowsInlineMediaPlayback
-        injectedJavaScript={`
-          window.localStorage.setItem("auth_token", "${token}")
-        `}
+        injectedJavaScript={
+          token
+            ? 'window.localStorage.setItem("auth_token", "${token}")'
+            : 'window.localStorage.removeItem("auth_token")'
+        }
         onMessage={(msg) => {
           if (msg.nativeEvent.data === 'exit') {
             navigation.goBack();
