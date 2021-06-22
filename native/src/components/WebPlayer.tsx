@@ -32,8 +32,8 @@ export const WebPlayer: React.FC = () => {
         allowsInlineMediaPlayback
         injectedJavaScript={
           token
-            ? 'window.localStorage.setItem("auth_token", "${token}")'
-            : 'window.localStorage.removeItem("auth_token")'
+            ? `window.localStorage.setItem("auth_token", "${token}");`
+            : 'window.localStorage.removeItem("auth_token");'
         }
         onMessage={(msg) => {
           if (msg.nativeEvent.data === 'exit') {
